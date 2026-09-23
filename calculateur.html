@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Calculez le PPFD, le DLI, la puissance, le nombre de barres LED et le coût électrique pour cultiver vos légumes en intérieur." />
+    <title>Calculateur d'éclairage LED pour légumes — OptiLED</title>
+    <!--#head-->
+  </head>
+  <body>
+    <!--#header-->
+
+    <main id="contenu" class="calculateur">
+      <div class="intro-calc">
+        <h1>Calculateur LED culture indoor</h1>
+        <p>Choisissez votre légume et vos dimensions : intensité, puissance, nombre de barres, coût et liste d'achat. Pour comprendre les chiffres, lisez <a href="led-bases.html">les bases de l'éclairage LED</a>.</p>
+      </div>
+      <form id="formulaire" class="carte" novalidate>
+        <h2>Votre culture</h2>
+
+        <label class="champ">
+          <span>Légume</span>
+          <select id="legume" name="legume"></select>
+        </label>
+
+        <fieldset class="champ">
+          <legend>Stade</legend>
+          <div class="segments">
+            <label><input type="radio" name="stade" value="croissance" checked /> Croissance</label>
+            <label><input type="radio" name="stade" value="floraison" /> Floraison / fructification</label>
+          </div>
+          <small id="stade-aide" class="aide" hidden></small>
+        </fieldset>
+
+        <fieldset class="champ">
+          <legend>Installation</legend>
+          <div class="segments">
+            <label><input type="radio" name="mode" value="rectangle" checked /> Longueur × largeur</label>
+            <label><input type="radio" name="mode" value="rangs" /> Nombre de rangs</label>
+          </div>
+        </fieldset>
+
+        <div class="grille" id="bloc-rectangle">
+          <label class="champ"><span>Longueur (m)</span>
+            <input id="longueur" type="text" inputmode="decimal" autocomplete="off" value="1,2" /></label>
+          <label class="champ"><span>Largeur (m)</span>
+            <input id="largeur" type="text" inputmode="decimal" autocomplete="off" value="0,6" /></label>
+        </div>
+
+        <div class="grille" id="bloc-rangs" hidden>
+          <label class="champ"><span>Nombre de rangs</span>
+            <input id="nb-rangs" type="text" inputmode="numeric" autocomplete="off" value="3" /></label>
+          <label class="champ"><span>Longueur d'un rang (m)</span>
+            <input id="longueur-rang" type="text" inputmode="decimal" autocomplete="off" value="2,4" /></label>
+          <label class="champ"><span>Largeur d'un rang (m)</span>
+            <input id="largeur-rang" type="text" inputmode="decimal" autocomplete="off" value="0,4" /></label>
+        </div>
+
+        <label class="champ">
+          <span>Photopériode (heures/jour)</span>
+          <input id="photoperiode" type="text" inputmode="decimal" autocomplete="off" />
+          <small class="aide" id="photoperiode-aide"></small>
+        </label>
+
+        <details class="avance">
+          <summary>Options (électricité, barres LED, efficacité)</summary>
+          <div class="grille">
+            <label class="champ"><span>Prix du kWh (€)</span>
+              <input id="prix-kwh" type="text" inputmode="decimal" autocomplete="off" placeholder="ex. 0,20" /></label>
+            <label class="champ"><span>Jours d'éclairage par an</span>
+              <input id="jours" type="text" inputmode="numeric" autocomplete="off" value="365" /></label>
+            <label class="champ"><span>Longueur des barres LED (m)</span>
+              <input id="longueur-barre" type="text" inputmode="decimal" autocomplete="off" placeholder="1,2 par défaut" /></label>
+            <label class="champ"><span>Puissance d'une barre (W)</span>
+              <input id="puissance-barre" type="text" inputmode="decimal" autocomplete="off" placeholder="facultatif" /></label>
+            <label class="champ"><span>Efficacité des LED (µmol/J)</span>
+              <input id="efficacite" type="text" inputmode="decimal" autocomplete="off" value="2,7" /></label>
+            <label class="champ"><span>Coefficient d'utilisation (0–1)</span>
+              <input id="coef" type="text" inputmode="decimal" autocomplete="off" value="0,8" /></label>
+          </div>
+          <small class="aide">Le coefficient d'utilisation représente la part de lumière qui atteint vraiment les plantes (pertes sur les bords, réflexions). Mettez 1 pour l'ignorer.</small>
+        </details>
+      </form>
+
+      <section id="resultats" class="carte" aria-live="polite">
+        <div class="titre-resultats">
+          <h2>Résultats</h2>
+          <div class="actions">
+            <button type="button" id="copier">Copier</button>
+            <button type="button" id="imprimer">Imprimer</button>
+          </div>
+        </div>
+        <p id="erreurs" class="erreurs" hidden></p>
+        <div id="contenu-resultats"></div>
+      </section>
+
+      <p class="avertissement">Valeurs indicatives, issues de la littérature horticole (détail et sources dans les <a href="legumes.html">fiches légumes</a>). Vérifiez avec un PAR-mètre et ajustez selon la variété.</p>
+    </main>
+
+    <!--#footer-->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

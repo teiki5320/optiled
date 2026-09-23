@@ -1,3 +1,4 @@
+import './site.css';
 import './style.css';
 import { calculer, type EntreesCalcul, type ResultatCalcul, type Surface } from './calc';
 import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data';
@@ -38,7 +39,9 @@ function remplirLegumes(): void {
     for (const l of liste) groupe.append(new Option(l.nom, l.id));
     selectLegume.append(groupe);
   }
-  selectLegume.value = LEGUMES[0].id;
+  // Le légume peut être présélectionné par l'URL : calculateur.html?legume=tomate
+  const demande = new URLSearchParams(location.search).get('legume');
+  selectLegume.value = demande && trouverLegume(demande) ? demande : LEGUMES[0].id;
 }
 
 /** Adapte le formulaire au légume : stade disponible, photopériode pré-remplie. */

@@ -24,6 +24,25 @@ describe('legumes.json', () => {
         expect(legume.stades.croissance).toBeTruthy();
       });
 
+      it('culture : chaque valeur a une source et des plages cohérentes', () => {
+        for (const [nom, champ] of Object.entries(legume.culture)) {
+          expect(champ.source.trim().length, nom).toBeGreaterThan(5);
+          const v = champ.valeur;
+          if (Array.isArray(v)) {
+            expect(v, nom).toHaveLength(2);
+            expect(v[0], nom).toBeLessThanOrEqual(v[1]);
+            expect(v[0], nom).toBeGreaterThan(0);
+          }
+        }
+        const c = legume.culture;
+        expect(c.ph.valeur[0]).toBeGreaterThanOrEqual(4);
+        expect(c.ph.valeur[1]).toBeLessThanOrEqual(8);
+        expect(c.ec_ms_cm.valeur[1]).toBeLessThanOrEqual(5);
+        expect(c.temperature_c.valeur[1]).toBeLessThanOrEqual(35);
+        expect(c.humidite_pct.valeur[1]).toBeLessThanOrEqual(100);
+        expect(c.conseils.valeur.trim()).not.toBe('');
+      });
+
       for (const [stade, p] of Object.entries(legume.stades)) {
         if (!p) continue;
         it(`${stade} : chaque valeur a une source`, () => {

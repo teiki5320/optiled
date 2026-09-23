@@ -1,0 +1,254 @@
+/* Styles communs à toutes les pages du site. */
+:root {
+  --fond: #f6f7f4;
+  --carte: #ffffff;
+  --texte: #1d241f;
+  --attenue: #5b665e;
+  --bordure: #d9ded7;
+  --accent: #2f6b3a;
+  --accent-clair: #e6f0e7;
+  --alerte: #8a5a00;
+  --alerte-clair: #fbf3e0;
+  --erreur: #a3261b;
+  --rayon: 10px;
+  --largeur-texte: 44rem;
+  color-scheme: light dark;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fond: #141815;
+    --carte: #1d231f;
+    --texte: #e7ece8;
+    --attenue: #a2ada5;
+    --bordure: #34403a;
+    --accent: #7cc68a;
+    --accent-clair: #243528;
+    --alerte: #f0c060;
+    --alerte-clair: #2f2816;
+    --erreur: #ff8a7d;
+  }
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--texte);
+  overflow-wrap: break-word;
+}
+
+a { color: var(--accent); }
+img { max-width: 100%; height: auto; }
+
+.evitement { position: absolute; left: -999px; }
+.evitement:focus { left: 1rem; top: 1rem; z-index: 10; background: var(--carte); padding: 0.5rem 1rem; }
+
+/* ---------- En-tête et navigation ---------- */
+.site-entete {
+  background: var(--carte);
+  border-bottom: 1px solid var(--bordure);
+}
+/* En-tête fixe uniquement sur grand écran : sur mobile, il prendrait trop de hauteur. */
+@media (min-width: 700px) {
+  .site-entete { position: sticky; top: 0; z-index: 5; }
+}
+.site-entete__barre {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0.6rem 1rem 0.2rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 800;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: var(--texte);
+  align-self: center;
+}
+.logo-sous-titre { color: var(--attenue); font-size: 0.85rem; }
+
+.site-nav { max-width: 64rem; margin: 0 auto; }
+.site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.15rem;
+}
+.site-nav a {
+  display: block;
+  white-space: nowrap;
+  padding: 0.4rem 0.55rem;
+  text-decoration: none;
+  color: var(--attenue);
+  font-weight: 600;
+  font-size: 0.92rem;
+  border-bottom: 3px solid transparent;
+}
+.site-nav a:hover { color: var(--texte); }
+.site-nav a[aria-current='page'] { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ---------- Pied de page ---------- */
+.site-pied {
+  max-width: 64rem;
+  margin: 2rem auto 0;
+  padding: 1.5rem 1rem 2.5rem;
+  border-top: 1px solid var(--bordure);
+  color: var(--attenue);
+  font-size: 0.85rem;
+}
+.site-pied p { margin: 0.35rem 0; }
+
+/* ---------- Pages de contenu ---------- */
+.page { max-width: 64rem; margin: 0 auto; padding: 1rem; }
+
+.fil { font-size: 0.85rem; color: var(--attenue); margin: 0.25rem 0 0.75rem; }
+.fil a { color: var(--attenue); }
+
+.prose { max-width: var(--largeur-texte); }
+.prose h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.2; margin: 0.25rem 0 0.75rem; }
+.prose h2 { font-size: 1.35rem; line-height: 1.3; margin: 2.2rem 0 0.6rem; scroll-margin-top: 6rem; }
+.prose h3 { font-size: 1.1rem; margin: 1.5rem 0 0.4rem; scroll-margin-top: 6rem; }
+.prose p, .prose ul, .prose ol { margin: 0.7rem 0; }
+.prose li { margin: 0.3rem 0; }
+.prose code { font-size: 0.9em; background: var(--accent-clair); padding: 0.05rem 0.3rem; border-radius: 4px; }
+
+.chapo { font-size: 1.12rem; color: var(--attenue); }
+
+.sommaire {
+  background: var(--carte);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.95rem;
+}
+.sommaire > strong:first-child { display: block; margin-bottom: 0.25rem; }
+.sommaire ul, .sommaire ol { margin: 0; padding-left: 1.2rem; }
+
+.encadre {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-clair);
+  border-radius: 0 var(--rayon) var(--rayon) 0;
+  padding: 0.75rem 1rem;
+  margin: 1.25rem 0;
+}
+.encadre.attention { border-left-color: var(--alerte); background: var(--alerte-clair); }
+.encadre > :first-child { margin-top: 0; }
+.encadre > :last-child { margin-bottom: 0; }
+
+.formule {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: var(--carte);
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.tableau-defile { overflow-x: auto; margin: 1rem 0; }
+.tableau { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+.tableau th, .tableau td { border-bottom: 1px solid var(--bordure); padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+.tableau thead th { background: var(--accent-clair); }
+
+.suite {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  margin-top: 2.5rem;
+}
+.suite a {
+  display: block;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  background: var(--carte);
+  text-decoration: none;
+}
+.suite small { display: block; color: var(--attenue); }
+
+.bouton-lien {
+  display: inline-block;
+  font-weight: 600;
+  padding: 0.55rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  text-decoration: none;
+}
+.bouton-lien.plein { background: var(--accent); color: var(--carte); }
+
+/* ---------- Cartes (accueil, rubriques) ---------- */
+.cartes { display: grid; gap: 0.9rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); margin: 1rem 0; }
+.carte-lien {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  background: var(--carte);
+  color: var(--texte);
+  text-decoration: none;
+  transition: border-color 0.15s;
+}
+.carte-lien:hover { border-color: var(--accent); }
+.carte-lien strong { font-size: 1.05rem; color: var(--accent); }
+.carte-lien span { color: var(--attenue); font-size: 0.93rem; }
+
+.heros { padding: 1.5rem 0 0.5rem; }
+.heros h1 { font-size: clamp(1.8rem, 6vw, 2.6rem); line-height: 1.15; margin: 0 0 0.6rem; }
+.heros p { font-size: 1.1rem; color: var(--attenue); max-width: 40rem; margin: 0 0 1.1rem; }
+.heros .actions-heros { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+.chiffres { display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); margin: 1rem 0; }
+.chiffres div { background: var(--accent-clair); border-radius: 8px; padding: 0.75rem 0.9rem; }
+.chiffres strong { display: block; font-size: 1.05rem; }
+.chiffres span { color: var(--attenue); font-size: 0.88rem; }
+
+/* ---------- Fiches légumes ---------- */
+.fiches-famille h2 { margin-top: 2rem; }
+.fiche {
+  background: var(--carte);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  padding: 1rem;
+  margin: 1rem 0;
+  scroll-margin-top: 6rem;
+}
+.fiche h3 { margin: 0 0 0.4rem; font-size: 1.25rem; }
+.fiche-famille { font-size: 0.8rem; font-weight: 500; color: var(--attenue); margin-left: 0.3rem; }
+.fiche-conseil { margin: 0 0 0.75rem; }
+.fiche-grille { display: grid; gap: 0.9rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+.fiche-stade h4 { margin: 0 0 0.3rem; font-size: 0.95rem; color: var(--accent); }
+.fiche-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.fiche-table th, .fiche-table td { text-align: left; vertical-align: top; padding: 0.35rem 0.3rem; border-bottom: 1px solid var(--bordure); }
+.fiche-table th { font-weight: 600; width: 42%; }
+.source-ligne { display: none; font-size: 0.72rem; color: var(--attenue); }
+/* Les sources s'affichent quand le lecteur ouvre « Afficher les sources » (CSS seul, sans JavaScript). */
+.fiche:has(.fiche-sources[open]) .source-ligne { display: block; }
+.fiche-sources { margin: 0.75rem 0 0.5rem; font-size: 0.88rem; }
+.fiche-sources summary { cursor: pointer; color: var(--accent); }
+@media print { .source-ligne { display: block; } .fiche-sources { display: none; } }
+
+/* ---------- Glossaire ---------- */
+.glossaire dt { font-weight: 700; margin-top: 1.1rem; scroll-margin-top: 6rem; }
+.glossaire dd { margin: 0.2rem 0 0; }
+
+@media print {
+  :root { --fond: #fff; --carte: #fff; --texte: #000; --attenue: #444; --accent: #000; --accent-clair: #f1f1f1; }
+  .site-entete, .site-pied, .suite, .evitement { display: none; }
+  .site-entete { position: static; }
+}

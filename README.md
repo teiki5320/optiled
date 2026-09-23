@@ -1,10 +1,17 @@
-# Calculateur LED culture indoor
+# OptiLED — éclairage LED et culture indoor de légumes
 
-Site web statique (Vite + TypeScript, sans backend), en français et pensé d'abord pour le mobile, qui aide un cultivateur à choisir l'éclairage LED adapté à un légume.
+Site web statique (Vite + TypeScript, sans backend), en français et pensé d'abord pour le mobile : des guides complets sur l'éclairage LED horticole et la culture de légumes en intérieur, des fiches légumes, un glossaire, et un **calculateur LED**.
 
-**Entrées** : légume, stade (croissance ou floraison/fructification), dimensions (longueur × largeur, ou nombre de rangs), photopériode (pré-remplie), et en option : prix du kWh, jours d'éclairage par an, longueur et puissance des barres LED, efficacité des LED (2,7 µmol/J par défaut), coefficient d'utilisation.
+| Page | Contenu |
+| --- | --- |
+| `index.html` | Accueil |
+| `calculateur.html` | Calculateur : PPFD, DLI, PPF, puissance, barres LED, coût annuel, liste d'achat (copie / impression) |
+| `led.html` + `led-*.html` | Guides LED : bases (PAR, PPFD, DLI, spectre), choisir ses LED, installer et mesurer |
+| `culture.html` + `culture-*.html` | Guides culture : démarrer, substrats et hydroponie, nutriments/pH/EC, climat, semis, problèmes et ravageurs |
+| `legumes.html` | Fiches légumes, **générées au build** depuis `src/data/legumes.json` |
+| `glossaire.html` | Glossaire des termes techniques |
 
-**Résultats** : PPFD cible, DLI, flux nécessaire (PPF), puissance électrique, nombre de barres et espacement, spectre, hauteur de suspension, consommation et coût annuels, et une liste d'achat. Deux boutons permettent de **copier** le résumé en texte brut ou de l'**imprimer** (feuille de style d'impression dédiée).
+Le calculateur accepte un légume présélectionné dans l'adresse : `calculateur.html?legume=tomate`.
 
 ## Voir le site en ligne
 
@@ -28,12 +35,24 @@ Node.js 20 ou plus récent est requis.
 
 | Fichier | Rôle |
 | --- | --- |
+| `*.html` (racine) | Une page du site chacune (détectées automatiquement par le build) |
+| `build/site.ts` | Plugin Vite : insère en-tête, navigation, pied de page et fiches ; génère `sitemap.xml` et `robots.txt` |
+| `build/fiches.ts` | Génération HTML des fiches légumes |
+| `src/site.css` | Styles communs à tout le site |
 | `src/data/legumes.json` | **Toutes les données légumes** : une valeur `{ valeur, source }` par paramètre |
 | `src/data.ts` | Types et accès aux données |
 | `src/calc.ts` | **Module de calcul isolé** (fonctions pures, aucun accès au DOM) |
 | `src/liste.ts` | Liste d'achat et résumé texte (copie) |
-| `src/main.ts` | Interface : lecture du formulaire, affichage |
+| `src/main.ts`, `src/style.css` | Interface du calculateur |
 | `src/*.test.ts` | Tests Vitest (calculs, intégrité du JSON, liste d'achat) |
+
+## Ajouter une page
+
+1. Copiez une page existante (par exemple `led-bases.html`) sous un nouveau nom à la racine.
+2. Gardez les marqueurs `<!--#head-->`, `<!--#header-->` et `<!--#footer-->` : le build les remplace par les parties communes. La page est ajoutée automatiquement au build et au `sitemap.xml`.
+3. Pour qu'elle apparaisse dans une rubrique du menu, nommez-la `led-….html` ou `culture-….html` (voir `NAVIGATION` dans `build/site.ts`) et ajoutez un lien depuis `led.html` ou `culture.html`.
+
+Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, `encadre attention`, `formule`, `tableau-defile` + `tableau`, `suite`, `cartes` + `carte-lien`, `bouton-lien`.
 
 ## Modifier ou ajouter un légume
 
@@ -58,7 +77,8 @@ Node.js 20 ou plus récent est requis.
 
 - `ppfd` en µmol/m²/s, `photoperiode` en h/jour, `hauteur_cm` = [min, max] au-dessus du feuillage.
 - `floraison: null` pour les cultures récoltées avant floraison (le choix du stade est alors désactivé).
-- `famille` sert à regrouper la liste déroulante.
+- `famille` sert à regrouper la liste déroulante et les fiches.
+- `culture` : plages [min, max] de température (°C), humidité (%), pH, EC (mS/cm), jours jusqu'à la première récolte, espacement (cm, `null` pour un semis à la volée), et un conseil ; affichées dans les fiches légumes.
 - Chaque valeur **doit** avoir une `source` non vide : les tests vérifient la présence des sources et la plausibilité des valeurs (PPFD entre 50 et 1 500, photopériode ≤ 24 h, etc.).
 
 Les valeurs fournies sont des **ordres de grandeur indicatifs** tirés de la littérature horticole (références listées dans la clé `references` du JSON). Ajustez-les selon la variété et vos mesures au PAR-mètre.
@@ -118,7 +138,7 @@ La consommation est calculée sur la puissance nécessaire (barres gradées à l
 
 ## Déploiement sur IONOS (SFTP)
 
-Le site est entièrement statique : il suffit d'envoyer le contenu du dossier `dist/`. Comme `vite.config.ts` utilise `base: './'`, les chemins sont relatifs et le site fonctionne à la racine d'un domaine comme dans un sous-dossier.
+Le site est entièrement statique : il suffit d'envoyer le contenu du dossier `dist/`. Construisez-le avec l'adresse de votre domaine pour que le `sitemap.xml` soit juste : `SITE_URL=https://mon-domaine.fr/ npm run build`. Comme `vite.config.ts` utilise `base: './'`, les chemins sont relatifs et le site fonctionne à la racine d'un domaine comme dans un sous-dossier.
 
 1. **Construire le site**
    ```bash

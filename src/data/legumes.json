@@ -4,7 +4,8 @@
     "Chaque valeur est un objet { valeur, source } : indiquez toujours d'où vient le chiffre.",
     "ppfd en µmol/m²/s, photoperiode en heures/jour, hauteur_cm = [min, max] de suspension au-dessus de la canopée.",
     "stades.floraison = null pour les cultures récoltées avant floraison (feuilles, aromatiques, micro-pousses).",
-    "Les valeurs sont des ordres de grandeur indicatifs : ajustez-les selon la variété et vos mesures (PAR-mètre)."
+    "Les valeurs sont des ordres de grandeur indicatifs : ajustez-les selon la variété et vos mesures (PAR-mètre).",
+    "culture : plages [min, max] de température de jour (°C), humidité relative (%), pH et EC (mS/cm) de la solution, jours du semis à la première récolte, espacement entre plants (cm, null pour un semis à la volée)."
   ],
   "references": {
     "kozai": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press",
@@ -15,7 +16,10 @@
     "runkle": "Runkle (MSU Extension) – photopériode des cultures de jours longs",
     "heuvelink": "Heuvelink (2018), Tomatoes, 2e éd., CABI",
     "velez": "Velez-Ramirez et al. (2011), Trends in Plant Science – lésions en éclairage continu",
-    "pratique": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+    "pratique": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)",
+    "resh": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives",
+    "semenciers": "Catalogues semenciers (ordre de grandeur, varie selon la variété)",
+    "maraichage": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
   },
   "legumes": [
     {
@@ -45,6 +49,54 @@
           }
         },
         "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            16,
+            22
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            70
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            5.6,
+            6.2
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            0.8,
+            1.2
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            45,
+            60
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            20,
+            25
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Craint la chaleur : au-delà de 24 °C elle monte en graines et devient amère. Récolte feuille à feuille possible.",
+          "source": "Pratique culturale courante"
+        }
       }
     },
     {
@@ -74,6 +126,54 @@
           }
         },
         "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            15,
+            20
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            70
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            6,
+            7
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1.8,
+            2.3
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            40,
+            50
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            10,
+            15
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Garder des jours courts (≤ 14 h) et une ambiance fraîche pour éviter la montée en graines.",
+          "source": "Pratique culturale courante"
+        }
       }
     },
     {
@@ -103,6 +203,54 @@
           }
         },
         "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            15,
+            22
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            70
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            6,
+            7
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            0.8,
+            1.2
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            30,
+            40
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            10,
+            15
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Pousse très vite : ressemez toutes les 2 à 3 semaines pour une récolte continue.",
+          "source": "Pratique culturale courante"
+        }
       }
     },
     {
@@ -132,6 +280,54 @@
           }
         },
         "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            20,
+            27
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            70
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            5.5,
+            6.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1,
+            1.6
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            40,
+            60
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            20,
+            25
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Pincez les têtes au-dessus du 3e ou 4e étage de feuilles pour faire ramifier ; supprimez les boutons floraux. Craint le froid (< 12 °C).",
+          "source": "Pratique culturale courante"
+        }
       }
     },
     {
@@ -161,6 +357,54 @@
           }
         },
         "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            16,
+            24
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            70
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            5.5,
+            6.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            0.8,
+            1.8
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            70,
+            90
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            15,
+            20
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Germination lente (2 à 4 semaines) : faites tremper les graines 24 h avant le semis.",
+          "source": "Pratique culturale courante"
+        }
       }
     },
     {
@@ -190,6 +434,54 @@
           }
         },
         "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            16,
+            24
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            70
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            6.2,
+            6.8
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1.2,
+            1.8
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            40,
+            55
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            10,
+            15
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Monte vite en graines : semez souvent, en petites quantités, et gardez au frais.",
+          "source": "Pratique culturale courante"
+        }
       }
     },
     {
@@ -219,6 +511,54 @@
           }
         },
         "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            16,
+            24
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            70
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            6,
+            6.8
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1.8,
+            2.4
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            60,
+            90
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            15,
+            20
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Vivace : coupez à 3–5 cm du substrat, elle repousse plusieurs fois.",
+          "source": "Pratique culturale courante"
+        }
       }
     },
     {
@@ -248,6 +588,51 @@
           }
         },
         "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            18,
+            24
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            40,
+            60
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            5.5,
+            6.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            0.5,
+            1
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            7,
+            21
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": null,
+          "source": "Semis à la volée, sans espacement"
+        },
+        "conseils": {
+          "valeur": "Semis dense sur substrat fin, 2 à 4 jours à l'obscurité (sous un poids), puis lumière. Récoltez au stade cotylédons ou premières vraies feuilles.",
+          "source": "Pratique culturale courante"
+        }
       }
     },
     {
@@ -296,6 +681,54 @@
             "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
+        }
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            18,
+            24
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            60,
+            75
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            5.5,
+            6.2
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1,
+            2
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            60,
+            90
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            25,
+            30
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Délai compté depuis la plantation d'un plant. Choisissez des variétés remontantes et pollinisez les fleurs au pinceau, sinon les fruits sont déformés.",
+          "source": "Pratique culturale courante"
         }
       }
     },
@@ -346,6 +779,54 @@
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            20,
+            26
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            60,
+            75
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            5.5,
+            6.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            2,
+            3.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            90,
+            120
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            40,
+            60
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Choisissez des variétés naines ou cerises. Fleurs autofertiles, mais il faut les secouer (ou les faire vibrer) pour libérer le pollen. Tuteurez.",
+          "source": "Pratique culturale courante"
+        }
       }
     },
     {
@@ -394,6 +875,54 @@
             "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
+        }
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            21,
+            27
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            60,
+            70
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            5.8,
+            6.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1.8,
+            2.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            100,
+            150
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            40,
+            50
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Germination à 25–28 °C. Secouez les fleurs pour les polliniser ; retirez la toute première fleur pour renforcer la plante.",
+          "source": "Pratique culturale courante"
         }
       }
     },
@@ -444,6 +973,54 @@
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            21,
+            29
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            60,
+            70
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            5.8,
+            6.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1.8,
+            2.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            100,
+            150
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            30,
+            45
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Même conduite que le poivron ; se cultive très bien en pot et peut vivre plusieurs années.",
+          "source": "Pratique culturale courante"
+        }
       }
     },
     {
@@ -493,6 +1070,54 @@
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            22,
+            28
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            70,
+            80
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            5.5,
+            6
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1.7,
+            2.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            55,
+            70
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            40,
+            60
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Préférez des variétés parthénocarpiques (fruits sans pollinisation) et palissez. Très gourmand en eau.",
+          "source": "Pratique culturale courante"
+        }
       }
     },
     {
@@ -541,6 +1166,54 @@
             "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
+        }
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            22,
+            28
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            60,
+            70
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "ph": {
+          "valeur": [
+            5.8,
+            6.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            2.5,
+            3.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "jours_recolte": {
+          "valeur": [
+            110,
+            140
+          ],
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            50,
+            60
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Besoin de chaleur et de lumière intense ; secouez les fleurs pour les polliniser. Tuteurez.",
+          "source": "Pratique culturale courante"
         }
       }
     }

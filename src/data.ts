@@ -18,6 +18,24 @@ export interface ParametresStade {
 
 export type Stade = 'croissance' | 'floraison';
 
+type Plage = [number, number];
+
+/** Conditions de culture générales (affichées dans les fiches légumes). */
+export interface ParametresCulture {
+  /** °C, le jour */
+  temperature_c: ValeurSourcee<Plage>;
+  /** humidité relative, % */
+  humidite_pct: ValeurSourcee<Plage>;
+  ph: ValeurSourcee<Plage>;
+  /** conductivité de la solution nutritive, mS/cm */
+  ec_ms_cm: ValeurSourcee<Plage>;
+  /** jours du semis à la première récolte */
+  jours_recolte: ValeurSourcee<Plage>;
+  /** cm entre plants ; null pour un semis à la volée */
+  espacement_cm: ValeurSourcee<Plage | null>;
+  conseils: ValeurSourcee<string>;
+}
+
 export interface Legume {
   id: string;
   nom: string;
@@ -26,6 +44,7 @@ export interface Legume {
     croissance: ParametresStade;
     floraison: ParametresStade | null;
   };
+  culture: ParametresCulture;
 }
 
 export const LEGUMES: Legume[] = (brut as unknown as { legumes: Legume[] }).legumes;
