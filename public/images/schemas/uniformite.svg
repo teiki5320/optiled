@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" role="img"><title>Espacement des barres LED : trop espacées, lumière inégale ; entraxe inférieur ou égal à la hauteur, lumière uniforme</title><defs><linearGradient id="barre" x1="0" x2="1"><stop offset="0" stop-color="#5b7cff"/><stop offset=".5" stop-color="#c26bff"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient><linearGradient id="cone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1d2" stop-opacity=".5"/><stop offset="1" stop-color="#ffb3d1" stop-opacity=".03"/></linearGradient><marker id="fl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#ffc15e"/></marker><marker id="fv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#8ff0b3"/></marker><marker id="fb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#7cb2ff"/></marker></defs><style>text{font-family:"Inter Variable",Inter,system-ui,sans-serif;fill:#eef5ef}.t{font-size:15px;font-weight:700}.p{font-size:13px;fill:#a3b8a9}.v{font-size:14px;font-weight:700;fill:#8ff0b3}.a{font-size:13px;font-weight:700;fill:#ffc15e}.m{font-family:ui-monospace,Menlo,monospace;font-size:12px;fill:#a3b8a9}</style><rect width="800" height="420" rx="18" fill="#0c1510"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" role="img"><title>Espacement des barres LED : trop espacées, lumière inégale ; entraxe inférieur ou égal à la hauteur, lumière uniforme</title><defs><linearGradient id="barre" x1="0" x2="1"><stop offset="0" stop-color="#5b7cff"/><stop offset=".5" stop-color="#c26bff"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient><linearGradient id="cone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1d2" stop-opacity=".5"/><stop offset="1" stop-color="#ffb3d1" stop-opacity=".03"/></linearGradient><marker id="fl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#ffc15e"/></marker><marker id="fv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#ffd08a"/></marker><marker id="fb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#7cb2ff"/></marker></defs><style>text{font-family:"Inter Variable",Inter,system-ui,sans-serif;fill:#f6ecf0}.t{font-size:15px;font-weight:700}.p{font-size:13px;fill:#dcbcc6}.v{font-size:14px;font-weight:700;fill:#ffd08a}.a{font-size:13px;font-weight:700;fill:#ffc15e}.m{font-family:ui-monospace,Menlo,monospace;font-size:12px;fill:#dcbcc6}</style><rect width="800" height="420" rx="18" fill="#221729"/>
 <text x="200" y="40" text-anchor="middle" class="t">Barres trop espacées</text>
 <text x="600" y="40" text-anchor="middle" class="t">Entraxe ≤ hauteur</text>
-<path d="M400 60v330" stroke="#1d3025" stroke-width="2"/>
+<path d="M400 60v330" stroke="#3a2847" stroke-width="2"/>
 <g>
 <path d="M80 86h40l70 180H10z" fill="url(#cone)"/><path d="M280 86h40l70 180H210z" fill="url(#cone)"/>
 <rect x="75" y="78" width="50" height="10" rx="5" fill="url(#barre)"/><rect x="275" y="78" width="50" height="10" rx="5" fill="url(#barre)"/>
-<path d="M30 276h340" stroke="#3c6b50" stroke-width="3"/>
+<path d="M30 276h340" stroke="#7a5a86" stroke-width="3"/>
 <path d="M30 350c30 0 45-60 70-60s40 60 100 60 75-60 100-60 40 60 70 60" fill="none" stroke="#ff6b4a" stroke-width="3"/>
 <text x="200" y="378" text-anchor="middle" class="p">zone sombre au centre</text>
 <text x="200" y="330" text-anchor="middle" class="a">creux</text>
@@ -14,8 +14,8 @@
 <path d="M470 86h30l70 180H400z" fill="url(#cone)"/><path d="M585 86h30l70 180H515z" fill="url(#cone)"/>
 <path d="M700 86h30l65 180H640z" fill="url(#cone)"/>
 <rect x="460" y="78" width="50" height="10" rx="5" fill="url(#barre)"/><rect x="575" y="78" width="50" height="10" rx="5" fill="url(#barre)"/><rect x="690" y="78" width="50" height="10" rx="5" fill="url(#barre)"/>
-<path d="M430 276h340" stroke="#3c6b50" stroke-width="3"/>
-<path d="M430 350c20 0 30-50 55-52h230c25 2 35 52 55 52" fill="none" stroke="#8ff0b3" stroke-width="3"/>
+<path d="M430 276h340" stroke="#7a5a86" stroke-width="3"/>
+<path d="M430 350c20 0 30-50 55-52h230c25 2 35 52 55 52" fill="none" stroke="#7fe0a0" stroke-width="3"/>
 <text x="600" y="378" text-anchor="middle" class="p">éclairement régulier</text>
 <path d="M485 106h115" stroke="#ffc15e" stroke-width="1.5" marker-start="url(#fl)" marker-end="url(#fl)"/>
 <text x="542" y="124" text-anchor="middle" class="a">entraxe</text>

@@ -96,7 +96,7 @@ a { color: var(--accent); }
 .sommaire p a { background: rgb(255 255 255 / 0.08); }
 .sommaire p a:hover { background: var(--degrade); color: #2a1422; }
 
-.carte-guide { padding: 1.5rem; }
+.carte-guide { padding: 1.5rem; --pad-carte: 1.5rem; }
 .carte-guide:hover { border-color: rgb(247 192 122 / 0.45); box-shadow: var(--ombre-forte); }
 .carte-guide::after { background: var(--degrade); }
 .carte-guide__icone, .cartes-guides--culture .carte-guide__icone { border-radius: 50%; background: var(--degrade); color: #2a1422; }
