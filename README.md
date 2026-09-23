@@ -4,7 +4,7 @@ Site web statique (Vite + TypeScript, sans backend), en français et pensé d'ab
 
 | Page | Contenu |
 | --- | --- |
-| `index.html` | **Accueil = calculateur** : PPFD, DLI, PPF, puissance, barres LED et plan de pose, coût annuel, liste d'achat (copie / impression), puis accès aux guides |
+| `index.html` | **Accueil = calculateur** : PPFD, DLI, PPF, puissance, barres LED et plan de pose, coût annuel, liste d'achat (copie / impression) ; les guides sont accessibles par le menu et le pied de page |
 | `calculateur.html` | Ancienne adresse du calculateur : redirige vers l'accueil en gardant le légume choisi (sans JavaScript, la redirection de secours mène à l'accueil sans le légume) |
 | `led.html` + `led-*.html` | Guides LED : bases (PAR, PPFD, DLI, spectre), choisir ses LED, installer et mesurer |
 | `culture.html` + `culture-*.html` | Guides culture : démarrer, substrats et hydroponie, nutriments/pH/EC, climat, semis, problèmes et ravageurs |

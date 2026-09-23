@@ -361,7 +361,8 @@ function mettreAJour(): void {
 
 /**
  * Barre de résumé fixée en bas de l'écran sur mobile : elle rappelle les chiffres clés
- * pendant la saisie et mène aux résultats. Masquée quand les résultats sont visibles.
+ * pendant la saisie et mène aux résultats. Masquée dès que les résultats sont visibles
+ * ou dépassés (pied de page), pour ne rien recouvrir.
  */
 const barreResume = $<HTMLAnchorElement>('barre-resume');
 let resultatsVisibles = false;
@@ -372,12 +373,23 @@ function majBarreResume(r: ResultatCalcul | null): void {
   }
   barreResume.hidden = !r || resultatsVisibles;
 }
-if ('IntersectionObserver' in window) {
-  new IntersectionObserver(([e]) => {
-    resultatsVisibles = e.isIntersecting;
-    barreResume.hidden = resultatsVisibles || zoneErreurs.hidden === false;
-  }).observe($('resultats'));
+let majPrevue = false;
+function suivreResultats(): void {
+  majPrevue = false;
+  resultatsVisibles = $('resultats').getBoundingClientRect().top < window.innerHeight;
+  barreResume.hidden = resultatsVisibles || zoneErreurs.hidden === false || !dernierResume;
 }
+window.addEventListener(
+  'scroll',
+  () => {
+    if (!majPrevue) {
+      majPrevue = true;
+      requestAnimationFrame(suivreResultats);
+    }
+  },
+  { passive: true },
+);
+window.addEventListener('resize', suivreResultats);
 
 async function copier(): Promise<void> {
   if (!dernierResume) return;
