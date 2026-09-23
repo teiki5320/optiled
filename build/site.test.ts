@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { header, mettreEnPageArticle, NAVIGATION, sitemap, tempsLecture } from './site';
+import { header, mesureAudience, mettreEnPageArticle, NAVIGATION, referencement, sitemap, tempsLecture } from './site';
 
 describe('en-tête', () => {
   it('met en évidence la rubrique de la page courante', () => {
@@ -56,5 +56,35 @@ describe('mise en page des articles', () => {
   it('temps de lecture : 200 mots par minute, 1 minute minimum', () => {
     expect(tempsLecture('<p>un deux</p>')).toBe(1);
     expect(tempsLecture(`<p>${'mot '.repeat(1000)}</p>`)).toBe(5);
+  });
+});
+
+describe('référencement', () => {
+  const page = (titre: string, extra = '') =>
+    `<html><head><title>${titre}</title><meta name="description" content="Une description assez longue." />${extra}</head><body><h1>Titre de l'article</h1></body></html>`;
+
+  it('balises de partage et adresse canonique', () => {
+    const h = referencement(page('Les bases — OptiLED'), 'led-bases.html', 'https://exemple.fr/');
+    expect(h).toContain('<link rel="canonical" href="https://exemple.fr/led-bases.html" />');
+    expect(h).toContain('<meta property="og:title" content="Les bases — OptiLED" />');
+    expect(h).toContain('<meta property="og:image" content="https://exemple.fr/images/partage/led-bases.jpg" />');
+    expect(h).toContain('"@type":"Article"');
+    expect(h).toContain('"@type":"BreadcrumbList"');
+  });
+
+  it("l'accueil est une application web servie à la racine", () => {
+    const h = referencement(page('OptiLED'), 'index.html', 'https://exemple.fr/');
+    expect(h).toContain('href="https://exemple.fr/"');
+    expect(h).toContain('"@type":"WebApplication"');
+  });
+
+  it('rien pour les pages non indexées ; échappement des guillemets', () => {
+    expect(referencement(page('X', '<meta name="robots" content="noindex" />'), '404.html')).toBe('');
+    expect(referencement(page('Le "calcul"'), 'legumes.html')).toContain('content="Le &quot;calcul&quot;"');
+  });
+
+  it("mesure d'audience seulement si un domaine est configuré", () => {
+    expect(mesureAudience('')).toBe('');
+    expect(mesureAudience('optiled.fr')).toContain('data-domain="optiled.fr"');
   });
 });

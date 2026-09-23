@@ -50,3 +50,12 @@ function menuMobile(): void {
 progressionLecture();
 sommaireActif();
 menuMobile();
+
+/** Mode hors ligne : enregistre le service worker (site publié en HTTPS uniquement). */
+if (import.meta.env.PROD && 'serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {
+      /* sans service worker, le site fonctionne normalement en ligne */
+    });
+  });
+}

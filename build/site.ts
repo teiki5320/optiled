@@ -80,7 +80,93 @@ const FAVICON = `data:image/svg+xml,${encodeURIComponent(LOGO.replace('class="lo
 
 export function head(): string {
   return `<link rel="icon" href="${FAVICON}" />
-    <meta name="theme-color" content="#0c1510" />`;
+    <link rel="apple-touch-icon" href="icones/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#1b1322" />`;
+}
+
+const DOSSIER_PARTAGE = resolve(__dirname, '../public/images/partage');
+
+function attribut(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+}
+
+/** Adresse publique d'une page (l'accueil est servi à la racine). */
+export function urlPage(fichier: string, url = SITE_URL): string {
+  return fichier === 'index.html' ? url : `${url}${fichier}`;
+}
+
+/**
+ * Balises de partage (Open Graph, Twitter), adresse canonique et données structurées
+ * schema.org, déduites du titre, de la description et du type de page.
+ */
+export function referencement(html: string, fichier: string, url = SITE_URL): string {
+  if (/content="noindex"/.test(html)) return '';
+  const titre = html.match(/<title>([^<]*)<\/title>/)?.[1]?.trim() ?? NOM_SITE;
+  const description = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '';
+  const nom = fichier.replace(/\.html$/, '');
+  const image = `${url}images/partage/${existsSync(resolve(DOSSIER_PARTAGE, `${nom}.jpg`)) ? nom : 'accueil'}.jpg`;
+  const adresse = urlPage(fichier, url);
+  const r = rubriqueDe(fichier);
+  const guide = r ? RUBRIQUES[r].guides.find((g) => g.fichier === fichier) : undefined;
+
+  const donnees: object[] = [];
+  if (fichier === 'index.html') {
+    donnees.push({
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: 'Calculateur LED culture indoor — OptiLED',
+      url: adresse,
+      description,
+      applicationCategory: 'UtilitiesApplication',
+      operatingSystem: 'Tous (navigateur web)',
+      inLanguage: 'fr',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    });
+  }
+  if (r && guide) {
+    const titreArticle = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, '').trim() ?? guide.titre;
+    donnees.push(
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: titreArticle,
+        description,
+        image,
+        inLanguage: 'fr',
+        mainEntityOfPage: adresse,
+        author: { '@type': 'Organization', name: NOM_SITE },
+        publisher: { '@type': 'Organization', name: NOM_SITE },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: url },
+          { '@type': 'ListItem', position: 2, name: RUBRIQUES[r].nom, item: `${url}${RUBRIQUES[r].hub}` },
+          { '@type': 'ListItem', position: 3, name: guide.titre, item: adresse },
+        ],
+      },
+    );
+  }
+  const json = donnees.map((d) => `<script type="application/ld+json">${JSON.stringify(d).replace(/</g, '\\u003c')}</script>`).join('\n    ');
+  return `<link rel="canonical" href="${adresse}" />
+    <meta property="og:type" content="${guide ? 'article' : 'website'}" />
+    <meta property="og:site_name" content="${NOM_SITE}" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content="${attribut(titre)}" />
+    <meta property="og:description" content="${attribut(description)}" />
+    <meta property="og:url" content="${adresse}" />
+    <meta property="og:image" content="${image}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    ${json}`;
+}
+
+/** Mesure d'audience facultative et sans cookie : PLAUSIBLE_DOMAIN=mon-domaine.fr npm run build */
+export function mesureAudience(domaine = process.env.PLAUSIBLE_DOMAIN): string {
+  return domaine ? `<script defer data-domain="${attribut(domaine)}" src="https://plausible.io/js/script.js"></script>` : '';
 }
 
 function liensNavigation(fichier: string): string {
@@ -117,6 +203,7 @@ export function footer(): string {
       <p>Guides et outils gratuits pour cultiver des légumes sous LED, en intérieur.</p>
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la littérature horticole : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
       <p class="site-pied__note">Photos d'illustration des guides générées par intelligence artificielle ; schémas réalisés pour le site.</p>
+      <p class="site-pied__note"><a href="mentions-legales.html">Mentions légales</a></p>
     </div>
     <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="glossaire.html">Glossaire</a></li></ul></div>
     ${colonne('led')}
@@ -242,7 +329,7 @@ export function transformerPage(html: string, fichier: string): string {
     // Tableaux qui défilent horizontalement : atteignables et nommés au clavier.
     .replace(/<div class="tableau-defile">/g, '<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau (faire défiler horizontalement)">')
     // La 404 peut être servie sous n'importe quel chemin : liens résolus depuis la racine du site.
-    .replace('<!--#head-->', `${base}<!--#head-->`)
+    .replace('<!--#head-->', `${base}<!--#head-->\n    ${referencement(html, fichier)}\n    ${mesureAudience()}`)
     .replace('<!--#head-->', head())
     .replace('<!--#header-->', header(fichier))
     .replace('<!--#footer-->', footer())

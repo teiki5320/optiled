@@ -11,7 +11,7 @@ Site web statique (Vite + TypeScript, sans backend), en français et pensé d'ab
 | `legumes.html` | Fiches légumes, **générées au build** depuis `src/data/legumes.json` |
 | `glossaire.html` | Glossaire des termes techniques |
 
-Le calculateur accepte un légume présélectionné dans l'adresse : `index.html?legume=tomate#calculateur`. Chaque bloc de résultat renvoie vers le guide qui l'explique ; sur mobile, une barre fixe rappelle la puissance et le nombre de barres pendant la saisie.
+Le calculateur accepte un légume présélectionné dans l'adresse : `index.html?legume=tomate#calculateur`. Tous les réglages différents des valeurs par défaut sont reflétés dans l'adresse (`?l=tomate&s=floraison&n=3…`, voir `src/etat.ts`) : le bouton **Partager** envoie ce lien, et les derniers réglages sont mémorisés sur l'appareil du visiteur. Chaque bloc de résultat renvoie vers le guide qui l'explique ; sur mobile, une barre fixe rappelle la puissance et le nombre de barres pendant la saisie.
 
 ## Voir le site en ligne
 
@@ -27,6 +27,7 @@ npm run dev      # serveur de développement
 npm test         # tests unitaires (Vitest)
 npm run build    # vérification TypeScript + site statique dans dist/
 npm run preview  # prévisualise le contenu de dist/
+npm run test:e2e # test de bout en bout dans Chromium (après npm run build)
 ```
 
 Node.js 20 ou plus récent est requis.
@@ -148,6 +149,19 @@ kWh/an   = kWh/jour × jours_par_an       (365 par défaut)
 La consommation est calculée sur la puissance nécessaire (barres gradées à la valeur cible), pas sur la puissance maximale installée.
 
 **Liste d'achat** : les puissances affichées pour les barres, l'alimentation et le programmateur sont arrondies au multiple de 5 W supérieur ; l'alimentation et le programmateur prévoient 10 % de marge.
+
+## Référencement, hors ligne, audience
+
+- Chaque page reçoit une adresse canonique, des balises de partage (Open Graph : image `public/images/partage/<page>.jpg`, 1200 × 630) et, pour l'accueil et les guides, des données structurées schema.org (`build/site.ts`, fonction `referencement`).
+- Le site est installable et consultable hors ligne (`public/manifest.webmanifest`, `public/sw.js`) ; changez `VERSION` dans `sw.js` pour forcer le renouvellement du cache.
+- Mesure d'audience facultative et sans cookie (Plausible) : `PLAUSIBLE_DOMAIN=mon-domaine.fr npm run build`. Sans cette variable, aucun script de mesure n'est ajouté.
+- Mentions légales : `mentions-legales.html` — **complétez les champs entre crochets** (éditeur, contact).
+
+## Domaine personnalisé (IONOS + GitHub Pages)
+
+1. Dans IONOS, *Domaines & SSL* → votre domaine → *DNS* : ajoutez un enregistrement **CNAME** `www` → `teiki5320.github.io` (et, pour le domaine nu, les 4 enregistrements **A** vers 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153).
+2. Dans GitHub, *Settings* → *Pages* → *Custom domain* : saisissez `www.votre-domaine.fr`, puis cochez *Enforce HTTPS* une fois le certificat émis.
+3. Dans `.github/workflows/pages.yml`, passez l'adresse au build : `SITE_URL=https://www.votre-domaine.fr/ npm run build` (pour que sitemap, balises de partage et adresses canoniques soient justes).
 
 ## Déploiement sur IONOS (SFTP)
 

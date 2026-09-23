@@ -1,0 +1,60 @@
+// Test de bout en bout : lance le site construit (vite preview) et le pilote dans Chromium.
+// Usage : npm run build && npm run test:e2e
+// Vérifie que les pages s'affichent sans erreur et que le calculateur fonctionne.
+import { spawn } from 'node:child_process';
+import { chromium } from 'playwright';
+
+const PORT = 4179;
+const BASE = `http://localhost:${PORT}/`;
+const serveur = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], { stdio: 'ignore' });
+
+let echecs = 0;
+const verifier = (condition, message) => {
+  console.log(`${condition ? '✓' : '✗'} ${message}`);
+  if (!condition) echecs++;
+};
+
+try {
+  for (let i = 0; i < 40; i++) {
+    try {
+      if ((await fetch(BASE)).ok) break;
+    } catch {
+      /* serveur pas encore prêt */
+    }
+    await new Promise((r) => setTimeout(r, 250));
+  }
+
+  const navigateur = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
+  const page = await navigateur.newPage({ viewport: { width: 390, height: 844 } });
+  const erreurs = [];
+  page.on('pageerror', (e) => erreurs.push(e.message));
+
+  for (const p of ['index.html', 'led-bases.html', 'culture-climat.html', 'legumes.html', 'glossaire.html']) {
+    const rep = await page.goto(BASE + p, { waitUntil: 'networkidle' });
+    verifier(rep?.ok() && (await page.locator('h1').count()) > 0, `${p} s'affiche`);
+  }
+
+  await page.goto(BASE, { waitUntil: 'networkidle' });
+  const resultats = () => page.textContent('#contenu-resultats');
+  verifier(/PPFD cible\s*250/.test(await resultats()), 'calcul par défaut (laitue, 250 µmol/m²/s)');
+  await page.click('[data-legume="tomate"]');
+  verifier(/PPFD cible\s*350/.test(await resultats()), 'tuile tomate : 350 µmol/m²/s en croissance');
+  await page.click('label:has(input[value="floraison"])');
+  verifier(/PPFD cible\s*500/.test(await resultats()), 'tomate en fructification : 500 µmol/m²/s');
+  verifier(new URL(page.url()).searchParams.get('l') === 'tomate', "l'adresse reflète le calcul (partage par lien)");
+  await page.goto(`${BASE}?l=basilic&h=14`, { waitUntil: 'networkidle' });
+  verifier((await page.inputValue('#legume')) === 'basilic' && (await page.inputValue('#photoperiode')) === '14', 'un lien partagé restaure le calcul');
+  await page.fill('#photoperiode', '30');
+  verifier(!(await page.isHidden('#erreurs')), 'une saisie invalide affiche une erreur');
+
+  const scripts = await page.$$eval('script[src]', (els) => els.map((e) => e.src));
+  verifier(scripts.every((s) => s.startsWith(BASE)), 'aucun script externe chargé');
+  verifier(erreurs.length === 0, `aucune erreur JavaScript${erreurs.length ? ' : ' + erreurs.join(' | ') : ''}`);
+  await navigateur.close();
+} catch (e) {
+  console.error(e);
+  echecs++;
+} finally {
+  serveur.kill();
+}
+process.exit(echecs ? 1 : 0);

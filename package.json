@@ -11,10 +11,12 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "images": "node scripts/images.mjs",
-    "planche": "node scripts/decouper-planche.mjs"
+    "planche": "node scripts/decouper-planche.mjs",
+    "test:e2e": "node scripts/e2e.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.20.4",
+    "playwright": "^1.56.1",
     "sharp": "^0.35.4",
     "typescript": "^6.0.3",
     "vite": "^8.3.0",

@@ -40,6 +40,8 @@ describe('liens internes', () => {
         if (/^(https?:|mailto:|data:|\/src\/)/.test(href)) continue;
         const [chemin, ancre] = href.split('#');
         const cible = (chemin.split('?')[0] || page);
+        // Fichier statique (manifeste, icônes…) : il doit exister dans public/.
+        if (!cible.endsWith('.html') && existsSync(resolve(racine, 'public', cible))) continue;
         if (!pages.includes(cible)) {
           casses.push(href);
           continue;
