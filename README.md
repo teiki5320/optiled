@@ -6,6 +6,12 @@ Site web statique (Vite + TypeScript, sans backend), en français et pensé d'ab
 
 **Résultats** : PPFD cible, DLI, flux nécessaire (PPF), puissance électrique, nombre de barres et espacement, spectre, hauteur de suspension, consommation et coût annuels, et une liste d'achat. Deux boutons permettent de **copier** le résumé en texte brut ou de l'**imprimer** (feuille de style d'impression dédiée).
 
+## Voir le site en ligne
+
+Le site est publié automatiquement sur GitHub Pages à chaque envoi sur `main` : **https://teiki5320.github.io/optiled/**
+
+(À activer une fois : *Settings* → *Pages* → *Source* : **GitHub Actions**. Le suivi des publications est dans l'onglet *Actions*.)
+
 ## Démarrage
 
 ```bash
