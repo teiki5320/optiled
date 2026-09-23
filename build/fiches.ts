@@ -1,5 +1,5 @@
 /** Génère, au build, le HTML des fiches légumes à partir de src/data/legumes.json. */
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { calculerDli } from '../src/calc';
 import type { Legume, ParametresStade } from '../src/data';
@@ -42,10 +42,19 @@ const ICONES_FAMILLE: Record<string, NomIcone> = {
   aromatiques: 'herbe',
   'micro-pousses': 'graines',
   'legumes-fruits': 'fruit',
+  chanvre: 'feuille',
 };
 
 export function iconeFamille(famille: string): string {
   return icone(ICONES_FAMILLE[slug(famille)] ?? 'pousse');
+}
+
+const DOSSIER_MINIATURES = resolve(__dirname, '../public/images/legumes');
+
+/** Miniature photo du légume (public/images/legumes/<id>.webp), ou chaîne vide. */
+export function miniature(l: Legume): string {
+  if (!existsSync(resolve(DOSSIER_MINIATURES, `${l.id}.webp`))) return '';
+  return `<img class="fiche__miniature" src="images/legumes/${l.id}.webp" alt="" width="96" height="96" loading="lazy" decoding="async" />`;
 }
 
 function kpi(libelle: string, valeur: string, unite = ''): string {
@@ -61,15 +70,16 @@ export function rendreFiche(l: Legume): string {
   const dli = (p: ParametresStade) => calculerDli(p.ppfd.valeur, p.photoperiode.valeur).toFixed(1).replace('.', ',');
   return `<article class="fiche fiche--${slug(l.famille)}" id="${l.id}">
   <header class="fiche__tete">
-    <span class="fiche__icone">${iconeFamille(l.famille)}</span>
+    ${miniature(l) || `<span class="fiche__icone">${iconeFamille(l.famille)}</span>`}
     <div><h3>${echapper(l.nom)}</h3><p class="fiche__famille">${echapper(l.famille)}</p></div>
   </header>
   <div class="fiche__corps">
+    ${l.avertissement ? `<p class="encadre attention fiche__avertissement">${echapper(l.avertissement)}</p>` : ''}
     <p class="fiche__conseil">${echapper(c.conseils.valeur)}</p>
     <dl class="fiche__kpi">
       ${kpi('PPFD', ppfd, 'µmol/m²/s')}
       ${kpi('DLI', floraison ? `${dli(croissance)} → ${dli(floraison)}` : dli(croissance), 'mol/m²/j')}
-      ${kpi('Lumière', nb(croissance.photoperiode.valeur), 'h/jour')}
+      ${kpi('Lumière', floraison && floraison.photoperiode.valeur !== croissance.photoperiode.valeur ? `${nb(croissance.photoperiode.valeur)} → ${nb(floraison.photoperiode.valeur)}` : nb(croissance.photoperiode.valeur), 'h/jour')}
       ${kpi('Température', plage(c.temperature_c.valeur), '°C')}
       ${kpi('pH', plage(c.ph.valeur))}
       ${kpi('EC', plage(c.ec_ms_cm.valeur), 'mS/cm')}

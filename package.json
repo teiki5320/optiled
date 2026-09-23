@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "images": "node scripts/images.mjs"
+    "images": "node scripts/images.mjs",
+    "planche": "node scripts/decouper-planche.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.20.4",

@@ -61,7 +61,7 @@ function remplirTuiles(): void {
     for (const l of liste) {
       html.push(
         `<button type="button" class="tuile-legume tuile-legume--${slug(famille)}" data-legume="${l.id}" aria-pressed="false">` +
-          `<span class="tuile-legume__pastille" aria-hidden="true"></span>${echapper(l.nom.replace(/\s*\(.*\)$/, ''))}</button>`,
+          `<span class="tuile-legume__pastille" aria-hidden="true"><img src="images/legumes/${l.id}.webp" alt="" width="96" height="96" loading="lazy" decoding="async" onerror="this.remove()" /></span>${echapper(l.nom.replace(/\s*\(.*\)$/, ''))}</button>`,
       );
     }
   }
@@ -110,6 +110,9 @@ function appliquerLegume(): void {
     aide.textContent = `${legume.nom} se récolte avant floraison : seul le stade croissance s'applique.`;
   }
   aide.hidden = !sansFloraison;
+  const avertissement = $<HTMLElement>('legume-avertissement');
+  avertissement.textContent = legume.avertissement ?? '';
+  avertissement.hidden = !legume.avertissement;
   majTuiles();
   appliquerStade();
 }

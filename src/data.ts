@@ -40,6 +40,8 @@ export interface Legume {
   id: string;
   nom: string;
   famille: string;
+  /** Mise en garde affichée dans le calculateur et la fiche (réglementation…) */
+  avertissement?: string;
   stades: {
     croissance: ParametresStade;
     floraison: ParametresStade | null;

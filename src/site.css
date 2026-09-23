@@ -603,3 +603,7 @@ img, svg { max-width: 100%; }
 .schema { margin: 1.6rem 0; }
 .schema img { display: block; width: 100%; height: auto; border-radius: var(--rayon); box-shadow: var(--ombre); }
 .schema figcaption { margin-top: 0.55rem; font-size: 0.88rem; color: var(--attenue); line-height: 1.5; }
+
+.fiche--chanvre, .fiches-famille--chanvre { --famille: #9fd48a; }
+.fiche__avertissement { margin: 0; font-size: 0.88rem; }
+.fiche__miniature { width: 3.4rem; height: 3.4rem; border-radius: 50%; object-fit: cover; flex: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--famille) 55%, transparent); }

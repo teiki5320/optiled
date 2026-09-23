@@ -19,7 +19,10 @@
     "pratique": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)",
     "resh": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives",
     "semenciers": "Catalogues semenciers (ordre de grandeur, varie selon la variété)",
-    "maraichage": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+    "maraichage": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)",
+    "rodriguez": "Rodriguez-Morrison, Llewellyn & Zheng (2021), Frontiers in Plant Science 12 – rendement du cannabis selon l'intensité lumineuse en intérieur",
+    "chandra": "Chandra et al. (2008), Physiology and Molecular Biology of Plants 14 – photosynthèse de Cannabis sativa selon PPFD, température et CO2",
+    "reglementation": "Arrêté du 30 décembre 2021 (France) relatif à la culture du chanvre"
   },
   "legumes": [
     {
@@ -1213,6 +1216,104 @@
         },
         "conseils": {
           "valeur": "Besoin de chaleur et de lumière intense ; secouez les fleurs pour les polliniser. Tuteurez.",
+          "source": "Pratique culturale courante"
+        }
+      }
+    },
+    {
+      "id": "chanvre-cbd",
+      "nom": "Chanvre CBD",
+      "famille": "Chanvre",
+      "avertissement": "En France, la culture du chanvre est réservée aux exploitants agricoles, avec des variétés autorisées (THC ≤ 0,3 %) : un particulier ne peut pas en cultiver. Vérifiez la réglementation de votre pays avant toute culture.",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 500,
+            "source": "Chandra et al. (2008), Physiology and Molecular Biology of Plants 14 – photosynthèse de Cannabis sativa selon PPFD, température et CO2 ; Rodriguez-Morrison, Llewellyn & Zheng (2021), Frontiers in Plant Science 12 – rendement du cannabis selon l'intensité lumineuse en intérieur (ordre de grandeur prudent)"
+          },
+          "photoperiode": {
+            "valeur": 18,
+            "source": "Pratique courante : jours longs (18 h) pour maintenir la croissance végétative des variétés photopériodiques"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              30,
+              45
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": {
+          "ppfd": {
+            "valeur": 800,
+            "source": "Rodriguez-Morrison, Llewellyn & Zheng (2021), Frontiers in Plant Science 12 – rendement du cannabis selon l'intensité lumineuse en intérieur (le rendement augmente encore au-delà ; 800 est un compromis courant sans CO2 ajouté)"
+          },
+          "photoperiode": {
+            "valeur": 12,
+            "source": "Plante de jours courts : 12 h de lumière et 12 h d'obscurité complète déclenchent la floraison"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              35,
+              60
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        }
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            22,
+            28
+          ],
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            45,
+            65
+          ],
+          "source": "Pratique courante : humidité plus basse en floraison (≈ 45–50 %) pour limiter le botrytis"
+        },
+        "ph": {
+          "valeur": [
+            5.8,
+            6.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1.2,
+            2.2
+          ],
+          "source": "Ordre de grandeur courant en hydroponie et en coco ; à adapter selon la variété et le stade"
+        },
+        "jours_recolte": {
+          "valeur": [
+            90,
+            130
+          ],
+          "source": "Ordre de grandeur pour une variété photopériodique, du semis à la récolte ; varie selon la durée de croissance choisie"
+        },
+        "espacement_cm": {
+          "valeur": [
+            40,
+            60
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Réduisez la photopériode à 12 h pour déclencher la floraison, avec une obscurité totale la nuit (la moindre fuite de lumière perturbe la plante). Surveillez l'humidité en fin de floraison.",
           "source": "Pratique culturale courante"
         }
       }

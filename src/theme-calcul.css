@@ -66,7 +66,10 @@
   transition: transform 0.15s, background 0.15s;
 }
 .tuile-legume:hover { transform: translateY(-2px); background: rgb(255 255 255 / 0.09); }
-.tuile-legume__pastille { width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--famille); opacity: 0.85; }
+.tuile-legume__pastille { width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--famille); opacity: 0.85; overflow: hidden; }
+/* Miniature photo du légume (la couleur de famille reste visible si l'image manque) */
+.tuile-legume__pastille:has(img) { width: 3.2rem; height: 3.2rem; opacity: 1; background: #2a1d33; }
+.tuile-legume__pastille img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .tuile-legume[aria-pressed='true'] {
   background: var(--degrade); color: #2a1422; font-weight: 700; border-color: transparent;
   box-shadow: 0 8px 20px -6px rgb(233 118 90 / 0.7);
@@ -75,6 +78,7 @@
 .tuile-legume--aromatiques { --famille: #8fcfc3; }
 .tuile-legume--micro-pousses { --famille: #cfe58a; }
 .tuile-legume--legumes-fruits { --famille: #f4a08e; }
+.tuile-legume--chanvre { --famille: #9fd48a; }
 
 .segments { background: rgb(255 255 255 / 0.06); border: 0; border-radius: 999px; padding: 0.25rem; }
 .segments label { border-radius: 999px; color: var(--nuit-attenue); }
@@ -166,4 +170,11 @@ input[type='text']:focus, select:focus { background: rgb(255 255 255 / 0.1); bor
   .synthese__texte p, .synthese__texte .synthese__titre { color: #000; }
   .anneau > div { background: #fff; }
   .anneau span { color: #444; }
+}
+
+/* Mise en garde réglementaire (ex. chanvre CBD) */
+.avertissement-legume {
+  margin: 0.8rem 0 0; padding: 0.7rem 0.9rem; border-radius: var(--rayon-petit);
+  background: var(--alerte-clair); color: var(--texte); font-size: 0.85rem; line-height: 1.45;
+  border: 1px solid color-mix(in srgb, var(--alerte) 35%, transparent);
 }
