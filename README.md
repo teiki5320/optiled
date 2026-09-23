@@ -165,7 +165,7 @@ La consommation est calculée sur la puissance nécessaire (barres gradées à l
 
 ## Déploiement sur IONOS (SFTP)
 
-Le site est entièrement statique : il suffit d'envoyer le contenu du dossier `dist/`. Construisez-le avec l'adresse de votre domaine pour que le `sitemap.xml` soit juste : `SITE_URL=https://mon-domaine.fr/ npm run build`. Comme `vite.config.ts` utilise `base: './'`, les chemins sont relatifs et le site fonctionne à la racine d'un domaine comme dans un sous-dossier.
+Le site est entièrement statique : il suffit d'envoyer le contenu du dossier `dist/`. **Important : construisez-le avec `SITE_URL=https://votre-domaine.fr/`**, sinon la page 404, le sitemap et les balises de partage pointeront vers l'adresse GitHub Pages. Construisez-le avec l'adresse de votre domaine pour que le `sitemap.xml` soit juste : `SITE_URL=https://mon-domaine.fr/ npm run build`. Comme `vite.config.ts` utilise `base: './'`, les chemins sont relatifs et le site fonctionne à la racine d'un domaine comme dans un sous-dossier.
 
 1. **Construire le site**
    ```bash

@@ -65,12 +65,14 @@ export function planBarres(surface: Surface, b: ResultatBarres, longueurBarreM: 
 </svg>`;
 }
 
-/** Repères de DLI par type de culture (ordres de grandeur, voir le guide LED). */
+/** Repères de DLI par type de culture (ordres de grandeur, identiques au guide « Les bases »). */
 export const REPERES_DLI = [
-  { libelle: 'Micro-pousses', min: 6, max: 12 },
-  { libelle: 'Feuilles', min: 12, max: 17 },
-  { libelle: 'Aromatiques', min: 12, max: 20 },
-  { libelle: 'Légumes fruits', min: 20, max: 30 },
+  { libelle: 'Micro-pousses', min: 6, max: 12, rangee: 0 },
+  { libelle: 'Feuilles', min: 12, max: 17, rangee: 1 },
+  { libelle: 'Aromatiques', min: 10, max: 18, rangee: 2 },
+  { libelle: 'Fraisier', min: 17, max: 25, rangee: 0 },
+  { libelle: 'Légumes fruits', min: 20, max: 30, rangee: 1 },
+  { libelle: 'Chanvre (floraison)', min: 30, max: 40, rangee: 2 },
 ];
 export const DLI_MAX_JAUGE = 40;
 
@@ -78,7 +80,7 @@ export const DLI_MAX_JAUGE = 40;
 export function jaugeDli(dli: number): string {
   const pct = (v: number) => `${Math.min(100, (v / DLI_MAX_JAUGE) * 100).toFixed(2)}%`;
   const reperes = REPERES_DLI.map(
-    (r, i) => `<span class="jauge__repere jauge__repere--${i}" style="left:${pct(r.min)};width:calc(${pct(r.max)} - ${pct(r.min)})" title="${r.libelle} : ${r.min}–${r.max} mol/m²/j"></span>`,
+    (r, i) => `<span class="jauge__repere jauge__repere--${i}" style="left:${pct(r.min)};width:calc(${pct(r.max)} - ${pct(r.min)});top:calc(${r.rangee} * 100% / 3);height:calc(100% / 3)" title="${r.libelle} : ${r.min}–${r.max} mol/m²/j"></span>`,
   ).join('');
   return `<div class="jauge" role="img" aria-label="DLI de ${nombre(dli, 1)} mol/m²/j sur une échelle de 0 à ${DLI_MAX_JAUGE}">
   <div class="jauge__piste">${reperes}<span class="jauge__curseur" style="left:${pct(dli)}"><b>${nombre(dli, 1)}</b></span></div>

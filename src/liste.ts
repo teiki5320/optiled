@@ -9,6 +9,12 @@ export interface ContexteListe {
   longueurBarreM: number;
   puissanceBarreW?: number;
   photoperiodeH: number;
+  /** Mise en garde réglementaire éventuelle (ex. chanvre) */
+  avertissement?: string;
+  /** Nombre de plants et espacement, si la culture se plante à espacement régulier */
+  plants?: { total: number; espacementCm: number };
+  /** Autres mises en garde du calculateur (photopériode, barres trop longues…) */
+  alertes?: string[];
 }
 
 export interface ArticleAchat {
@@ -76,6 +82,14 @@ export function resumeTexte(r: ResultatCalcul, c: ContexteListe): string {
     `Consommation : ${nombre(r.consoJourKwh, 2)} kWh/jour, ${nombre(r.consoAnKwh)} kWh/an`,
   ];
   if (r.coutAnEur !== null) lignes.push(`Coût électrique annuel : ${euros(r.coutAnEur)}`);
+  if (c.plants) {
+    lignes.push(
+      `Plants : ≈ ${c.plants.total} à ${c.plants.espacementCm} cm d'espacement, soit ${nombre(r.puissanceW / c.plants.total, 1)} W par plant` +
+        (r.coutAnEur !== null ? ` et ${euros(r.coutAnEur / c.plants.total)} par plant et par an` : ''),
+    );
+  }
+  for (const a of c.alertes ?? []) lignes.push(`Attention : ${a}`);
+  if (c.avertissement) lignes.push('', `Avertissement : ${c.avertissement}`);
   lignes.push('', "Liste d'achat :");
   for (const a of listeAchat(r, c)) lignes.push(`- ${a.quantite} × ${a.article} : ${a.detail}`);
   return lignes.join('\n');

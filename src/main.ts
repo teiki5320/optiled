@@ -1,16 +1,16 @@
 import './site';
 import './style.css';
 import './theme-calcul.css';
-import { calculer, verifierLampe, type EntreesCalcul, type ResultatCalcul, type Surface } from './calc';
+import { alertes } from './alertes';
+import { calculer, dimensionsZone, longueurBarreConseillee, nombrePlants, verifierLampe, type EntreesCalcul, type ResultatCalcul, type Surface } from './calc';
 import { depuisParams, PARAMETRES, versParams, type Etat } from './etat';
 import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data';
 import { euros, nombre } from './format';
-import { listeAchat, resumeTexte, type ContexteListe } from './liste';
+import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste';
 import { jaugeDli, planBarres } from './schema';
 
-const LONGUEUR_BARRE_DEFAUT_M = 1.2;
 /** DLI qui remplit entièrement l'anneau de synthèse (mol/m²/j). */
-const DLI_ANNEAU_MAX = 30;
+const DLI_ANNEAU_MAX = 40;
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const champ = (id: string) => $<HTMLInputElement>(id);
@@ -28,6 +28,12 @@ function echapper(s: string): string {
   return s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 }
 
+/** « Fraise (remontante) » → « fraise » ; « Chanvre CBD » → « chanvre CBD ». */
+function nomCourt(nom: string): string {
+  const n = nom.replace(/\s*\(.*\)$/, '');
+  return n.charAt(0).toLowerCase() + n.slice(1);
+}
+
 /** « Légumes feuilles » → « legumes-feuilles » (même convention que les fiches). */
 function slug(s: string): string {
   return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -35,7 +41,10 @@ function slug(s: string): string {
 
 /** Lit un champ numérique ; undefined s'il est vide. Accepte la virgule décimale. */
 function lireNombre(id: string): number | undefined {
-  const brut = champ(id).value.trim().replace(/\s/g, '').replace(',', '.');
+  let brut = champ(id).value.trim().replace(/[\u00a0\u202f]/g, ' ');
+  // Les espaces ne sont admises que comme séparateurs de milliers (« 1 200 ») : « 1 5 » est refusé.
+  if (/^\d{1,3}( \d{3})+([.,]\d+)?$/.test(brut)) brut = brut.replace(/ /g, '');
+  brut = brut.replace(',', '.');
   return brut === '' ? undefined : Number(brut);
 }
 
@@ -60,7 +69,7 @@ const APPRECIATIONS = {
   faible: "faible : une LED récente fait mieux, la facture sera plus élevée",
   correcte: 'correcte',
   bonne: 'bonne',
-  douteuse: 'douteuse : au-delà de 3,5 µmol/J, le PPF annoncé est probablement surestimé',
+  douteuse: 'à vérifier : au-delà de 3,2 µmol/J, le PPF annoncé est probablement surestimé',
 } as const;
 
 /** Bloc « Votre lampe » si le PPF et la puissance d'une lampe du commerce sont saisis. */
@@ -100,7 +109,23 @@ function remplirTuiles(): void {
 
 function majTuiles(): void {
   tuilesLegumes.querySelectorAll<HTMLButtonElement>('[data-legume]').forEach((b) => {
-    b.setAttribute('aria-pressed', String(b.dataset.legume === selectLegume.value));
+    const choisi = b.dataset.legume === selectLegume.value;
+    b.setAttribute('aria-pressed', String(choisi));
+    // Une seule tuile atteignable par Tab ; les flèches parcourent les autres.
+    b.tabIndex = choisi ? 0 : -1;
+  });
+}
+
+/** Flèches, Début et Fin pour parcourir les tuiles de légumes au clavier. */
+function navigationTuiles(): void {
+  tuilesLegumes.addEventListener('keydown', (e) => {
+    const tuiles = [...tuilesLegumes.querySelectorAll<HTMLButtonElement>('[data-legume]')];
+    const i = tuiles.indexOf(document.activeElement as HTMLButtonElement);
+    if (i < 0) return;
+    const cible = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: tuiles.length - 1 }[e.key];
+    if (cible === undefined) return;
+    e.preventDefault();
+    tuiles[(cible + tuiles.length) % tuiles.length].focus();
   });
 }
 
@@ -130,14 +155,35 @@ function appliquerLegume(): void {
   radioFloraison.disabled = sansFloraison;
   if (sansFloraison) {
     (form.querySelector('input[value="croissance"]') as HTMLInputElement).checked = true;
-    aide.textContent = `${legume.nom} se récolte avant floraison : seul le stade croissance s'applique.`;
+    const pluriel = /s$/.test(legume.nom.replace(/\s*\(.*\)$/, ''));
+    aide.textContent = `${legume.nom.replace(/\s*\(.*\)$/, '')} se récolte${pluriel ? 'nt' : ''} avant floraison : seul le stade croissance s'applique.`;
   }
   aide.hidden = !sansFloraison;
   const avertissement = $<HTMLElement>('legume-avertissement');
   avertissement.textContent = legume.avertissement ?? '';
   avertissement.hidden = !legume.avertissement;
   majTuiles();
+  appliquerEspacement(legume);
   appliquerStade();
+}
+
+/** Pré-remplit l'espacement conseillé (milieu de la plage de la fiche, arrondi à 5 cm). */
+function appliquerEspacement(legume = legumeCourant()): void {
+  const e = legume.culture.espacement_cm.valeur;
+  const input = champ('espacement');
+  input.disabled = e === null;
+  input.value = e === null ? '' : String(espacementConseille(legume));
+  input.placeholder = e === null ? 'semis dense' : '';
+  form.querySelectorAll<HTMLButtonElement>('[data-cible="espacement"]').forEach((b) => (b.disabled = e === null));
+  $('espacement-aide').textContent =
+    e === null
+      ? `${nomCourt(legume.nom)} se sème à la volée : pas d'espacement entre plants.`
+      : `Conseillé : ${e[0]} à ${e[1]} cm. Sert à compter les plants ; la lumière, elle, se calcule par m² de culture.`;
+}
+
+function espacementConseille(legume = legumeCourant()): number {
+  const e = legume.culture.espacement_cm.valeur;
+  return e === null ? 0 : Math.round((e[0] + e[1]) / 2 / 5) * 5;
 }
 
 function appliquerStade(): void {
@@ -182,13 +228,13 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources
     (b.zones > 1 ? ` au-dessus de chacun des ${b.zones} rangs` : '');
   const puissanceBarre = ctx.puissanceBarreW
     ? `Barres de ${nombre(ctx.puissanceBarreW)} W : ${nombre(b.puissanceInstalleeW)} W installés, à régler à ~${nombre(b.tauxGradation * 100)} %.`
-    : `Chaque barre doit fournir au moins ${nombre(b.puissanceParBarreNecessaireW)} W.`;
+    : `Chaque barre doit fournir au moins ${nombre(arrondiPuissance(b.puissanceParBarreNecessaireW))} W (valeur exacte : ${nombre(b.puissanceParBarreNecessaireW, 1)} W).`;
   const parBarreCourt = ctx.puissanceBarreW
     ? `${nombre(ctx.puissanceBarreW)} W chacune, réglées à ~${nombre(b.tauxGradation * 100)} %`
-    : `≥ ${nombre(b.puissanceParBarreNecessaireW)} W chacune`;
+    : `≥ ${nombre(arrondiPuissance(b.puissanceParBarreNecessaireW))} W chacune`;
   const cout = r.coutAnEur === null
     ? tuile('Coût annuel', '—', '', 'Indiquez le prix du kWh dans les options')
-    : tuile('Coût annuel', euros(r.coutAnEur), '', `${nombre(r.coutAnEur / 12, 2)} € / mois`);
+    : tuile('Coût annuel', euros(r.coutAnEur), '', `${nombre(r.coutAnEur / 12, 2)} € / mois${ctx.plants ? ` · ${euros(r.coutAnEur / ctx.plants.total)} / plant` : ''}`);
   const degres = Math.min(360, (r.dli / DLI_ANNEAU_MAX) * 360).toFixed(1);
 
   const achats = listeAchat(r, ctx)
@@ -197,7 +243,8 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources
 
   return `
     ${legumeCourant().avertissement ? `<p class="avertissement-legume" role="note">${echapper(legumeCourant().avertissement!)}</p>` : ''}
-    <p class="sous-titre">${echapper(ctx.legume)} · ${echapper(ctx.stade)} · ${nombre(r.surfaceM2, 2)} m² · <a href="legumes.html#${selectLegume.value}">fiche ${echapper(ctx.legume.toLowerCase())}</a></p>
+    ${(ctx.alertes ?? []).map((a) => `<p class="alerte-calcul" role="note">${echapper(a)}</p>`).join('')}
+    <p class="sous-titre">${echapper(ctx.legume)} · ${echapper(ctx.stade)} · ${nombre(r.surfaceM2, 2)} m² · <a href="legumes.html#${selectLegume.value}">fiche ${echapper(nomCourt(ctx.legume))}</a></p>
     <div class="synthese">
       <div class="anneau" style="--deg:${degres}deg" role="img" aria-label="${nombre(r.puissanceW)} W ; DLI ${nombre(r.dli, 1)} mol/m²/j"><div><strong>${nombre(r.puissanceW)}</strong><span>watts</span></div></div>
       <div class="synthese__texte">
@@ -211,6 +258,7 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources
       ${tuile('DLI', nombre(r.dli, 1), 'mol/m²/j', `${nombre(ctx.photoperiodeH)} h/jour`)}
       ${tuile('Flux nécessaire (PPF)', nombre(r.ppfNecessaire), 'µmol/s', `dont ${nombre(r.ppfUtile)} utiles`)}
       ${tuile('Puissance électrique', nombre(r.puissanceW), 'W', `${nombre(r.densitePuissanceWm2)} W/m²`)}
+      ${ctx.plants ? tuile('Plants', `≈ ${ctx.plants.total}`, '', `à ${ctx.plants.espacementCm} cm · ${nombre(r.puissanceW / ctx.plants.total, 1)} W/plant`) : ''}
     </div>
     ${jaugeDli(r.dli)}
     <p class="source">Source PPFD : ${echapper(sources.ppfd)}</p>
@@ -243,12 +291,16 @@ function mettreAJour(): void {
   const legume = trouverLegume(selectLegume.value)!;
   const stade = radio('stade') as Stade;
   const p = parametresStade(legume, stade)!;
-  const longueurBarreM = lireNombre('longueur-barre') ?? LONGUEUR_BARRE_DEFAUT_M;
+  const surface = lireSurface();
+  const longueurZoneM = dimensionsZone(surface).longueurM;
+  // Sans longueur imposée : la plus grande barre du commerce qui tient dans l'installation.
+  const longueurBarreM = lireNombre('longueur-barre') ?? (longueurZoneM > 0 ? longueurBarreConseillee(longueurZoneM) : 1.2);
+  const espacementCm = champ('espacement').disabled ? undefined : lireNombre('espacement');
 
   const entrees: EntreesCalcul = {
     ppfd: p.ppfd.valeur,
     photoperiodeH: lireNombre('photoperiode') ?? NaN,
-    surface: lireSurface(),
+    surface,
     efficaciteUmolJ: lireNombre('efficacite') ?? NaN,
     coefUtilisation: lireNombre('coef') ?? NaN,
     hauteurCm: p.hauteur_cm.valeur,
@@ -260,6 +312,9 @@ function mettreAJour(): void {
 
   let r: ResultatCalcul;
   try {
+    if (espacementCm !== undefined && !(espacementCm >= 5 && espacementCm <= 300)) {
+      throw new RangeError("L'espacement entre plants doit être compris entre 5 et 300 cm.");
+    }
     r = calculer(entrees);
   } catch (e) {
     zoneErreurs.textContent = (e as Error).message;
@@ -280,7 +335,23 @@ function mettreAJour(): void {
     longueurBarreM,
     puissanceBarreW: entrees.puissanceBarreW,
     photoperiodeH: entrees.photoperiodeH,
+    avertissement: legume.avertissement,
   };
+  const plantation = espacementCm !== undefined ? nombrePlants(surface, espacementCm) : undefined;
+  if (plantation && espacementCm !== undefined) ctx.plants = { total: plantation.total, espacementCm };
+  ctx.alertes = alertes({
+    legumeId: legume.id,
+    nom: nomCourt(legume.nom),
+    stade,
+    photoperiodeH: entrees.photoperiodeH,
+    photoperiodeConseilleeH: p.photoperiode.valeur,
+    longueurBarreM,
+    longueurZoneM,
+    rangTropEtroit:
+      plantation?.rangTropEtroit && surface.mode === 'rangs'
+        ? { largeurCm: Math.round(surface.largeurRangM * 100), espacementCm: espacementCm! }
+        : undefined,
+  });
   contenu.innerHTML = rendre(r, ctx, entrees.surface, { ppfd: p.ppfd.source, hauteur: p.hauteur_cm.source, spectre: p.spectre.source });
   dernierResume = resumeTexte(r, ctx);
   majBarreResume(r);
@@ -345,7 +416,7 @@ function lireEtat(): Etat {
   for (const id of Object.keys(PARAMETRES)) {
     const el = document.getElementById(id);
     if (!(el instanceof HTMLInputElement) || el.type !== 'text' || CHAMPS_MODE[mode]?.includes(id)) continue;
-    const parDefaut = id === 'photoperiode' ? conseillee : el.defaultValue;
+    const parDefaut = id === 'photoperiode' ? conseillee : id === 'espacement' ? String(espacementConseille() || '') : el.defaultValue;
     if (el.value.trim() !== parDefaut) etat[id] = el.value;
   }
   return etat;
@@ -412,6 +483,7 @@ async function partager(): Promise<void> {
 
 remplirLegumes();
 remplirTuiles();
+navigationTuiles();
 boutonsPas();
 appliquerLegume();
 appliquerMode();

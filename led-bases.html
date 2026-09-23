@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="PAR, PPF, PPFD, DLI, efficacité en µmol/J et spectre : les notions indispensables pour éclairer correctement vos légumes en intérieur." />
-    <title>Les bases : PAR, PPFD, DLI, spectre — OptiLED</title>
+    <title>Les bases : PAR, PPFD, DLI et spectre — OptiLED</title>
     <!--#head-->
   </head>
   <body>
@@ -47,7 +47,7 @@
         <figure class="schema"><img src="images/schemas/ppf-ppfd.svg" alt="Schéma : la lampe émet un flux total (PPF) ; seule une partie arrive sur les feuilles, mesurée en PPFD" width="800" height="400" loading="lazy" decoding="async" /><figcaption>Le PPF décrit la lampe, le PPFD ce que reçoivent les plantes. La différence vient des pertes sur les bords et dans les allées.</figcaption></figure>
         <h3>PPFD : ce que reçoit réellement la plante</h3>
         <p>Le <a href="glossaire.html#ppfd">PPFD</a> (Photosynthetic Photon Flux Density) est la quantité de photons PAR qui arrive sur une surface donnée chaque seconde, en <strong>µmol/m²/s</strong>. C'est la valeur qui compte pour la plante. Elle dépend du PPF de la lampe, de la hauteur de suspension, de la surface éclairée, des parois et de la position (centre ou bord).</p>
-        <p>Ordre de grandeur utile : le plein soleil d'été culmine vers 2 000 µmol/m²/s, une journée couverte se situe souvent entre 100 et 400 µmol/m²/s, et l'intérieur d'une pièce près d'une fenêtre reste généralement bien en dessous de 100 µmol/m²/s.</p>
+        <p>Ordre de grandeur utile : le plein soleil d'été culmine vers 2 000 µmol/m²/s, une journée couverte se situe souvent entre 100 et 400 µmol/m²/s, et l'intérieur d'une pièce près d'une fenêtre reste généralement bien en dessous de 100 µmol/m²/s.</p>
         <h3>Relier les deux</h3>
         <p>Si la lumière était parfaitement répartie et sans perte, PPFD moyen = PPF / surface. En pratique, une partie des photons tombe à côté du plan de culture ou est absorbée par les parois. On applique donc un <a href="glossaire.html#coefficient-utilisation">coefficient d'utilisation</a>, d'environ 0,8 dans une tente à parois réfléchissantes, plus bas en espace ouvert.</p>
         <p class="formule">PPFD moyen ≈ PPF × coefficient d'utilisation / surface (m²)</p>
@@ -56,8 +56,8 @@
         <h2 id="dli">Le DLI : la dose de lumière quotidienne</h2>
         <p>Le PPFD est un débit instantané. Ce qui détermine la croissance, c'est la quantité totale reçue sur la journée : le <a href="glossaire.html#dli">DLI</a> (Daily Light Integral), en <strong>mol/m²/j</strong>. Faust et Logan (2018, HortScience) en proposent une synthèse de référence pour les cultures sous abri.</p>
         <figure class="schema"><img src="images/schemas/dli.svg" alt="Graphique : PPFD de 250 µmol/m²/s pendant 16 heures ; l'aire sous la courbe représente un DLI de 14,4 mol/m²/j" width="800" height="380" loading="lazy" decoding="async" /><figcaption>Le DLI est l'aire sous la courbe : la même dose peut s'obtenir avec plus d'intensité sur moins d'heures, ou l'inverse.</figcaption></figure>
-        <p class="formule">DLI = PPFD × heures × 3600 / 1 000 000</p>
-        <p>On multiplie par 3 600 pour passer des secondes aux heures, puis on divise par 1 000 000 pour passer des micromoles aux moles.</p>
+        <p class="formule">DLI = PPFD × heures × 3 600 / 1 000 000</p>
+        <p>On multiplie par 3 600 pour passer des secondes aux heures, puis on divise par 1 000 000 pour passer des micromoles aux moles.</p>
         <div class="tableau-defile">
           <table class="tableau">
             <thead><tr><th>Exemple</th><th>PPFD (µmol/m²/s)</th><th>Durée</th><th>DLI obtenu (mol/m²/j)</th></tr></thead>
@@ -65,17 +65,18 @@
               <tr><td>Micro-pousses</td><td>150</td><td>16 h</td><td>≈ 8,6</td></tr>
               <tr><td>Laitue</td><td>250</td><td>16 h</td><td>≈ 14,4</td></tr>
               <tr><td>Basilic</td><td>300</td><td>16 h</td><td>≈ 17,3</td></tr>
-              <tr><td>Tomate en fructification</td><td>500</td><td>14 h</td><td>≈ 25,2</td></tr>
+              <tr><td>Tomate en fructification</td><td>500</td><td>16 h</td><td>≈ 28,8</td></tr>
             </tbody>
           </table>
         </div>
-        <p>Le DLI montre qu'on peut obtenir la même dose de deux façons : un PPFD plus faible sur une durée plus longue, ou l'inverse. Allonger la durée avec une lampe modeste est souvent plus économique à l'achat. Mais chaque culture a une <a href="glossaire.html#photoperiode">photopériode</a> qui lui convient.</p>
+        <p>Allonger la durée d'éclairage avec une lampe modeste est souvent plus économique à l'achat, mais chaque culture a une <a href="glossaire.html#photoperiode">photopériode</a> qui lui convient.</p>
         <h3>La photopériode</h3>
-        <p>La photopériode est la durée d'éclairage quotidienne. Pour les légumes cultivés en intérieur, on travaille le plus souvent entre 12 et 16 h. Quelques repères :</p>
+        <p>La photopériode est la durée d'éclairage quotidienne. Pour les légumes cultivés en intérieur, on travaille le plus souvent entre 12 et 16 h. Seule exception sur ce site, le chanvre (18 h en croissance, puis 12 h en floraison). Quelques repères :</p>
         <ul>
-          <li>Salades, aromatiques, micro-pousses : 14 à 16 h sont courantes. Attention, les jours longs favorisent la <a href="glossaire.html#montaison">montaison</a> de certaines salades et de la coriandre.</li>
+          <li>Salades, aromatiques, micro-pousses : 14 à 16 h sont courantes. Attention, les jours longs favorisent la <a href="glossaire.html#montaison">montaison</a> de certaines salades et de la coriandre : l'épinard et la coriandre sont donc conduits volontairement en jours plus courts (12 h).</li>
           <li>Tomate : ne dépassez pas environ 18 h. Un éclairage continu (24 h/24) provoque chez la tomate des marbrures et des chloroses sur les feuilles.</li>
           <li>Fraisier : la réponse dépend du type de variété. Les variétés non remontantes sont des plantes de jours courts, les remontantes répondent plutôt aux jours longs, et les variétés à jours neutres fleurissent quelle que soit la durée du jour. Suivez la fiche de la variété.</li>
+          <li>Chanvre : plante de jours courts. Comptez 18 h en croissance, puis 12 h d'éclairage et 12 h d'obscurité complète pour la floraison.</li>
         </ul>
 
         <div class="encadre"><p><strong>À retenir :</strong> visez un DLI, pas seulement un PPFD. Le <a href="index.html#calculateur">calculateur d'éclairage</a> fait le calcul pour vous à partir de la culture, de la surface et de la durée.</p></div>
@@ -84,18 +85,19 @@
         <p>Les valeurs ci-dessous sont des ordres de grandeur pour une culture en intérieur sans lumière naturelle. Elles correspondent aux valeurs par défaut du calculateur. Une variété, un stade ou une température différents peuvent justifier des écarts.</p>
         <div class="tableau-defile">
           <table class="tableau">
-            <thead><tr><th>Type de culture</th><th>PPFD indicatif (µmol/m²/s)</th><th>Photopériode</th><th>DLI visé (mol/m²/j)</th></tr></thead>
+            <thead><tr><th>Type de culture</th><th>PPFD indicatif (µmol/m²/s)</th><th>Photopériode</th><th>DLI obtenu (mol/m²/j)</th><th>Repère de DLI (mol/m²/j)</th></tr></thead>
             <tbody>
-              <tr><td>Micro-pousses</td><td>≈ 150</td><td>14–16 h</td><td>≈ 7–9</td></tr>
-              <tr><td>Légumes feuilles (<a href="legumes.html#laitue">laitue</a>, épinard, roquette)</td><td>250–280</td><td>12–16 h</td><td>≈ 12–16</td></tr>
-              <tr><td>Aromatiques (basilic, persil, ciboulette)</td><td>250–300</td><td>12–16 h</td><td>≈ 12–17</td></tr>
-              <tr><td>Fraisier</td><td>250 (croissance) / 400 (fructification)</td><td>12–16 h</td><td>≈ 12–20</td></tr>
-              <tr><td>Légumes fruits (<a href="legumes.html#tomate">tomate</a>, poivron, piment, aubergine)</td><td>350 (croissance) / 500 (fructification)</td><td>12–16 h (max ≈ 18 h pour la tomate)</td><td>≈ 18–28</td></tr>
-              <tr><td>Concombre</td><td>300 / 450</td><td>12–16 h</td><td>≈ 15–25</td></tr>
+              <tr><td>Micro-pousses</td><td>≈ 150</td><td>16 h</td><td>≈ 8,6</td><td>6–12</td></tr>
+              <tr><td>Légumes feuilles (<a href="legumes.html#laitue">laitue</a>, épinard, roquette)</td><td>250–280</td><td>16 h (laitue), 14 h (roquette), 12 h (épinard)</td><td>≈ 12,1–14,4</td><td>12–17</td></tr>
+              <tr><td>Aromatiques (basilic, persil, ciboulette, coriandre)</td><td>250–300</td><td>16 h (basilic, ciboulette), 14 h (persil), 12 h (coriandre)</td><td>≈ 10,8–17,3</td><td>10–18</td></tr>
+              <tr><td>Fraisier</td><td>250 (croissance) / 400 (fructification)</td><td>16 h</td><td>≈ 14,4 / 23,0</td><td>17–25 (fructification)</td></tr>
+              <tr><td>Légumes fruits (<a href="legumes.html#tomate">tomate</a>, poivron, piment, aubergine)</td><td>350 (croissance) / 500 (fructification)</td><td>16 h (piment : 14 h en fructification ; max ≈ 18 h pour la tomate)</td><td>≈ 20,2 / 25,2–28,8</td><td>20–30</td></tr>
+              <tr><td>Concombre</td><td>300 (croissance) / 450 (fructification)</td><td>16 h</td><td>≈ 17,3 / 25,9</td><td>20–30</td></tr>
+              <tr><td>Chanvre</td><td>500 (croissance) / 800 (floraison)</td><td>18 h puis 12 h</td><td>≈ 32,4 / 34,6</td><td>30–40 (floraison)</td></tr>
             </tbody>
           </table>
         </div>
-        <p>Pour l'épinard et la coriandre, restez dans le bas de la fourchette (12 à 14 h environ) : des jours plus courts limitent la <a href="glossaire.html#montaison">montaison</a>.</p>
+        <p>L'épinard et la coriandre sont volontairement conduits en jours plus courts (12 h, soit un DLI d'environ 12,1 pour l'épinard et 10,8 pour la coriandre) : des jours plus courts limitent la <a href="glossaire.html#montaison">montaison</a>. Le chanvre fait exception à la règle des 12 à 16 h : 18 h en croissance, puis 12 h pour déclencher la floraison.</p>
         <p>Les légumes fruits sont de loin les plus exigeants. Un DLI trop faible ne les tue pas mais donne peu de fleurs, des fruits petits et peu nombreux. Pour les salades et les aromatiques, un DLI modeste suffit déjà à une récolte correcte.</p>
 
         <h2 id="efficacite">L'efficacité en µmol/J et votre facture</h2>
@@ -106,9 +108,10 @@
             <thead><tr><th>Type d'éclairage</th><th>Efficacité typique (ordre de grandeur)</th></tr></thead>
             <tbody>
               <tr><td>Ancienne lampe au sodium haute pression (HPS)</td><td>≈ 1,5–2,1 µmol/J</td></tr>
-              <tr><td>LED horticole bas de gamme</td><td>≈ 1,5–2,2 µmol/J</td></tr>
-              <tr><td>LED horticole de bonne qualité</td><td>≈ 2,5–3 µmol/J</td></tr>
-              <tr><td>LED haut de gamme récente</td><td>au-delà de 3 µmol/J</td></tr>
+              <tr><td>LED horticole bas de gamme</td><td>moins de 2,0 µmol/J (efficacité faible)</td></tr>
+              <tr><td>LED horticole correcte</td><td>2,0–2,5 µmol/J</td></tr>
+              <tr><td>LED horticole de bonne qualité</td><td>2,5–3,2 µmol/J</td></tr>
+              <tr><td>Annonce au-delà de 3,2 µmol/J</td><td>chiffre à vérifier : probablement surestimé pour un produit grand public</td></tr>
             </tbody>
           </table>
         </div>
@@ -145,18 +148,18 @@
         <h3>Température de couleur en kelvins</h3>
         <p>Les LED blanches sont des diodes bleues recouvertes d'un luminophore qui convertit une partie du bleu en vert, jaune et rouge. Leur teinte s'exprime en <a href="glossaire.html#kelvin">kelvins</a> (K) :</p>
         <ul>
-          <li>2 700–3 500 K (blanc chaud) : plus de rouge, un peu moins de bleu ;</li>
-          <li>4 000–5 000 K (blanc neutre) : plus de bleu, lumière plus froide ;</li>
-          <li>au-delà de 5 000 K (blanc froid) : encore plus de bleu.</li>
+          <li>2 700–3 500 K (blanc chaud) : plus de rouge, un peu moins de bleu ;</li>
+          <li>4 000–5 000 K (blanc neutre) : plus de bleu, lumière plus froide ;</li>
+          <li>au-delà de 5 000 K (blanc froid) : encore plus de bleu.</li>
         </ul>
-        <p>Beaucoup de lampes horticoles mélangent du 3 000 K et du 4 000 K, souvent avec quelques diodes rouges (autour de 660 nm) pour renforcer l'efficacité et la part de rouge.</p>
+        <p>Beaucoup de lampes horticoles mélangent du 3 000 K et du 4 000 K, souvent avec quelques diodes rouges (autour de 660 nm) pour renforcer l'efficacité et la part de rouge.</p>
         <h3>L'IRC</h3>
         <p>L'<a href="glossaire.html#irc">IRC</a> (indice de rendu des couleurs) indique la fidélité des couleurs perçues par l'œil, sur 100. Il ne mesure pas l'intérêt pour la plante. Un IRC de 80 ou plus reste appréciable : vous verrez plus facilement une feuille qui jaunit, une tache ou un insecte. Les LED à IRC très élevé (90 et plus) sont souvent un peu moins efficaces.</p>
         <h3>Pourquoi le blanc plein spectre est un bon choix par défaut</h3>
         <ul>
           <li>Il couvre tout le PAR, avec du bleu, du vert et du rouge : les plantes se développent normalement.</li>
           <li>Les LED blanches récentes atteignent de très bonnes efficacités, comparables aux lampes rouge-bleu.</li>
-          <li>La lumière est confortable pour travailler et permet de diagnostiquer l'état des plantes, contrairement à la lumière violette des lampes « blurple ».</li>
+          <li>La lumière est confortable pour travailler et permet de diagnostiquer l'état des plantes, contrairement à la lumière rose-violet (bleu + rouge) des lampes qui n'associent que des diodes bleues et rouges.</li>
           <li>Il convient à toutes les cultures de ce site, des micro-pousses à la tomate, en jouant seulement sur l'intensité et la durée.</li>
         </ul>
 

@@ -43,3 +43,12 @@ describe('liste d’achat', () => {
     expect(texte).toMatch(/Coût électrique annuel : 97,33/);
   });
 });
+
+describe('résumé : plants, alertes et avertissement', () => {
+  it('ajoute le nombre de plants, les alertes et l’avertissement', () => {
+    const texte = resumeTexte(calculer(entrees), { ...ctx, plants: { total: 18, espacementCm: 20 }, alertes: ['Trop long.'], avertissement: 'Réglementé.' });
+    expect(texte).toContain('Plants : ≈ 18 à 20 cm');
+    expect(texte).toContain('Attention : Trop long.');
+    expect(texte).toContain('Avertissement : Réglementé.');
+  });
+});

@@ -7,6 +7,8 @@ import {
   repartirBarres,
   validerEntrees,
   verifierLampe,
+  longueurBarreConseillee,
+  nombrePlants,
   type EntreesCalcul,
 } from './calc';
 
@@ -190,5 +192,28 @@ describe('verifierLampe', () => {
     expect(verifierLampe({ ...base, ppfLampe: 400, puissanceLampeW: 100 }).appreciation).toBe('douteuse');
     expect(verifierLampe({ ...base, ppfLampe: 150, puissanceLampeW: 100 }).appreciation).toBe('faible');
     expect(verifierLampe({ ...base, ppfLampe: 220, puissanceLampeW: 100 }).appreciation).toBe('correcte');
+  });
+});
+
+describe('longueurBarreConseillee', () => {
+  it('plus grande longueur du commerce qui tient dans la zone', () => {
+    expect(longueurBarreConseillee(2.4)).toBe(1.2);
+    expect(longueurBarreConseillee(1.2)).toBe(1.2);
+    expect(longueurBarreConseillee(1)).toBe(0.9);
+    expect(longueurBarreConseillee(0.6)).toBe(0.6);
+    expect(longueurBarreConseillee(0.45)).toBe(0.3);
+    expect(longueurBarreConseillee(0.2)).toBe(0.3);
+  });
+});
+
+describe('nombrePlants', () => {
+  it('quadrillage régulier', () => {
+    expect(nombrePlants({ mode: 'rectangle', longueurM: 1.2, largeurM: 0.6 }, 20)).toMatchObject({ parLigne: 6, lignes: 3, total: 18 });
+    expect(nombrePlants({ mode: 'rectangle', longueurM: 1.2, largeurM: 0.6 }, 50)).toMatchObject({ parLigne: 2, lignes: 1, total: 2 });
+  });
+  it('rangs : une ligne par rang même si le rang est étroit, avec signalement', () => {
+    const p = nombrePlants({ mode: 'rangs', nbRangs: 3, longueurM: 2.4, largeurRangM: 0.4 }, 50);
+    expect(p).toMatchObject({ parLigne: 4, lignes: 1, total: 12, rangTropEtroit: true });
+    expect(nombrePlants({ mode: 'rangs', nbRangs: 2, longueurM: 2, largeurRangM: 0.6 }, 30).rangTropEtroit).toBe(false);
   });
 });

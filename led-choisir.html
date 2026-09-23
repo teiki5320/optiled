@@ -13,7 +13,7 @@
       <p class="fil"><a href="index.html">Accueil</a> › <a href="led.html">Éclairage LED</a></p>
       <article class="prose">
         <h1>Choisir ses LED horticoles</h1>
-        <p class="chapo">Barres, panneaux, UFO ou simples ampoules : l'offre est vaste et les fiches techniques souvent flatteuses. Cette page vous aide à choisir un format adapté à votre espace, à vérifier les chiffres annoncés et à dimensionner la puissance nécessaire.</p>
+        <p class="chapo">Barres, panneaux, lampes « UFO » (rondes, en forme de soucoupe volante) ou simples ampoules : l'offre est vaste et les fiches techniques souvent flatteuses. Cette page vous aide à choisir un format adapté à votre espace, à vérifier les chiffres annoncés et à dimensionner la puissance nécessaire.</p>
 
         <nav class="sommaire" aria-label="Sommaire">
           <strong>Dans cette page</strong>
@@ -36,7 +36,7 @@
             <thead><tr><th>Format</th><th>Avantages</th><th>Inconvénients</th><th>Usage conseillé</th></tr></thead>
             <tbody>
               <tr><td>Barres LED (plusieurs barres sur un cadre)</td><td>Très bonne <a href="glossaire.html#uniformite">uniformité</a>, dissipation de chaleur répartie, souvent très efficaces</td><td>Plus chères, plus encombrantes, montage plus long</td><td>Tentes de 1 m² et plus, légumes fruits</td></tr>
-              <tr><td>Panneaux / quantum boards</td><td>Bon rapport prix/performance, faciles à suspendre, lumière assez homogène</td><td>Bords moins éclairés, un seul point de chaleur</td><td>Tentes de 0,4 à 1,5 m², usage polyvalent</td></tr>
+              <tr><td>Panneaux / quantum boards (plaques plates couvertes de nombreuses petites diodes)</td><td>Bon rapport prix/performance, faciles à suspendre, lumière assez homogène</td><td>Bords moins éclairés, un seul point de chaleur</td><td>Tentes de 0,4 à 1,5 m², usage polyvalent</td></tr>
               <tr><td>Lampes UFO (rondes)</td><td>Compactes, légères, simples à installer</td><td>Lumière concentrée au centre, uniformité médiocre sur une grande surface</td><td>Petite surface, quelques pots, appoint</td></tr>
               <tr><td>Ampoules horticoles E27</td><td>Bon marché, se vissent dans une douille existante</td><td>Faible puissance, efficacité souvent modeste, chiffres rarement fiables</td><td>Une ou deux plantes aromatiques, dépannage</td></tr>
               <tr><td>Tubes et réglettes LED T5/T8</td><td>Longs et fins, idéaux pour les étagères, chauffent peu</td><td>PPFD modeste, doivent être placés près des plantes</td><td>Semis, micro-pousses, salades en étagère</td></tr>
@@ -48,7 +48,7 @@
         <h2 id="fiche">Lire une fiche technique</h2>
         <p>Une fiche sérieuse donne des valeurs mesurées et vérifiables. Voici les lignes à chercher, par ordre d'importance.</p>
         <h3>PPF et efficacité</h3>
-        <p>Le <a href="glossaire.html#ppf">PPF</a> (µmol/s) indique la quantité totale de lumière utile. L'<a href="glossaire.html#efficacite">efficacité</a> (µmol/J) indique combien cette lumière coûte en électricité. Une lampe correcte actuelle se situe vers 2,5–3 µmol/J. Si ces deux valeurs sont absentes, c'est un mauvais signe.</p>
+        <p>Le <a href="glossaire.html#ppf">PPF</a> (µmol/s) indique la quantité totale de lumière utile. L'<a href="glossaire.html#efficacite">efficacité</a> (µmol/J) indique combien cette lumière coûte en électricité. Repères : moins de 2,0 µmol/J, l'efficacité est faible ; de 2,0 à 2,5 µmol/J, elle est correcte ; de 2,5 à 3,2 µmol/J, elle est bonne. Si ces deux valeurs sont absentes, c'est un mauvais signe.</p>
         <h3>Puissance réelle à la prise</h3>
         <p>Seule compte la puissance consommée réellement, en watts, mesurée à la prise. Les mentions « équivalent 1000 W », « 1500 W » sur une lampe qui consomme 100 W sont trompeuses : elles comparent à d'anciennes lampes ou additionnent la puissance théorique maximale de chaque diode.</p>
         <h3>Carte PPFD</h3>
@@ -64,8 +64,9 @@
         <p>Les fiches des lampes d'entrée de gamme contiennent souvent des chiffres gonflés ou invérifiables. Recoupez-les avec un calcul simple :</p>
         <p class="formule">Efficacité vérifiée = PPF annoncé (µmol/s) / puissance réelle (W)</p>
         <ul>
-          <li>Résultat entre 2 et 3,2 µmol/J : plausible pour une LED actuelle.</li>
-          <li>Résultat nettement au-dessus de 3,5 µmol/J : très improbable pour un produit bon marché ; le PPF est sans doute surestimé.</li>
+          <li>Résultat inférieur à 2,0 µmol/J : efficacité faible, la lampe consommera beaucoup pour la lumière fournie.</li>
+          <li>Résultat entre 2,0 et 3,2 µmol/J : plausible pour une LED actuelle (correcte de 2,0 à 2,5, bonne de 2,5 à 3,2).</li>
+          <li>Résultat au-delà de 3,2 µmol/J : chiffre à vérifier ; pour un produit grand public, le PPF est probablement surestimé.</li>
           <li>Pas de PPF annoncé, seulement des lumens ou des « W équivalents » : impossible de comparer, passez votre chemin ou mesurez vous-même.</li>
         </ul>
         <p>Autres signaux d'alerte : un PPFD maximal mis en avant sans hauteur de mesure, une carte PPFD mesurée sur une surface minuscule, un nombre de diodes présenté comme un argument de puissance, un spectre décrit en termes vagues (« spectre solaire complet ») sans graphique.</p>
@@ -88,18 +89,18 @@
             </tbody>
           </table>
         </div>
-        <p>Ces valeurs augmentent si la lampe est moins efficace ou si la culture se fait en espace ouvert, sans parois : comptez alors un coefficient plus proche de 0,6 et environ 30 % de puissance en plus. Prévoir une lampe un peu surdimensionnée et gradable est souvent plus confortable qu'une lampe juste suffisante.</p>
+        <p>Ces valeurs augmentent si la lampe est moins efficace ou si la culture se fait en espace ouvert, sans parois : comptez alors un coefficient plus proche de 0,6 et environ un tiers de puissance en plus (0,8 / 0,6 ≈ 1,33). Prévoir une lampe un peu surdimensionnée et gradable est souvent plus confortable qu'une lampe juste suffisante.</p>
         <p>Pour un calcul adapté à votre surface, votre culture et votre photopériode, utilisez le <a href="index.html#calculateur">calculateur d'éclairage</a>, par exemple pour <a href="index.html?legume=tomate#calculateur">la tomate</a> ou <a href="index.html?legume=laitue#calculateur">la laitue</a>.</p>
 
         <h2 id="spectre">Quel spectre selon la culture ?</h2>
-        <p>Comme expliqué dans <a href="led-bases.html#blanc">Les bases</a>, un blanc plein spectre convient à toutes les cultures de ce site. Quelques nuances :</p>
+        <p>Comme expliqué dans <a href="led-bases.html#blanc">Les bases : PAR, PPFD, DLI et spectre</a>, un blanc plein spectre convient à toutes les cultures de ce site. Quelques nuances :</p>
         <ul>
-          <li><strong>Micro-pousses :</strong> un blanc froid (5 000 à 6 500 K) riche en bleu donne des tiges courtes et une bonne coloration.</li>
-          <li><strong>Semis, salades :</strong> un blanc neutre (4 000 K environ) ou un mélange 3 000/4 000 K donne des plantes compactes.</li>
+          <li><strong>Micro-pousses :</strong> un blanc froid (5 000 à 6 500 K) riche en bleu donne des tiges courtes et une bonne coloration.</li>
+          <li><strong>Semis, salades :</strong> un blanc neutre (4 000 K environ) ou un mélange 3 000/4 000 K donne des plantes compactes.</li>
           <li><strong>Aromatiques :</strong> blanc plein spectre ; un léger apport UV est parfois proposé pour les arômes, avec des effets variables.</li>
           <li><strong>Légumes fruits et fraisier :</strong> un mélange blanc avec un complément rouge (660 nm) est courant. Un peu de far-red est une option, pas une nécessité.</li>
         </ul>
-        <p>Évitez les lampes uniquement rouge et bleu (lumière violette) : elles rendent le diagnostic des plantes difficile et n'apportent pas d'avantage net face aux blancs efficaces actuels.</p>
+        <p>Évitez les lampes uniquement rouge et bleu (lumière rose-violet) : elles rendent le diagnostic des plantes difficile et n'apportent pas d'avantage net face aux blancs efficaces actuels.</p>
 
         <h2 id="chaleur">Chaleur et consommation</h2>
         <p>Une LED transforme environ la moitié de l'électricité en lumière et le reste en chaleur, et la lumière finit elle-même en chaleur dans la pièce. En pratique, toute la puissance consommée chauffe votre espace de culture : une lampe de 200 W équivaut à un petit radiateur de 200 W.</p>
@@ -117,7 +118,7 @@
             <tbody>
               <tr><td>Rebord, petite étagère d'aromatiques</td><td>≈ 0,1–0,2 m²</td><td>Réglette ou petit panneau</td><td>20–40 W</td><td>Faible</td></tr>
               <tr><td>Étagère de semis ou de salades (2–3 niveaux)</td><td>≈ 0,3 m² par niveau</td><td>Réglettes T5/T8 LED ou barres courtes</td><td>30–50 W par niveau</td><td>Faible à modéré</td></tr>
-              <tr><td>Tente 60 × 60 cm</td><td>0,36 m²</td><td>Petit panneau gradable</td><td>50–90 W</td><td>Modéré</td></tr>
+              <tr><td>Tente 60 × 60 cm</td><td>0,36 m²</td><td>Petit panneau gradable</td><td>40–90 W</td><td>Modéré</td></tr>
               <tr><td>Tente 100 × 100 cm</td><td>1 m²</td><td>Panneau ou barres</td><td>120–240 W selon culture</td><td>Modéré à élevé</td></tr>
               <tr><td>Tente 120 × 120 cm et plus</td><td>≈ 1,4 m² et plus</td><td>Barres LED</td><td>170–330 W selon culture</td><td>Élevé</td></tr>
             </tbody>
@@ -144,7 +145,7 @@
       </article>
 
       <nav class="suite" aria-label="Pages suivantes">
-        <a href="led-bases.html"><small>← Précédent</small>Les bases : PAR, PPFD, DLI, spectre</a>
+        <a href="led-bases.html"><small>← Précédent</small>Les bases : PAR, PPFD, DLI et spectre</a>
         <a href="led-installation.html"><small>Suivant →</small>Installer, régler et mesurer</a>
       </nav>
     </main>

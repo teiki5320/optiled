@@ -47,6 +47,16 @@ try {
   await page.fill('#photoperiode', '30');
   verifier(!(await page.isHidden('#erreurs')), 'une saisie invalide affiche une erreur');
 
+  await page.evaluate(() => localStorage.clear()); // repartir des réglages par défaut
+  await page.goto(BASE, { waitUntil: 'networkidle' });
+  verifier(/Plants\s*≈ 8 /.test(await resultats()), 'laitue 1,2 × 0,6 m à 25 cm : ≈ 8 plants');
+  await page.fill('#longueur', '0,6');
+  verifier(/barres? LED de 0,60 m/.test(await resultats()), 'étagère de 60 cm : barres de 0,60 m choisies automatiquement');
+  await page.click('[data-legume="tomate"]');
+  await page.fill('#photoperiode', '22');
+  verifier(/18 h/.test(await page.textContent('.alerte-calcul').catch(() => '')), 'alerte au-delà de 18 h pour la tomate');
+  verifier((await page.locator('[data-omelette-injected]').count()) === 0, "aucun code d'outil de maquette dans la page");
+
   const scripts = await page.$$eval('script[src]', (els) => els.map((e) => e.src));
   verifier(scripts.every((s) => s.startsWith(BASE)), 'aucun script externe chargé');
   verifier(erreurs.length === 0, `aucune erreur JavaScript${erreurs.length ? ' : ' + erreurs.join(' | ') : ''}`);

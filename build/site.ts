@@ -202,7 +202,7 @@ export function footer(): string {
       <a class="logo" href="index.html">${LOGO}<span><strong>${NOM_SITE}</strong><small>LED &amp; culture indoor</small></span></a>
       <p>Guides et outils gratuits pour cultiver des légumes sous LED, en intérieur.</p>
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la littérature horticole : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
-      <p class="site-pied__note">Photos d'illustration des guides générées par intelligence artificielle ; schémas réalisés pour le site.</p>
+      <p class="site-pied__note">Photos des guides et miniatures des cultures générées par intelligence artificielle ; schémas réalisés pour le site.</p>
       <p class="site-pied__note"><a href="mentions-legales.html">Mentions légales</a></p>
     </div>
     <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="glossaire.html">Glossaire</a></li></ul></div>
@@ -324,10 +324,11 @@ export function sitemap(pages: string[], url = SITE_URL): string {
 
 /** Applique toutes les transformations à une page. */
 export function transformerPage(html: string, fichier: string): string {
+  let numeroTableau = 0;
   const base = fichier === '404.html' ? `<base href="${SITE_URL}" />\n    ` : '';
   return mettreEnPageArticle(html, fichier)
     // Tableaux qui défilent horizontalement : atteignables et nommés au clavier.
-    .replace(/<div class="tableau-defile">/g, '<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau (faire défiler horizontalement)">')
+    .replace(/<div class="tableau-defile">/g, () => `<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau ${++numeroTableau} (faire défiler horizontalement)">`)
     // La 404 peut être servie sous n'importe quel chemin : liens résolus depuis la racine du site.
     .replace('<!--#head-->', `${base}<!--#head-->\n    ${referencement(html, fichier)}\n    ${mesureAudience()}`)
     .replace('<!--#head-->', head())

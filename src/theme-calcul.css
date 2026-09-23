@@ -180,3 +180,8 @@ input[type='text']:focus, select:focus { background: rgb(255 255 255 / 0.1); bor
 }
 
 .avance__titre { margin: 1.2rem 0 0.6rem; font-weight: 700; font-size: 0.95rem; }
+
+@media print {
+  .jauge__curseur { background: #111; }
+  .jauge__curseur b { background: #111; color: #fff; }
+}

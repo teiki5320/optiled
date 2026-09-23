@@ -322,8 +322,8 @@
         },
         "espacement_cm": {
           "valeur": [
-            20,
-            25
+            25,
+            30
           ],
           "source": "Pratique culturale courante (ordre de grandeur)"
         },
@@ -1307,10 +1307,10 @@
         },
         "espacement_cm": {
           "valeur": [
-            40,
-            60
+            50,
+            80
           ],
-          "source": "Pratique culturale courante (ordre de grandeur)"
+          "source": "Pratique courante (plantes de plus d'1 m en culture photopériodique ; moins en conduite palissée)"
         },
         "conseils": {
           "valeur": "Réduisez la photopériode à 12 h pour déclencher la floraison, avec une obscurité totale la nuit (la moindre fuite de lumière perturbe la plante). Surveillez l'humidité en fin de floraison.",

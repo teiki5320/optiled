@@ -232,6 +232,40 @@ export function verifierLampe(params: {
   const nombre = Math.max(1, Math.ceil(params.ppfNecessaire / params.ppfLampe - 1e-9));
   const ppfdObtenu = (nombre * params.ppfLampe * params.coefUtilisation) / params.surfaceM2;
   const appreciation =
-    efficaciteUmolJ > 3.5 ? 'douteuse' : efficaciteUmolJ >= 2.5 ? 'bonne' : efficaciteUmolJ >= 2 ? 'correcte' : 'faible';
+    efficaciteUmolJ > 3.2 ? 'douteuse' : efficaciteUmolJ >= 2.5 ? 'bonne' : efficaciteUmolJ >= 2 ? 'correcte' : 'faible';
   return { efficaciteUmolJ, nombre, ppfdObtenu, appreciation };
+}
+
+/** Longueurs de barres LED courantes dans le commerce, en mètres. */
+export const LONGUEURS_BARRES_M = [1.2, 0.9, 0.6, 0.3];
+
+/**
+ * Longueur de barre conseillée quand l'utilisateur n'en impose pas :
+ * la plus grande longueur du commerce qui tient dans la longueur de la zone (≥ 0,3 m).
+ */
+export function longueurBarreConseillee(longueurZoneM: number): number {
+  return LONGUEURS_BARRES_M.find((l) => l <= longueurZoneM + 0.02) ?? LONGUEURS_BARRES_M[LONGUEURS_BARRES_M.length - 1];
+}
+
+export interface Plantation {
+  /** Plants dans la longueur d'une zone */
+  parLigne: number;
+  /** Lignes de plants dans la largeur d'une zone */
+  lignes: number;
+  /** Nombre total de plants */
+  total: number;
+  /** Vrai si la largeur d'un rang est inférieure à l'espacement conseillé */
+  rangTropEtroit: boolean;
+}
+
+/**
+ * Nombre de plants que l'installation peut accueillir, en quadrillage régulier à l'espacement donné.
+ * Un rang plus étroit que l'espacement reçoit quand même une ligne de plants (qui déborderont).
+ */
+export function nombrePlants(surface: Surface, espacementCm: number): Plantation {
+  const { zones, longueurM, largeurM } = dimensionsZone(surface);
+  const e = espacementCm / 100;
+  const parLigne = Math.max(1, Math.floor(longueurM / e + 1e-9));
+  const lignes = Math.max(1, Math.floor(largeurM / e + 1e-9));
+  return { parLigne, lignes, total: zones * parLigne * lignes, rangTropEtroit: surface.mode === 'rangs' && largeurM < e - 1e-9 };
 }

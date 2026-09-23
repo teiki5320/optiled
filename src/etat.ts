@@ -13,6 +13,7 @@ export const PARAMETRES: Record<string, string> = {
   'nb-rangs': 'n',
   'longueur-rang': 'lr',
   'largeur-rang': 'wr',
+  espacement: 'e',
   photoperiode: 'h',
   'prix-kwh': 'prix',
   jours: 'j',

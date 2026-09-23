@@ -38,6 +38,7 @@
             <thead><tr><th>Type de luminaire</th><th>Distance lampe–sommet des plantes (ordre de grandeur)</th></tr></thead>
             <tbody>
               <tr><td>Réglettes et tubes T5/T8 LED</td><td>10–30 cm</td></tr>
+              <tr><td>Barres de faible puissance (moins de 50 W)</td><td>20–30 cm</td></tr>
               <tr><td>Petit panneau (moins de 100 W)</td><td>25–45 cm</td></tr>
               <tr><td>Panneau ou barres de 100 à 300 W</td><td>30–60 cm</td></tr>
             </tbody>
@@ -47,7 +48,7 @@
         <ul>
           <li><strong>Semis et plantules :</strong> lampe plus haute ou gradée, autour de 100 à 200 µmol/m²/s.</li>
           <li><strong>Croissance végétative :</strong> rapprochez ou augmentez progressivement jusqu'au PPFD de croissance de la culture (par exemple 250 pour la laitue, 350 pour la tomate).</li>
-          <li><strong>Fructification :</strong> montez au PPFD de production (environ 400 à 500 µmol/m²/s pour le fraisier et les légumes fruits).</li>
+          <li><strong>Fructification ou floraison :</strong> montez au PPFD de production (environ 400 à 500 µmol/m²/s pour le fraisier et les légumes fruits ; pour le chanvre en floraison, environ 800 µmol/m²/s avec une photopériode ramenée à 12 h).</li>
         </ul>
         <p>Remontez la lampe au fur et à mesure que les plantes grandissent, pour garder une distance constante avec le sommet du feuillage. Les valeurs cibles par culture sont reprises dans le <a href="index.html#calculateur">calculateur</a> et les <a href="legumes.html">fiches légumes</a>.</p>
 
@@ -55,9 +56,9 @@
         <p>L'<a href="glossaire.html#uniformite">uniformité</a> désigne l'écart de PPFD entre le centre et les bords. Une mauvaise uniformité donne des plantes du centre vigoureuses et des plantes des bords étirées.</p>
         <figure class="schema"><img src="images/schemas/uniformite.svg" alt="Schéma comparant des barres LED trop espacées, qui laissent une zone sombre, et des barres dont l'entraxe est inférieur à la hauteur, qui éclairent régulièrement" width="800" height="420" loading="lazy" decoding="async" /><figcaption>Quand l'entraxe dépasse la hauteur de suspension, les faisceaux ne se recouvrent plus et des zones sombres apparaissent.</figcaption></figure>
         <ul>
-          <li><strong>Espacement :</strong> si vous utilisez plusieurs lampes ou réglettes, gardez un écart entre elles inférieur ou égal à leur hauteur au-dessus des plantes.</li>
+          <li><strong>Espacement :</strong> si vous utilisez plusieurs lampes ou réglettes, gardez un <a href="glossaire.html#entraxe">entraxe</a> (distance entre les axes de deux lampes voisines) inférieur ou égal à leur hauteur au-dessus des plantes.</li>
           <li><strong>Bords :</strong> ils reçoivent toujours moins de lumière, souvent 30 à 50 % de moins qu'au centre. Placez-y les cultures les moins exigeantes (salades, aromatiques) ou les jeunes plants.</li>
-          <li><strong>Parois réfléchissantes :</strong> un blanc mat ou un film mylar renvoie une bonne partie de la lumière vers les plantes. Le blanc mat diffuse de façon homogène et suffit dans la plupart des cas. Évitez les miroirs et l'aluminium froissé, qui créent des points chauds.</li>
+          <li><strong>Parois réfléchissantes :</strong> un blanc mat ou un film mylar (film plastique métallisé, très réfléchissant) renvoie une bonne partie de la lumière vers les plantes. Le blanc mat diffuse de façon homogène et suffit dans la plupart des cas. Évitez les miroirs et l'aluminium froissé, qui créent des points chauds.</li>
           <li><strong>Rotation :</strong> tournez les pots ou permutez les plateaux régulièrement si l'éclairage reste inégal.</li>
         </ul>
 
@@ -74,13 +75,14 @@
         <h2 id="programmation">Programmer la photopériode</h2>
         <p>Une <a href="glossaire.html#photoperiode">photopériode</a> régulière compte autant que l'intensité. Utilisez une minuterie : mécanique (simple et fiable), numérique ou connectée. Vérifiez que sa puissance admissible dépasse largement celle de la lampe.</p>
         <ul>
-          <li>Visez 12 à 16 h pour les salades et les aromatiques (plutôt 12 à 14 h pour l'épinard et la coriandre, qui montent vite en graines), 14 à 16 h pour les micro-pousses, 12 à 16 h pour les légumes fruits et le fraisier.</li>
+          <li>Visez 14 à 16 h pour les salades et les aromatiques (12 h pour l'épinard et la coriandre, qui montent vite en graines en jours longs), 16 h pour les micro-pousses, les légumes fruits et le fraisier (14 h pour le piment en fructification).</li>
+          <li><strong>Chanvre : l'exception.</strong> 18 h en croissance, puis 12 h d'éclairage et 12 h d'obscurité complète pour déclencher et conduire la floraison, avec un PPFD d'environ 800 µmol/m²/s.</li>
           <li><strong>Tomate : pas de 24 h/24.</strong> Au-delà d'environ 18 h, la tomate présente des marbrures et des jaunissements des feuilles.</li>
           <li>Respectez la nuit des plantes : n'allumez pas la lumière de la pièce pendant la période d'obscurité, sauf brièvement. Des interruptions répétées perturbent certaines cultures sensibles à la durée du jour, notamment le fraisier.</li>
           <li>Évitez aussi les coupures en pleine journée d'éclairage : gardez un horaire fixe, chaque jour.</li>
           <li>En été, placez la période d'éclairage la nuit si la chaleur est un problème : la plante ne fait pas la différence avec l'heure réelle.</li>
         </ul>
-        <p>Pour relier durée et intensité, pensez en <a href="glossaire.html#dli">DLI</a> : la formule est détaillée dans <a href="led-bases.html#dli">Les bases</a>.</p>
+        <p>Pour relier durée et intensité, pensez en <a href="glossaire.html#dli">DLI</a> : la formule est détaillée dans <a href="led-bases.html#dli">Les bases : PAR, PPFD, DLI et spectre</a>.</p>
 
         <h2 id="gradation">Gradation et acclimatation</h2>
         <p>Des plantules ou des plants achetés en jardinerie ne supportent pas un passage brutal à une lumière forte. Utilisez la <a href="glossaire.html#gradation">gradation</a> de la lampe, ou sa hauteur, pour augmenter l'intensité progressivement :</p>
@@ -92,7 +94,7 @@
         <p>Certaines minuteries et lampes connectées proposent un allumage et une extinction progressifs. C'est agréable mais pas indispensable.</p>
 
         <h2 id="mesurer">Mesurer la lumière</h2>
-        <h3>Le PAR-mètre (quantum sensor)</h3>
+        <h3>Le PAR-mètre, ou capteur quantique (quantum sensor)</h3>
         <p>C'est l'outil de référence : il mesure directement le PPFD en µmol/m²/s. Un modèle dont le capteur est conçu pour les LED donne des mesures fiables quel que soit le spectre. C'est un investissement, mais il permet de régler précisément et de vérifier les promesses d'un fabricant.</p>
         <h3>Les applications smartphone</h3>
         <p>Des applications estiment le PPFD à partir du capteur de luminosité ou de la caméra du téléphone. Leur fiabilité est limitée : ces capteurs varient d'un téléphone à l'autre. Certaines proposent une calibration avec un diffuseur ou un facteur de correction selon le type de lampe ; sans cela, considérez le résultat comme une estimation grossière, utile surtout pour comparer deux positions entre elles.</p>
