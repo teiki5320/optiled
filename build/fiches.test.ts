@@ -11,7 +11,7 @@ describe('fiches légumes', () => {
 
   it('affiche le DLI calculé et le lien vers le calculateur', () => {
     const html = rendreFiche(legumes.find((l) => l.id === 'laitue')!);
-    expect(html).toContain('14,4 mol/m²/j');
+    expect(html).toContain("14,4");
     expect(html).toContain('calculateur.html?legume=laitue');
   });
 

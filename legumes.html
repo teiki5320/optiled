@@ -9,14 +9,18 @@
   </head>
   <body>
     <!--#header-->
-    <main id="contenu" class="page">
-      <p class="fil"><a href="index.html">Accueil</a></p>
-      <div class="prose">
-        <h1>Fiches légumes</h1>
-        <p class="chapo">Les conditions de culture en intérieur, légume par légume : lumière, climat, solution nutritive et délais. Chaque valeur indique sa source ; ce sont des ordres de grandeur à ajuster selon la variété.</p>
-        <div class="encadre"><p>Pour dimensionner l'éclairage d'un légume, utilisez le lien « Calculer l'éclairage » de sa fiche : le <a href="calculateur.html">calculateur</a> s'ouvre avec ce légume présélectionné. Les termes techniques sont expliqués dans le <a href="glossaire.html">glossaire</a>.</p></div>
+    <main id="contenu">
+      <header class="bandeau bandeau--legumes">
+        <div class="conteneur">
+          <p class="fil"><a href="index.html">Accueil</a></p>
+          <span class="bandeau__icone"><!--#icone:feuille--></span>
+          <h1>Fiches légumes</h1>
+          <p class="chapo">Les conditions de culture en intérieur, légume par légume : lumière, climat, solution nutritive et délais. Ce sont des ordres de grandeur, à ajuster selon la variété ; chaque valeur indique sa source.</p>
+        </div>
+      </header>
+      <div class="conteneur">
+        <!--#fiches-->
       </div>
-      <!--#fiches-->
     </main>
     <!--#footer-->
     <script type="module" src="/src/site.ts"></script>

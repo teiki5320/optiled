@@ -9,58 +9,194 @@
   </head>
   <body>
     <!--#header-->
-    <main id="contenu" class="page">
+    <main id="contenu">
       <section class="heros">
-        <h1>Cultivez vos légumes en intérieur, avec la bonne lumière</h1>
-        <p>Des guides clairs et un calculateur gratuit pour choisir vos LED, installer votre culture et réussir vos récoltes : salades, aromatiques, micro-pousses, fraises, tomates, piments…</p>
-        <div class="actions-heros">
-          <a class="bouton-lien plein" href="calculateur.html">Calculer mon éclairage</a>
-          <a class="bouton-lien" href="culture-demarrer.html">Débuter en culture indoor</a>
+        <div class="conteneur">
+          <div class="heros__grille">
+            <div class="heros__texte">
+              <span class="heros__pastille"><b>Gratuit</b> Guides, fiches et calculateur</span>
+              <h1>Cultivez vos légumes en intérieur, <em>sous la bonne lumière.</em></h1>
+              <p>Choisir ses LED, régler la lumière, nourrir et protéger ses plantes : tout ce qu'il faut pour réussir salades, aromatiques, micro-pousses, fraises et tomates chez soi.</p>
+              <div class="heros__actions">
+                <a class="bouton bouton--plein" href="calculateur.html"><!--#icone:calcul--> Calculer mon éclairage</a>
+                <a class="bouton bouton--fantome" href="culture-demarrer.html">Débuter en culture indoor</a>
+              </div>
+            </div>
+            <div class="heros__illustration">
+              <svg viewBox="0 0 560 400" role="img" aria-label="Deux barres LED éclairent une étagère de laitues, de basilic et un plant de tomate">
+                <defs>
+                  <linearGradient id="h-barre" x1="0" x2="1"><stop offset="0" stop-color="#5b7cff"/><stop offset=".5" stop-color="#c26bff"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient>
+                  <linearGradient id="h-faisceau" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1d2" stop-opacity=".55"/><stop offset=".55" stop-color="#ffb3d1" stop-opacity=".16"/><stop offset="1" stop-color="#b56bff" stop-opacity="0"/></linearGradient>
+                  <radialGradient id="h-halo"><stop offset="0" stop-color="#ffe7b0" stop-opacity=".9"/><stop offset="1" stop-color="#ffe7b0" stop-opacity="0"/></radialGradient>
+                  <linearGradient id="h-bac" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a4435"/><stop offset="1" stop-color="#162a1e"/></linearGradient>
+                  <linearGradient id="h-feuille" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ff0b3"/><stop offset="1" stop-color="#2fa860"/></linearGradient>
+                  <filter id="h-flou" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+                </defs>
+                <!-- suspensions -->
+                <path d="M120 0v38M240 0v38M320 0v38M440 0v38" stroke="#3b5446" stroke-width="2"/>
+                <!-- faisceaux -->
+                <path d="M100 52h160l70 270H30z" fill="url(#h-faisceau)"/>
+                <path d="M300 52h160l70 270H230z" fill="url(#h-faisceau)"/>
+                <!-- barres LED -->
+                <rect x="96" y="30" width="168" height="16" rx="8" fill="url(#h-barre)" filter="url(#h-flou)" opacity=".9"/>
+                <rect x="296" y="30" width="168" height="16" rx="8" fill="url(#h-barre)" filter="url(#h-flou)" opacity=".9"/>
+                <rect x="100" y="32" width="160" height="12" rx="6" fill="url(#h-barre)"/>
+                <rect x="300" y="32" width="160" height="12" rx="6" fill="url(#h-barre)"/>
+                <g fill="#fff6e0">
+                  <circle cx="120" cy="44" r="2.2"/><circle cx="145" cy="44" r="2.2"/><circle cx="170" cy="44" r="2.2"/><circle cx="195" cy="44" r="2.2"/><circle cx="220" cy="44" r="2.2"/><circle cx="245" cy="44" r="2.2"/>
+                  <circle cx="320" cy="44" r="2.2"/><circle cx="345" cy="44" r="2.2"/><circle cx="370" cy="44" r="2.2"/><circle cx="395" cy="44" r="2.2"/><circle cx="420" cy="44" r="2.2"/><circle cx="445" cy="44" r="2.2"/>
+                </g>
+                <!-- photons -->
+                <g opacity=".9">
+                  <circle cx="150" cy="120" r="3" fill="#5b7cff"/><circle cx="205" cy="170" r="2.5" fill="#ff4d6d"/><circle cx="118" cy="210" r="2" fill="#c26bff"/>
+                  <circle cx="360" cy="110" r="2.5" fill="#ff4d6d"/><circle cx="410" cy="190" r="3" fill="#5b7cff"/><circle cx="330" cy="230" r="2" fill="#ffe7b0"/><circle cx="262" cy="140" r="2" fill="#c26bff"/>
+                </g>
+                <!-- halo au sol -->
+                <ellipse cx="280" cy="330" rx="240" ry="26" fill="url(#h-halo)" opacity=".35"/>
+                <!-- laitues -->
+                <g>
+                  <g transform="translate(90 300)"><circle r="30" fill="#2fa860"/><circle cx="-12" cy="-8" r="18" fill="#57cf82"/><circle cx="12" cy="-10" r="17" fill="#6fe39a"/><circle cy="-18" r="13" fill="#9af5bb"/></g>
+                  <g transform="translate(165 304)"><circle r="26" fill="#2fa860"/><circle cx="-10" cy="-7" r="15" fill="#57cf82"/><circle cx="10" cy="-9" r="15" fill="#6fe39a"/><circle cy="-15" r="11" fill="#9af5bb"/></g>
+                </g>
+                <!-- basilic -->
+                <g transform="translate(262 318)">
+                  <path d="M0 0v-78" stroke="#2c8a4f" stroke-width="4" stroke-linecap="round"/>
+                  <g fill="url(#h-feuille)">
+                    <ellipse cx="-16" cy="-22" rx="16" ry="9" transform="rotate(-25 -16 -22)"/><ellipse cx="16" cy="-24" rx="16" ry="9" transform="rotate(25 16 -24)"/>
+                    <ellipse cx="-14" cy="-48" rx="14" ry="8" transform="rotate(-30 -14 -48)"/><ellipse cx="14" cy="-50" rx="14" ry="8" transform="rotate(30 14 -50)"/>
+                    <ellipse cx="-8" cy="-72" rx="10" ry="6" transform="rotate(-40 -8 -72)"/><ellipse cx="8" cy="-74" rx="10" ry="6" transform="rotate(40 8 -74)"/>
+                  </g>
+                </g>
+                <!-- tomate -->
+                <g transform="translate(410 322)">
+                  <path d="M0 0c-4-40 6-90 0-150" stroke="#2c8a4f" stroke-width="5" fill="none" stroke-linecap="round"/>
+                  <path d="M0-150v160" stroke="#8a6a44" stroke-width="3" opacity=".7"/>
+                  <g fill="url(#h-feuille)">
+                    <path d="M0-40c-20-6-40 2-50 16 18 4 36 0 50-16z"/><path d="M0-60c20-8 42-2 52 12-18 6-38 2-52-12z"/>
+                    <path d="M-2-100c-18-8-38-2-46 12 16 5 34 1 46-12z"/><path d="M2-120c18-8 36-2 44 10-16 6-32 2-44-10z"/>
+                    <path d="M0-148c-10-10-24-8-30 0 10 6 22 6 30 0z"/>
+                  </g>
+                  <g fill="#ff5a4a"><circle cx="-30" cy="-12" r="11"/><circle cx="-14" cy="-4" r="9"/><circle cx="34" cy="-36" r="10"/><circle cx="-26" cy="-78" r="9"/></g>
+                  <g fill="#ffb0a6" opacity=".8"><circle cx="-33" cy="-15" r="3"/><circle cx="31" cy="-39" r="3"/></g>
+                </g>
+                <!-- bac -->
+                <rect x="40" y="320" width="480" height="40" rx="10" fill="url(#h-bac)"/>
+                <rect x="40" y="320" width="480" height="4" rx="2" fill="#3c6b50"/>
+                <!-- étiquettes de mesure -->
+                <g font-family="ui-monospace, Menlo, monospace" font-size="12">
+                  <g transform="translate(24 120)"><rect width="118" height="44" rx="10" fill="#0c1510" stroke="#ffffff" stroke-opacity=".18"/><text x="12" y="18" fill="#a3b8a9">PPFD</text><text x="12" y="35" fill="#eef5ef" font-weight="700" font-size="14">250 µmol/m²/s</text></g>
+                  <g transform="translate(440 96)"><rect width="104" height="44" rx="10" fill="#0c1510" stroke="#ffffff" stroke-opacity=".18"/><text x="12" y="18" fill="#a3b8a9">DLI</text><text x="12" y="35" fill="#8ff0b3" font-weight="700" font-size="14">14,4 mol/j</text></g>
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div class="heros__chiffres">
+            <div><strong>14</strong><span>fiches légumes détaillées</span></div>
+            <div><strong>9</strong><span>guides pas à pas</span></div>
+            <div><strong>49</strong><span>termes expliqués</span></div>
+            <div><strong>100 %</strong><span>des valeurs sourcées</span></div>
+          </div>
         </div>
       </section>
 
-      <div class="chiffres">
-        <div><strong>14 légumes</strong><span>fiches avec lumière, climat, pH et EC</span></div>
-        <div><strong>10 guides</strong><span>de la LED à la récolte</span></div>
-        <div><strong>Sources citées</strong><span>pour chaque valeur</span></div>
-      </div>
+      <section class="section">
+        <div class="conteneur">
+          <div class="section__tete">
+            <div><span class="surtitre">Par où commencer</span><h2>Trois étapes vers votre première récolte</h2></div>
+          </div>
+          <div class="etapes">
+            <div class="etape"><h3>Comprendre la lumière</h3><p>PPFD, DLI, spectre : les trois notions qui font la différence entre une plante étiolée et une belle récolte. <a href="led-bases.html">Lire les bases</a></p></div>
+            <div class="etape"><h3>Dimensionner l'éclairage</h3><p>Le calculateur donne la puissance, le nombre de barres LED, leur espacement et le coût annuel. <a href="calculateur.html">Ouvrir le calculateur</a></p></div>
+            <div class="etape"><h3>Installer et cultiver</h3><p>Substrat, arrosage, climat, semis : suivez les guides dans l'ordre, puis consultez la fiche de votre légume. <a href="culture-demarrer.html">Démarrer</a></p></div>
+          </div>
+        </div>
+      </section>
 
-      <h2>Par où commencer ?</h2>
-      <div class="cartes">
-        <a class="carte-lien" href="calculateur.html">
-          <strong>Calculateur LED</strong>
-          <span>PPFD, DLI, puissance, nombre de barres, coût annuel et liste d'achat pour votre légume et votre surface.</span>
-        </a>
-        <a class="carte-lien" href="led-bases.html">
-          <strong>Comprendre la lumière</strong>
-          <span>PAR, PPFD, DLI, spectre : les notions indispensables, sans jargon inutile.</span>
-        </a>
-        <a class="carte-lien" href="culture-demarrer.html">
-          <strong>Démarrer une culture</strong>
-          <span>Choisir l'espace, le matériel et les premières plantes, étape par étape.</span>
-        </a>
-        <a class="carte-lien" href="legumes.html">
-          <strong>Fiches légumes</strong>
-          <span>Toutes les conditions de culture, légume par légume, avec leurs sources.</span>
-        </a>
-      </div>
+      <section class="section section--serree">
+        <div class="conteneur">
+          <div class="spectre-bloc">
+            <div>
+              <span class="surtitre" style="--r: var(--ambre)">Le saviez-vous ?</span>
+              <h2>Les plantes ne voient pas la lumière comme nous</h2>
+              <p>Notre œil est surtout sensible au vert-jaune ; la photosynthèse utilise toute la plage de 400 à 700 nm, le PAR. C'est pourquoi on mesure la lumière horticole en photons (µmol), pas en lumens.</p>
+              <a class="bouton bouton--fantome" href="led-bases.html">Comprendre le PAR et le PPFD <!--#icone:fleche--></a>
+            </div>
+            <div class="spectre" role="img" aria-label="Spectre de la lumière visible de 380 à 780 nm, avec la zone PAR de 400 à 700 nm">
+              <div class="spectre__par"><span>PAR · 400–700 nm</span></div>
+              <div class="spectre__barre"></div>
+              <div class="spectre__echelle"><span>380</span><span>450</span><span>550</span><span>660</span><span>730</span><span>780 nm</span></div>
+              <div class="spectre__legende">
+                <div style="border-color: var(--bleu)"><b>Bleu</b><span>plantes compactes</span></div>
+                <div style="border-color: #9be234"><b>Vert</b><span>pénètre le feuillage</span></div>
+                <div style="border-color: var(--rouge)"><b>Rouge</b><span>photosynthèse efficace</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <h2>Éclairage LED</h2>
-      <div class="cartes">
-        <a class="carte-lien" href="led-bases.html"><strong>Les bases</strong><span>PAR, PPFD, DLI, efficacité et spectre.</span></a>
-        <a class="carte-lien" href="led-choisir.html"><strong>Choisir ses LED</strong><span>Barres, panneaux, fiches techniques et pièges marketing.</span></a>
-        <a class="carte-lien" href="led-installation.html"><strong>Installer et mesurer</strong><span>Hauteur, uniformité, minuterie, PAR-mètre.</span></a>
-      </div>
+      <section class="section">
+        <div class="conteneur">
+          <div class="section__tete">
+            <div><span class="surtitre" style="--r: var(--violet)">Éclairage LED</span><h2>Maîtriser la lumière</h2><p>Comprendre, choisir, installer : trois guides à lire dans l'ordre.</p></div>
+            <a class="bouton" href="led.html">Tous les guides LED <!--#icone:fleche--></a>
+          </div>
+          <!--#cartes:led-->
+        </div>
+      </section>
 
-      <h2>Culture indoor</h2>
-      <div class="cartes">
-        <a class="carte-lien" href="culture-substrats.html"><strong>Substrats et hydroponie</strong><span>Terreau, coco, laine de roche, Kratky, DWC, NFT.</span></a>
-        <a class="carte-lien" href="culture-nutriments.html"><strong>Nutriments, pH et EC</strong><span>Arroser et nourrir sans se tromper.</span></a>
-        <a class="carte-lien" href="culture-climat.html"><strong>Climat et ventilation</strong><span>Température, humidité, VPD, extraction.</span></a>
-        <a class="carte-lien" href="culture-semis.html"><strong>Semis et bouturage</strong><span>Germination, repiquage, micro-pousses.</span></a>
-        <a class="carte-lien" href="culture-problemes.html"><strong>Problèmes et ravageurs</strong><span>Diagnostiquer carences, maladies et insectes.</span></a>
-        <a class="carte-lien" href="glossaire.html"><strong>Glossaire</strong><span>Tous les termes techniques expliqués.</span></a>
-      </div>
+      <section class="section section--serree">
+        <div class="conteneur">
+          <div class="encart-calcul">
+            <div>
+              <span class="surtitre" style="--r: var(--ambre)">Calculateur</span>
+              <h2>Combien de LED pour votre culture ?</h2>
+              <p>Indiquez le légume et la surface : vous obtenez le PPFD cible, le DLI, la puissance, le nombre de barres et leur disposition, le coût électrique et une liste d'achat prête à imprimer.</p>
+              <a class="bouton bouton--plein" href="calculateur.html"><!--#icone:calcul--> Lancer le calcul</a>
+            </div>
+            <div class="apercu" aria-label="Exemple de résultat pour une laitue sur 1,2 × 0,6 m">
+              <div><span>PPFD cible</span><strong>250</strong><small>µmol/m²/s</small></div>
+              <div><span>DLI</span><strong>14,4</strong><small>mol/m²/j</small></div>
+              <div><span>Puissance</span><strong>83</strong><small>W</small></div>
+              <div><span>Barres LED</span><strong>3</strong><small>× 1,2 m</small></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="conteneur">
+          <div class="section__tete">
+            <div><span class="surtitre">Culture indoor</span><h2>Du semis à la récolte</h2><p>Substrat, nutrition, climat, semis et protection des cultures.</p></div>
+            <a class="bouton" href="culture.html">Tous les guides culture <!--#icone:fleche--></a>
+          </div>
+          <!--#cartes:culture-->
+        </div>
+      </section>
+
+      <section class="section section--serree">
+        <div class="conteneur">
+          <div class="section__tete">
+            <div><span class="surtitre" style="--r: #ff7a45">Fiches légumes</span><h2>Que voulez-vous cultiver ?</h2><p>Lumière, température, pH, EC et délai de récolte, légume par légume.</p></div>
+          </div>
+          <div class="pastilles">
+            <a class="pastille" href="legumes.html#laitue"><!--#icone:feuille--> Laitue</a>
+            <a class="pastille" href="legumes.html#epinard"><!--#icone:feuille--> Épinard</a>
+            <a class="pastille" href="legumes.html#roquette"><!--#icone:feuille--> Roquette</a>
+            <a class="pastille" href="legumes.html#basilic"><!--#icone:herbe--> Basilic</a>
+            <a class="pastille" href="legumes.html#persil"><!--#icone:herbe--> Persil</a>
+            <a class="pastille" href="legumes.html#coriandre"><!--#icone:herbe--> Coriandre</a>
+            <a class="pastille" href="legumes.html#ciboulette"><!--#icone:herbe--> Ciboulette</a>
+            <a class="pastille" href="legumes.html#micro-pousses"><!--#icone:graines--> Micro-pousses</a>
+            <a class="pastille" href="legumes.html#fraise"><!--#icone:fruit--> Fraise</a>
+            <a class="pastille" href="legumes.html#tomate"><!--#icone:fruit--> Tomate</a>
+            <a class="pastille" href="legumes.html#poivron"><!--#icone:fruit--> Poivron</a>
+            <a class="pastille" href="legumes.html#piment"><!--#icone:fruit--> Piment</a>
+            <a class="pastille" href="legumes.html#concombre"><!--#icone:fruit--> Concombre</a>
+            <a class="pastille" href="legumes.html#aubergine"><!--#icone:fruit--> Aubergine</a>
+          </div>
+        </div>
+      </section>
     </main>
     <!--#footer-->
     <script type="module" src="/src/site.ts"></script>

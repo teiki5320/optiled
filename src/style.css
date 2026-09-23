@@ -1,117 +1,165 @@
-.intro-calc h1 { font-size: 1.5rem; margin: 0.25rem 0; color: var(--accent); }
-.intro-calc p { margin: 0; color: var(--attenue); }
+/* Calculateur — s'appuie sur les jetons de site.css */
 
 main.calculateur {
   display: grid;
-  gap: 1rem;
-  padding: 1rem;
-  max-width: 64rem;
-  margin: 0 auto;
+  gap: 1.25rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+  margin-top: -1.2rem; /* chevauche légèrement le bandeau */
+  position: relative;
+}
+@media (min-width: 960px) {
+  main.calculateur { grid-template-columns: minmax(0, 23rem) minmax(0, 1fr); align-items: start; gap: 1.5rem; }
+  #formulaire { position: sticky; top: 5.5rem; }
+  .avertissement { grid-column: 1 / -1; }
 }
 
 .carte {
   background: var(--carte);
   border: 1px solid var(--bordure);
   border-radius: var(--rayon);
-  padding: 1rem;
+  padding: 1.25rem;
   min-width: 0;
+  box-shadow: var(--ombre-forte);
 }
 
-.calculateur h2 { font-size: 1.15rem; margin: 0 0 0.75rem; }
-.calculateur h3 { font-size: 1rem; margin: 1.5rem 0 0.5rem; padding-top: 1rem; border-top: 1px solid var(--bordure); }
+.calculateur h2 { font-size: 1.3rem; margin: 0 0 1rem; }
+.calculateur h3 {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 1.15rem; margin: 2rem 0 0.7rem; padding-top: 1.5rem; border-top: 1px solid var(--bordure);
+}
+.calculateur h3::before { content: ''; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--spectre); flex: none; }
+.calculateur p { margin: 0.45rem 0; }
 
-.champ { display: flex; flex-direction: column; gap: 0.3rem; margin: 0 0 0.9rem; }
-.champ > span, legend { font-weight: 600; font-size: 0.92rem; }
-fieldset { border: 0; padding: 0; min-width: 0; }
-legend { padding: 0; margin-bottom: 0.3rem; }
+/* ---------- Formulaire ---------- */
+.champ { display: flex; flex-direction: column; gap: 0.35rem; margin: 0 0 1rem; }
+.champ > span, legend { font-weight: 650; font-size: 0.88rem; }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+legend { padding: 0; margin-bottom: 0.4rem; }
 
 input[type='text'], select {
   font: inherit;
   font-size: 1rem; /* évite le zoom automatique sur iOS */
   width: 100%;
-  padding: 0.6rem 0.7rem;
+  padding: 0.7rem 0.8rem;
   border: 1px solid var(--bordure);
-  border-radius: 8px;
-  background: var(--carte);
+  border-radius: var(--rayon-petit);
+  background: var(--fond);
   color: var(--texte);
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
-input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
+input[type='text']:hover, select:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--bordure)); }
+input[type='text']:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); background: var(--carte); }
 
-.segments { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.segments { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem; padding: 0.3rem; background: var(--fond); border: 1px solid var(--bordure); border-radius: 12px; }
 .segments label {
-  flex: 1 1 10rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.55rem 0.7rem;
-  border: 1px solid var(--bordure);
-  border-radius: 8px;
-  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; text-align: center; gap: 0.4rem;
+  padding: 0.55rem 0.5rem; border-radius: 9px; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: var(--attenue);
+  transition: background 0.15s, color 0.15s;
 }
-.segments label:has(input:checked) { border-color: var(--accent); background: var(--accent-clair); }
-.segments label:has(input:disabled) { opacity: 0.5; cursor: not-allowed; }
-input[type='radio'] { accent-color: var(--accent); }
+.segments input { position: absolute; opacity: 0; pointer-events: none; }
+.segments label:has(input:checked) { background: var(--carte); color: var(--texte); box-shadow: 0 1px 3px rgb(0 0 0 / 0.12); }
+.segments label:has(input:focus-visible) { outline: 2px solid var(--accent); }
+.segments label:has(input:disabled) { opacity: 0.45; cursor: not-allowed; }
 
 .grille { display: grid; align-items: end; gap: 0 0.75rem; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); }
-.aide { color: var(--attenue); font-size: 0.82rem; }
+.aide { color: var(--attenue); font-size: 0.8rem; line-height: 1.45; }
 
-.avance { border-top: 1px solid var(--bordure); padding-top: 0.75rem; }
-.avance summary { cursor: pointer; font-weight: 600; margin-bottom: 0.75rem; color: var(--accent); }
+.avance { border-top: 1px solid var(--bordure); padding-top: 0.9rem; margin-top: 0.2rem; }
+.avance summary { cursor: pointer; font-weight: 650; margin-bottom: 0.9rem; color: var(--accent); }
 
-.titre-resultats { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+/* ---------- Résultats ---------- */
+.titre-resultats { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
 .titre-resultats h2 { margin: 0; }
 .actions { display: flex; gap: 0.5rem; }
-button {
-  font: inherit;
-  font-weight: 600;
-  padding: 0.5rem 0.9rem;
-  border-radius: 8px;
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: var(--carte);
-  cursor: pointer;
+.actions button {
+  font: inherit; font-weight: 650; font-size: 0.9rem; cursor: pointer;
+  padding: 0.5rem 1rem; border-radius: 999px;
+  border: 1px solid var(--bordure); background: var(--carte); color: var(--texte);
+  transition: border-color 0.15s, transform 0.15s;
 }
-button + button { background: transparent; color: var(--accent); }
+.actions button:hover { border-color: var(--accent); transform: translateY(-1px); }
+.actions button:first-child { background: var(--nuit); color: var(--nuit-texte); border-color: var(--nuit); }
 
-.sous-titre { color: var(--attenue); margin: 0.5rem 0 0.75rem; }
+.sous-titre { color: var(--attenue); margin: 0.6rem 0 1rem !important; font-weight: 600; }
 
-.tuiles { display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); }
+.tuiles { display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr)); }
 .tuile {
-  display: flex;
-  flex-direction: column;
-  padding: 0.7rem 0.8rem;
-  border-radius: 8px;
-  background: var(--accent-clair);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: 0.1rem;
+  padding: 0.85rem 0.95rem; border-radius: 12px;
+  background: var(--nuit); color: var(--nuit-texte);
 }
-.tuile .libelle { font-size: 0.8rem; color: var(--attenue); }
-.tuile .valeur { line-height: 1.25; font-size: 1.4rem; font-weight: 700; font-variant-numeric: tabular-nums; }
-.tuile .valeur small { font-size: 0.8rem; font-weight: 500; color: var(--attenue); }
-.tuile .note { font-size: 0.78rem; color: var(--attenue); }
+.tuile::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--spectre); opacity: 0.85; }
+.tuile .libelle { font-size: 0.74rem; color: var(--nuit-attenue); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+.tuile .valeur { font-family: var(--police-titre); line-height: 1.15; font-size: 1.65rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.tuile .valeur small { font-family: var(--police); font-size: 0.78rem; font-weight: 500; color: var(--nuit-attenue); }
+.tuile .note { font-size: 0.76rem; color: var(--nuit-attenue); }
 
-.source { font-size: 0.78rem; color: var(--attenue); margin-top: 0.25rem; }
-.calculateur p { margin: 0.4rem 0; }
+.source { font-size: 0.76rem; color: var(--attenue); margin-top: 0.3rem; line-height: 1.45; }
 
-.achats { width: 100%; border-collapse: collapse; }
-.achats td { padding: 0.55rem 0.4rem; border-bottom: 1px solid var(--bordure); vertical-align: top; }
-.achats td span { color: var(--attenue); font-size: 0.88rem; }
-.achats .qte { font-weight: 700; font-size: 1.1rem; width: 3rem; text-align: right; padding-right: 0.8rem; color: var(--accent); }
+/* Jauge DLI */
+.jauge { margin: 2.2rem 0 0.3rem; }
+.jauge__piste { position: relative; height: 2.6rem; border-radius: 10px; background: var(--fond); border: 1px solid var(--bordure); }
+.jauge__repere {
+  position: absolute; top: 0; bottom: 0; border-radius: 8px;
+}
+.jauge__repere--0 { background: color-mix(in srgb, #9be234 45%, transparent); top: 0; bottom: 50%; align-items: center; padding: 0; }
+.jauge__repere--1 { background: color-mix(in srgb, #3ccf7a 45%, transparent); top: 50%; align-items: center; padding: 0; }
+.jauge__repere--2 { background: color-mix(in srgb, #1fb6a6 45%, transparent); top: 0; bottom: 50%; align-items: center; padding: 0; }
+.jauge__repere--3 { background: color-mix(in srgb, #ff6b4a 45%, transparent); top: 50%; align-items: center; padding: 0; }
+.jauge__curseur { position: absolute; top: -0.45rem; bottom: -0.45rem; width: 3px; margin-left: -1.5px; background: var(--texte); border-radius: 2px; }
+.jauge__curseur b {
+  position: absolute; top: -1.45rem; left: 50%; transform: translateX(-50%);
+  font-size: 0.75rem; background: var(--texte); color: var(--carte); padding: 0.05rem 0.4rem; border-radius: 6px; white-space: nowrap;
+}
+.jauge__legende { list-style: none; display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; padding: 0; margin: 0.5rem 0 0; font-size: 0.76rem; font-weight: 600; }
+.jauge__legende li { display: inline-flex; align-items: center; gap: 0.35rem; }
+.jauge__legende li::before { content: ''; width: 0.7rem; height: 0.7rem; border-radius: 3px; background: var(--c); }
+.jauge__legende span { color: var(--attenue); font-weight: 500; }
+.jauge__legende--0 { --c: color-mix(in srgb, #9be234 55%, transparent); }
+.jauge__legende--1 { --c: color-mix(in srgb, #3ccf7a 55%, transparent); }
+.jauge__legende--2 { --c: color-mix(in srgb, #1fb6a6 55%, transparent); }
+.jauge__legende--3 { --c: color-mix(in srgb, #ff6b4a 55%, transparent); }
+.jauge__echelle { position: relative; height: 1rem; font-family: var(--police-mono); font-size: 0.68rem; color: var(--attenue); margin-top: 0.35rem; }
+.jauge__echelle span { position: absolute; transform: translateX(-50%); }
+.jauge__echelle span:first-child { transform: none; }
+.jauge__echelle span:last-child { transform: translateX(-100%); }
+.calculateur .jauge__unite { font-size: 0.7rem; color: var(--attenue); margin: 0.1rem 0 0; text-align: right; }
+
+/* Plan des barres */
+.plan-cadre { margin: 1rem 0 0.5rem; padding: 0.9rem; border-radius: 12px; background: var(--nuit); }
+.plan-cadre figcaption { font-size: 0.75rem; color: var(--nuit-attenue); margin-top: 0.4rem; }
+.plan { display: block; width: 100%; height: auto; max-height: 24rem; margin: 0 auto; }
+.plan-zone { fill: #1d3b28; stroke: #3c6b50; stroke-width: 1.5; }
+.plan-halo { fill: #ffe7b0; opacity: 0.07; }
+.plan-barre { fill: url(#plan-spectre); }
+.plan-cote { stroke: #a3b8a9; stroke-width: 1.2; fill: none; }
+.plan-cote--entraxe { stroke: #ffc15e; stroke-dasharray: 3 3; }
+.plan-texte { fill: #eef5ef; font: 600 12px var(--police); }
+.plan-texte--entraxe { fill: #ffc15e; }
+
+.achats { width: 100%; border-collapse: separate; border-spacing: 0 0.45rem; }
+.achats td { padding: 0.75rem 0.7rem; vertical-align: top; background: var(--fond); }
+.achats td:first-child { border-radius: 10px 0 0 10px; }
+.achats td:last-child { border-radius: 0 10px 10px 0; }
+.achats td span { color: var(--attenue); font-size: 0.86rem; }
+.achats .qte {
+  width: 3.4rem; text-align: center; font-family: var(--police-titre); font-weight: 800; font-size: 1.3rem;
+  color: var(--accent); vertical-align: middle;
+}
 
 .erreurs { color: var(--erreur); font-weight: 600; }
 .perime { opacity: 0.35; }
 
 .avertissement { font-size: 0.82rem; color: var(--attenue); margin: 0; }
 
-@media (min-width: 900px) {
-  main.calculateur { grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); align-items: start; }
-  .avertissement, .intro-calc { grid-column: 1 / -1; }
-}
-
 @media print {
   #formulaire, .actions { display: none; }
-  main.calculateur { display: block; padding: 0; }
-  .carte { border: 0; padding: 0; }
-  h3, .tuile, tr { break-inside: avoid; }
+  main.calculateur { display: block; padding: 0; margin: 0; }
+  .carte { border: 0; padding: 0; box-shadow: none; }
+  .tuile { background: #f1f1f1; color: #000; }
+  .tuile .libelle, .tuile .note, .tuile .valeur small { color: #444; }
+  .plan-cadre { background: #fff; border: 1px solid #ccc; }
+  h3, .tuile, tr, .plan-cadre { break-inside: avoid; }
 }

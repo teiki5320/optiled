@@ -4,17 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
+    <meta name="description" content="Page introuvable." />
     <title>Page introuvable — OptiLED</title>
     <!--#head-->
   </head>
   <body>
     <!--#header-->
-    <main id="contenu" class="page">
-      <div class="prose">
-        <h1>Page introuvable</h1>
-        <p class="chapo">Cette page n'existe pas ou a été déplacée.</p>
-        <p><a class="bouton-lien plein" href="index.html">Retour à l'accueil</a> <a class="bouton-lien" href="calculateur.html">Ouvrir le calculateur</a></p>
-      </div>
+    <main id="contenu">
+      <header class="bandeau bandeau--reference">
+        <div class="conteneur">
+          <p class="fil"><a href="index.html">Accueil</a></p>
+          <span class="bandeau__icone"><!--#icone:livre--></span>
+          <h1>Page introuvable</h1>
+          <p class="chapo">Cette page n'existe pas ou a été déplacée.</p>
+        </div>
+      </header>
+      <section class="section">
+        <div class="conteneur">
+          <div class="heros__actions">
+            <a class="bouton bouton--plein" href="index.html">Retour à l'accueil</a>
+            <a class="bouton" href="calculateur.html"><!--#icone:calcul--> Ouvrir le calculateur</a>
+          </div>
+        </div>
+      </section>
     </main>
     <!--#footer-->
     <script type="module" src="/src/site.ts"></script>

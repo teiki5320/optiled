@@ -1,9 +1,10 @@
-import './site.css';
+import './site';
 import './style.css';
 import { calculer, type EntreesCalcul, type ResultatCalcul, type Surface } from './calc';
 import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data';
 import { euros, nombre } from './format';
 import { listeAchat, resumeTexte, type ContexteListe } from './liste';
+import { jaugeDli, planBarres } from './schema';
 
 const LONGUEUR_BARRE_DEFAUT_M = 1.2;
 
@@ -89,7 +90,7 @@ function tuile(libelle: string, valeur: string, unite: string, note = ''): strin
     ${note ? `<span class="note">${note}</span>` : ''}</div>`;
 }
 
-function rendre(r: ResultatCalcul, ctx: ContexteListe, sources: { ppfd: string; hauteur: string; spectre: string }): string {
+function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources: { ppfd: string; hauteur: string; spectre: string }): string {
   const b = r.barres;
   const dispo =
     `${b.lignesParZone} ligne${b.lignesParZone > 1 ? 's' : ''} de ${b.barresParLigne} barre${b.barresParLigne > 1 ? 's' : ''} bout à bout` +
@@ -113,10 +114,12 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, sources: { ppfd: string; 
       ${tuile('Flux nécessaire (PPF)', nombre(r.ppfNecessaire), 'µmol/s', `dont ${nombre(r.ppfUtile)} utiles`)}
       ${tuile('Puissance électrique', nombre(r.puissanceW), 'W', `${nombre(r.densitePuissanceWm2)} W/m²`)}
     </div>
+    ${jaugeDli(r.dli)}
     <p class="source">Source PPFD : ${echapper(sources.ppfd)}</p>
 
     <h3>Barres LED et disposition</h3>
     <p><strong>${b.total} barre${b.total > 1 ? 's' : ''} de ${nombre(ctx.longueurBarreM, 2)} m</strong> : ${dispo}.</p>
+    <figure class="plan-cadre">${planBarres(surface, b, ctx.longueurBarreM)}<figcaption>Vue de dessus, à l'échelle. Les barres sont centrées dans la longueur.</figcaption></figure>
     <p>Entraxe entre lignes : <strong>${nombre(b.espacementM * 100)} cm</strong>, première ligne à ${nombre(b.margeBordM * 100)} cm du bord.</p>
     <p>${puissanceBarre}</p>
 
@@ -178,7 +181,7 @@ function mettreAJour(): void {
     puissanceBarreW: entrees.puissanceBarreW,
     photoperiodeH: entrees.photoperiodeH,
   };
-  contenu.innerHTML = rendre(r, ctx, { ppfd: p.ppfd.source, hauteur: p.hauteur_cm.source, spectre: p.spectre.source });
+  contenu.innerHTML = rendre(r, ctx, entrees.surface, { ppfd: p.ppfd.source, hauteur: p.hauteur_cm.source, spectre: p.spectre.source });
   dernierResume = resumeTexte(r, ctx);
 }
 

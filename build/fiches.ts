@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { calculerDli } from '../src/calc';
 import type { Legume, ParametresStade } from '../src/data';
+import { icone, type NomIcone } from './icones';
 
 const FICHIER = resolve(__dirname, '../src/data/legumes.json');
 
@@ -31,29 +32,71 @@ function blocStade(titre: string, p: ParametresStade): string {
   </div>`;
 }
 
+/** « Légumes fruits » → « legumes-fruits » */
+export function slug(s: string): string {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+const ICONES_FAMILLE: Record<string, NomIcone> = {
+  'legumes-feuilles': 'feuille',
+  aromatiques: 'herbe',
+  'micro-pousses': 'graines',
+  'legumes-fruits': 'fruit',
+};
+
+export function iconeFamille(famille: string): string {
+  return icone(ICONES_FAMILLE[slug(famille)] ?? 'pousse');
+}
+
+function kpi(libelle: string, valeur: string, unite = ''): string {
+  return `<div><dt>${libelle}</dt><dd>${valeur}${unite ? `<small>${unite}</small>` : ''}</dd></div>`;
+}
+
 export function rendreFiche(l: Legume): string {
   const c = l.culture;
+  const croissance = l.stades.croissance;
+  const floraison = l.stades.floraison;
   const espacement = c.espacement_cm.valeur ? plage(c.espacement_cm.valeur, ' cm') : 'semis dense, à la volée';
-  return `<article class="fiche" id="${l.id}">
-  <h3>${echapper(l.nom)} <span class="fiche-famille">${echapper(l.famille)}</span></h3>
-  <p class="fiche-conseil">${echapper(c.conseils.valeur)}</p>
-  <div class="fiche-grille">
-    ${blocStade(l.stades.floraison ? 'Lumière — croissance' : 'Lumière', l.stades.croissance)}
-    ${l.stades.floraison ? blocStade('Lumière — floraison / fructification', l.stades.floraison) : ''}
-    <div class="fiche-stade">
-      <h4>Conditions de culture</h4>
-      <table class="fiche-table"><tbody>
-        ${ligne('Température (jour)', plage(c.temperature_c.valeur, ' °C'), c.temperature_c.source)}
-        ${ligne('Humidité relative', plage(c.humidite_pct.valeur, ' %'), c.humidite_pct.source)}
-        ${ligne('pH de la solution', plage(c.ph.valeur), c.ph.source)}
-        ${ligne('EC de la solution', plage(c.ec_ms_cm.valeur, ' mS/cm'), c.ec_ms_cm.source)}
-        ${ligne('Première récolte', plage(c.jours_recolte.valeur, ' jours'), c.jours_recolte.source)}
-        ${ligne('Espacement', espacement, c.espacement_cm.source)}
-      </tbody></table>
-    </div>
+  const ppfd = floraison ? `${croissance.ppfd.valeur} → ${floraison.ppfd.valeur}` : `${croissance.ppfd.valeur}`;
+  const dli = (p: ParametresStade) => calculerDli(p.ppfd.valeur, p.photoperiode.valeur).toFixed(1).replace('.', ',');
+  return `<article class="fiche fiche--${slug(l.famille)}" id="${l.id}">
+  <header class="fiche__tete">
+    <span class="fiche__icone">${iconeFamille(l.famille)}</span>
+    <div><h3>${echapper(l.nom)}</h3><p class="fiche__famille">${echapper(l.famille)}</p></div>
+  </header>
+  <div class="fiche__corps">
+    <p class="fiche__conseil">${echapper(c.conseils.valeur)}</p>
+    <dl class="fiche__kpi">
+      ${kpi('PPFD', ppfd, 'µmol/m²/s')}
+      ${kpi('DLI', floraison ? `${dli(croissance)} → ${dli(floraison)}` : dli(croissance), 'mol/m²/j')}
+      ${kpi('Lumière', nb(croissance.photoperiode.valeur), 'h/jour')}
+      ${kpi('Température', plage(c.temperature_c.valeur), '°C')}
+      ${kpi('pH', plage(c.ph.valeur))}
+      ${kpi('EC', plage(c.ec_ms_cm.valeur), 'mS/cm')}
+      ${kpi('Récolte', plage(c.jours_recolte.valeur), 'jours')}
+      ${kpi('Humidité', plage(c.humidite_pct.valeur), '%')}
+    </dl>
+    <details class="fiche__detail">
+      <summary>Détail complet et sources</summary>
+      <div class="fiche__stades">
+        ${blocStade(floraison ? 'Lumière — croissance' : 'Lumière', croissance)}
+        ${floraison ? blocStade('Lumière — floraison / fructification', floraison) : ''}
+        <div class="fiche-stade">
+          <h4>Conditions de culture</h4>
+          <table class="fiche-table"><tbody>
+            ${ligne('Température (jour)', plage(c.temperature_c.valeur, ' °C'), c.temperature_c.source)}
+            ${ligne('Humidité relative', plage(c.humidite_pct.valeur, ' %'), c.humidite_pct.source)}
+            ${ligne('pH de la solution', plage(c.ph.valeur), c.ph.source)}
+            ${ligne('EC de la solution', plage(c.ec_ms_cm.valeur, ' mS/cm'), c.ec_ms_cm.source)}
+            ${ligne('Première récolte', plage(c.jours_recolte.valeur, ' jours'), c.jours_recolte.source)}
+            ${ligne('Espacement', espacement, c.espacement_cm.source)}
+            ${ligne('Conseil', echapper(c.conseils.valeur), c.conseils.source)}
+          </tbody></table>
+        </div>
+      </div>
+    </details>
+    <p class="fiche__action"><a class="bouton-lien plein" href="calculateur.html?legume=${l.id}">${icone('calcul')} Calculer l'éclairage</a></p>
   </div>
-  <details class="fiche-sources"><summary>Afficher les sources de chaque valeur</summary></details>
-  <p><a class="bouton-lien" href="calculateur.html?legume=${l.id}">Calculer l'éclairage pour : ${echapper(l.nom.toLowerCase())} →</a></p>
 </article>`;
 }
 
@@ -65,11 +108,16 @@ export function rendreFiches(legumes: Legume[] = chargerLegumes()): string {
   const familles = new Map<string, Legume[]>();
   for (const l of legumes) familles.set(l.famille, [...(familles.get(l.famille) ?? []), l]);
 
-  const sommaire = [...familles]
-    .map(([f, ls]) => `<li><strong>${echapper(f)}</strong> : ${ls.map((l) => `<a href="#${l.id}">${echapper(l.nom)}</a>`).join(', ')}</li>`)
+  const filtres = [...familles.keys()]
+    .map((f) => `<a class="pastille" href="#famille-${slug(f)}">${iconeFamille(f)} ${echapper(f)}</a>`)
     .join('');
   const sections = [...familles]
-    .map(([f, ls]) => `<section class="fiches-famille"><h2>${echapper(f)}</h2>${ls.map(rendreFiche).join('')}</section>`)
+    .map(
+      ([f, ls]) => `<section class="fiches-famille fiches-famille--${slug(f)}" id="famille-${slug(f)}">
+  <h2>${iconeFamille(f)} ${echapper(f)}</h2>
+  <div class="fiches-grille">${ls.map(rendreFiche).join('')}</div>
+</section>`,
+    )
     .join('');
-  return `<nav class="sommaire" aria-label="Légumes"><ul>${sommaire}</ul></nav>${sections}`;
+  return `<nav class="filtres" aria-label="Familles de légumes">${filtres}</nav>${sections}`;
 }

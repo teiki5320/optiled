@@ -36,9 +36,11 @@ Node.js 20 ou plus récent est requis.
 | Fichier | Rôle |
 | --- | --- |
 | `*.html` (racine) | Une page du site chacune (détectées automatiquement par le build) |
-| `build/site.ts` | Plugin Vite : insère en-tête, navigation, pied de page et fiches ; génère `sitemap.xml` et `robots.txt` |
+| `build/site.ts` | Plugin Vite : en-tête, menu, pied de page, cartes de guides, mise en page automatique des articles (bandeau, sommaire latéral, temps de lecture) ; génère `sitemap.xml` et `robots.txt` |
+| `build/icones.ts` | Icônes SVG et logo |
 | `build/fiches.ts` | Génération HTML des fiches légumes |
-| `src/site.css` | Styles communs à tout le site |
+| `src/site.css`, `src/site.ts` | Styles communs (thème clair/sombre, polices Inter et Bricolage Grotesque hébergées avec le site) ; barre de progression et sommaire actif |
+| `src/schema.ts` | Visuels du calculateur : plan vu de dessus des barres LED, jauge du DLI |
 | `src/data/legumes.json` | **Toutes les données légumes** : une valeur `{ valeur, source }` par paramètre |
 | `src/data.ts` | Types et accès aux données |
 | `src/calc.ts` | **Module de calcul isolé** (fonctions pures, aucun accès au DOM) |
@@ -49,10 +51,11 @@ Node.js 20 ou plus récent est requis.
 ## Ajouter une page
 
 1. Copiez une page existante (par exemple `led-bases.html`) sous un nouveau nom à la racine.
-2. Gardez les marqueurs `<!--#head-->`, `<!--#header-->` et `<!--#footer-->` : le build les remplace par les parties communes. La page est ajoutée automatiquement au build et au `sitemap.xml`.
-3. Pour qu'elle apparaisse dans une rubrique du menu, nommez-la `led-….html` ou `culture-….html` (voir `NAVIGATION` dans `build/site.ts`) et ajoutez un lien depuis `led.html` ou `culture.html`.
+2. Gardez les marqueurs `<!--#head-->`, `<!--#header-->` et `<!--#footer-->` : le build les remplace par les parties communes. La page est ajoutée automatiquement au build et au `sitemap.xml`. Une page d'article (`<main id="contenu" class="page">` avec fil d'Ariane et `<article class="prose">` contenant `h1`, `p.chapo` et `nav.sommaire`) reçoit automatiquement le bandeau de titre et le sommaire latéral.
+   Autres marqueurs : `<!--#cartes:led-->` / `<!--#cartes:culture-->` (cartes des guides), `<!--#icone:nom-->` (icône de `build/icones.ts`), `<!--#fiches-->`.
+3. Pour l'ajouter à une rubrique, nommez-la `led-….html` ou `culture-….html` et déclarez-la dans `RUBRIQUES` (`build/site.ts`) : elle apparaîtra dans les cartes, le pied de page et la numérotation « Guide n sur N ».
 
-Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, `encadre attention`, `formule`, `tableau-defile` + `tableau`, `suite`, `cartes` + `carte-lien`, `bouton-lien`.
+Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, `encadre attention`, `formule`, `tableau-defile` + `tableau`, `suite`, `bouton` / `bouton bouton--plein`.
 
 ## Modifier ou ajouter un légume
 

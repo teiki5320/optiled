@@ -1,18 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { chargerLegumes } from './fiches';
-import { footer, header, pagesHtml } from './site';
+import { pagesHtml, transformerPage } from './site';
 
 const racine = resolve(__dirname, '..');
 const pages = Object.keys(pagesHtml(racine)).map((n) => `${n}.html`);
 
 /** HTML d'une page tel que publié (parties communes incluses). */
 function contenu(page: string): string {
-  let html = readFileSync(resolve(racine, page), 'utf8').replace('<!--#header-->', header(page)).replace('<!--#footer-->', footer());
-  // Les fiches légumes sont générées : leurs ancres sont les identifiants des légumes.
-  if (html.includes('<!--#fiches-->')) html += chargerLegumes().map((l) => `<a id="${l.id}"></a>`).join('');
-  return html;
+  return transformerPage(readFileSync(resolve(racine, page), 'utf8'), page);
 }
 
 const ids = (html: string) => new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
