@@ -15,7 +15,7 @@
  * (fil d'Ariane, <article class="prose"> avec h1, chapo et sommaire) reçoivent
  * automatiquement un bandeau de titre, un sommaire latéral et un temps de lecture.
  */
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import type { Plugin } from 'vite';
 import { rendreFiches } from './fiches';
@@ -40,6 +40,8 @@ export interface Guide {
   titre: string;
   resume: string;
   icone: NomIcone;
+  /** Texte alternatif de la photo de couverture (public/images/guides/<page>-1600.webp) */
+  photo: string;
 }
 
 export type Rubrique = 'led' | 'culture';
@@ -49,21 +51,21 @@ export const RUBRIQUES: Record<Rubrique, { nom: string; hub: string; guides: Gui
     nom: 'Éclairage LED',
     hub: 'led.html',
     guides: [
-      { fichier: 'led-bases.html', titre: 'Les bases : PAR, PPFD, DLI et spectre', resume: 'Pourquoi les lumens ne servent à rien pour les plantes, et quels chiffres regarder à la place.', icone: 'ampoule' },
-      { fichier: 'led-choisir.html', titre: 'Choisir ses LED', resume: 'Formats, lecture d’une fiche technique, dimensionnement et pièges du marketing.', icone: 'coche' },
-      { fichier: 'led-installation.html', titre: 'Installer, régler et mesurer', resume: 'Hauteur, espacement, photopériode, gradation et mesure au PAR-mètre.', icone: 'jauge' },
+      { fichier: 'led-bases.html', titre: 'Les bases : PAR, PPFD, DLI et spectre', resume: 'Pourquoi les lumens ne servent à rien pour les plantes, et quels chiffres regarder à la place.', icone: 'ampoule', photo: "Barre LED horticole allumée au-dessus d'un bac de laitues" },
+      { fichier: 'led-choisir.html', titre: 'Choisir ses LED', resume: 'Formats, lecture d’une fiche technique, dimensionnement et pièges du marketing.', icone: 'coche', photo: "Barres LED, panneau LED, tube LED et alimentation posés sur un plan de travail" },
+      { fichier: 'led-installation.html', titre: 'Installer, régler et mesurer', resume: 'Hauteur, espacement, photopériode, gradation et mesure au PAR-mètre.', icone: 'jauge', photo: "Réglage de la hauteur d'une barre LED au-dessus de basilic, capteur PAR posé sur le bac" },
     ],
   },
   culture: {
     nom: 'Culture indoor',
     hub: 'culture.html',
     guides: [
-      { fichier: 'culture-demarrer.html', titre: 'Démarrer une culture indoor', resume: 'Espace, matériel, premières cultures et premier cycle.', icone: 'depart' },
-      { fichier: 'culture-substrats.html', titre: 'Substrats et hydroponie', resume: 'Terreau, coco, laine de roche, Kratky, DWC, NFT.', icone: 'couches' },
-      { fichier: 'culture-nutriments.html', titre: 'Arrosage, nutriments, pH et EC', resume: 'Nourrir ses plantes et piloter sa solution nutritive.', icone: 'goutte' },
-      { fichier: 'culture-climat.html', titre: 'Température, humidité et ventilation', resume: 'Maîtriser le climat : VPD, extraction, brassage.', icone: 'thermometre' },
-      { fichier: 'culture-semis.html', titre: 'Semis, repiquage et bouturage', resume: 'Réussir ses départs de culture et ses micro-pousses.', icone: 'pousse' },
-      { fichier: 'culture-problemes.html', titre: 'Problèmes, carences et ravageurs', resume: 'Diagnostiquer et corriger sans paniquer.', icone: 'insecte' },
+      { fichier: 'culture-demarrer.html', titre: 'Démarrer une culture indoor', resume: 'Espace, matériel, premières cultures et premier cycle.', icone: 'depart', photo: "Étagère de culture éclairée par des LED dans une cuisine : salades, aromatiques et micro-pousses" },
+      { fichier: 'culture-substrats.html', titre: 'Substrats et hydroponie', resume: 'Terreau, coco, laine de roche, Kratky, DWC, NFT.', icone: 'couches', photo: "Fibre de coco, laine de roche, billes d'argile, perlite et terreau, avec un plant de laitue en panier" },
+      { fichier: 'culture-nutriments.html', titre: 'Arrosage, nutriments, pH et EC', resume: 'Nourrir ses plantes et piloter sa solution nutritive.', icone: 'goutte', photo: "Mesure du pH de la solution nutritive d'un système hydroponique de laitues" },
+      { fichier: 'culture-climat.html', titre: 'Température, humidité et ventilation', resume: 'Maîtriser le climat : VPD, extraction, brassage.', icone: 'thermometre', photo: "Tente de culture avec extracteur, ventilateur de brassage et jeunes plants de tomates sous LED" },
+      { fichier: 'culture-semis.html', titre: 'Semis, repiquage et bouturage', resume: 'Réussir ses départs de culture et ses micro-pousses.', icone: 'pousse', photo: "Plateau de semis sous couvercle et micro-pousses sous éclairage LED" },
+      { fichier: 'culture-problemes.html', titre: 'Problèmes, carences et ravageurs', resume: 'Diagnostiquer et corriger sans paniquer.', icone: 'insecte', photo: "Inspection du revers d'une feuille de tomate à la loupe, piège jaune englué à côté" },
     ],
   },
 };
@@ -114,6 +116,7 @@ export function footer(): string {
       <a class="logo" href="index.html">${LOGO}<span><strong>${NOM_SITE}</strong><small>LED &amp; culture indoor</small></span></a>
       <p>Guides et outils gratuits pour cultiver des légumes sous LED, en intérieur.</p>
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la littérature horticole : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
+      <p class="site-pied__note">Photos d'illustration des guides générées par intelligence artificielle ; schémas réalisés pour le site.</p>
     </div>
     <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="glossaire.html">Glossaire</a></li></ul></div>
     ${colonne('led')}
@@ -122,11 +125,22 @@ export function footer(): string {
 </footer>`;
 }
 
+const DOSSIER_PHOTOS = resolve(__dirname, '../public/images/guides');
+
+/** Photo d'un guide (srcset 800/1600 px), ou chaîne vide si elle n'existe pas encore. */
+export function photoGuide(fichier: string, alt: string, sizes: string, chargement: 'lazy' | 'eager' = 'lazy'): string {
+  const nom = fichier.replace(/\.html$/, '');
+  if (!existsSync(resolve(DOSSIER_PHOTOS, `${nom}-1600.webp`))) return '';
+  const prioritaire = chargement === 'eager' ? ' fetchpriority="high"' : '';
+  return `<img src="images/guides/${nom}-800.webp" srcset="images/guides/${nom}-800.webp 800w, images/guides/${nom}-1600.webp 1600w" sizes="${sizes}" width="1600" height="900" alt="${alt.replace(/"/g, '&quot;')}" loading="${chargement}" decoding="async"${prioritaire} />`;
+}
+
 /** Cartes des guides d'une rubrique (accueil et pages de rubrique). */
 export function cartesGuides(r: Rubrique): string {
   return `<div class="cartes-guides cartes-guides--${r}">${RUBRIQUES[r].guides
     .map(
       (g, i) => `<a class="carte-guide" href="${g.fichier}">
+      <span class="carte-guide__photo">${photoGuide(g.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw')}</span>
       <span class="carte-guide__icone">${icone(g.icone)}</span>
       <span class="carte-guide__num">${String(i + 1).padStart(2, '0')}</span>
       <strong>${g.titre}</strong>
@@ -135,6 +149,12 @@ export function cartesGuides(r: Rubrique): string {
     </a>`,
     )
     .join('')}</div>`;
+}
+
+/** Photo de couverture d'un guide, qui chevauche le bas du bandeau. */
+function couverture(g: Guide): string {
+  const img = photoGuide(g.fichier, g.photo, '(min-width: 1100px) 1040px, 94vw', 'eager');
+  return img ? `<div class="conteneur"><figure class="article__couverture">${img}</figure></div>` : '';
 }
 
 export function tempsLecture(html: string): number {
@@ -187,6 +207,7 @@ export function mettreEnPageArticle(html: string, fichier: string): string {
       ${chapo.replace('class="chapo"', 'class="chapo bandeau__chapo"')}
     </div>
   </header>
+  ${guides[rang] ? couverture(guides[rang]) : ''}
   <div class="conteneur article__grille${sommaire ? '' : ' article__grille--seule'}">
     ${sommaire ? `<aside class="article__cote">${sommaire}</aside>` : ''}
     <article class="prose">${corps}</article>

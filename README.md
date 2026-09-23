@@ -57,6 +57,14 @@ Node.js 20 ou plus récent est requis.
 
 Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, `encadre attention`, `formule`, `tableau-defile` + `tableau`, `suite`, `bouton` / `bouton bouton--plein`.
 
+## Images
+
+- `public/images/guides/<page>-800.webp` et `-1600.webp` : photo de couverture de chaque guide (affichée sous le bandeau et en vignette dans les cartes). Le texte alternatif est déclaré dans `RUBRIQUES` (`build/site.ts`, champ `photo`). Une page sans photo s'affiche simplement sans couverture.
+- Pour ajouter ou remplacer une photo : placez `<page>.png` (ou `.jpg`) dans un dossier, puis `npm run images -- <dossier>` génère les deux WebP recadrés en 16:9.
+- `public/images/schemas/*.svg` : schémas explicatifs insérés dans les guides avec `<figure class="schema">`.
+- Les photos actuelles ont été générées par IA (ElevenLabs, modèle Seedream) ; le pied de page le signale.
+- Un test vérifie que chaque image référencée existe et possède un texte alternatif.
+
 ## Modifier ou ajouter un légume
 
 Éditez `src/data/legumes.json`, puis relancez `npm test` et `npm run build`. Chaque légume ressemble à ceci :

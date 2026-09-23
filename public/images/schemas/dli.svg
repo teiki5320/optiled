@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" role="img"><title>Le DLI est l'aire sous la courbe du PPFD au cours de la journée</title><defs><linearGradient id="barre" x1="0" x2="1"><stop offset="0" stop-color="#5b7cff"/><stop offset=".5" stop-color="#c26bff"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient><linearGradient id="cone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1d2" stop-opacity=".5"/><stop offset="1" stop-color="#ffb3d1" stop-opacity=".03"/></linearGradient><marker id="fl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#ffc15e"/></marker><marker id="fv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#8ff0b3"/></marker><marker id="fb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#7cb2ff"/></marker></defs><style>text{font-family:"Inter Variable",Inter,system-ui,sans-serif;fill:#eef5ef}.t{font-size:15px;font-weight:700}.p{font-size:13px;fill:#a3b8a9}.v{font-size:14px;font-weight:700;fill:#8ff0b3}.a{font-size:13px;font-weight:700;fill:#ffc15e}.m{font-family:ui-monospace,Menlo,monospace;font-size:12px;fill:#a3b8a9}</style><rect width="800" height="380" rx="18" fill="#0c1510"/>
+<text x="40" y="44" class="t">DLI : la lumière cumulée sur la journée</text>
+<text x="40" y="66" class="p">L'aire colorée = PPFD × durée d'éclairage</text>
+<path d="M80 300h660M80 300V90" stroke="#3c6b50" stroke-width="2"/>
+<g class="m"><text x="80" y="322" text-anchor="middle">0 h</text><text x="245" y="322" text-anchor="middle">6 h</text><text x="410" y="322" text-anchor="middle">12 h</text><text x="575" y="322" text-anchor="middle">18 h</text><text x="740" y="322" text-anchor="middle">24 h</text>
+<text x="70" y="304" text-anchor="end">0</text><text x="70" y="160" text-anchor="end">250</text></g>
+<text x="30" y="200" class="m" transform="rotate(-90 30 200)" text-anchor="middle">PPFD (µmol/m²/s)</text>
+<defs><linearGradient id="aire" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c26bff" stop-opacity=".75"/><stop offset="1" stop-color="#5b7cff" stop-opacity=".25"/></linearGradient></defs>
+<path d="M245 300V156h440v144z" fill="url(#aire)"/>
+<path d="M80 300h165V156h440v144h55" fill="none" stroke="#eef5ef" stroke-width="2.5"/>
+<path d="M245 115h440" stroke="#ffc15e" stroke-width="1.5" marker-start="url(#fl)" marker-end="url(#fl)"/>
+<text x="465" y="106" text-anchor="middle" class="a">photopériode : 16 h (6 h → 22 h)</text>
+<text x="465" y="225" text-anchor="middle" class="t">14,4 mol/m²/j</text>
+<text x="400" y="356" text-anchor="middle" class="v">DLI = 250 µmol/m²/s × 16 h × 3600 s ÷ 1 000 000 = 14,4 mol/m²/j</text>
+</svg>

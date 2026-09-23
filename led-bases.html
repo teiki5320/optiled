@@ -44,6 +44,7 @@
         <h2 id="ppf-ppfd">PPF et PPFD : ce qui sort de la lampe, ce qui arrive sur la feuille</h2>
         <h3>PPF : le débit total de la lampe</h3>
         <p>Le <a href="glossaire.html#ppf">PPF</a> (Photosynthetic Photon Flux) est la quantité totale de photons PAR émise par la lampe chaque seconde, en <strong>µmol/s</strong>. C'est une caractéristique du luminaire, mesurée en sphère intégrante par le fabricant. Elle ne dit rien de la façon dont la lumière est répartie.</p>
+        <figure class="schema"><img src="images/schemas/ppf-ppfd.svg" alt="Schéma : la lampe émet un flux total (PPF) ; seule une partie arrive sur les feuilles, mesurée en PPFD" width="800" height="400" loading="lazy" decoding="async" /><figcaption>Le PPF décrit la lampe, le PPFD ce que reçoivent les plantes. La différence vient des pertes sur les bords et dans les allées.</figcaption></figure>
         <h3>PPFD : ce que reçoit réellement la plante</h3>
         <p>Le <a href="glossaire.html#ppfd">PPFD</a> (Photosynthetic Photon Flux Density) est la quantité de photons PAR qui arrive sur une surface donnée chaque seconde, en <strong>µmol/m²/s</strong>. C'est la valeur qui compte pour la plante. Elle dépend du PPF de la lampe, de la hauteur de suspension, de la surface éclairée, des parois et de la position (centre ou bord).</p>
         <p>Ordre de grandeur utile : le plein soleil d'été culmine vers 2 000 µmol/m²/s, une journée couverte se situe souvent entre 100 et 400 µmol/m²/s, et l'intérieur d'une pièce près d'une fenêtre reste généralement bien en dessous de 100 µmol/m²/s.</p>
@@ -54,6 +55,7 @@
 
         <h2 id="dli">Le DLI : la dose de lumière quotidienne</h2>
         <p>Le PPFD est un débit instantané. Ce qui détermine la croissance, c'est la quantité totale reçue sur la journée : le <a href="glossaire.html#dli">DLI</a> (Daily Light Integral), en <strong>mol/m²/j</strong>. Faust et Logan (2018, HortScience) en ont fait une notion centrale pour les cultures sous abri.</p>
+        <figure class="schema"><img src="images/schemas/dli.svg" alt="Graphique : PPFD de 250 µmol/m²/s pendant 16 heures ; l'aire sous la courbe représente un DLI de 14,4 mol/m²/j" width="800" height="380" loading="lazy" decoding="async" /><figcaption>Le DLI est l'aire sous la courbe : la même dose peut s'obtenir avec plus d'intensité sur moins d'heures, ou l'inverse.</figcaption></figure>
         <p class="formule">DLI = PPFD × heures × 3600 / 1 000 000</p>
         <p>On multiplie par 3 600 pour passer des secondes aux heures, puis on divise par 1 000 000 pour passer des micromoles aux moles.</p>
         <div class="tableau-defile">

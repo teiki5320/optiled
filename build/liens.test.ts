@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { pagesHtml, transformerPage } from './site';
@@ -14,6 +14,22 @@ function contenu(page: string): string {
 }
 
 const ids = (html: string) => new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
+
+describe('images', () => {
+  for (const page of pages) {
+    it(`${page} : chaque image locale existe et a un texte alternatif`, () => {
+      const html = contenu(page);
+      for (const [balise] of html.matchAll(/<img\b[^>]*>/g)) {
+        expect(balise, balise).toMatch(/\salt="/);
+        const src = balise.match(/\ssrc="([^"]+)"/)?.[1] ?? '';
+        if (src.startsWith('images/')) expect(existsSync(resolve(racine, 'public', src)), src).toBe(true);
+        for (const [, f] of (balise.match(/srcset="([^"]+)"/)?.[1] ?? '').matchAll(/(images\/\S+)/g)) {
+          expect(existsSync(resolve(racine, 'public', f)), f).toBe(true);
+        }
+      }
+    });
+  }
+});
 
 describe('liens internes', () => {
   for (const page of pages) {

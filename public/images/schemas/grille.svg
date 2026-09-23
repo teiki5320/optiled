@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" role="img"><title>Mesure en grille : 9 points de mesure du PPFD répartis sur la surface de culture</title><defs><linearGradient id="barre" x1="0" x2="1"><stop offset="0" stop-color="#5b7cff"/><stop offset=".5" stop-color="#c26bff"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient><linearGradient id="cone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1d2" stop-opacity=".5"/><stop offset="1" stop-color="#ffb3d1" stop-opacity=".03"/></linearGradient><marker id="fl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#ffc15e"/></marker><marker id="fv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#8ff0b3"/></marker><marker id="fb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#7cb2ff"/></marker></defs><style>text{font-family:"Inter Variable",Inter,system-ui,sans-serif;fill:#eef5ef}.t{font-size:15px;font-weight:700}.p{font-size:13px;fill:#a3b8a9}.v{font-size:14px;font-weight:700;fill:#8ff0b3}.a{font-size:13px;font-weight:700;fill:#ffc15e}.m{font-family:ui-monospace,Menlo,monospace;font-size:12px;fill:#a3b8a9}</style><rect width="800" height="400" rx="18" fill="#0c1510"/>
+<text x="40" y="44" class="t">Mesurer en 9 points</text>
+<text x="40" y="66" class="p">Capteur à hauteur des feuilles, vue de dessus</text>
+<rect x="60" y="90" width="420" height="270" rx="10" fill="#1d3b28" stroke="#3c6b50" stroke-width="2"/>
+<g fill="#0c1510" stroke="#8ff0b3" stroke-width="2">
+<circle cx="130" cy="140" r="26"/><circle cx="270" cy="140" r="26"/><circle cx="410" cy="140" r="26"/>
+<circle cx="130" cy="225" r="26"/><circle cx="270" cy="225" r="26"/><circle cx="410" cy="225" r="26"/>
+<circle cx="130" cy="310" r="26"/><circle cx="270" cy="310" r="26"/><circle cx="410" cy="310" r="26"/></g>
+<g class="v" text-anchor="middle">
+<text x="130" y="145">210</text><text x="270" y="145">265</text><text x="410" y="145">215</text>
+<text x="130" y="230">260</text><text x="270" y="230" style="fill:#ffc15e">320</text><text x="410" y="230">255</text>
+<text x="130" y="315">205</text><text x="270" y="315">260</text><text x="410" y="315">210</text></g>
+<text x="520" y="120" class="t">Exemple (µmol/m²/s)</text>
+<text x="520" y="160" class="p">Moyenne des 9 points</text><text x="520" y="182" class="v">≈ 244</text>
+<text x="520" y="222" class="p">Minimum ÷ moyenne</text><text x="520" y="244" class="v">205 ÷ 244 ≈ 0,84</text>
+<text x="520" y="284" class="p">Plus ce rapport approche 1,</text><text x="520" y="302" class="p">plus l'éclairage est homogène.</text>
+<text x="520" y="342" class="a">Coins plus sombres : normal,</text><text x="520" y="360" class="a">parois réfléchissantes = mieux.</text>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img"><title>Trois systèmes hydroponiques : Kratky, DWC et NFT</title><defs><linearGradient id="barre" x1="0" x2="1"><stop offset="0" stop-color="#5b7cff"/><stop offset=".5" stop-color="#c26bff"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient><linearGradient id="cone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1d2" stop-opacity=".5"/><stop offset="1" stop-color="#ffb3d1" stop-opacity=".03"/></linearGradient><marker id="fl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#ffc15e"/></marker><marker id="fv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#8ff0b3"/></marker><marker id="fb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#7cb2ff"/></marker></defs><style>text{font-family:"Inter Variable",Inter,system-ui,sans-serif;fill:#eef5ef}.t{font-size:15px;font-weight:700}.p{font-size:13px;fill:#a3b8a9}.v{font-size:14px;font-weight:700;fill:#8ff0b3}.a{font-size:13px;font-weight:700;fill:#ffc15e}.m{font-family:ui-monospace,Menlo,monospace;font-size:12px;fill:#a3b8a9}</style><rect width="900" height="420" rx="18" fill="#0c1510"/>
+<g>
+<text x="150" y="42" text-anchor="middle" class="t">Kratky</text><text x="150" y="62" text-anchor="middle" class="p">passif, sans pompe</text>
+<path d="M60 120h180v220a10 10 0 0 1-10 10H70a10 10 0 0 1-10-10z" fill="#14231a" stroke="#3c6b50" stroke-width="2"/>
+<path d="M62 210h176v130a8 8 0 0 1-8 8H70a8 8 0 0 1-8-8z" fill="#1f5f8b" opacity=".75"/>
+<path d="M130 108h40l-5 40h-30z" fill="#2a4435" stroke="#8ff0b3"/>
+<g fill="#2fa860"><circle cx="150" cy="98" r="22"/><circle cx="135" cy="92" r="13" fill="#6fe39a"/><circle cx="165" cy="90" r="13" fill="#6fe39a"/></g>
+<path d="M140 148c-4 30 2 60-4 110M150 148c0 40 4 80 0 130M160 148c4 30-2 60 6 110" stroke="#eef5ef" stroke-width="2" fill="none" opacity=".8"/>
+<text x="150" y="190" text-anchor="middle" class="a">air</text>
+<text x="150" y="382" text-anchor="middle" class="p">le niveau baisse :</text><text x="150" y="400" text-anchor="middle" class="p">les racines respirent</text>
+</g>
+<g>
+<text x="450" y="42" text-anchor="middle" class="t">DWC</text><text x="450" y="62" text-anchor="middle" class="p">racines dans l'eau aérée</text>
+<path d="M360 120h180v220a10 10 0 0 1-10 10H370a10 10 0 0 1-10-10z" fill="#14231a" stroke="#3c6b50" stroke-width="2"/>
+<path d="M362 150h176v190a8 8 0 0 1-8 8H370a8 8 0 0 1-8-8z" fill="#1f5f8b" opacity=".75"/>
+<path d="M430 108h40l-5 40h-30z" fill="#2a4435" stroke="#8ff0b3"/>
+<g fill="#2fa860"><circle cx="450" cy="98" r="22"/><circle cx="435" cy="92" r="13" fill="#6fe39a"/><circle cx="465" cy="90" r="13" fill="#6fe39a"/></g>
+<path d="M440 148c-4 40 2 80-4 140M450 148c0 50 4 100 0 160M460 148c4 40-2 80 6 140" stroke="#eef5ef" stroke-width="2" fill="none" opacity=".8"/>
+<rect x="400" y="322" width="36" height="12" rx="6" fill="#a3b8a9"/>
+<g fill="#eef5ef" opacity=".7"><circle cx="410" cy="300" r="4"/><circle cx="422" cy="278" r="3"/><circle cx="414" cy="250" r="4"/><circle cx="426" cy="222" r="3"/><circle cx="416" cy="192" r="3"/></g>
+<rect x="560" y="300" width="44" height="30" rx="6" fill="#2a4435" stroke="#a3b8a9"/><path d="M560 318c-40 0-80 10-124 10" stroke="#a3b8a9" stroke-width="2" fill="none"/>
+<text x="582" y="350" text-anchor="middle" class="m">pompe à air</text>
+<text x="450" y="382" text-anchor="middle" class="p">bulleur : oxygène</text><text x="450" y="400" text-anchor="middle" class="p">en continu</text>
+</g>
+<g>
+<text x="750" y="42" text-anchor="middle" class="t">NFT</text><text x="750" y="62" text-anchor="middle" class="p">fine lame d'eau qui circule</text>
+<path d="M640 130l220 40v22l-220-40z" fill="#14231a" stroke="#3c6b50" stroke-width="2"/>
+<path d="M642 148l216 39" stroke="#3a8ed6" stroke-width="4"/>
+<g fill="#2fa860"><circle cx="690" cy="118" r="17"/><circle cx="760" cy="131" r="17"/><circle cx="830" cy="144" r="17"/></g>
+<path d="M860 190v60" stroke="#7cb2ff" stroke-width="2" marker-end="url(#fb)"/>
+<rect x="680" y="260" width="200" height="80" rx="10" fill="#14231a" stroke="#3c6b50" stroke-width="2"/><path d="M682 280h196v58H682z" fill="#1f5f8b" opacity=".75"/>
+<rect x="700" y="300" width="30" height="26" rx="4" fill="#a3b8a9"/>
+<path d="M715 300V250H650v-95" stroke="#7cb2ff" stroke-width="2" fill="none" marker-end="url(#fb)"/>
+<text x="780" y="316" text-anchor="middle" class="m">réservoir</text><text x="715" y="358" text-anchor="middle" class="m">pompe</text>
+<text x="750" y="382" text-anchor="middle" class="p">gouttière en pente,</text><text x="750" y="400" text-anchor="middle" class="p">retour au réservoir</text>
+</g>
+</svg>
