@@ -89,6 +89,7 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 
 - `ppfd` en µmol/m²/s, `photoperiode` en h/jour, `hauteur_cm` = [min, max] au-dessus du feuillage.
 - `floraison: null` pour les cultures récoltées avant floraison (le choix du stade est alors désactivé).
+- `avertissement` (facultatif) : mise en garde affichée dans le calculateur et la fiche (ex. réglementation du chanvre CBD).
 - `famille` sert à regrouper la liste déroulante et les fiches.
 - `culture` : plages [min, max] de température (°C), humidité (%), pH, EC (mS/cm), jours jusqu'à la première récolte, espacement (cm, `null` pour un semis à la volée), et un conseil ; affichées dans les fiches légumes.
 - Chaque valeur **doit** avoir une `source` non vide : les tests vérifient la présence des sources et la plausibilité des valeurs (PPFD entre 50 et 1 500, photopériode ≤ 24 h, etc.).
