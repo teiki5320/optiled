@@ -1,6 +1,7 @@
 // Point d'entrée commun des pages. Le JavaScript n'ajoute que du confort :
 // les pages restent complètes et lisibles sans lui.
 import './site.css';
+import './theme.css';
 
 /** Barre de progression de lecture (en haut de l'écran), sur les articles. */
 function progressionLecture(): void {

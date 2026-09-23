@@ -1,0 +1,149 @@
+/* =====================================================================
+   OptiLED — thème « Crépuscule » (maquette 3a)
+   Ciel violet et ambre, cartes de verre, grands arrondis, Urbanist.
+   Chargé après site.css : redéfinit les jetons et quelques composants.
+   ===================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap');
+
+:root, :root:where(*) {
+  --nuit: #1b1322;
+  --nuit-2: #2a1a32;
+  --nuit-3: #3a2140;
+  --nuit-texte: #f6ecf0;
+  --nuit-attenue: #e6c3cc;
+  --nuit-bordure: rgb(255 255 255 / 0.12);
+
+  --fond: #1b1322;
+  --carte: #261a2e;
+  --verre: rgb(255 255 255 / 0.05);
+  --verre-fort: rgb(40 24 48 / 0.72);
+  --texte: #f6ecf0;
+  --attenue: #dcbcc6;
+  --bordure: rgb(255 255 255 / 0.1);
+  --accent: #f7c07a;
+  --accent-vif: #f59b58;
+  --accent-clair: #33213a;
+  --corail: #e8765a;
+  --alerte: #ffc66b;
+  --alerte-clair: #3a2a1c;
+  --erreur: #ff8a7d;
+
+  --ambre: #f7c07a;
+  --degrade: linear-gradient(160deg, #f7c07a, #e8765a);
+  --ciel: linear-gradient(180deg, #23162e 0%, #4a2446 40%, #9c4a52 72%, #e98f5a 90%, #f7c07a 100%);
+  --spectre: linear-gradient(90deg, #f7c07a, #e8765a 50%, #b04f55);
+
+  --r: var(--ambre);
+  --rayon: 28px;
+  --rayon-petit: 16px;
+  --ombre: none;
+  --ombre-forte: 0 30px 60px -30px rgb(10 4 14 / 0.7);
+  --police: 'Urbanist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --police-titre: 'Urbanist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  color-scheme: dark;
+}
+
+.bandeau--led, .article--led, .cartes-guides--led { --r: #f7c07a; }
+.bandeau--culture, .article--culture, .cartes-guides--culture { --r: #ff9c7a; }
+.bandeau--reference, .article--reference { --r: #e9a8d6; }
+.bandeau--legumes { --r: #ff9c7a; }
+.bandeau--calcul { --r: #f7c07a; }
+
+body { background: linear-gradient(180deg, #23162e 0, #1b1322 40rem) no-repeat, var(--fond); font-weight: 500; }
+h1, h2, h3, h4 { font-weight: 800; letter-spacing: -0.025em; }
+a { color: var(--accent); }
+:focus-visible { outline-color: var(--accent); }
+
+/* ---------- En-tête ---------- */
+.site-entete { background: rgb(27 19 34 / 0.82); border-bottom-color: var(--nuit-bordure); }
+.site-entete__barre { min-height: 4.5rem; }
+.logo-marque { display: none; }
+.logo::before {
+  content: ''; width: 1.7rem; height: 1.7rem; border-radius: 50%; flex: none;
+  background: radial-gradient(circle at 40% 40%, #ffe2a8, #f59b58 60%, #d9604f);
+  box-shadow: 0 0 22px #f59b58;
+}
+.logo strong { font-size: 1.35rem; font-weight: 800; }
+.site-nav ul { background: rgb(255 255 255 / 0.08); border: 1px solid var(--nuit-bordure); padding: 0.3rem; border-radius: 999px; }
+.site-nav a, .menu-mobile a { color: var(--nuit-texte); font-weight: 600; }
+.site-nav a[aria-current='page'], .menu-mobile a[aria-current='page'] { background: var(--nuit-texte); color: #2a1830; }
+.menu-mobile nav { background: var(--nuit-2); border-radius: 22px; }
+
+/* ---------- Boutons ---------- */
+.bouton, .bouton-lien { color: var(--nuit-texte); border-color: rgb(255 255 255 / 0.25); font-weight: 700; }
+.bouton:hover, .bouton-lien:hover { background: rgb(255 255 255 / 0.08); }
+.bouton--plein, .bouton-lien.plein { background: var(--degrade); color: #2a1422; border-color: transparent; box-shadow: 0 10px 24px -8px rgb(232 118 90 / 0.7); }
+.bouton--plein:hover { background: var(--degrade); filter: brightness(1.05); }
+
+/* ---------- Bandeaux ---------- */
+.bandeau { background: var(--ciel); padding: 3rem 0 3.4rem; }
+.bandeau::before { opacity: 1; background: radial-gradient(40% 70% at 82% 100%, rgb(255 226 168 / 0.45), transparent 70%); }
+.bandeau::after { display: none; }
+.bandeau h1 { font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.bandeau__chapo, .bandeau .chapo { color: #f3dbe0; }
+.bandeau .fil, .bandeau .fil a { color: #f3dbe0; }
+.bandeau__etiquettes span { background: rgb(255 255 255 / 0.12); border-color: rgb(255 255 255 / 0.18); }
+.bandeau__etiquettes span:first-child { color: #2a1422; background: #ffe2c4; border-color: transparent; }
+.bandeau a:not(.bouton) { color: #ffe2a8; }
+
+/* ---------- Surfaces de verre ---------- */
+.sommaire, .suite a, .carte-guide, .carte-lien, .etape, .tableau-defile, .fiche, .pastille {
+  background: var(--verre); border-color: var(--bordure); box-shadow: none;
+}
+.sommaire { border-radius: 24px; }
+.sommaire li a:hover { background: rgb(255 255 255 / 0.06); }
+.sommaire p a { background: rgb(255 255 255 / 0.08); }
+.sommaire p a:hover { background: var(--degrade); color: #2a1422; }
+
+.carte-guide { padding: 1.5rem; }
+.carte-guide:hover { border-color: rgb(247 192 122 / 0.45); box-shadow: var(--ombre-forte); }
+.carte-guide::after { background: var(--degrade); }
+.carte-guide__icone, .cartes-guides--culture .carte-guide__icone { border-radius: 50%; background: var(--degrade); color: #2a1422; }
+.carte-guide__num { color: rgb(247 192 122 / 0.22); }
+.carte-guide > span:not([class]) { color: var(--attenue); }
+.carte-guide__lire { color: var(--accent); }
+
+.pastille { padding: 0.55rem 1rem 0.55rem 0.7rem; }
+.pastille:hover { border-color: var(--accent); }
+.pastille .icone { color: var(--accent); }
+
+.surtitre { font-weight: 700; letter-spacing: 0.1em; }
+.section__tete h2 { font-weight: 800; letter-spacing: -0.03em; }
+
+/* ---------- Articles ---------- */
+.prose h2::before { color: #2a1422; background: var(--degrade); }
+.prose ul > li::marker { color: var(--accent); }
+.prose code { background: rgb(255 255 255 / 0.08); }
+.encadre { background: rgb(247 192 122 / 0.08); border-color: rgb(247 192 122 / 0.25); }
+.encadre::before { background: var(--accent); }
+.encadre.attention { background: rgb(232 118 90 / 0.1); border-color: rgb(232 118 90 / 0.35); }
+.encadre.attention::before { background: #ff9c7a; }
+.formule { background: #120c17; color: #ffe2c4; border-color: var(--nuit-3); box-shadow: inset 3px 0 0 var(--accent); }
+.tableau thead th { background: var(--nuit-3); }
+.tableau tbody tr:nth-child(even) { background: rgb(255 255 255 / 0.03); }
+.suite small { color: var(--accent); }
+
+/* ---------- Accueil (blocs communs) ---------- */
+.spectre-bloc { background: radial-gradient(60% 100% at 100% 0%, rgb(247 192 122 / 0.18), transparent 70%), var(--verre-fort); border: 1px solid var(--bordure); border-radius: 32px; }
+.spectre__par span { background: #2a1a32; }
+.encart-calcul { background: radial-gradient(60% 120% at 0% 0%, rgb(247 192 122 / 0.22), transparent 70%), var(--nuit-2); border-color: var(--nuit-bordure); border-radius: 32px; }
+
+/* ---------- Fiches légumes ---------- */
+.fiche { border-radius: 28px; }
+.fiche--legumes-feuilles, .fiches-famille--legumes-feuilles { --famille: #9fd49a; }
+.fiche--aromatiques, .fiches-famille--aromatiques { --famille: #8fcfc3; }
+.fiche--micro-pousses, .fiches-famille--micro-pousses { --famille: #cfe58a; }
+.fiche--legumes-fruits, .fiches-famille--legumes-fruits { --famille: #f4a08e; }
+.fiche__icone { border-radius: 50%; color: #1b1322; }
+.fiche__kpi div { background: rgb(255 255 255 / 0.06); border-radius: 14px; }
+.fiche__detail summary { color: var(--accent); }
+
+/* ---------- Pied de page ---------- */
+.site-pied { background: #150f1b; }
+.site-pied::before { background: var(--spectre); }
+
+@media print {
+  :root, :root:where(*) { --fond: #fff; --carte: #fff; --texte: #000; --attenue: #444; --bordure: #ddd; --verre: #fff; }
+  body { background: #fff; }
+}

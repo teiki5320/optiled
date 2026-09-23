@@ -1,5 +1,6 @@
 import './site';
 import './style.css';
+import './theme-calcul.css';
 import { calculer, type EntreesCalcul, type ResultatCalcul, type Surface } from './calc';
 import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data';
 import { euros, nombre } from './format';
@@ -7,12 +8,15 @@ import { listeAchat, resumeTexte, type ContexteListe } from './liste';
 import { jaugeDli, planBarres } from './schema';
 
 const LONGUEUR_BARRE_DEFAUT_M = 1.2;
+/** DLI qui remplit entièrement l'anneau de synthèse (mol/m²/j). */
+const DLI_ANNEAU_MAX = 30;
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const champ = (id: string) => $<HTMLInputElement>(id);
 
 const form = $<HTMLFormElement>('formulaire');
 const selectLegume = $<HTMLSelectElement>('legume');
+const tuilesLegumes = $<HTMLDivElement>('tuiles-legumes');
 const contenu = $<HTMLDivElement>('contenu-resultats');
 const zoneErreurs = $<HTMLParagraphElement>('erreurs');
 const boutonCopier = $<HTMLButtonElement>('copier');
@@ -21,6 +25,11 @@ let dernierResume = '';
 
 function echapper(s: string): string {
   return s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+}
+
+/** « Légumes feuilles » → « legumes-feuilles » (même convention que les fiches). */
+function slug(s: string): string {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
 /** Lit un champ numérique ; undefined s'il est vide. Accepte la virgule décimale. */
@@ -45,6 +54,50 @@ function remplirLegumes(): void {
   selectLegume.value = demande && trouverLegume(demande) ? demande : LEGUMES[0].id;
 }
 
+/** Tuiles cliquables des légumes : elles pilotent la liste déroulante (masquée). */
+function remplirTuiles(): void {
+  const html: string[] = [];
+  for (const [famille, liste] of legumesParFamille()) {
+    for (const l of liste) {
+      html.push(
+        `<button type="button" class="tuile-legume tuile-legume--${slug(famille)}" data-legume="${l.id}" aria-pressed="false">` +
+          `<span class="tuile-legume__pastille" aria-hidden="true"></span>${echapper(l.nom.replace(/\s*\(.*\)$/, ''))}</button>`,
+      );
+    }
+  }
+  tuilesLegumes.innerHTML = html.join('');
+  tuilesLegumes.addEventListener('click', (e) => {
+    const bouton = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-legume]');
+    if (!bouton || !bouton.dataset.legume) return;
+    selectLegume.value = bouton.dataset.legume;
+    appliquerLegume();
+    mettreAJour();
+  });
+}
+
+function majTuiles(): void {
+  tuilesLegumes.querySelectorAll<HTMLButtonElement>('[data-legume]').forEach((b) => {
+    b.setAttribute('aria-pressed', String(b.dataset.legume === selectLegume.value));
+  });
+}
+
+/** Boutons − / + : ajoutent data-pas à la valeur du champ data-cible, bornée par data-min / data-max. */
+function boutonsPas(): void {
+  form.addEventListener('click', (e) => {
+    const bouton = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-cible]');
+    if (!bouton || !bouton.dataset.cible) return;
+    const input = champ(bouton.dataset.cible);
+    const pas = Number(bouton.dataset.pas);
+    const min = bouton.dataset.min ? Number(bouton.dataset.min) : Math.abs(pas);
+    const max = bouton.dataset.max ? Number(bouton.dataset.max) : Infinity;
+    const actuel = lireNombre(input.id);
+    const base = actuel !== undefined && Number.isFinite(actuel) ? actuel : min;
+    const v = Math.min(max, Math.max(min, Math.round((base + pas) * 100) / 100));
+    input.value = String(v).replace('.', ',');
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+}
+
 /** Adapte le formulaire au légume : stade disponible, photopériode pré-remplie. */
 function appliquerLegume(): void {
   const legume = trouverLegume(selectLegume.value)!;
@@ -57,6 +110,7 @@ function appliquerLegume(): void {
     aide.textContent = `${legume.nom} se récolte avant floraison : seul le stade croissance s'applique.`;
   }
   aide.hidden = !sansFloraison;
+  majTuiles();
   appliquerStade();
 }
 
@@ -103,9 +157,13 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources
   const puissanceBarre = ctx.puissanceBarreW
     ? `Barres de ${nombre(ctx.puissanceBarreW)} W : ${nombre(b.puissanceInstalleeW)} W installés, à régler à ~${nombre(b.tauxGradation * 100)} %.`
     : `Chaque barre doit fournir au moins ${nombre(b.puissanceParBarreNecessaireW)} W.`;
+  const parBarreCourt = ctx.puissanceBarreW
+    ? `${nombre(ctx.puissanceBarreW)} W chacune, réglées à ~${nombre(b.tauxGradation * 100)} %`
+    : `≥ ${nombre(b.puissanceParBarreNecessaireW)} W chacune`;
   const cout = r.coutAnEur === null
     ? tuile('Coût annuel', '—', '', 'Indiquez le prix du kWh dans les options')
     : tuile('Coût annuel', euros(r.coutAnEur), '', `${nombre(r.coutAnEur / 12, 2)} € / mois`);
+  const degres = Math.min(360, (r.dli / DLI_ANNEAU_MAX) * 360).toFixed(1);
 
   const achats = listeAchat(r, ctx)
     .map((a) => `<tr><td class="qte">${a.quantite}</td><td><strong>${echapper(a.article)}</strong><br><span>${echapper(a.detail)}</span></td></tr>`)
@@ -113,6 +171,14 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources
 
   return `
     <p class="sous-titre">${echapper(ctx.legume)} · ${echapper(ctx.stade)} · ${nombre(r.surfaceM2, 2)} m² · <a href="legumes.html#${selectLegume.value}">fiche ${echapper(ctx.legume.toLowerCase())}</a></p>
+    <div class="synthese">
+      <div class="anneau" style="--deg:${degres}deg" role="img" aria-label="${nombre(r.puissanceW)} W ; DLI ${nombre(r.dli, 1)} mol/m²/j"><div><strong>${nombre(r.puissanceW)}</strong><span>watts</span></div></div>
+      <div class="synthese__texte">
+        <p class="synthese__titre">${b.total} barre${b.total > 1 ? 's' : ''} LED de ${nombre(ctx.longueurBarreM, 2)} m</p>
+        <p>${parBarreCourt} · à ${r.hauteurCm[0]}–${r.hauteurCm[1]} cm du feuillage</p>
+        <p>PPFD ${nombre(r.ppfd)} µmol/m²/s · anneau : DLI ${nombre(r.dli, 1)} mol/m²/j</p>
+      </div>
+    </div>
     <div class="tuiles">
       ${tuile('PPFD cible', nombre(r.ppfd), 'µmol/m²/s')}
       ${tuile('DLI', nombre(r.dli, 1), 'mol/m²/j', `${nombre(ctx.photoperiodeH)} h/jour`)}
@@ -232,6 +298,8 @@ async function copier(): Promise<void> {
 }
 
 remplirLegumes();
+remplirTuiles();
+boutonsPas();
 appliquerLegume();
 appliquerMode();
 
