@@ -15,7 +15,7 @@ Le calculateur accepte un légume présélectionné dans l'adresse : `index.html
 
 ## Voir le site en ligne
 
-Le site est publié automatiquement sur GitHub Pages à chaque envoi sur `main` : **https://www.optiled.fr/** (adresse GitHub d'origine : https://teiki5320.github.io/optiled/, redirigée vers le domaine une fois celui-ci configuré). L'adresse publique utilisée pour le sitemap, les adresses canoniques et les balises de partage est définie dans `build/site.ts` (`SITE_URL`) ; `public/CNAME` contient le domaine.
+Le site est publié automatiquement sur GitHub Pages à chaque envoi sur `main` : **https://teiki5320.github.io/optiled/**. L'adresse publique utilisée pour le sitemap, les adresses canoniques et les balises de partage est définie dans `build/site.ts` (`SITE_URL`). Domaine prévu : `www.optiled.fr` (voir ci-dessous, à brancher plus tard).
 
 (À activer une fois : *Settings* → *Pages* → *Source* : **GitHub Actions**. Le suivi des publications est dans l'onglet *Actions*.)
 
@@ -165,7 +165,7 @@ La consommation est calculée sur la puissance nécessaire (barres gradées à l
 
 1. Dans IONOS, *Domaines & SSL* → votre domaine → *DNS* : supprimez les enregistrements **A** et **AAAA** existants de `www` et du domaine nu (ils pointent vers la page de parking IONOS), puis ajoutez un enregistrement **CNAME** `www` → `teiki5320.github.io` et, pour le domaine nu, les 4 enregistrements **A** vers 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153.
 2. Dans GitHub, *Settings* → *Pages* → *Custom domain* : saisissez `www.votre-domaine.fr`, puis cochez *Enforce HTTPS* une fois le certificat émis.
-3. L'adresse du domaine est déjà la valeur par défaut de `SITE_URL` dans `build/site.ts` (sitemap, balises de partage et adresses canoniques) : rien d'autre à changer dans le code.
+3. Dans le code, remplacez la valeur par défaut de `SITE_URL` dans `build/site.ts` par `https://www.optiled.fr/` (sitemap, balises de partage et adresses canoniques) et ajoutez un fichier `public/CNAME` contenant `www.optiled.fr`.
 
 ## Déploiement sur IONOS (SFTP)
 
