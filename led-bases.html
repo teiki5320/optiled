@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="PAR, PPF, PPFD, DLI, efficacité en µmol/J et spectre : les notions indispensables pour éclairer correctement vos légumes en intérieur." />
+    <title>Les bases : PAR, PPFD, DLI, spectre — OptiLED</title>
+    <!--#head-->
+  </head>
+  <body>
+    <!--#header-->
+    <main id="contenu" class="page">
+      <p class="fil"><a href="index.html">Accueil</a> › <a href="led.html">Éclairage LED</a></p>
+      <article class="prose">
+        <h1>Les bases de l'éclairage horticole : PAR, PPFD, DLI et spectre</h1>
+        <p class="chapo">Les plantes ne « voient » pas la lumière comme nous. Après cette page, vous saurez lire les unités utiles (PPF, PPFD, DLI, µmol/J), calculer la dose de lumière quotidienne d'une culture et choisir un spectre sans vous laisser piéger par le marketing.</p>
+
+        <nav class="sommaire" aria-label="Sommaire">
+          <strong>Dans cette page</strong>
+          <ol>
+            <li><a href="#lumens-lux">Pourquoi oublier les lumens et les lux</a></li>
+            <li><a href="#par">Le PAR : la lumière utile, de 400 à 700 nm</a></li>
+            <li><a href="#ppf-ppfd">PPF et PPFD : ce qui sort de la lampe, ce qui arrive sur la feuille</a></li>
+            <li><a href="#dli">Le DLI : la dose de lumière quotidienne</a></li>
+            <li><a href="#besoins">Besoins typiques par type de culture</a></li>
+            <li><a href="#efficacite">L'efficacité en µmol/J et votre facture</a></li>
+            <li><a href="#spectre">Le spectre : rôle de chaque couleur</a></li>
+            <li><a href="#blanc">LED blanches : kelvins, IRC et « plein spectre »</a></li>
+          </ol>
+        </nav>
+
+        <h2 id="lumens-lux">Pourquoi oublier les lumens et les lux</h2>
+        <p>Les <a href="glossaire.html#lumen">lumens</a> et les <a href="glossaire.html#lux">lux</a> mesurent la lumière telle que la perçoit l'œil humain. Ces unités sont pondérées par la sensibilité de notre œil, maximale dans le vert-jaune (vers 555 nm) et faible dans le bleu profond et le rouge.</p>
+        <p>La photosynthèse fonctionne autrement. Une plante utilise très bien le bleu et le rouge, que notre œil juge peu lumineux. Une lampe rouge et bleue peut donc afficher peu de lumens tout en nourrissant bien les plantes. À l'inverse, une lampe riche en vert-jaune affichera beaucoup de lumens pour un effet sur la croissance moins bon qu'annoncé.</p>
+        <p>Conséquence pratique : un chiffre en lumens ou en lux ne permet pas de comparer deux lampes horticoles. Il faut raisonner en <strong>photons</strong>, avec les unités décrites ci-dessous.</p>
+
+        <div class="encadre"><p><strong>À retenir :</strong> lumens et lux décrivent ce que voit l'humain. Pour les plantes, on compte les photons utiles, en micromoles (µmol).</p></div>
+
+        <h2 id="par">Le PAR : la lumière utile, de 400 à 700 nm</h2>
+        <p>Le <a href="glossaire.html#par">PAR</a> (Photosynthetically Active Radiation, rayonnement photosynthétiquement actif) désigne la plage de longueurs d'onde de 400 à 700 nm, celle que les plantes utilisent principalement pour la photosynthèse. C'est la référence de toutes les mesures horticoles.</p>
+        <p>À l'intérieur de cette plage, toutes les couleurs sont utiles. Les travaux de McCree (1972) sur la courbe d'action photosynthétique montrent que le rouge est le plus efficace par photon, que le bleu l'est un peu moins, et que le vert reste nettement utilisé, contrairement à une idée reçue. Pour simplifier, la filière compte tous les photons entre 400 et 700 nm de la même façon.</p>
+        <p>Les rayonnements hors de cette plage (UV en dessous de 400 nm, far-red au-dessus de 700 nm) ont des effets réels mais secondaires, abordés plus bas.</p>
+
+        <h2 id="ppf-ppfd">PPF et PPFD : ce qui sort de la lampe, ce qui arrive sur la feuille</h2>
+        <h3>PPF : le débit total de la lampe</h3>
+        <p>Le <a href="glossaire.html#ppf">PPF</a> (Photosynthetic Photon Flux) est la quantité totale de photons PAR émise par la lampe chaque seconde, en <strong>µmol/s</strong>. C'est une caractéristique du luminaire, mesurée en sphère intégrante par le fabricant. Elle ne dit rien de la façon dont la lumière est répartie.</p>
+        <h3>PPFD : ce que reçoit réellement la plante</h3>
+        <p>Le <a href="glossaire.html#ppfd">PPFD</a> (Photosynthetic Photon Flux Density) est la quantité de photons PAR qui arrive sur une surface donnée chaque seconde, en <strong>µmol/m²/s</strong>. C'est la valeur qui compte pour la plante. Elle dépend du PPF de la lampe, de la hauteur de suspension, de la surface éclairée, des parois et de la position (centre ou bord).</p>
+        <p>Ordre de grandeur utile : le plein soleil d'été culmine vers 2 000 µmol/m²/s, une journée couverte se situe souvent entre 100 et 400 µmol/m²/s, et l'intérieur d'une pièce près d'une fenêtre reste généralement bien en dessous de 100 µmol/m²/s.</p>
+        <h3>Relier les deux</h3>
+        <p>Si la lumière était parfaitement répartie et sans perte, PPFD moyen = PPF / surface. En pratique, une partie des photons tombe à côté du plan de culture ou est absorbée par les parois. On applique donc un <a href="glossaire.html#coefficient-utilisation">coefficient d'utilisation</a>, d'environ 0,8 dans une tente à parois réfléchissantes, plus bas en espace ouvert.</p>
+        <p class="formule">PPFD moyen ≈ PPF × coefficient d'utilisation / surface (m²)</p>
+        <p>Exemple : une lampe de 540 µmol/s sur une tente de 1 m² avec un coefficient de 0,8 donne un PPFD moyen d'environ 430 µmol/m²/s.</p>
+
+        <h2 id="dli">Le DLI : la dose de lumière quotidienne</h2>
+        <p>Le PPFD est un débit instantané. Ce qui détermine la croissance, c'est la quantité totale reçue sur la journée : le <a href="glossaire.html#dli">DLI</a> (Daily Light Integral), en <strong>mol/m²/j</strong>. Faust et Logan (2018, HortScience) en ont fait une notion centrale pour les cultures sous abri.</p>
+        <p class="formule">DLI = PPFD × heures × 3600 / 1 000 000</p>
+        <p>On multiplie par 3 600 pour passer des secondes aux heures, puis on divise par 1 000 000 pour passer des micromoles aux moles.</p>
+        <div class="tableau-defile">
+          <table class="tableau">
+            <thead><tr><th>Exemple</th><th>PPFD (µmol/m²/s)</th><th>Durée</th><th>DLI obtenu (mol/m²/j)</th></tr></thead>
+            <tbody>
+              <tr><td>Micro-pousses</td><td>150</td><td>16 h</td><td>≈ 8,6</td></tr>
+              <tr><td>Laitue</td><td>250</td><td>16 h</td><td>≈ 14,4</td></tr>
+              <tr><td>Basilic</td><td>300</td><td>16 h</td><td>≈ 17,3</td></tr>
+              <tr><td>Tomate en fructification</td><td>500</td><td>14 h</td><td>≈ 25,2</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Le DLI montre qu'on peut obtenir la même dose de deux façons : un PPFD plus faible sur une durée plus longue, ou l'inverse. Allonger la durée avec une lampe modeste est souvent plus économique à l'achat. Mais chaque culture a une <a href="glossaire.html#photoperiode">photopériode</a> qui lui convient.</p>
+        <h3>La photopériode</h3>
+        <p>La photopériode est la durée d'éclairage quotidienne. Pour les légumes cultivés en intérieur, on travaille le plus souvent entre 12 et 16 h. Quelques repères :</p>
+        <ul>
+          <li>Salades, aromatiques, micro-pousses : 14 à 16 h sont courantes. Attention, les jours longs favorisent la <a href="glossaire.html#montaison">montaison</a> de certaines salades et de la coriandre.</li>
+          <li>Tomate : ne dépassez pas environ 18 h. Un éclairage continu (24 h/24) provoque chez la tomate des marbrures et des chloroses sur les feuilles.</li>
+          <li>Fraisier : la réponse dépend du type de variété (jours courts ou remontante). Suivez la fiche de la variété.</li>
+        </ul>
+
+        <div class="encadre"><p><strong>À retenir :</strong> visez un DLI, pas seulement un PPFD. Le <a href="calculateur.html">calculateur d'éclairage</a> fait le calcul pour vous à partir de la culture, de la surface et de la durée.</p></div>
+
+        <h2 id="besoins">Besoins typiques par type de culture</h2>
+        <p>Les valeurs ci-dessous sont des ordres de grandeur pour une culture en intérieur sans lumière naturelle. Elles correspondent aux valeurs par défaut du calculateur. Une variété, un stade ou une température différents peuvent justifier des écarts.</p>
+        <div class="tableau-defile">
+          <table class="tableau">
+            <thead><tr><th>Type de culture</th><th>PPFD indicatif (µmol/m²/s)</th><th>Photopériode</th><th>DLI visé (mol/m²/j)</th></tr></thead>
+            <tbody>
+              <tr><td>Micro-pousses</td><td>≈ 150</td><td>14–16 h</td><td>≈ 7–9</td></tr>
+              <tr><td>Légumes feuilles (<a href="legumes.html#laitue">laitue</a>, épinard, roquette)</td><td>250–280</td><td>14–16 h</td><td>≈ 12–16</td></tr>
+              <tr><td>Aromatiques (basilic, persil, ciboulette)</td><td>250–300</td><td>14–16 h</td><td>≈ 12–17</td></tr>
+              <tr><td>Fraisier</td><td>250 (croissance) / 400 (fructification)</td><td>12–16 h</td><td>≈ 12–20</td></tr>
+              <tr><td>Légumes fruits (<a href="legumes.html#tomate">tomate</a>, poivron, piment, aubergine)</td><td>350 (croissance) / 500 (fructification)</td><td>12–16 h (max ≈ 18 h pour la tomate)</td><td>≈ 18–28</td></tr>
+              <tr><td>Concombre</td><td>300 / 450</td><td>12–16 h</td><td>≈ 15–25</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Les légumes fruits sont de loin les plus exigeants. Un DLI trop faible ne les tue pas mais donne peu de fleurs, des fruits petits et peu nombreux. Pour les salades et les aromatiques, un DLI modeste suffit déjà à une récolte correcte.</p>
+
+        <h2 id="efficacite">L'efficacité en µmol/J et votre facture</h2>
+        <p>L'<a href="glossaire.html#efficacite">efficacité</a> d'une lampe horticole s'exprime en <strong>µmol/J</strong> : nombre de micromoles de photons PAR produites pour chaque joule d'électricité consommé. Comme un watt vaut un joule par seconde, on l'obtient simplement :</p>
+        <p class="formule">Efficacité (µmol/J) = PPF (µmol/s) / puissance réelle à la prise (W)</p>
+        <div class="tableau-defile">
+          <table class="tableau">
+            <thead><tr><th>Type d'éclairage</th><th>Efficacité typique (ordre de grandeur)</th></tr></thead>
+            <tbody>
+              <tr><td>Ancienne lampe au sodium haute pression (HPS)</td><td>≈ 1,5–1,9 µmol/J</td></tr>
+              <tr><td>LED horticole bas de gamme</td><td>≈ 1,5–2,2 µmol/J</td></tr>
+              <tr><td>LED horticole de bonne qualité</td><td>≈ 2,5–3 µmol/J</td></tr>
+              <tr><td>LED haut de gamme récente</td><td>au-delà de 3 µmol/J</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Le calculateur retient 2,7 µmol/J par défaut, valeur réaliste pour une LED correcte actuelle.</p>
+        <h3>Ce que cela change sur la facture</h3>
+        <p>À PPFD égal, la consommation est inversement proportionnelle à l'efficacité. Pour éclairer 1 m² de laitue à 250 µmol/m²/s avec un coefficient d'utilisation de 0,8, il faut un PPF d'environ 310 µmol/s :</p>
+        <ul>
+          <li>à 2,7 µmol/J : environ 115 W, soit ≈ 1,9 kWh par jour sur 16 h ;</li>
+          <li>à 1,8 µmol/J : environ 175 W, soit ≈ 2,8 kWh par jour sur 16 h.</li>
+        </ul>
+        <p>Sur une année, l'écart dépasse 300 kWh pour ce seul mètre carré. Multipliez par votre tarif du kWh pour chiffrer la différence. Une lampe plus efficace chauffe aussi moins, ce qui facilite la gestion du <a href="culture-climat.html">climat</a>.</p>
+
+        <div class="encadre attention"><p><strong>Attention :</strong> l'efficacité se calcule avec la puissance réellement consommée à la prise, jamais avec un « équivalent 1000 W ». Voir <a href="led-choisir.html">Choisir ses LED</a> pour décrypter une fiche technique.</p></div>
+
+        <h2 id="spectre">Le spectre : rôle de chaque couleur</h2>
+        <p>Le <a href="glossaire.html#spectre">spectre</a> décrit la répartition des photons selon la longueur d'onde. Il influence la forme de la plante plus que la quantité de biomasse, qui dépend surtout du nombre de photons reçus. Les effets ci-dessous sont bien établis, mais leur ampleur varie selon les espèces.</p>
+        <div class="tableau-defile">
+          <table class="tableau">
+            <thead><tr><th>Couleur</th><th>Plage approximative</th><th>Effets principaux</th></tr></thead>
+            <tbody>
+              <tr><td>Bleu</td><td>400–500 nm</td><td>Plantes plus compactes, feuilles plus épaisses, entre-nœuds courts. Nécessaire en petite proportion pour un développement normal.</td></tr>
+              <tr><td>Vert</td><td>500–600 nm</td><td>Pénètre mieux dans le feuillage et atteint les feuilles basses. Rend la lumière agréable et permet de repérer carences et ravageurs.</td></tr>
+              <tr><td>Rouge</td><td>600–700 nm</td><td>Très efficace pour la photosynthèse ; les diodes rouges sont parmi les plus efficaces électriquement.</td></tr>
+              <tr><td><a href="glossaire.html#far-red">Far-red</a></td><td>700–750 nm environ</td><td>Hors PAR. Favorise l'allongement et l'expansion des feuilles ; peut influencer la floraison de certaines espèces. À petite dose seulement.</td></tr>
+              <tr><td><a href="glossaire.html#uv">UV</a></td><td>sous 400 nm</td><td>Peut augmenter certains pigments ou composés aromatiques. Effet variable et modeste ; risque pour les yeux et la peau.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Pour un amateur, les apports UV et far-red sont des options, pas des nécessités. Une bonne quantité de lumière avec un spectre équilibré compte bien davantage.</p>
+
+        <div class="encadre attention"><p><strong>Attention :</strong> ne regardez jamais directement une LED horticole allumée, surtout si elle contient des UV. Portez des lunettes adaptées si vous travaillez longtemps sous la lampe.</p></div>
+
+        <h2 id="blanc">LED blanches : kelvins, IRC et « plein spectre »</h2>
+        <h3>Température de couleur en kelvins</h3>
+        <p>Les LED blanches sont des diodes bleues recouvertes d'un luminophore qui convertit une partie du bleu en vert, jaune et rouge. Leur teinte s'exprime en <a href="glossaire.html#kelvin">kelvins</a> (K) :</p>
+        <ul>
+          <li>2 700–3 500 K (blanc chaud) : plus de rouge, un peu moins de bleu ;</li>
+          <li>4 000–5 000 K (blanc neutre) : plus de bleu, lumière plus froide ;</li>
+          <li>au-delà de 5 000 K (blanc froid) : encore plus de bleu.</li>
+        </ul>
+        <p>Beaucoup de lampes horticoles mélangent du 3 000 K et du 4 000 K, souvent avec quelques diodes rouges (autour de 660 nm) pour renforcer l'efficacité et la part de rouge.</p>
+        <h3>L'IRC</h3>
+        <p>L'<a href="glossaire.html#irc">IRC</a> (indice de rendu des couleurs) indique la fidélité des couleurs perçues par l'œil, sur 100. Il ne mesure pas l'intérêt pour la plante. Un IRC de 80 ou plus reste appréciable : vous verrez plus facilement une feuille qui jaunit, une tache ou un insecte. Les LED à IRC très élevé (90 et plus) sont souvent un peu moins efficaces.</p>
+        <h3>Pourquoi le blanc plein spectre est un bon choix par défaut</h3>
+        <ul>
+          <li>Il couvre tout le PAR, avec du bleu, du vert et du rouge : les plantes se développent normalement.</li>
+          <li>Les LED blanches récentes atteignent de très bonnes efficacités, comparables aux lampes rouge-bleu.</li>
+          <li>La lumière est confortable pour travailler et permet de diagnostiquer l'état des plantes, contrairement à la lumière violette des lampes « blurple ».</li>
+          <li>Il convient à toutes les cultures de ce site, des micro-pousses à la tomate, en jouant seulement sur l'intensité et la durée.</li>
+        </ul>
+
+        <div class="encadre"><p><strong>À retenir :</strong> choisissez d'abord la quantité de lumière (PPFD et DLI), puis l'efficacité (µmol/J), et seulement ensuite le spectre. Un blanc plein spectre de bonne efficacité est la solution la plus simple. Passez au <a href="calculateur.html">calculateur</a> pour dimensionner votre installation.</p></div>
+      </article>
+
+      <nav class="suite" aria-label="Pages suivantes">
+        <a href="led-choisir.html"><small>Suivant →</small>Choisir ses LED</a>
+      </nav>
+    </main>
+    <!--#footer-->
+    <script type="module" src="/src/site.ts"></script>
+  </body>
+</html>
