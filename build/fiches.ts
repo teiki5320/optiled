@@ -95,7 +95,7 @@ export function rendreFiche(l: Legume): string {
         </div>
       </div>
     </details>
-    <p class="fiche__action"><a class="bouton-lien plein" href="calculateur.html?legume=${l.id}">${icone('calcul')} Calculer l'éclairage</a></p>
+    <p class="fiche__action"><a class="bouton-lien plein" href="index.html?legume=${l.id}#calculateur">${icone('calcul')} Calculer l'éclairage</a></p>
   </div>
 </article>`;
 }

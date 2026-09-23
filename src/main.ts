@@ -40,7 +40,7 @@ function remplirLegumes(): void {
     for (const l of liste) groupe.append(new Option(l.nom, l.id));
     selectLegume.append(groupe);
   }
-  // Le légume peut être présélectionné par l'URL : calculateur.html?legume=tomate
+  // Le légume peut être présélectionné par l'URL : index.html?legume=tomate
   const demande = new URLSearchParams(location.search).get('legume');
   selectLegume.value = demande && trouverLegume(demande) ? demande : LEGUMES[0].id;
 }
@@ -84,6 +84,11 @@ function lireSurface(): Surface {
   return { mode: 'rectangle', longueurM: lireNombre('longueur') ?? NaN, largeurM: lireNombre('largeur') ?? NaN };
 }
 
+/** Titre de section de résultat, avec un lien vers le guide qui l'explique. */
+function titre(texte: string, guide: string, libelle: string): string {
+  return `<h3>${texte}<a class="comprendre" href="${guide}">${libelle}</a></h3>`;
+}
+
 function tuile(libelle: string, valeur: string, unite: string, note = ''): string {
   return `<div class="tuile"><span class="libelle">${libelle}</span>
     <span class="valeur">${valeur}<small> ${unite}</small></span>
@@ -107,7 +112,7 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources
     .join('');
 
   return `
-    <p class="sous-titre">${echapper(ctx.legume)} · ${echapper(ctx.stade)} · ${nombre(r.surfaceM2, 2)} m²</p>
+    <p class="sous-titre">${echapper(ctx.legume)} · ${echapper(ctx.stade)} · ${nombre(r.surfaceM2, 2)} m² · <a href="legumes.html#${selectLegume.value}">fiche ${echapper(ctx.legume.toLowerCase())}</a></p>
     <div class="tuiles">
       ${tuile('PPFD cible', nombre(r.ppfd), 'µmol/m²/s')}
       ${tuile('DLI', nombre(r.dli, 1), 'mol/m²/j', `${nombre(ctx.photoperiodeH)} h/jour`)}
@@ -117,26 +122,26 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources
     ${jaugeDli(r.dli)}
     <p class="source">Source PPFD : ${echapper(sources.ppfd)}</p>
 
-    <h3>Barres LED et disposition</h3>
+    ${titre('Barres LED et disposition', 'led-installation.html#uniformite', 'Bien répartir la lumière')}
     <p><strong>${b.total} barre${b.total > 1 ? 's' : ''} de ${nombre(ctx.longueurBarreM, 2)} m</strong> : ${dispo}.</p>
     <figure class="plan-cadre">${planBarres(surface, b, ctx.longueurBarreM)}<figcaption>Vue de dessus, à l'échelle. Les barres sont centrées dans la longueur.</figcaption></figure>
     <p>Entraxe entre lignes : <strong>${nombre(b.espacementM * 100)} cm</strong>, première ligne à ${nombre(b.margeBordM * 100)} cm du bord.</p>
     <p>${puissanceBarre}</p>
 
-    <h3>Spectre et hauteur</h3>
+    ${titre('Spectre et hauteur', 'led-bases.html#spectre', 'Le rôle du spectre')}
     <p><strong>Spectre :</strong> ${echapper(ctx.spectre)}</p>
     <p class="source">Source : ${echapper(sources.spectre)}</p>
     <p><strong>Hauteur de suspension :</strong> ${r.hauteurCm[0]} à ${r.hauteurCm[1]} cm au-dessus du feuillage (monter si les feuilles blanchissent, descendre si les tiges s'étirent).</p>
     <p class="source">Source : ${echapper(sources.hauteur)}</p>
 
-    <h3>Consommation</h3>
+    ${titre('Consommation', 'led-choisir.html#chaleur', 'Chaleur et consommation')}
     <div class="tuiles">
       ${tuile('Par jour', nombre(r.consoJourKwh, 2), 'kWh')}
       ${tuile('Par an', nombre(r.consoAnKwh), 'kWh')}
       ${cout}
     </div>
 
-    <h3>Liste d'achat</h3>
+    ${titre("Liste d'achat", 'led-choisir.html#checklist', "Checklist d'achat")}
     <table class="achats"><tbody>${achats}</tbody></table>`;
 }
 
@@ -166,6 +171,7 @@ function mettreAJour(): void {
     zoneErreurs.textContent = (e as Error).message;
     zoneErreurs.hidden = false;
     contenu.classList.add('perime');
+    majBarreResume(null);
     dernierResume = '';
     return;
   }
@@ -183,6 +189,27 @@ function mettreAJour(): void {
   };
   contenu.innerHTML = rendre(r, ctx, entrees.surface, { ppfd: p.ppfd.source, hauteur: p.hauteur_cm.source, spectre: p.spectre.source });
   dernierResume = resumeTexte(r, ctx);
+  majBarreResume(r);
+}
+
+/**
+ * Barre de résumé fixée en bas de l'écran sur mobile : elle rappelle les chiffres clés
+ * pendant la saisie et mène aux résultats. Masquée quand les résultats sont visibles.
+ */
+const barreResume = $<HTMLAnchorElement>('barre-resume');
+let resultatsVisibles = false;
+function majBarreResume(r: ResultatCalcul | null): void {
+  if (r) {
+    $('barre-resume-chiffres').innerHTML =
+      `<b>${nombre(r.puissanceW)} W</b> · ${r.barres.total} barre${r.barres.total > 1 ? 's' : ''} LED`;
+  }
+  barreResume.hidden = !r || resultatsVisibles;
+}
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(([e]) => {
+    resultatsVisibles = e.isIntersecting;
+    barreResume.hidden = resultatsVisibles || zoneErreurs.hidden === false;
+  }).observe($('resultats'));
 }
 
 async function copier(): Promise<void> {

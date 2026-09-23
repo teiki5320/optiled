@@ -124,7 +124,10 @@ img, svg { max-width: 100%; }
   border-bottom: 1px solid var(--nuit-bordure);
   color: var(--nuit-texte);
 }
-.site-entete__barre { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4rem; }
+.site-entete__barre { display: flex; align-items: center; gap: 1rem; min-height: 4rem; }
+.site-nav { margin-left: auto; }
+.menu-mobile { margin-left: auto; }
+.bouton--entete + .menu-mobile { margin-left: 0; }
 
 .logo { display: inline-flex; align-items: center; gap: 0.6rem; color: inherit; text-decoration: none; }
 .logo-marque { width: 2.25rem; height: 2.25rem; flex: none; }
@@ -568,3 +571,10 @@ img, svg { max-width: 100%; }
 
 .bandeau a:not(.bouton) { color: #9ff3c0; }
 .bandeau .fil a { color: var(--nuit-attenue); }
+
+/* Bouton « Calculer » de l'en-tête (pages autres que le calculateur) */
+.bouton--entete { padding: 0.45rem 0.95rem; font-size: 0.9rem; margin-left: auto; }
+@media (min-width: 860px) { .site-nav + .bouton--entete { margin-left: 0; } }
+@media (max-width: 859px) { .bouton--entete { margin-left: auto; } .site-entete__barre { gap: 0.6rem; } }
+@media (max-width: 420px) { .logo small { display: none; } }
+@media (max-width: 350px) { .bouton--entete span { display: none; } .bouton--entete { padding: 0.5rem 0.6rem; } }

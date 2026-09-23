@@ -5,11 +5,11 @@ describe('en-tête', () => {
   it('met en évidence la rubrique de la page courante', () => {
     expect(header('led-choisir.html')).toContain('<a href="led.html" aria-current="page">');
     expect(header('culture-semis.html')).toContain('<a href="culture.html" aria-current="page">');
-    expect(header('index.html')).toContain('<a href="index.html" aria-current="page">');
+    expect(header('index.html')).toContain('<a href="index.html" aria-current="page">Calculateur</a>');
   });
 
   it('une seule rubrique active par page (menu ordinateur + menu mobile)', () => {
-    for (const page of ['index.html', 'calculateur.html', 'led-bases.html', 'culture.html', 'legumes.html', 'glossaire.html']) {
+    for (const page of ['index.html', 'led-bases.html', 'culture.html', 'legumes.html', 'glossaire.html']) {
       const actifs = [...header(page).matchAll(/<a href="([^"]+)" aria-current/g)].map((m) => m[1]);
       expect(actifs, page).toHaveLength(2);
       expect(new Set(actifs).size, page).toBe(1);

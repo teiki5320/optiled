@@ -12,7 +12,7 @@ describe('fiches légumes', () => {
   it('affiche le DLI calculé et le lien vers le calculateur', () => {
     const html = rendreFiche(legumes.find((l) => l.id === 'laitue')!);
     expect(html).toContain("14,4");
-    expect(html).toContain('calculateur.html?legume=laitue');
+    expect(html).toContain('index.html?legume=laitue#calculateur');
   });
 
   it('les fruits ont un bloc floraison, pas les feuilles', () => {

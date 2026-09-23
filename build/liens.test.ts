@@ -5,6 +5,8 @@ import { pagesHtml, transformerPage } from './site';
 
 const racine = resolve(__dirname, '..');
 const pages = Object.keys(pagesHtml(racine)).map((n) => `${n}.html`);
+/** Pages de redirection (ancienne adresse du calculateur) : pas de contenu propre. */
+const estRedirection = (page: string) => readFileSync(resolve(racine, page), 'utf8').includes('http-equiv="refresh"');
 
 /** HTML d'une page tel que publié (parties communes incluses). */
 function contenu(page: string): string {
@@ -31,6 +33,7 @@ describe('liens internes', () => {
       expect(casses).toEqual([]);
     });
 
+    if (estRedirection(page)) continue;
     it(`${page} : titre, description et marqueurs communs`, () => {
       const html = readFileSync(resolve(racine, page), 'utf8');
       expect(html).toMatch(/<title>[^<]+<\/title>/);

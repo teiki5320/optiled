@@ -1,17 +1,17 @@
 # OptiLED — éclairage LED et culture indoor de légumes
 
-Site web statique (Vite + TypeScript, sans backend), en français et pensé d'abord pour le mobile : des guides complets sur l'éclairage LED horticole et la culture de légumes en intérieur, des fiches légumes, un glossaire, et un **calculateur LED**.
+Site web statique (Vite + TypeScript, sans backend), en français et pensé d'abord pour le mobile, construit autour d'un **calculateur d'éclairage LED** (page d'accueil), complété par des guides sur l'éclairage LED horticole et la culture de légumes en intérieur, des fiches légumes et un glossaire.
 
 | Page | Contenu |
 | --- | --- |
-| `index.html` | Accueil |
-| `calculateur.html` | Calculateur : PPFD, DLI, PPF, puissance, barres LED, coût annuel, liste d'achat (copie / impression) |
+| `index.html` | **Accueil = calculateur** : PPFD, DLI, PPF, puissance, barres LED et plan de pose, coût annuel, liste d'achat (copie / impression), puis accès aux guides |
+| `calculateur.html` | Ancienne adresse du calculateur : redirige vers l'accueil en gardant le légume choisi |
 | `led.html` + `led-*.html` | Guides LED : bases (PAR, PPFD, DLI, spectre), choisir ses LED, installer et mesurer |
 | `culture.html` + `culture-*.html` | Guides culture : démarrer, substrats et hydroponie, nutriments/pH/EC, climat, semis, problèmes et ravageurs |
 | `legumes.html` | Fiches légumes, **générées au build** depuis `src/data/legumes.json` |
 | `glossaire.html` | Glossaire des termes techniques |
 
-Le calculateur accepte un légume présélectionné dans l'adresse : `calculateur.html?legume=tomate`.
+Le calculateur accepte un légume présélectionné dans l'adresse : `index.html?legume=tomate#calculateur`. Chaque bloc de résultat renvoie vers le guide qui l'explique ; sur mobile, une barre fixe rappelle la puissance et le nombre de barres pendant la saisie.
 
 ## Voir le site en ligne
 

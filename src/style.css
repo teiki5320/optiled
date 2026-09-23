@@ -1,6 +1,6 @@
 /* Calculateur — s'appuie sur les jetons de site.css */
 
-main.calculateur {
+.calculateur {
   display: grid;
   gap: 1.25rem;
   padding-top: 1.5rem;
@@ -9,7 +9,7 @@ main.calculateur {
   position: relative;
 }
 @media (min-width: 960px) {
-  main.calculateur { grid-template-columns: minmax(0, 23rem) minmax(0, 1fr); align-items: start; gap: 1.5rem; }
+  .calculateur { grid-template-columns: minmax(0, 23rem) minmax(0, 1fr); align-items: start; gap: 1.5rem; }
   #formulaire { position: sticky; top: 5.5rem; }
   .avertissement { grid-column: 1 / -1; }
 }
@@ -156,10 +156,61 @@ input[type='text']:focus, select:focus { outline: none; border-color: var(--acce
 
 @media print {
   #formulaire, .actions { display: none; }
-  main.calculateur { display: block; padding: 0; margin: 0; }
+  .calculateur { display: block; padding: 0; margin: 0; }
   .carte { border: 0; padding: 0; box-shadow: none; }
   .tuile { background: #f1f1f1; color: #000; }
   .tuile .libelle, .tuile .note, .tuile .valeur small { color: #444; }
   .plan-cadre { background: #fff; border: 1px solid #ccc; }
   h3, .tuile, tr, .plan-cadre { break-inside: avoid; }
 }
+
+/* ---------- Calculateur en page d'accueil ---------- */
+.bandeau--accueil { padding-bottom: 3.6rem; }
+.bandeau--accueil h1 { font-size: clamp(2rem, 6.5vw, 3.4rem); max-width: 20ch; }
+.bandeau--accueil .bandeau__etiquettes { margin-bottom: 0.6rem; }
+@media (max-width: 699px) {
+  .bandeau--accueil { padding-top: 1.4rem; padding-bottom: 3.2rem; }
+  .bandeau--accueil .bandeau__etiquettes span:not(:first-child) { display: none; }
+  .bandeau--accueil h1 { font-size: 2rem; margin: 0.4rem 0 0.5rem; }
+  .bandeau--accueil .chapo { font-size: 0.98rem; }
+}
+.calculateur { margin-top: -2.4rem; scroll-margin-top: 4.5rem; }
+
+.etape-num {
+  display: inline-grid; place-items: center; width: 1.7rem; height: 1.7rem; margin-right: 0.35rem;
+  border-radius: 50%; background: var(--accent-vif); color: #062011; font-size: 0.95rem; vertical-align: 0.1em;
+}
+.titre-resultats h2 { display: flex; align-items: center; }
+.calculateur h2:has(.etape-num) { display: flex; align-items: center; }
+
+/* Lien « comprendre » à droite des titres de résultats */
+.calculateur h3 { flex-wrap: wrap; }
+.comprendre {
+  margin-left: auto; font-family: var(--police); font-size: 0.8rem; font-weight: 600;
+  padding: 0.2rem 0.65rem; border-radius: 999px; text-decoration: none;
+  background: var(--accent-clair); color: var(--accent);
+}
+.comprendre::after { content: ' →'; }
+.comprendre:hover { background: var(--accent); color: var(--carte); }
+.sous-titre a { font-weight: 600; }
+
+/* Barre de résumé (mobile) */
+.barre-resume {
+  position: fixed; z-index: 15; left: 0.75rem; right: 0.75rem; bottom: max(0.75rem, env(safe-area-inset-bottom));
+  display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+  padding: 0.7rem 0.8rem 0.7rem 1rem; border-radius: 999px;
+  background: var(--nuit); color: var(--nuit-texte); text-decoration: none;
+  box-shadow: 0 16px 36px -10px rgb(0 0 0 / 0.55); border: 1px solid var(--nuit-3);
+  font-size: 0.9rem;
+}
+.barre-resume::before {
+  content: ''; position: absolute; inset: auto 1.2rem -1px 1.2rem; height: 2px; background: var(--spectre); border-radius: 2px;
+}
+.barre-resume__chiffres { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.barre-resume__chiffres b { font-family: var(--police-titre); font-size: 1.05rem; }
+.barre-resume__action {
+  display: inline-flex; align-items: center; gap: 0.3rem; flex: none;
+  padding: 0.4rem 0.8rem; border-radius: 999px; background: var(--accent-vif); color: #062011; font-weight: 700; font-size: 0.85rem;
+}
+@media (min-width: 960px) { .barre-resume { display: none !important; } }
+@media print { .barre-resume { display: none !important; } }

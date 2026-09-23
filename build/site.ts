@@ -15,7 +15,7 @@
  * (fil d'Ariane, <article class="prose"> avec h1, chapo et sommaire) reçoivent
  * automatiquement un bandeau de titre, un sommaire latéral et un temps de lecture.
  */
-import { readdirSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import type { Plugin } from 'vite';
 import { rendreFiches } from './fiches';
@@ -28,8 +28,7 @@ export const SITE_URL = (process.env.SITE_URL ?? 'https://teiki5320.github.io/op
 
 /** Rubriques de la navigation principale ; `pages` = fichiers rattachés à la rubrique. */
 export const NAVIGATION: { href: string; libelle: string; pages: RegExp }[] = [
-  { href: 'index.html', libelle: 'Accueil', pages: /^index\.html$/ },
-  { href: 'calculateur.html', libelle: 'Calculateur', pages: /^calculateur\.html$/ },
+  { href: 'index.html', libelle: 'Calculateur', pages: /^(index|calculateur)\.html$/ },
   { href: 'led.html', libelle: 'LED', pages: /^led(-.*)?\.html$/ },
   { href: 'culture.html', libelle: 'Culture', pages: /^culture(-.*)?\.html$/ },
   { href: 'legumes.html', libelle: 'Légumes', pages: /^legumes\.html$/ },
@@ -97,6 +96,7 @@ export function header(fichier: string): string {
   <div class="conteneur site-entete__barre">
     <a class="logo" href="index.html">${LOGO}<span><strong>${NOM_SITE}</strong><small>LED &amp; culture indoor</small></span></a>
     <nav class="site-nav" aria-label="Navigation principale"><ul>${liens}</ul></nav>
+    ${/^(index|calculateur)\.html$/.test(fichier) ? '' : `<a class="bouton bouton--plein bouton--entete" href="index.html#calculateur">${icone('calcul')}<span>Calculer</span></a>`}
     <details class="menu-mobile">
       <summary aria-label="Ouvrir le menu">${icone('menu')}<span>Menu</span></summary>
       <nav aria-label="Navigation principale (mobile)"><ul>${liens}</ul></nav>
@@ -115,7 +115,7 @@ export function footer(): string {
       <p>Guides et outils gratuits pour cultiver des légumes sous LED, en intérieur.</p>
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la littérature horticole : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
     </div>
-    <div><h2>Outils</h2><ul><li><a href="calculateur.html">Calculateur LED</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="glossaire.html">Glossaire</a></li></ul></div>
+    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="glossaire.html">Glossaire</a></li></ul></div>
     ${colonne('led')}
     ${colonne('culture')}
   </div>
@@ -236,7 +236,10 @@ export function pluginSite(): Plugin {
       return transformerPage(html, basename(ctx.filename));
     },
     generateBundle() {
-      const pages = Object.keys(pagesHtml(racine)).map((nom) => `${nom}.html`);
+      // Les pages marquées noindex (404, redirections) ne vont pas dans le sitemap.
+      const pages = Object.entries(pagesHtml(racine))
+        .filter(([, chemin]) => !readFileSync(chemin, 'utf8').includes('content="noindex"'))
+        .map(([nom]) => `${nom}.html`);
       this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap(pages) });
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}sitemap.xml\n` });
     },
