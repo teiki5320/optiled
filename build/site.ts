@@ -25,7 +25,7 @@ import { icone, LOGO, type NomIcone } from './icones';
 export const NOM_SITE = 'OptiLED';
 
 /** Adresse publique du site (sitemap). Surchargeable : SITE_URL=https://mon-domaine.fr/ npm run build */
-export const SITE_URL = (process.env.SITE_URL ?? 'https://teiki5320.github.io/optiled/').replace(/\/?$/, '/');
+export const SITE_URL = (process.env.SITE_URL ?? 'https://www.optiled.fr/').replace(/\/?$/, '/');
 
 /** Rubriques de la navigation principale ; `pages` = fichiers rattachés à la rubrique. */
 export const NAVIGATION: { href: string; libelle: string; pages: RegExp }[] = [
