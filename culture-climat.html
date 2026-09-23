@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Température, humidité, VPD, ventilation et CO2 : régler le climat d'une culture de légumes en intérieur, avec tableaux et solutions." />
+    <title>Température, humidité et ventilation — OptiLED</title>
+    <!--#head-->
+  </head>
+  <body>
+    <!--#header-->
+    <main id="contenu" class="page">
+      <p class="fil"><a href="index.html">Accueil</a> › <a href="culture.html">Culture indoor</a></p>
+      <article class="prose">
+        <h1>Température, humidité et ventilation</h1>
+        <p class="chapo">La lumière ne suffit pas : une plante bien éclairée mais qui a trop chaud, trop froid ou baigne dans l'air humide pousse mal et tombe malade. Après lecture, vous saurez fixer des objectifs de température et d'humidité, comprendre le VPD, dimensionner une extraction et corriger les problèmes de climat les plus courants.</p>
+
+        <nav class="sommaire" aria-label="Sommaire">
+          <strong>Dans cette page</strong>
+          <ol>
+            <li><a href="#temperature">Température : les bonnes plages</a></li>
+            <li><a href="#chaleur-led">La chaleur dégagée par les LED</a></li>
+            <li><a href="#humidite">Humidité relative et risques</a></li>
+            <li><a href="#vpd">Le VPD expliqué simplement</a></li>
+            <li><a href="#ventilation">Ventilation : extraction, brassage, entrées d'air</a></li>
+            <li><a href="#chauffer-refroidir">Chauffer, refroidir, humidifier, déshumidifier</a></li>
+            <li><a href="#co2">Le CO2 : faut-il enrichir ?</a></li>
+            <li><a href="#instruments">Instruments de mesure</a></li>
+            <li><a href="#depannage">Problèmes climatiques et solutions</a></li>
+          </ol>
+        </nav>
+
+        <h2 id="temperature">Température : les bonnes plages</h2>
+        <p>Chaque plante a une plage de température où elle pousse bien. En dessous, la croissance ralentit. Au-dessus, la plante respire plus qu'elle ne produit, monte en graines ou avorte ses fleurs. On distingue deux grandes familles de légumes en intérieur.</p>
+        <ul>
+          <li><strong>Les légumes feuilles et aromatiques « de saison fraîche »</strong> (laitue, épinard, roquette, persil, coriandre) préfèrent environ 16 à 22 °C. Au-delà de 24–25 °C, ils risquent la <a href="glossaire.html#montaison">montaison</a> et deviennent amers.</li>
+          <li><strong>Les légumes fruits « de saison chaude »</strong> (tomate, poivron, piment, aubergine, concombre) aiment environ 20 à 28 °C le jour. En dessous de 15 °C, ils végètent ; au-delà de 30–32 °C, la nouaison des fleurs devient difficile.</li>
+        </ul>
+        <p>Une nuit un peu plus fraîche que le jour (2 à 5 °C de moins) est normale et bénéfique : elle limite l'étirement des tiges et correspond au cycle naturel. En intérieur, la baisse se fait souvent toute seule quand les LED s'éteignent.</p>
+
+        <div class="tableau-defile">
+          <table class="tableau">
+            <thead><tr><th>Culture</th><th>Jour (°C)</th><th>Nuit (°C)</th><th>À éviter</th></tr></thead>
+            <tbody>
+              <tr><td>Laitue, épinard, roquette</td><td>18–22</td><td>14–18</td><td>&gt; 25 °C (montaison, brûlure de pointe)</td></tr>
+              <tr><td>Persil, coriandre, ciboulette</td><td>18–22</td><td>14–18</td><td>&gt; 26 °C (coriandre monte vite)</td></tr>
+              <tr><td>Basilic</td><td>22–27</td><td>18–20</td><td>&lt; 12 °C (noircissement des feuilles)</td></tr>
+              <tr><td>Micro-pousses</td><td>18–24</td><td>16–20</td><td>Chaleur + humidité (moisissures)</td></tr>
+              <tr><td>Tomate</td><td>22–26</td><td>16–19</td><td>&gt; 30 °C (fleurs qui avortent)</td></tr>
+              <tr><td>Poivron, piment, aubergine</td><td>22–28</td><td>18–20</td><td>&lt; 15 °C (croissance bloquée)</td></tr>
+              <tr><td>Concombre</td><td>22–28</td><td>18–20</td><td>&lt; 15 °C, courants d'air froid</td></tr>
+              <tr><td>Fraise</td><td>18–24</td><td>12–16</td><td>&gt; 28 °C (floraison ralentie)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Ces valeurs sont des ordres de grandeur. Les fiches de <a href="legumes.html">légumes</a> donnent des précisions par culture.</p>
+        <div class="encadre"><p><strong>À retenir :</strong> mesurez la température à hauteur des feuilles, pas au plafond de la pièce. Dans une tente, il peut y avoir 3 à 5 °C d'écart entre le sol et le haut de la canopée.</p></div>
+
+        <h2 id="chaleur-led">La chaleur dégagée par les LED</h2>
+        <p>Une LED horticole transforme environ la moitié de son énergie électrique en lumière, le reste en chaleur directe. Mais la lumière absorbée par les plantes et les parois finit elle aussi en chaleur. Au bilan, <strong>quasiment toute la puissance électrique consommée se retrouve en chaleur dans la pièce</strong>. Une lampe de 200 W chauffe donc comme un petit radiateur de 200 W.</p>
+        <p>La différence avec les anciennes lampes au sodium tient à la répartition : les LED rayonnent beaucoup moins de chaleur infrarouge vers les feuilles. Vous pouvez les rapprocher davantage des plantes, mais l'air de la tente se réchauffe quand même.</p>
+        <ul>
+          <li>Dans un placard fermé ou une petite tente, 100 à 300 W de LED suffisent à monter la température de plusieurs degrés sans extraction.</li>
+          <li>En hiver, cette chaleur est un atout : allumez les LED la nuit, quand la pièce est la plus froide.</li>
+          <li>En été, faites l'inverse : allumez-les la nuit et éteignez-les aux heures chaudes de l'après-midi.</li>
+        </ul>
+        <p>Pour estimer la puissance nécessaire à votre surface, utilisez le <a href="calculateur.html">calculateur</a>. Pour régler la hauteur de la lampe, voir <a href="led-installation.html">Installer, régler et mesurer</a>.</p>
+
+        <h2 id="humidite">Humidité relative et risques</h2>
+        <p>L'<a href="glossaire.html#humidite-relative">humidité relative</a> (HR) indique, en pourcentage, la quantité de vapeur d'eau que contient l'air par rapport au maximum possible à cette température. Un air chaud peut contenir plus d'eau qu'un air froid : à quantité d'eau égale, l'HR baisse quand la température monte et monte quand elle baisse. C'est pour cela que l'humidité grimpe souvent la nuit, à l'extinction des LED.</p>
+        <h3>Trop humide</h3>
+        <ul>
+          <li><strong>Moisissures et <a href="glossaire.html#oidium">oïdium</a></strong> : feutrage blanc sur les feuilles, favorisé par un air stagnant et humide.</li>
+          <li><strong>Botrytis (pourriture grise)</strong> sur les fraises, les tomates et les feuilles denses.</li>
+          <li><strong><a href="glossaire.html#fonte-des-semis">Fonte des semis</a></strong> : les jeunes plantules s'effondrent au collet.</li>
+          <li>Transpiration réduite : la plante absorbe moins d'eau, donc moins de calcium, ce qui favorise la brûlure de pointe des laitues.</li>
+        </ul>
+        <h3>Trop sec</h3>
+        <ul>
+          <li>La plante transpire trop vite, ferme ses stomates et ralentit sa croissance.</li>
+          <li>Bords de feuilles secs, semis et boutures qui flétrissent.</li>
+          <li>Les <a href="glossaire.html#tetranyques">tétranyques</a> (araignées rouges) prolifèrent dans l'air sec et chaud.</li>
+        </ul>
+        <p>Comme repère général : 60 à 80 % pour les semis et boutures, 50 à 70 % pour la croissance, 45 à 60 % pour les légumes fruits en floraison et fructification.</p>
+
+        <h2 id="vpd">Le VPD expliqué simplement</h2>
+        <p>Le <a href="glossaire.html#vpd">VPD</a> (déficit de pression de vapeur) mesure « la soif de l'air ». Il combine température et humidité en un seul chiffre, exprimé en kilopascals (kPa). Plus le VPD est élevé, plus l'air « aspire » l'eau des feuilles et plus la plante transpire.</p>
+        <ul>
+          <li>VPD trop bas (air saturé) : la plante transpire peu, absorbe mal les nutriments, les maladies fongiques s'installent.</li>
+          <li>VPD trop haut (air sec et chaud) : la plante ferme ses stomates pour se protéger et arrête de pousser.</li>
+        </ul>
+        <p>Le calcul exact demande la température de la feuille. Une version simplifiée, basée sur la température de l'air, suffit pour un amateur :</p>
+        <p class="formule">Pression de vapeur saturante (kPa) ≈ 0,611 × e<sup>(17,27 × T / (T + 237,3))</sup><br />VPD (kPa) ≈ pression saturante × (1 − HR / 100)</p>
+        <p>Exemple : à 24 °C, la pression saturante vaut environ 3,0 kPa. Avec 65 % d'humidité, VPD ≈ 3,0 × 0,35 ≈ 1,05 kPa. Les feuilles étant souvent 1 à 2 °C plus fraîches que l'air sous LED, le VPD réel au niveau de la feuille est un peu plus faible.</p>
+        <div class="tableau-defile">
+          <table class="tableau">
+            <thead><tr><th>Stade</th><th>VPD indicatif</th><th>Exemple de réglage</th></tr></thead>
+            <tbody>
+              <tr><td>Semis, boutures</td><td>0,4–0,8 kPa</td><td>22 °C et 70–85 % HR</td></tr>
+              <tr><td>Croissance végétative</td><td>0,8–1,2 kPa</td><td>24 °C et 55–70 % HR</td></tr>
+              <tr><td>Floraison, fructification</td><td>1,0–1,4 kPa</td><td>25 °C et 45–60 % HR</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="encadre"><p><strong>À retenir :</strong> le VPD est un outil de réglage, pas une règle absolue. Si vos plantes poussent bien et ne tombent pas malades, inutile de chercher la valeur parfaite. Commencez par tenir la température dans la bonne plage, puis ajustez l'humidité.</p></div>
+
+        <h2 id="ventilation">Ventilation : extraction, brassage, entrées d'air</h2>
+        <p>La ventilation évacue la chaleur et l'humidité, renouvelle le CO2 consommé par les plantes et renforce les tiges. C'est le levier le plus efficace et le moins coûteux pour maîtriser le climat.</p>
+        <h3>L'extraction</h3>
+        <p>Un extracteur (ventilateur en ligne) placé en haut de la tente aspire l'air chaud et le rejette à l'extérieur de la tente, idéalement hors de la pièce. Un ordre de grandeur couramment utilisé : <strong>renouveler le volume de la tente environ une fois par minute</strong>.</p>
+        <p class="formule">Débit (m³/h) ≈ longueur × largeur × hauteur (m) × 60</p>
+        <p>Exemple : une tente de 1,2 × 1,2 × 2 m fait 2,9 m³, soit environ 170 m³/h. Prenez un extracteur de 25 à 50 % plus puissant pour compenser les pertes du filtre et des gaines, et réglez-le avec un variateur ou un contrôleur.</p>
+        <div class="tableau-defile">
+          <table class="tableau">
+            <thead><tr><th>Tente</th><th>Volume</th><th>Débit visé</th><th>Extracteur conseillé</th></tr></thead>
+            <tbody>
+              <tr><td>60 × 60 × 160 cm</td><td>0,6 m³</td><td>≈ 35 m³/h</td><td>100 mm, 100–150 m³/h</td></tr>
+              <tr><td>80 × 80 × 180 cm</td><td>1,2 m³</td><td>≈ 70 m³/h</td><td>100–125 mm, 150–200 m³/h</td></tr>
+              <tr><td>120 × 120 × 200 cm</td><td>2,9 m³</td><td>≈ 170 m³/h</td><td>125–150 mm, 250–400 m³/h</td></tr>
+              <tr><td>240 × 120 × 200 cm</td><td>5,8 m³</td><td>≈ 350 m³/h</td><td>150 mm, 400–500 m³/h</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Le brassage interne</h3>
+        <p>Un petit ventilateur oscillant (clip ou sur pied) fait circuler l'air entre les plantes. Il casse les poches d'air humide autour des feuilles, homogénéise la température et renforce les tiges. Les feuilles doivent bouger légèrement, sans être secouées en permanence. Ne dirigez pas le flux directement sur les semis.</p>
+        <h3>Les entrées d'air</h3>
+        <p>L'air extrait doit être remplacé. Ouvrez les manchons ou fenêtres grillagées en bas de la tente : l'air frais entre en bas, l'air chaud sort en haut. Si les parois de la tente se creusent légèrement vers l'intérieur, la dépression est correcte. Si elles se creusent fortement, ouvrez davantage d'entrées d'air.</p>
+        <h3>Le filtre à charbon</h3>
+        <p>Un filtre à charbon actif monté sur l'extracteur retient les odeurs. Il est surtout utile pour les aromatiques très odorantes, les plants de tomate (odeur forte du feuillage) ou si l'air est rejeté dans un logement. Choisissez-le au même diamètre et au moins au même débit que l'extracteur.</p>
+        <div class="encadre attention"><p><strong>Attention :</strong> branchez extracteur, ventilateur et lampe sur une installation protégée par un disjoncteur différentiel 30 mA. Placez les prises et les multiprises en hauteur, hors des zones d'éclaboussure, sans multiprises en cascade.</p></div>
+
+        <h2 id="chauffer-refroidir">Chauffer, refroidir, humidifier, déshumidifier</h2>
+        <h3>Trop froid</h3>
+        <ul>
+          <li>Décalez la période d'éclairage sur la nuit pour profiter de la chaleur des LED.</li>
+          <li>Réduisez le débit d'extraction (sans l'arrêter complètement).</li>
+          <li>Isolez la tente du sol froid avec une plaque isolante.</li>
+          <li>En dernier recours, un petit radiateur à bain d'huile avec thermostat, jamais un chauffage d'appoint à flamme (combustion, CO2, humidité, risque d'incendie).</li>
+        </ul>
+        <h3>Trop chaud</h3>
+        <ul>
+          <li>Augmentez l'extraction et vérifiez que l'air entrant est plus frais que celui de la tente.</li>
+          <li>Allumez les LED la nuit en été.</li>
+          <li>Baissez la puissance des LED de 10 à 20 % pendant les épisodes de canicule.</li>
+          <li>En pièce dédiée, un climatiseur est la seule solution vraiment efficace par forte chaleur.</li>
+        </ul>
+        <h3>Trop humide ou trop sec</h3>
+        <ul>
+          <li><strong>Déshumidificateur</strong> : utile en pièce dédiée ou en cave, notamment la nuit. Il dégage lui-même de la chaleur.</li>
+          <li><strong>Humidificateur</strong> : un modèle à ultrasons avec hygrostat relève l'humidité en hiver. Utilisez de l'eau déminéralisée pour éviter les dépôts blancs sur les feuilles.</li>
+          <li>Pour une petite surface, un couvercle de germination, un bac d'eau ou des arrosages le matin suffisent souvent.</li>
+        </ul>
+
+        <h2 id="co2">Le CO2 : faut-il enrichir ?</h2>
+        <p>Les plantes utilisent le <a href="glossaire.html#co2">CO2</a> de l'air pour la photosynthèse. L'air extérieur en contient environ 420 ppm. <strong>Pour une culture amateur, ce niveau suffit</strong> : il suffit de renouveler l'air régulièrement grâce à l'extraction pour que les plantes n'en manquent pas.</p>
+        <p>L'enrichissement (800 à 1 200 ppm) augmente la photosynthèse, mais seulement si la lumière est forte, la température un peu plus élevée et la pièce étanche. Avec une extraction en marche, le CO2 injecté part dehors. C'est donc réservé aux installations fermées, climatisées, avec une régulation par capteur.</p>
+        <div class="encadre attention"><p><strong>Attention :</strong> le CO2 est dangereux à forte concentration (maux de tête, somnolence, puis risque d'asphyxie). N'enrichissez jamais une pièce de vie ou une chambre. Toute installation d'enrichissement exige un contrôleur, un détecteur de CO2 avec alarme, une bouteille fixée et une aération avant d'entrer dans la pièce.</p></div>
+
+        <h2 id="instruments">Instruments de mesure</h2>
+        <ul>
+          <li><strong>Thermo-hygromètre avec mémoire min/max</strong> : l'outil de base, pour quelques euros. Il révèle les pics de chaleur de l'après-midi et l'humidité nocturne que vous ne voyez pas. Placez la sonde à l'ombre, à hauteur des feuilles.</li>
+          <li><strong>Capteurs connectés</strong> (Wi-Fi ou Bluetooth) : ils enregistrent des courbes et envoient des alertes. Pratiques pour suivre plusieurs tentes ou partir quelques jours.</li>
+          <li><strong>Contrôleur d'extraction</strong> : il module la vitesse de l'extracteur selon la température ou l'humidité.</li>
+          <li><strong>Thermomètre infrarouge</strong> : mesure la température des feuilles, utile pour affiner le VPD.</li>
+          <li><strong>Détecteur de CO2</strong> : indispensable seulement en cas d'enrichissement.</li>
+        </ul>
+        <div class="encadre"><p><strong>À retenir :</strong> relevez les valeurs min/max chaque jour pendant la première semaine d'une nouvelle installation. C'est là que se révèlent la plupart des problèmes.</p></div>
+
+        <h2 id="depannage">Problèmes climatiques et solutions</h2>
+        <div class="tableau-defile">
+          <table class="tableau">
+            <thead><tr><th>Symptôme</th><th>Cause climatique probable</th><th>Que faire</th></tr></thead>
+            <tbody>
+              <tr><td>Température &gt; 30 °C lampe allumée</td><td>Extraction insuffisante, pièce chaude</td><td>Augmenter l'extraction, allumer la nuit, baisser la puissance</td></tr>
+              <tr><td>Humidité &gt; 80 % la nuit</td><td>Chute de température à l'extinction</td><td>Laisser l'extraction tourner la nuit, brassage, déshumidificateur</td></tr>
+              <tr><td>Feutrage blanc sur les feuilles</td><td>Oïdium : air stagnant, écarts jour/nuit</td><td>Brassage, espacer les plants, retirer les feuilles atteintes</td></tr>
+              <tr><td>Laitue qui monte en graines</td><td>Chaleur, jours très longs</td><td>Rester sous 22–24 °C, choisir des variétés lentes à monter</td></tr>
+              <tr><td>Bords des jeunes feuilles de laitue brûlés</td><td>Transpiration faible (air saturé) ou trop forte</td><td>Brassage d'air sur la canopée, VPD modéré</td></tr>
+              <tr><td>Fleurs de tomate qui tombent</td><td>Trop chaud (&gt; 30 °C) ou trop sec</td><td>Refroidir, remonter l'humidité vers 50–60 %</td></tr>
+              <tr><td>Feuilles qui pendent en pleine journée</td><td>Air trop sec et chaud (VPD élevé)</td><td>Baisser la température, humidifier</td></tr>
+              <tr><td>Condensation sur les parois</td><td>Air saturé, mauvais renouvellement</td><td>Ouvrir les entrées d'air, augmenter l'extraction</td></tr>
+              <tr><td>Croissance lente malgré une bonne lumière</td><td>Trop froid, ou air non renouvelé</td><td>Vérifier la nuit au min/max, assurer une extraction continue</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Pour les maladies et ravageurs eux-mêmes, voir <a href="culture-problemes.html">Problèmes, carences et ravageurs</a>. Le climat des semis est détaillé dans <a href="culture-semis.html">Semis, repiquage et bouturage</a>.</p>
+      </article>
+
+      <nav class="suite" aria-label="Pages suivantes">
+        <a href="culture-nutriments.html"><small>← Précédent</small>Arrosage, nutriments, pH et EC</a>
+        <a href="culture-semis.html"><small>Suivant →</small>Semis, repiquage et bouturage</a>
+      </nav>
+    </main>
+    <!--#footer-->
+    <script type="module" src="/src/site.ts"></script>
+  </body>
+</html>
