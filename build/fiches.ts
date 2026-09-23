@@ -25,7 +25,7 @@ function blocStade(titre: string, p: ParametresStade): string {
     <table class="fiche-table"><tbody>
       ${ligne('PPFD', `${p.ppfd.valeur} µmol/m²/s`, p.ppfd.source)}
       ${ligne('Photopériode', `${nb(p.photoperiode.valeur)} h/jour`, p.photoperiode.source)}
-      ${ligne('DLI obtenu', `${dli.toFixed(1).replace('.', ',')} mol/m²/j`, 'Calcul : PPFD × heures × 3600 / 1 000 000')}
+      ${ligne('DLI obtenu', `${dli.toFixed(1).replace('.', ',')} mol/m²/j`, 'Calcul : PPFD × heures × 3 600 / 1 000 000')}
       ${ligne('Hauteur des LED', `${plage(p.hauteur_cm.valeur, ' cm')}`, p.hauteur_cm.source)}
       ${ligne('Spectre', echapper(p.spectre.valeur), p.spectre.source)}
     </tbody></table>
@@ -95,10 +95,11 @@ export function rendreFiche(l: Legume): string {
           <h4>Conditions de culture</h4>
           <table class="fiche-table"><tbody>
             ${ligne('Température (jour)', plage(c.temperature_c.valeur, ' °C'), c.temperature_c.source)}
+            ${ligne('Température (nuit)', plage(c.temperature_nuit_c.valeur, ' °C'), c.temperature_nuit_c.source)}
             ${ligne('Humidité relative', plage(c.humidite_pct.valeur, ' %'), c.humidite_pct.source)}
             ${ligne('pH de la solution', plage(c.ph.valeur), c.ph.source)}
             ${ligne('EC de la solution', plage(c.ec_ms_cm.valeur, ' mS/cm'), c.ec_ms_cm.source)}
-            ${ligne('Première récolte', plage(c.jours_recolte.valeur, ' jours'), c.jours_recolte.source)}
+            ${ligne('Délai de récolte', plage(c.jours_recolte.valeur, ' jours'), c.jours_recolte.source)}
             ${ligne('Espacement', espacement, c.espacement_cm.source)}
             ${ligne('Conseil', echapper(c.conseils.valeur), c.conseils.source)}
           </tbody></table>
@@ -130,4 +131,22 @@ export function rendreFiches(legumes: Legume[] = chargerLegumes()): string {
     )
     .join('');
   return `<nav class="filtres" aria-label="Familles de légumes">${filtres}</nav>${sections}`;
+}
+
+/** Tableau des températures jour / nuit du guide climat, généré depuis les fiches. */
+export function rendreTableauClimat(legumes: Legume[] = chargerLegumes()): string {
+  const lignes = legumes
+    .map((l) => {
+      const c = l.culture;
+      return `<tr><td><a href="legumes.html#${l.id}">${echapper(l.nom)}</a></td><td>${plage(c.temperature_c.valeur)}</td><td>${plage(c.temperature_nuit_c.valeur)}</td><td>${echapper(c.temperature_a_eviter.valeur)}</td></tr>`;
+    })
+    .join('\n              ');
+  return `<div class="tableau-defile">
+          <table class="tableau">
+            <thead><tr><th>Culture</th><th>Jour (°C)</th><th>Nuit (°C)</th><th>À éviter</th></tr></thead>
+            <tbody>
+              ${lignes}
+            </tbody>
+          </table>
+        </div>`;
 }

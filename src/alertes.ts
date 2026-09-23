@@ -17,7 +17,8 @@ export interface ContexteAlertes {
   rangTropEtroit?: { largeurCm: number; espacementCm: number };
 }
 
-const LEGUMES_FRUITS = ['tomate', 'poivron', 'piment', 'aubergine', 'concombre'];
+// Espèces chez qui l'éclairage quasi continu provoque des lésions documentées (Velez-Ramirez et al., 2011).
+const SENSIBLES_ECLAIRAGE_CONTINU = ['tomate', 'aubergine'];
 const MONTAISON = ['epinard', 'coriandre', 'roquette'];
 
 function majuscule(s: string): string {
@@ -26,16 +27,17 @@ function majuscule(s: string): string {
 
 export function alertes(c: ContexteAlertes): string[] {
   const a: string[] = [];
-  const h = c.photoperiodeH;
-  if (c.legumeId === 'chanvre-cbd' && c.stade === 'floraison' && h > 12.5) {
+  const h = String(c.photoperiodeH).replace('.', ',');
+  const duree = c.photoperiodeH;
+  if (c.legumeId === 'chanvre-cbd' && c.stade === 'floraison' && duree > 12.5) {
     a.push(`En floraison, le chanvre a besoin de 12 h de lumière et 12 h d'obscurité totale : avec ${h} h, il ne fleurira pas.`);
-  } else if (c.legumeId === 'chanvre-cbd' && c.stade === 'croissance' && h < 16) {
+  } else if (c.legumeId === 'chanvre-cbd' && c.stade === 'croissance' && duree < 16) {
     a.push(`Avec ${h} h de lumière, le chanvre risque de passer en floraison trop tôt : gardez au moins 16 à 18 h en croissance.`);
-  } else if (LEGUMES_FRUITS.includes(c.legumeId) && h > 18) {
-    a.push(`${majuscule(c.nom)} : au-delà de 18 h par jour, risque de lésions des feuilles (éclairage quasi continu). Revenez à 16–18 h.`);
-  } else if (MONTAISON.includes(c.legumeId) && h > 14) {
+  } else if (SENSIBLES_ECLAIRAGE_CONTINU.includes(c.legumeId) && duree > 18) {
+    a.push(`${majuscule(c.nom)} : au-delà de 18 h par jour, on s'approche de l'éclairage continu, qui provoque des lésions des feuilles. Revenez à 16–18 h.`);
+  } else if (MONTAISON.includes(c.legumeId) && duree > 14) {
     a.push(`${majuscule(c.nom)} : au-delà de 14 h par jour, risque de montée en graines. ${c.photoperiodeConseilleeH} h sont conseillées.`);
-  } else if (h > 20) {
+  } else if (duree > 20) {
     a.push(`${h} h de lumière par jour, c'est beaucoup : les plantes ont besoin d'une période d'obscurité, et la facture augmente. ${c.photoperiodeConseilleeH} h sont conseillées.`);
   }
   if (c.longueurBarreM > c.longueurZoneM + 0.02) {

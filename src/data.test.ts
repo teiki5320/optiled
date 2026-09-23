@@ -41,6 +41,10 @@ describe('legumes.json', () => {
         expect(c.temperature_c.valeur[1]).toBeLessThanOrEqual(35);
         expect(c.humidite_pct.valeur[1]).toBeLessThanOrEqual(100);
         expect(c.conseils.valeur.trim()).not.toBe('');
+        // La nuit est un peu plus fraîche que le jour, jamais plus chaude.
+        expect(c.temperature_nuit_c.valeur[1]).toBeLessThanOrEqual(c.temperature_c.valeur[1]);
+        expect(c.temperature_nuit_c.valeur[0]).toBeGreaterThanOrEqual(5);
+        expect(c.temperature_a_eviter.valeur.trim()).not.toBe('');
       });
 
       for (const [stade, p] of Object.entries(legume.stades)) {

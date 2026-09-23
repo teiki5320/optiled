@@ -24,12 +24,20 @@ type Plage = [number, number];
 export interface ParametresCulture {
   /** °C, le jour */
   temperature_c: ValeurSourcee<Plage>;
+  /** °C, la nuit (lampes éteintes) */
+  temperature_nuit_c: ValeurSourcee<Plage>;
+  /** texte court : températures à éviter et leur effet (ex. « > 24 °C (montaison) ») */
+  temperature_a_eviter: ValeurSourcee<string>;
   /** humidité relative, % */
   humidite_pct: ValeurSourcee<Plage>;
   ph: ValeurSourcee<Plage>;
   /** conductivité de la solution nutritive, mS/cm */
   ec_ms_cm: ValeurSourcee<Plage>;
-  /** jours du semis à la première récolte */
+  /**
+   * Délai indicatif jusqu'à la première récolte, en jours, compté depuis le semis
+   * sauf mention contraire dans la source (fraise : depuis la plantation du plant ;
+   * chanvre : du semis à la récolte des fleurs).
+   */
   jours_recolte: ValeurSourcee<Plage>;
   /** cm entre plants ; null pour un semis à la volée */
   espacement_cm: ValeurSourcee<Plage | null>;
@@ -40,7 +48,7 @@ export interface Legume {
   id: string;
   nom: string;
   famille: string;
-  /** Mise en garde affichée dans le calculateur et la fiche (réglementation…) */
+  /** Mise en garde affichée dans le calculateur et la fiche (réglementation…) ; texte simple, qui cite lui-même sa source */
   avertissement?: string;
   stades: {
     croissance: ParametresStade;

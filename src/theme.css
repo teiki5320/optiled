@@ -6,6 +6,16 @@
 /* Police hébergée avec le site (pas de requête vers Google : RGPD et affichage plus rapide). */
 @import '@fontsource-variable/urbanist';
 
+/* Police de secours aux proportions d'Urbanist : le texte ne bouge pas quand Urbanist arrive. */
+@font-face {
+  font-family: 'Urbanist Repli';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 95.9%;
+  ascent-override: 99%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+}
+
 :root, :root:where(*) {
   --nuit: #1b1322;
   --nuit-2: #2a1a32;
@@ -39,8 +49,8 @@
   --rayon-petit: 16px;
   --ombre: none;
   --ombre-forte: 0 30px 60px -30px rgb(10 4 14 / 0.7);
-  --police: 'Urbanist Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --police-titre: 'Urbanist Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --police: 'Urbanist Variable', 'Urbanist Repli', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --police-titre: 'Urbanist Variable', 'Urbanist Repli', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   color-scheme: dark;
 }

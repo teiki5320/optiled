@@ -5,7 +5,7 @@
     "ppfd en µmol/m²/s, photoperiode en heures/jour, hauteur_cm = [min, max] de suspension au-dessus de la canopée.",
     "stades.floraison = null pour les cultures récoltées avant floraison (feuilles, aromatiques, micro-pousses).",
     "Les valeurs sont des ordres de grandeur indicatifs : ajustez-les selon la variété et vos mesures (PAR-mètre).",
-    "culture : plages [min, max] de température de jour (°C), humidité relative (%), pH et EC (mS/cm) de la solution, jours du semis à la première récolte, espacement entre plants (cm, null pour un semis à la volée)."
+    "culture : plages [min, max] de température de jour (temperature_c, °C) et de nuit (temperature_nuit_c, °C), texte court des températures à éviter (temperature_a_eviter), humidité relative (%), pH et EC (mS/cm) de la solution, jours_recolte = délai indicatif jusqu'à la première récolte, compté depuis le semis sauf mention contraire dans la source (fraise : depuis la plantation du plant), espacement entre plants (cm, null pour un semis à la volée)."
   ],
   "references": {
     "kozai": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press",
@@ -15,13 +15,15 @@
     "gerovac": "Gerovac et al. (2016), HortScience 51(5) – micro-pousses sous LED",
     "runkle": "Runkle (MSU Extension) – photopériode des cultures de jours longs",
     "heuvelink": "Heuvelink (2018), Tomatoes, 2e éd., CABI",
+    "knott": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley – tableau 3.3 (températures mensuelles pour la croissance, p. 107) et culture sous serre (p. 81)",
+    "walters": "Walters & Currey (2019), HortScience 54(11) : 1915–1920 – croissance et développement du basilic selon la température (température de base ≈ 11–12 °C)",
+    "sonsteby": "Sønsteby & Heide (2007), Journal of Horticultural Science & Biotechnology 82(6) : 875–884 – contrôle de la floraison des fraisiers remontants par les jours longs et la température",
     "velez": "Velez-Ramirez et al. (2011), Trends in Plant Science – lésions en éclairage continu",
     "pratique": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)",
     "resh": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives",
     "semenciers": "Catalogues semenciers (ordre de grandeur, varie selon la variété)",
-    "maraichage": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)",
     "rodriguez": "Rodriguez-Morrison, Llewellyn & Zheng (2021), Frontiers in Plant Science 12 – rendement du cannabis selon l'intensité lumineuse en intérieur",
-    "chandra": "Chandra et al. (2008), Physiology and Molecular Biology of Plants 14 – photosynthèse de Cannabis sativa selon PPFD, température et CO2",
+    "chandra": "Chandra, Lata, Khan & ElSohly (2008), Physiology and Molecular Biology of Plants 14 : 299–306 – photosynthèse de Cannabis sativa selon PPFD, température et CO2 (optimum 25–30 °C)",
     "reglementation": "Arrêté du 30 décembre 2021 portant application de l'article R. 5132-86 du code de la santé publique (France)"
   },
   "legumes": [
@@ -59,14 +61,25 @@
             16,
             22
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press ; Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) (laitue : optimum 16–18 °C, maximum 24 °C)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            14,
+            18
+          ],
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : laitue, optimum 16–18 °C, minimum 7 °C ; « les températures de nuit de la laitue peuvent être un peu plus basses que celles de la tomate et du concombre » (p. 81) ; plage de nuit indicative"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 24 °C (montaison, brûlure de la pointe des feuilles)",
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : maximum 24 °C (75 °F) pour la laitue"
         },
         "humidite_pct": {
           "valeur": [
             50,
             70
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – ambiance des cultures de légumes feuilles (ordre de grandeur ; l'humidité se pilote surtout via le VPD)"
         },
         "ph": {
           "valeur": [
@@ -80,14 +93,14 @@
             0.8,
             1.2
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Brechner & Both, Cornell University (CEA) – Hydroponic Lettuce Handbook (EC visée ≈ 1,2 mS/cm) ; Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – conduite de la solution nutritive de la laitue ; plage indicative"
         },
         "jours_recolte": {
           "valeur": [
-            45,
+            30,
             60
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur) : du semis, ≈ 30 jours pour les premières feuilles en récolte feuille à feuille, 50 à 60 jours pour une pomme entière selon le type"
         },
         "espacement_cm": {
           "valeur": [
@@ -136,14 +149,25 @@
             15,
             20
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press ; Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) (épinard : optimum 16–18 °C, maximum 24 °C)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            12,
+            16
+          ],
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : épinard, optimum 16–18 °C, minimum 4 °C ; plage de nuit indicative"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 24 °C (montaison)",
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : maximum 24 °C (75 °F) pour l'épinard"
         },
         "humidite_pct": {
           "valeur": [
             50,
             70
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – ambiance des cultures de légumes feuilles (ordre de grandeur ; l'humidité se pilote surtout via le VPD)"
         },
         "ph": {
           "valeur": [
@@ -157,14 +181,14 @@
             1.2,
             2.0
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – solutions nutritives des légumes feuilles ; plage indicative, à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
             40,
             50
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété) : du semis à la première récolte"
         },
         "espacement_cm": {
           "valeur": [
@@ -213,14 +237,25 @@
             15,
             22
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – plages de température des légumes feuilles (ordre de grandeur)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            12,
+            16
+          ],
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : la roquette n'y figure pas ; valeur par analogie avec la moutarde (même famille, optimum 16–18 °C) ; ordre de grandeur"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 24 °C (montaison, goût piquant)",
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : maximum 24 °C pour la moutarde, par analogie (ordre de grandeur)"
         },
         "humidite_pct": {
           "valeur": [
             50,
             70
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – ambiance des cultures de légumes feuilles (ordre de grandeur ; l'humidité se pilote surtout via le VPD)"
         },
         "ph": {
           "valeur": [
@@ -234,14 +269,14 @@
             0.8,
             1.2
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – solutions nutritives des légumes feuilles ; plage indicative, à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
             30,
             40
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété) : du semis à la première récolte"
         },
         "espacement_cm": {
           "valeur": [
@@ -290,14 +325,25 @@
             20,
             27
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Walters & Currey (2019), HortScience 54(11) : 1915–1920 ; Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ordre de grandeur)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            18,
+            20
+          ],
+          "source": "Walters & Currey (2019), HortScience 54(11) : 1915–1920 : température de base de croissance ≈ 11–12 °C, croissance qui augmente jusqu'à 23–29 °C ; plage de nuit indicative (ordre de grandeur)"
+        },
+        "temperature_a_eviter": {
+          "valeur": "< 12 °C (noircissement des feuilles)",
+          "source": "Walters & Currey (2019), HortScience 54(11) : 1915–1920 : température de base de croissance ≈ 11–12 °C selon l'espèce"
         },
         "humidite_pct": {
           "valeur": [
             50,
             70
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – ambiance des cultures de légumes feuilles (ordre de grandeur ; l'humidité se pilote surtout via le VPD)"
         },
         "ph": {
           "valeur": [
@@ -311,14 +357,14 @@
             1,
             1.6
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – conduite des herbes aromatiques en hydroponie ; plage indicative, à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
             40,
             60
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété) : du semis à la première récolte"
         },
         "espacement_cm": {
           "valeur": [
@@ -367,14 +413,25 @@
             16,
             24
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press ; Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) (persil : optimum 16–18 °C, maximum 24 °C)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            14,
+            18
+          ],
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : persil, optimum 16–18 °C, minimum 7 °C ; plage de nuit indicative"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 24 °C (croissance ralentie, qualité réduite)",
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : maximum 24 °C (75 °F) pour le persil"
         },
         "humidite_pct": {
           "valeur": [
             50,
             70
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – ambiance des cultures de légumes feuilles (ordre de grandeur ; l'humidité se pilote surtout via le VPD)"
         },
         "ph": {
           "valeur": [
@@ -388,14 +445,14 @@
             0.8,
             1.8
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – conduite des herbes aromatiques en hydroponie ; plage indicative, à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
             70,
             90
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété) : du semis à la première récolte"
         },
         "espacement_cm": {
           "valeur": [
@@ -444,14 +501,25 @@
             16,
             24
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – plages de température des légumes feuilles et aromatiques (ordre de grandeur)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            14,
+            18
+          ],
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : la coriandre n'y figure pas ; valeur par analogie avec le persil (même famille, optimum 16–18 °C) ; ordre de grandeur"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 24 °C (monte vite en graines)",
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : maximum 24 °C pour le persil, par analogie (ordre de grandeur)"
         },
         "humidite_pct": {
           "valeur": [
             50,
             70
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – ambiance des cultures de légumes feuilles (ordre de grandeur ; l'humidité se pilote surtout via le VPD)"
         },
         "ph": {
           "valeur": [
@@ -465,14 +533,14 @@
             1.2,
             1.8
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – conduite des herbes aromatiques en hydroponie ; plage indicative, à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
             40,
             55
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété) : du semis à la première récolte"
         },
         "espacement_cm": {
           "valeur": [
@@ -521,14 +589,25 @@
             16,
             24
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press ; Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) (ciboulette : optimum 13–24 °C)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            14,
+            18
+          ],
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : ciboulette, optimum 13–24 °C, minimum 7 °C ; plage de nuit indicative"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 29 °C (croissance ralentie)",
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : maximum 29 °C (85 °F) pour la ciboulette"
         },
         "humidite_pct": {
           "valeur": [
             50,
             70
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – ambiance des cultures de légumes feuilles (ordre de grandeur ; l'humidité se pilote surtout via le VPD)"
         },
         "ph": {
           "valeur": [
@@ -542,14 +621,14 @@
             1.2,
             2.0
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – conduite des herbes aromatiques en hydroponie ; plage indicative, à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
             60,
             90
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété) : du semis à la première récolte"
         },
         "espacement_cm": {
           "valeur": [
@@ -598,14 +677,25 @@
             18,
             24
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – plages de température des légumes feuilles (ordre de grandeur)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            16,
+            20
+          ],
+          "source": "Ordre de grandeur de pratique (pas de valeur de référence publiée pour la nuit) : 2 à 4 °C sous la température de jour"
+        },
+        "temperature_a_eviter": {
+          "valeur": "Chaleur + humidité (moisissures)",
+          "source": "Pratique culturale courante (ordre de grandeur)"
         },
         "humidite_pct": {
           "valeur": [
             40,
             60
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – ambiance des cultures de légumes feuilles (ordre de grandeur ; l'humidité se pilote surtout via le VPD)"
         },
         "ph": {
           "valeur": [
@@ -619,14 +709,14 @@
             0.5,
             1
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – solution nutritive diluée pour les jeunes plantules ; plage indicative"
         },
         "jours_recolte": {
           "valeur": [
             7,
             21
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur) : du semis à la récolte, au stade cotylédons ou premières vraies feuilles"
         },
         "espacement_cm": {
           "valeur": null,
@@ -681,7 +771,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -692,14 +782,25 @@
             18,
             24
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Sønsteby & Heide (2007), Journal of Horticultural Science & Biotechnology 82(6) : 875–884 (floraison avancée par les jours longs à 15–21 °C) ; plage de jour indicative"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            12,
+            16
+          ],
+          "source": "Ordre de grandeur de pratique en culture sous abri (pas de valeur de nuit dans les références citées) ; Sønsteby & Heide (2007), Journal of Horticultural Science & Biotechnology 82(6) : 875–884 : initiation florale étudiée à 15, 21 et 27 °C"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 28 °C (floraison ralentie)",
+          "source": "Sønsteby & Heide (2007), Journal of Horticultural Science & Biotechnology 82(6) : 875–884 : à 27 °C, les fraisiers remontants ne fleurissent plus qu'en jours longs (initiation florale freinée par la chaleur)"
         },
         "humidite_pct": {
           "valeur": [
             50,
             65
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur) ; plage basse en fructification pour limiter botrytis et oïdium"
+          "source": "Ordre de grandeur de pratique en serre (Knott's Handbook ne donne pas de plage d'humidité de culture) ; plage basse en fructification pour limiter botrytis et oïdium"
         },
         "ph": {
           "valeur": [
@@ -713,14 +814,14 @@
             1,
             2
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – culture hydroponique du fraisier ; plage indicative, à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
             60,
             90
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues de plants (ordre de grandeur) : délai compté depuis la plantation d'un plant (et non depuis le semis) jusqu'aux premiers fruits mûrs"
         },
         "espacement_cm": {
           "valeur": [
@@ -778,7 +879,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -789,14 +890,25 @@
             20,
             26
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Heuvelink (2018), Tomatoes, 2e éd., CABI ; Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) (tomate : optimum 21–24 °C, minimum 18 °C, maximum 27 °C) ; Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, culture sous serre (températures de jour et de nuit, p. 81) : minimum de jour 21–24 °C"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            17,
+            19
+          ],
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, culture sous serre (températures de jour et de nuit, p. 81) : minimum de nuit 17–18 °C (62–64 °F) pour la plupart des variétés de tomate de serre ; Heuvelink (2018), Tomatoes, 2e éd., CABI (ordre de grandeur)"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 30 °C le jour (fleurs qui avortent)",
+          "source": "Heuvelink (2018), Tomatoes, 2e éd., CABI – stress thermique et nouaison ; Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : maximum de moyenne mensuelle 27 °C (80 °F) pour la tomate"
         },
         "humidite_pct": {
           "valeur": [
             50,
             65
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur) ; plage basse en fructification pour limiter botrytis et oïdium"
+          "source": "Heuvelink (2018), Tomatoes, 2e éd., CABI – climat de serre ; ordre de grandeur ; plage basse en fructification pour limiter botrytis et oïdium"
         },
         "ph": {
           "valeur": [
@@ -810,14 +922,14 @@
             2,
             3.5
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade ; commencer vers 2,0–2,5 mS/cm"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – culture hydroponique de la tomate ; Heuvelink (2018), Tomatoes, 2e éd., CABI ; plage indicative, commencer vers 2,0–2,5 mS/cm"
         },
         "jours_recolte": {
           "valeur": [
             90,
             120
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété) : du semis à la première récolte"
         },
         "espacement_cm": {
           "valeur": [
@@ -875,7 +987,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -886,14 +998,25 @@
             21,
             27
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) (poivron doux : optimum 21–24 °C, minimum 18 °C, maximum 27 °C)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            18,
+            20
+          ],
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : poivron doux, minimum de moyenne mensuelle 18 °C (65 °F) ; plage de nuit indicative"
+        },
+        "temperature_a_eviter": {
+          "valeur": "< 15 °C (croissance bloquée)",
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : minimum 18 °C pour le poivron ; en dessous de 15 °C la croissance s'arrête pratiquement (ordre de grandeur)"
         },
         "humidite_pct": {
           "valeur": [
             50,
             65
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur) ; plage basse en fructification pour limiter botrytis et oïdium"
+          "source": "Ordre de grandeur de pratique en serre (Knott's Handbook ne donne pas de plage d'humidité de culture) ; plage basse en fructification pour limiter botrytis et oïdium"
         },
         "ph": {
           "valeur": [
@@ -907,14 +1030,14 @@
             1.8,
             2.5
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – culture hydroponique du poivron ; plage indicative, à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
             100,
             150
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété) : du semis à la première récolte"
         },
         "espacement_cm": {
           "valeur": [
@@ -961,8 +1084,8 @@
             "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
           },
           "photoperiode": {
-            "valeur": 14,
-            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (certaines variétés fleurissent mieux en jours plus courts)"
+            "valeur": 16,
+            "source": "Runkle (MSU Extension) – photopériode : le piment (Capsicum) est globalement indifférent à la durée du jour ; 16 h comme le poivron pour un DLI suffisant"
           },
           "hauteur_cm": {
             "valeur": [
@@ -972,7 +1095,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -983,14 +1106,25 @@
             21,
             29
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) (piment : optimum 21–29 °C, minimum 18 °C, maximum 35 °C)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            18,
+            20
+          ],
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : piment, minimum de moyenne mensuelle 18 °C (65 °F) ; plage de nuit indicative"
+        },
+        "temperature_a_eviter": {
+          "valeur": "< 15 °C (croissance bloquée)",
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : minimum 18 °C pour le piment ; en dessous de 15 °C la croissance s'arrête pratiquement (ordre de grandeur)"
         },
         "humidite_pct": {
           "valeur": [
             50,
             65
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur) ; plage basse en fructification pour limiter botrytis et oïdium"
+          "source": "Ordre de grandeur de pratique en serre (Knott's Handbook ne donne pas de plage d'humidité de culture) ; plage basse en fructification pour limiter botrytis et oïdium"
         },
         "ph": {
           "valeur": [
@@ -1004,14 +1138,14 @@
             1.8,
             2.5
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – culture hydroponique du poivron, transposable au piment ; plage indicative, à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
             100,
             150
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété) : du semis à la première récolte"
         },
         "espacement_cm": {
           "valeur": [
@@ -1069,7 +1203,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -1080,14 +1214,25 @@
             22,
             28
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) (concombre : optimum 18–24 °C, maximum 32 °C) ; Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, culture sous serre (températures de jour et de nuit, p. 81) : 22–24 °C le jour pour les jeunes plants ; plage de jour indicative"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            17,
+            20
+          ],
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, culture sous serre (températures de jour et de nuit, p. 81) : nuit à 20 °C (68 °F) pour les jeunes plants, puis abaissée progressivement à 17–18 °C (62–64 °F)"
+        },
+        "temperature_a_eviter": {
+          "valeur": "< 15 °C, courants d'air froid",
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : minimum de moyenne mensuelle 16 °C (60 °F) pour le concombre ; ordre de grandeur"
         },
         "humidite_pct": {
           "valeur": [
             60,
             75
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur) ; plage basse en fructification pour limiter botrytis et oïdium"
+          "source": "Ordre de grandeur de pratique en serre (Knott's Handbook ne donne pas de plage d'humidité de culture) ; plage basse en fructification pour limiter botrytis et oïdium"
         },
         "ph": {
           "valeur": [
@@ -1101,14 +1246,14 @@
             1.7,
             2.5
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – culture hydroponique du concombre ; plage indicative, à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
             55,
             70
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété) : du semis à la première récolte"
         },
         "espacement_cm": {
           "valeur": [
@@ -1166,7 +1311,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -1177,14 +1322,25 @@
             22,
             28
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) (aubergine : optimum 21–29 °C, minimum 18 °C, maximum 35 °C)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            18,
+            20
+          ],
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : aubergine, minimum de moyenne mensuelle 18 °C (65 °F) ; plage de nuit indicative"
+        },
+        "temperature_a_eviter": {
+          "valeur": "< 15 °C (croissance bloquée)",
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : minimum 18 °C pour l'aubergine ; en dessous de 15 °C la croissance s'arrête pratiquement (ordre de grandeur)"
         },
         "humidite_pct": {
           "valeur": [
             50,
             65
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur) ; plage basse en fructification pour limiter botrytis et oïdium"
+          "source": "Ordre de grandeur de pratique en serre (Knott's Handbook ne donne pas de plage d'humidité de culture) ; plage basse en fructification pour limiter botrytis et oïdium"
         },
         "ph": {
           "valeur": [
@@ -1198,14 +1354,14 @@
             2.5,
             3.5
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade ; commencer vers 2,0–2,5 mS/cm"
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – culture hydroponique des solanacées (tomate, poivron) transposée à l'aubergine ; plage indicative, commencer vers 2,0–2,5 mS/cm"
         },
         "jours_recolte": {
           "valeur": [
             110,
             140
           ],
-          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété)"
+          "source": "Catalogues semenciers (ordre de grandeur, varie selon la variété) : du semis à la première récolte"
         },
         "espacement_cm": {
           "valeur": [
@@ -1224,7 +1380,7 @@
       "id": "chanvre-cbd",
       "nom": "Chanvre CBD",
       "famille": "Chanvre",
-      "avertissement": "En France, la culture du chanvre (Cannabis sativa L.) est réservée aux agriculteurs actifs, avec des semences certifiées de variétés inscrites au catalogue européen (THC ≤ 0,30 %). Un particulier ne peut pas en cultiver, même pour du CBD : c'est une infraction à la législation sur les stupéfiants. Ces données sont fournies à titre documentaire.",
+      "avertissement": "En France, la culture du chanvre (Cannabis sativa L.) est réservée aux agriculteurs actifs, avec des semences certifiées de variétés inscrites au catalogue européen (THC ≤ 0,30 %). Un particulier ne peut pas en cultiver, même pour du CBD : c'est une infraction à la législation sur les stupéfiants. Ces données sont fournies à titre documentaire. (Arrêté du 30 décembre 2021 portant application de l'article R. 5132-86 du code de la santé publique.)",
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1264,7 +1420,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -1275,7 +1431,18 @@
             22,
             28
           ],
-          "source": "Pratique courante en culture de chanvre (ordre de grandeur)"
+          "source": "Chandra et al. (2008), Physiology and Molecular Biology of Plants 14 : 299–306 : optimum de photosynthèse à 25–30 °C ; plage de jour indicative"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            18,
+            22
+          ],
+          "source": "Ordre de grandeur de pratique en culture intérieure (pas de valeur de nuit dans Chandra et al. (2008), Physiology and Molecular Biology of Plants 14 : 299–306, qui porte sur la photosynthèse de jour)"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 30 °C (photosynthèse en baisse)",
+          "source": "Chandra et al. (2008), Physiology and Molecular Biology of Plants 14 : 299–306 : optimum de photosynthèse à 25–30 °C"
         },
         "humidite_pct": {
           "valeur": [
@@ -1296,21 +1463,21 @@
             1.2,
             2.2
           ],
-          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
+          "source": "Ordre de grandeur de pratique en culture de chanvre (pas de plage d'EC établie dans une référence scientifique citée ici) ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
             90,
             130
           ],
-          "source": "Ordre de grandeur pour une variété photopériodique, du semis à la récolte ; varie selon la durée de croissance choisie"
+          "source": "Ordre de grandeur pour une variété photopériodique : du semis à la récolte des fleurs (et non une première récolte partielle) ; varie selon la durée de croissance choisie"
         },
         "espacement_cm": {
           "valeur": [
             50,
             80
           ],
-          "source": "Pratique courante (plantes de plus d'1 m en culture photopériodique ; moins en conduite palissée)"
+          "source": "Pratique courante (plantes de plus d'un mètre en culture photopériodique ; moins en conduite palissée)"
         },
         "conseils": {
           "valeur": "Réduisez la photopériode à 12 h pour déclencher la floraison, avec une obscurité totale la nuit (la moindre fuite de lumière perturbe la plante). Surveillez l'humidité en fin de floraison.",

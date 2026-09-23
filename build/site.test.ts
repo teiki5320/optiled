@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { header, mesureAudience, mettreEnPageArticle, NAVIGATION, referencement, sitemap, tempsLecture } from './site';
+import { header, insecables, mesureAudience, mettreEnPageArticle, NAVIGATION, referencement, sitemap, tempsLecture } from './site';
 
 describe('en-tête', () => {
   it('met en évidence la rubrique de la page courante', () => {
@@ -86,5 +86,18 @@ describe('référencement', () => {
   it("mesure d'audience seulement si un domaine est configuré", () => {
     expect(mesureAudience('')).toBe('');
     expect(mesureAudience('optiled.fr')).toContain('data-domain="optiled.fr"');
+  });
+});
+
+describe('espaces insécables', () => {
+  it('ponctuation double, guillemets, unités et milliers', () => {
+    expect(insecables('<p>Attention : « oui » ? 24 °C, 3 600 s !</p>')).toBe('<p>Attention : « oui » ? 24 °C, 3 600 s !</p>');
+  });
+  it('ne touche ni aux balises ni aux scripts', () => {
+    const html = '<a title="a : b" href="x?y=1">z</a><script>if (a ? b : c) {}</script><code>x ; y</code>';
+    expect(insecables(html)).toBe(html);
+  });
+  it("pas d'unité collée à un mot", () => {
+    expect(insecables('<p>2 mois, 3 heures</p>')).toBe('<p>2 mois, 3 heures</p>');
   });
 });

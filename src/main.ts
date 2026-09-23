@@ -64,7 +64,7 @@ function remplirLegumes(): void {
   selectLegume.value = demande && trouverLegume(demande) ? demande : LEGUMES[0].id;
 }
 
-/** Tuiles cliquables des légumes : elles pilotent la liste déroulante (masquée). */
+/** Appréciation affichée selon l'efficacité réelle de la lampe saisie. */
 const APPRECIATIONS = {
   faible: "faible : une LED récente fait mieux, la facture sera plus élevée",
   correcte: 'correcte',
@@ -87,6 +87,7 @@ function legumeCourant() {
   return trouverLegume(selectLegume.value)!;
 }
 
+/** Tuiles cliquables des légumes : elles pilotent la liste déroulante (masquée). */
 function remplirTuiles(): void {
   const html: string[] = [];
   for (const [famille, liste] of legumesParFamille()) {
@@ -167,7 +168,7 @@ function appliquerLegume(): void {
   appliquerStade();
 }
 
-/** Pré-remplit l'espacement conseillé (milieu de la plage de la fiche, arrondi à 5 cm). */
+/** Pré-remplit l'espacement conseillé (milieu de la plage de la fiche arrondi à 5 cm près, vers le haut en cas d'égalité). */
 function appliquerEspacement(legume = legumeCourant()): void {
   const e = legume.culture.espacement_cm.valeur;
   const input = champ('espacement');

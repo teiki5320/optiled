@@ -8,17 +8,18 @@
  *   <!--#header-->          bandeau + navigation (la rubrique courante est mise en évidence)
  *   <!--#footer-->          pied de page
  *   <!--#fiches-->          fiches légumes générées depuis src/data/legumes.json
+ *   <!--#climat-->          tableau des températures jour / nuit (même source)
  *   <!--#cartes:led-->      cartes des guides LED (idem avec culture)
  *   <!--#icone:nom-->       une icône de build/icones.ts
  *
- * Les pages led-*.html, culture-*.html et glossaire.html écrites avec le modèle d'article
+ * Les pages led-*.html, culture-*.html, glossaire.html et mentions-legales.html écrites avec le modèle d'article
  * (fil d'Ariane, <article class="prose"> avec h1, chapo et sommaire) reçoivent
  * automatiquement un bandeau de titre, un sommaire latéral et un temps de lecture.
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import type { Plugin } from 'vite';
-import { rendreFiches } from './fiches';
+import { rendreFiches, rendreTableauClimat } from './fiches';
 import { icone, LOGO, type NomIcone } from './icones';
 
 export const NOM_SITE = 'OptiLED';
@@ -322,11 +323,42 @@ export function sitemap(pages: string[], url = SITE_URL): string {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
+const UNITES = ['°C', '°', '%', 'kWh', 'kW', 'Wh', 'W', 'µmol', 'mol', 'kPa', 'mS', 'cm', 'mm', 'm²', 'm³', 'm', 'nm', 'h', 'j', 's', '€', 'L', 'l', 'lm', 'lx', 'ml', 'mL', 'kg', 'g', 'ppm', 'K'];
+const FIN_UNITE = UNITES.map((u) => u.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+
+/**
+ * Typographie française : espaces insécables devant « ; ? ! : », dans les guillemets,
+ * entre un nombre et son unité et dans les milliers (3 600). Seul le texte est touché,
+ * pas les balises ni le contenu de script, style, pre, code et textarea.
+ */
+export function insecables(html: string): string {
+  let ignore = 0;
+  return html
+    .split(/(<[^>]*>)/)
+    .map((morceau) => {
+      if (morceau.startsWith('<')) {
+        const m = /^<(\/?)(script|style|pre|code|textarea)\b/i.exec(morceau);
+        if (m) ignore = Math.max(0, ignore + (m[1] ? -1 : 1));
+        return morceau;
+      }
+      if (ignore || !morceau.trim()) return morceau;
+      return morceau
+        .replace(/ ([;?!])/g, ' $1')
+        .replace(/ :(?=\s|$)/g, ' :')
+        .replace(/« /g, '« ')
+        .replace(/ »/g, ' »')
+        .replace(/(\d) (?=\d{3}(?!\d))/g, '$1 ')
+        .replace(new RegExp(`(\\d) (?=(?:${FIN_UNITE})(?![\\p{L}\\d]))`, 'gu'), '$1 ');
+    })
+    .join('');
+}
+
 /** Applique toutes les transformations à une page. */
 export function transformerPage(html: string, fichier: string): string {
   let numeroTableau = 0;
   const base = fichier === '404.html' ? `<base href="${SITE_URL}" />\n    ` : '';
-  return mettreEnPageArticle(html, fichier)
+  const page = mettreEnPageArticle(html, fichier)
+    .replace('<!--#climat-->', () => rendreTableauClimat())
     // Tableaux qui défilent horizontalement : atteignables et nommés au clavier.
     .replace(/<div class="tableau-defile">/g, () => `<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau ${++numeroTableau} (faire défiler horizontalement)">`)
     // La 404 peut être servie sous n'importe quel chemin : liens résolus depuis la racine du site.
@@ -337,6 +369,7 @@ export function transformerPage(html: string, fichier: string): string {
     .replace('<!--#fiches-->', () => rendreFiches())
     .replace(/<!--#cartes:(led|culture)-->/g, (_m, r: Rubrique) => cartesGuides(r))
     .replace(/<!--#icone:([a-z]+)-->/g, (_m, nom: NomIcone) => icone(nom));
+  return insecables(page);
 }
 
 export function pluginSite(): Plugin {

@@ -16,6 +16,13 @@ describe('alertes du calculateur', () => {
     expect(alertes({ ...base, legumeId: 'chanvre-cbd', nom: 'Chanvre CBD', stade: 'floraison', photoperiodeH: 12 })).toEqual([]);
     expect(alertes({ ...base, legumeId: 'chanvre-cbd', nom: 'Chanvre CBD', photoperiodeH: 12 })[0]).toContain('floraison trop tôt');
   });
+  it('durée décimale écrite avec une virgule', () => {
+    expect(alertes({ ...base, legumeId: 'chanvre-cbd', nom: 'Chanvre CBD', stade: 'floraison', photoperiodeH: 12.75 })[0]).toContain('avec 12,75 h');
+  });
+  it('lésions en éclairage continu limitées aux espèces documentées', () => {
+    expect(alertes({ ...base, legumeId: 'aubergine', nom: 'Aubergine', photoperiodeH: 19 })[0]).toContain('lésions');
+    expect(alertes({ ...base, legumeId: 'poivron', nom: 'Poivron', photoperiodeH: 19 })).toEqual([]);
+  });
   it('montaison des cultures de jours longs', () => {
     expect(alertes({ ...base, legumeId: 'epinard', nom: 'Épinard', photoperiodeH: 16, photoperiodeConseilleeH: 12 })[0]).toContain('montée en graines');
   });

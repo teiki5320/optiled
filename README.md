@@ -5,7 +5,7 @@ Site web statique (Vite + TypeScript, sans backend), en français et pensé d'ab
 | Page | Contenu |
 | --- | --- |
 | `index.html` | **Accueil = calculateur** : PPFD, DLI, PPF, puissance, barres LED et plan de pose, coût annuel, liste d'achat (copie / impression), puis accès aux guides |
-| `calculateur.html` | Ancienne adresse du calculateur : redirige vers l'accueil en gardant le légume choisi |
+| `calculateur.html` | Ancienne adresse du calculateur : redirige vers l'accueil en gardant le légume choisi (sans JavaScript, la redirection de secours mène à l'accueil sans le légume) |
 | `led.html` + `led-*.html` | Guides LED : bases (PAR, PPFD, DLI, spectre), choisir ses LED, installer et mesurer |
 | `culture.html` + `culture-*.html` | Guides culture : démarrer, substrats et hydroponie, nutriments/pH/EC, climat, semis, problèmes et ravageurs |
 | `legumes.html` | Fiches légumes, **générées au build** depuis `src/data/legumes.json` |
@@ -37,17 +37,21 @@ Node.js 20 ou plus récent est requis.
 | Fichier | Rôle |
 | --- | --- |
 | `*.html` (racine) | Une page du site chacune (détectées automatiquement par le build) |
-| `build/site.ts` | Plugin Vite : en-tête, menu, pied de page, cartes de guides, mise en page automatique des articles (bandeau, sommaire latéral, temps de lecture) ; génère `sitemap.xml` et `robots.txt` |
+| `build/site.ts` | Plugin Vite : en-tête, menu, pied de page, cartes de guides, mise en page automatique des articles (bandeau, sommaire latéral, temps de lecture), espaces insécables de la typographie française ; génère `sitemap.xml` et `robots.txt` |
 | `build/icones.ts` | Icônes SVG et logo |
-| `build/fiches.ts` | Génération HTML des fiches légumes |
-| `src/site.css`, `src/site.ts` | Styles communs (thème clair/sombre, polices Inter et Bricolage Grotesque hébergées avec le site) ; barre de progression et sommaire actif |
+| `build/fiches.ts` | Génération HTML des fiches légumes et du tableau des températures (guide climat) |
+| `src/site.css`, `src/theme.css`, `src/site.ts` | Styles communs, thème « Crépuscule » (police Urbanist hébergée avec le site, police de secours aux mêmes proportions) ; barre de progression et sommaire actif |
 | `src/schema.ts` | Visuels du calculateur : plan vu de dessus des barres LED, jauge du DLI |
 | `src/data/legumes.json` | **Toutes les données légumes** : une valeur `{ valeur, source }` par paramètre |
 | `src/data.ts` | Types et accès aux données |
 | `src/calc.ts` | **Module de calcul isolé** (fonctions pures, aucun accès au DOM) |
 | `src/liste.ts` | Liste d'achat et résumé texte (copie) |
-| `src/main.ts`, `src/style.css` | Interface du calculateur |
-| `src/*.test.ts` | Tests Vitest (calculs, intégrité du JSON, liste d'achat) |
+| `src/alertes.ts` | Mises en garde du calculateur (photopériode, barres trop longues, rangs étroits) |
+| `src/etat.ts` | Réglages ↔ adresse de la page (lien de partage) |
+| `src/format.ts` | Mise en forme des nombres à la française |
+| `src/main.ts`, `src/style.css`, `src/theme-calcul.css` | Interface du calculateur |
+| `src/*.test.ts`, `build/*.test.ts` | Tests Vitest (calculs, alertes, lien de partage, intégrité du JSON, liste d'achat, pages générées, liens internes) |
+| `scripts/e2e.mjs` | Test de bout en bout dans Chromium (`npm run test:e2e`) |
 
 ## Ajouter une page
 
@@ -136,7 +140,7 @@ P = PPF_nécessaire / efficacité      (efficacité en µmol/J, 2,7 par défaut)
   - la puissance, si la puissance d'une barre est connue : `ceil(P_zone / (barres_par_ligne × P_barre))`.
 - Entraxe = `largeur / lignes` ; la première ligne est placée à un demi-entraxe du bord.
 - Sans puissance de barre saisie, le site indique la puissance minimale que chaque barre doit fournir (`P / nb_barres`). Avec une puissance saisie, il indique le taux de gradation nécessaire (`P / puissance_installée`).
-- Longueur de barre par défaut : 1,2 m.
+- Longueur de barre proposée : la plus grande longueur du commerce (1,2 / 0,9 / 0,6 / 0,3 m) qui tient dans la longueur de la zone (`longueurBarreConseillee`, `src/calc.ts`) ; elle reste modifiable dans les options.
 
 **Consommation et coût**
 
@@ -155,7 +159,7 @@ La consommation est calculée sur la puissance nécessaire (barres gradées à l
 - Chaque page reçoit une adresse canonique, des balises de partage (Open Graph : image `public/images/partage/<page>.jpg`, 1200 × 630) et, pour l'accueil et les guides, des données structurées schema.org (`build/site.ts`, fonction `referencement`).
 - Le site est installable et consultable hors ligne (`public/manifest.webmanifest`, `public/sw.js`) ; changez `VERSION` dans `sw.js` pour forcer le renouvellement du cache.
 - Mesure d'audience facultative et sans cookie (Plausible) : `PLAUSIBLE_DOMAIN=mon-domaine.fr npm run build`. Sans cette variable, aucun script de mesure n'est ajouté.
-- Mentions légales : `mentions-legales.html` — **complétez les champs entre crochets** (éditeur, contact).
+- Mentions légales : `mentions-legales.html` (site personnel non commercial : seul l'hébergeur est obligatoire). Le commentaire « À COMPLÉTER » en haut de la page liste ce qu'il faudrait ajouter si le site devenait professionnel. Si la mesure d'audience est activée, mettez à jour la rubrique « Données et cookies » de cette page.
 
 ## Domaine personnalisé (IONOS + GitHub Pages)
 
@@ -165,14 +169,14 @@ La consommation est calculée sur la puissance nécessaire (barres gradées à l
 
 ## Déploiement sur IONOS (SFTP)
 
-Le site est entièrement statique : il suffit d'envoyer le contenu du dossier `dist/`. **Important : construisez-le avec `SITE_URL=https://votre-domaine.fr/`**, sinon la page 404, le sitemap et les balises de partage pointeront vers l'adresse GitHub Pages. Construisez-le avec l'adresse de votre domaine pour que le `sitemap.xml` soit juste : `SITE_URL=https://mon-domaine.fr/ npm run build`. Comme `vite.config.ts` utilise `base: './'`, les chemins sont relatifs et le site fonctionne à la racine d'un domaine comme dans un sous-dossier.
+Le site est entièrement statique : il suffit d'envoyer le contenu du dossier `dist/`. **Important : construisez-le avec l'adresse de votre domaine** (`SITE_URL=https://mon-domaine.fr/ npm run build`), sinon la page 404, le sitemap et les balises de partage pointeront vers l'adresse GitHub Pages. Comme `vite.config.ts` utilise `base: './'`, les chemins sont relatifs et le site fonctionne à la racine d'un domaine comme dans un sous-dossier.
 
 1. **Construire le site**
    ```bash
    npm install
-   npm run build
+   SITE_URL=https://mon-domaine.fr/ npm run build
    ```
-   Le dossier `dist/` contient `index.html` et `assets/`.
+   Le dossier `dist/` contient toutes les pages (`*.html`), les dossiers `assets/`, `images/`, `icones/` et les fichiers `sw.js`, `manifest.webmanifest`, `sitemap.xml`, `robots.txt` : **tout** doit être envoyé.
 
 2. **Récupérer les accès SFTP** dans l'espace client IONOS : *Hébergement* → votre contrat → *SFTP & SSH*. Notez l'hôte (du type `accessXXXXXXXX.webspace-data.io`), le port (22), l'utilisateur et le mot de passe (créez un utilisateur SFTP si besoin).
 
@@ -187,9 +191,7 @@ Le site est entièrement statique : il suffit d'envoyer le contenu du dossier `d
    sftp -P 22 utilisateur@accessXXXXXXXX.webspace-data.io
    sftp> cd /calculateur-led
    sftp> lcd dist
-   sftp> put index.html
-   sftp> mkdir assets
-   sftp> put -r assets
+   sftp> put -r *
    sftp> bye
    ```
 
