@@ -10,7 +10,7 @@
   "references": {
     "kozai": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press",
     "faust": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI",
-    "both": "Both (Cornell CEA), Hydroponic Lettuce Handbook – DLI cible 17 mol/m²/j",
+    "both": "Brechner & Both, Cornell University (CEA) – Hydroponic Lettuce Handbook : DLI cible 17 mol/m²/j",
     "dou": "Dou, Niu, Gu & Masabni (2018), HortScience 53(4) – basilic et DLI",
     "gerovac": "Gerovac et al. (2016), HortScience 51(5) – micro-pousses sous LED",
     "runkle": "Runkle (MSU Extension) – photopériode des cultures de jours longs",
@@ -22,7 +22,7 @@
     "maraichage": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)",
     "rodriguez": "Rodriguez-Morrison, Llewellyn & Zheng (2021), Frontiers in Plant Science 12 – rendement du cannabis selon l'intensité lumineuse en intérieur",
     "chandra": "Chandra et al. (2008), Physiology and Molecular Biology of Plants 14 – photosynthèse de Cannabis sativa selon PPFD, température et CO2",
-    "reglementation": "Arrêté du 30 décembre 2021 (France) relatif à la culture du chanvre"
+    "reglementation": "Arrêté du 30 décembre 2021 portant application de l'article R. 5132-86 du code de la santé publique (France)"
   },
   "legumes": [
     {
@@ -33,7 +33,7 @@
         "croissance": {
           "ppfd": {
             "valeur": 250,
-            "source": "Both (Cornell CEA), Hydroponic Lettuce Handbook – DLI cible 17 mol/m²/j ; Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+            "source": "Brechner & Both, Cornell University (CEA) – Hydroponic Lettuce Handbook : DLI cible 17 mol/m²/j ; Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI ; valeur prudente : 250 µmol/m²/s × 16 h = DLI 14,4, inférieure à la cible de 17 mol/m²/j de Brechner & Both (Cornell), qui correspondrait à ≈ 295 µmol/m²/s"
           },
           "photoperiode": {
             "valeur": 16,
@@ -80,7 +80,7 @@
             0.8,
             1.2
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
@@ -147,17 +147,17 @@
         },
         "ph": {
           "valeur": [
-            6,
-            7
+            5.8,
+            6.5
           ],
           "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
         },
         "ec_ms_cm": {
           "valeur": [
-            1.8,
-            2.3
+            1.2,
+            2.0
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
@@ -224,8 +224,8 @@
         },
         "ph": {
           "valeur": [
-            6,
-            7
+            5.8,
+            6.5
           ],
           "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
         },
@@ -234,7 +234,7 @@
             0.8,
             1.2
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
@@ -251,7 +251,7 @@
           "source": "Pratique culturale courante (ordre de grandeur)"
         },
         "conseils": {
-          "valeur": "Pousse très vite : ressemez toutes les 2 à 3 semaines pour une récolte continue.",
+          "valeur": "Pousse très vite : ressemez toutes les 1 à 2 semaines pour une récolte continue.",
           "source": "Pratique culturale courante"
         }
       }
@@ -311,7 +311,7 @@
             1,
             1.6
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
@@ -388,7 +388,7 @@
             0.8,
             1.8
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
@@ -455,8 +455,8 @@
         },
         "ph": {
           "valeur": [
-            6.2,
-            6.8
+            5.8,
+            6.5
           ],
           "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
         },
@@ -465,7 +465,7 @@
             1.2,
             1.8
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
@@ -532,17 +532,17 @@
         },
         "ph": {
           "valeur": [
-            6,
-            6.8
+            5.8,
+            6.5
           ],
           "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
         },
         "ec_ms_cm": {
           "valeur": [
-            1.8,
-            2.4
+            1.2,
+            2.0
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
@@ -619,7 +619,7 @@
             0.5,
             1
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
@@ -696,10 +696,10 @@
         },
         "humidite_pct": {
           "valeur": [
-            60,
-            75
+            50,
+            65
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur) ; plage basse en fructification pour limiter botrytis et oïdium"
         },
         "ph": {
           "valeur": [
@@ -713,7 +713,7 @@
             1,
             2
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
@@ -793,10 +793,10 @@
         },
         "humidite_pct": {
           "valeur": [
-            60,
-            75
+            50,
+            65
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur) ; plage basse en fructification pour limiter botrytis et oïdium"
         },
         "ph": {
           "valeur": [
@@ -810,7 +810,7 @@
             2,
             3.5
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade ; commencer vers 2,0–2,5 mS/cm"
         },
         "jours_recolte": {
           "valeur": [
@@ -890,10 +890,10 @@
         },
         "humidite_pct": {
           "valeur": [
-            60,
-            70
+            50,
+            65
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur) ; plage basse en fructification pour limiter botrytis et oïdium"
         },
         "ph": {
           "valeur": [
@@ -907,7 +907,7 @@
             1.8,
             2.5
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
@@ -987,10 +987,10 @@
         },
         "humidite_pct": {
           "valeur": [
-            60,
-            70
+            50,
+            65
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur) ; plage basse en fructification pour limiter botrytis et oïdium"
         },
         "ph": {
           "valeur": [
@@ -1004,7 +1004,7 @@
             1.8,
             2.5
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
@@ -1084,10 +1084,10 @@
         },
         "humidite_pct": {
           "valeur": [
-            70,
-            80
+            60,
+            75
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur) ; plage basse en fructification pour limiter botrytis et oïdium"
         },
         "ph": {
           "valeur": [
@@ -1101,7 +1101,7 @@
             1.7,
             2.5
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [
@@ -1181,10 +1181,10 @@
         },
         "humidite_pct": {
           "valeur": [
-            60,
-            70
+            50,
+            65
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur) ; plage basse en fructification pour limiter botrytis et oïdium"
         },
         "ph": {
           "valeur": [
@@ -1198,7 +1198,7 @@
             2.5,
             3.5
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade ; commencer vers 2,0–2,5 mS/cm"
         },
         "jours_recolte": {
           "valeur": [
@@ -1224,7 +1224,7 @@
       "id": "chanvre-cbd",
       "nom": "Chanvre CBD",
       "famille": "Chanvre",
-      "avertissement": "En France, la culture du chanvre est réservée aux exploitants agricoles, avec des variétés autorisées (THC ≤ 0,3 %) : un particulier ne peut pas en cultiver. Vérifiez la réglementation de votre pays avant toute culture.",
+      "avertissement": "En France, la culture du chanvre (Cannabis sativa L.) est réservée aux agriculteurs actifs, avec des semences certifiées de variétés inscrites au catalogue européen (THC ≤ 0,30 %). Un particulier ne peut pas en cultiver, même pour du CBD : c'est une infraction à la législation sur les stupéfiants. Ces données sont fournies à titre documentaire.",
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1275,7 +1275,7 @@
             22,
             28
           ],
-          "source": "Fiches techniques maraîchères et Kozai et al. (2016) – plages de température et d'humidité (ordre de grandeur)"
+          "source": "Pratique courante en culture de chanvre (ordre de grandeur)"
         },
         "humidite_pct": {
           "valeur": [
@@ -1289,14 +1289,14 @@
             5.8,
             6.5
           ],
-          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+          "source": "Pratique courante en culture de chanvre (ordre de grandeur)"
         },
         "ec_ms_cm": {
           "valeur": [
             1.2,
             2.2
           ],
-          "source": "Ordre de grandeur courant en hydroponie et en coco ; à adapter selon la variété et le stade"
+          "source": "Ordre de grandeur courant des tableaux de solutions nutritives ; à adapter selon la variété et le stade"
         },
         "jours_recolte": {
           "valeur": [

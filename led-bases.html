@@ -54,7 +54,7 @@
         <p>Exemple : une lampe de 540 µmol/s sur une tente de 1 m² avec un coefficient de 0,8 donne un PPFD moyen d'environ 430 µmol/m²/s.</p>
 
         <h2 id="dli">Le DLI : la dose de lumière quotidienne</h2>
-        <p>Le PPFD est un débit instantané. Ce qui détermine la croissance, c'est la quantité totale reçue sur la journée : le <a href="glossaire.html#dli">DLI</a> (Daily Light Integral), en <strong>mol/m²/j</strong>. Faust et Logan (2018, HortScience) en ont fait une notion centrale pour les cultures sous abri.</p>
+        <p>Le PPFD est un débit instantané. Ce qui détermine la croissance, c'est la quantité totale reçue sur la journée : le <a href="glossaire.html#dli">DLI</a> (Daily Light Integral), en <strong>mol/m²/j</strong>. Faust et Logan (2018, HortScience) en proposent une synthèse de référence pour les cultures sous abri.</p>
         <figure class="schema"><img src="images/schemas/dli.svg" alt="Graphique : PPFD de 250 µmol/m²/s pendant 16 heures ; l'aire sous la courbe représente un DLI de 14,4 mol/m²/j" width="800" height="380" loading="lazy" decoding="async" /><figcaption>Le DLI est l'aire sous la courbe : la même dose peut s'obtenir avec plus d'intensité sur moins d'heures, ou l'inverse.</figcaption></figure>
         <p class="formule">DLI = PPFD × heures × 3600 / 1 000 000</p>
         <p>On multiplie par 3 600 pour passer des secondes aux heures, puis on divise par 1 000 000 pour passer des micromoles aux moles.</p>
@@ -75,7 +75,7 @@
         <ul>
           <li>Salades, aromatiques, micro-pousses : 14 à 16 h sont courantes. Attention, les jours longs favorisent la <a href="glossaire.html#montaison">montaison</a> de certaines salades et de la coriandre.</li>
           <li>Tomate : ne dépassez pas environ 18 h. Un éclairage continu (24 h/24) provoque chez la tomate des marbrures et des chloroses sur les feuilles.</li>
-          <li>Fraisier : la réponse dépend du type de variété (jours courts ou remontante). Suivez la fiche de la variété.</li>
+          <li>Fraisier : la réponse dépend du type de variété. Les variétés non remontantes sont des plantes de jours courts, les remontantes répondent plutôt aux jours longs, et les variétés à jours neutres fleurissent quelle que soit la durée du jour. Suivez la fiche de la variété.</li>
         </ul>
 
         <div class="encadre"><p><strong>À retenir :</strong> visez un DLI, pas seulement un PPFD. Le <a href="index.html#calculateur">calculateur d'éclairage</a> fait le calcul pour vous à partir de la culture, de la surface et de la durée.</p></div>
@@ -87,14 +87,15 @@
             <thead><tr><th>Type de culture</th><th>PPFD indicatif (µmol/m²/s)</th><th>Photopériode</th><th>DLI visé (mol/m²/j)</th></tr></thead>
             <tbody>
               <tr><td>Micro-pousses</td><td>≈ 150</td><td>14–16 h</td><td>≈ 7–9</td></tr>
-              <tr><td>Légumes feuilles (<a href="legumes.html#laitue">laitue</a>, épinard, roquette)</td><td>250–280</td><td>14–16 h</td><td>≈ 12–16</td></tr>
-              <tr><td>Aromatiques (basilic, persil, ciboulette)</td><td>250–300</td><td>14–16 h</td><td>≈ 12–17</td></tr>
+              <tr><td>Légumes feuilles (<a href="legumes.html#laitue">laitue</a>, épinard, roquette)</td><td>250–280</td><td>12–16 h</td><td>≈ 12–16</td></tr>
+              <tr><td>Aromatiques (basilic, persil, ciboulette)</td><td>250–300</td><td>12–16 h</td><td>≈ 12–17</td></tr>
               <tr><td>Fraisier</td><td>250 (croissance) / 400 (fructification)</td><td>12–16 h</td><td>≈ 12–20</td></tr>
               <tr><td>Légumes fruits (<a href="legumes.html#tomate">tomate</a>, poivron, piment, aubergine)</td><td>350 (croissance) / 500 (fructification)</td><td>12–16 h (max ≈ 18 h pour la tomate)</td><td>≈ 18–28</td></tr>
               <tr><td>Concombre</td><td>300 / 450</td><td>12–16 h</td><td>≈ 15–25</td></tr>
             </tbody>
           </table>
         </div>
+        <p>Pour l'épinard et la coriandre, restez dans le bas de la fourchette (12 à 14 h environ) : des jours plus courts limitent la <a href="glossaire.html#montaison">montaison</a>.</p>
         <p>Les légumes fruits sont de loin les plus exigeants. Un DLI trop faible ne les tue pas mais donne peu de fleurs, des fruits petits et peu nombreux. Pour les salades et les aromatiques, un DLI modeste suffit déjà à une récolte correcte.</p>
 
         <h2 id="efficacite">L'efficacité en µmol/J et votre facture</h2>
@@ -104,7 +105,7 @@
           <table class="tableau">
             <thead><tr><th>Type d'éclairage</th><th>Efficacité typique (ordre de grandeur)</th></tr></thead>
             <tbody>
-              <tr><td>Ancienne lampe au sodium haute pression (HPS)</td><td>≈ 1,5–1,9 µmol/J</td></tr>
+              <tr><td>Ancienne lampe au sodium haute pression (HPS)</td><td>≈ 1,5–2,1 µmol/J</td></tr>
               <tr><td>LED horticole bas de gamme</td><td>≈ 1,5–2,2 µmol/J</td></tr>
               <tr><td>LED horticole de bonne qualité</td><td>≈ 2,5–3 µmol/J</td></tr>
               <tr><td>LED haut de gamme récente</td><td>au-delà de 3 µmol/J</td></tr>
@@ -131,14 +132,14 @@
               <tr><td>Bleu</td><td>400–500 nm</td><td>Plantes plus compactes, feuilles plus épaisses, entre-nœuds courts. Nécessaire en petite proportion pour un développement normal.</td></tr>
               <tr><td>Vert</td><td>500–600 nm</td><td>Pénètre mieux dans le feuillage et atteint les feuilles basses. Rend la lumière agréable et permet de repérer carences et ravageurs.</td></tr>
               <tr><td>Rouge</td><td>600–700 nm</td><td>Très efficace pour la photosynthèse ; les diodes rouges sont parmi les plus efficaces électriquement.</td></tr>
-              <tr><td><a href="glossaire.html#far-red">Far-red</a></td><td>700–750 nm environ</td><td>Hors PAR. Favorise l'allongement et l'expansion des feuilles ; peut influencer la floraison de certaines espèces. À petite dose seulement.</td></tr>
+              <tr><td><a href="glossaire.html#far-red">Far-red</a></td><td>700–750 nm environ</td><td>Hors PAR au sens strict. Favorise l'allongement des tiges et l'expansion des feuilles ; combiné au PAR, il contribue aussi à la photosynthèse (notion de PAR étendu, 400–750 nm, Zhen et Bugbee, 2020). Peut influencer la floraison de certaines espèces. À petite dose seulement.</td></tr>
               <tr><td><a href="glossaire.html#uv">UV</a></td><td>sous 400 nm</td><td>Peut augmenter certains pigments ou composés aromatiques. Effet variable et modeste ; risque pour les yeux et la peau.</td></tr>
             </tbody>
           </table>
         </div>
         <p>Pour un amateur, les apports UV et far-red sont des options, pas des nécessités. Une bonne quantité de lumière avec un spectre équilibré compte bien davantage.</p>
 
-        <div class="encadre attention"><p><strong>Attention :</strong> ne regardez jamais directement une LED horticole allumée, surtout si elle contient des UV. Portez des lunettes adaptées si vous travaillez longtemps sous la lampe.</p></div>
+        <div class="encadre attention"><p><strong>Attention :</strong> ne regardez jamais directement une LED horticole allumée, surtout si elle contient des UV. Si vous travaillez longtemps sous la lampe, portez des lunettes filtrantes anti-UV prévues pour la culture sous LED, pas de simples lunettes de soleil.</p></div>
 
         <h2 id="blanc">LED blanches : kelvins, IRC et « plein spectre »</h2>
         <h3>Température de couleur en kelvins</h3>

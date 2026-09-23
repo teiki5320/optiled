@@ -6,6 +6,7 @@ import {
   ppfdDepuisDli,
   repartirBarres,
   validerEntrees,
+  verifierLampe,
   type EntreesCalcul,
 } from './calc';
 
@@ -167,5 +168,27 @@ describe('validerEntrees', () => {
 
   it('calculer lève une RangeError sur entrée invalide', () => {
     expect(() => calculer({ ...base, ppfd: -5 })).toThrow(RangeError);
+  });
+});
+
+describe('verifierLampe', () => {
+  const base = { ppfNecessaire: 225, surfaceM2: 0.72, coefUtilisation: 0.8 };
+
+  it('efficacité, nombre de lampes et PPFD obtenu', () => {
+    const v = verifierLampe({ ...base, ppfLampe: 130, puissanceLampeW: 50 });
+    expect(v.efficaciteUmolJ).toBeCloseTo(2.6, 6);
+    expect(v.nombre).toBe(2);
+    expect(v.ppfdObtenu).toBeCloseTo((2 * 130 * 0.8) / 0.72, 6);
+    expect(v.appreciation).toBe('bonne');
+  });
+
+  it('une seule lampe suffit si son flux couvre le besoin', () => {
+    expect(verifierLampe({ ...base, ppfLampe: 225, puissanceLampeW: 100 }).nombre).toBe(1);
+  });
+
+  it('signale une efficacité douteuse ou faible', () => {
+    expect(verifierLampe({ ...base, ppfLampe: 400, puissanceLampeW: 100 }).appreciation).toBe('douteuse');
+    expect(verifierLampe({ ...base, ppfLampe: 150, puissanceLampeW: 100 }).appreciation).toBe('faible');
+    expect(verifierLampe({ ...base, ppfLampe: 220, puissanceLampeW: 100 }).appreciation).toBe('correcte');
   });
 });

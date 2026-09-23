@@ -3,7 +3,8 @@
    Ciel violet et ambre, cartes de verre, grands arrondis, Urbanist.
    Chargé après site.css : redéfinit les jetons et quelques composants.
    ===================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap');
+/* Police hébergée avec le site (pas de requête vers Google : RGPD et affichage plus rapide). */
+@import '@fontsource-variable/urbanist';
 
 :root, :root:where(*) {
   --nuit: #1b1322;
@@ -38,8 +39,8 @@
   --rayon-petit: 16px;
   --ombre: none;
   --ombre-forte: 0 30px 60px -30px rgb(10 4 14 / 0.7);
-  --police: 'Urbanist', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --police-titre: 'Urbanist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --police: 'Urbanist Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --police-titre: 'Urbanist Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   color-scheme: dark;
 }
@@ -88,7 +89,7 @@ a { color: var(--accent); }
 .bandeau a:not(.bouton) { color: #ffe2a8; }
 
 /* ---------- Surfaces de verre ---------- */
-.sommaire, .suite a, .carte-guide, .carte-lien, .etape, .tableau-defile, .fiche, .pastille {
+.sommaire, .suite a, .carte-guide, .tableau-defile, .fiche, .pastille {
   background: var(--verre); border-color: var(--bordure); box-shadow: none;
 }
 .sommaire { border-radius: 24px; }
@@ -146,4 +147,17 @@ a { color: var(--accent); }
 @media print {
   :root, :root:where(*) { --fond: #fff; --carte: #fff; --texte: #000; --attenue: #444; --bordure: #ddd; --verre: #fff; }
   body { background: #fff; }
+}
+
+/* ---------- Impression : fond blanc et textes contrastés, quel que soit le thème ---------- */
+@media print {
+  :root, :root:where(*) {
+    --fond: #fff; --carte: #fff; --texte: #111; --attenue: #444; --bordure: #ccc;
+    --nuit: #f1f1f1; --nuit-2: #f1f1f1; --nuit-texte: #111; --nuit-attenue: #444;
+    --accent: #7a3e12; --accent-clair: #f3f3f3;
+  }
+  body { background: #fff !important; color: #111; }
+  .tuile, .plan-cadre { border: 1px solid #ccc; }
+  .jauge__curseur { background: #111; }
+  .jauge__curseur b { background: #111; color: #fff; }
 }

@@ -1,7 +1,8 @@
 import './site';
 import './style.css';
 import './theme-calcul.css';
-import { calculer, type EntreesCalcul, type ResultatCalcul, type Surface } from './calc';
+import { calculer, verifierLampe, type EntreesCalcul, type ResultatCalcul, type Surface } from './calc';
+import { depuisParams, PARAMETRES, versParams, type Etat } from './etat';
 import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data';
 import { euros, nombre } from './format';
 import { listeAchat, resumeTexte, type ContexteListe } from './liste';
@@ -55,6 +56,28 @@ function remplirLegumes(): void {
 }
 
 /** Tuiles cliquables des légumes : elles pilotent la liste déroulante (masquée). */
+const APPRECIATIONS = {
+  faible: "faible : une LED récente fait mieux, la facture sera plus élevée",
+  correcte: 'correcte',
+  bonne: 'bonne',
+  douteuse: 'douteuse : au-delà de 3,5 µmol/J, le PPF annoncé est probablement surestimé',
+} as const;
+
+/** Bloc « Votre lampe » si le PPF et la puissance d'une lampe du commerce sont saisis. */
+function rendreLampe(r: ResultatCalcul): string {
+  const ppf = lireNombre('lampe-ppf');
+  const w = lireNombre('lampe-w');
+  if (!ppf || !w || !(ppf > 0) || !(w > 0)) return '';
+  const v = verifierLampe({ ppfLampe: ppf, puissanceLampeW: w, ppfNecessaire: r.ppfNecessaire, surfaceM2: r.surfaceM2, coefUtilisation: lireNombre('coef') ?? 0.8 });
+  return `${titre('Votre lampe', 'led-choisir.html#fiche', 'Lire une fiche technique')}
+    <p>Efficacité réelle : <strong>${nombre(v.efficaciteUmolJ, 2)} µmol/J</strong> (${APPRECIATIONS[v.appreciation]}).</p>
+    <p>Il faut <strong>${v.nombre} lampe${v.nombre > 1 ? 's' : ''}</strong> de ${nombre(ppf)} µmol/s pour fournir ${nombre(r.ppfNecessaire)} µmol/s, soit un PPFD moyen d'environ <strong>${nombre(v.ppfdObtenu)} µmol/m²/s</strong> (cible : ${nombre(r.ppfd)}) et <strong>${nombre(v.nombre * w)} W</strong> consommés.</p>`;
+}
+
+function legumeCourant() {
+  return trouverLegume(selectLegume.value)!;
+}
+
 function remplirTuiles(): void {
   const html: string[] = [];
   for (const [famille, liste] of legumesParFamille()) {
@@ -173,6 +196,7 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources
     .join('');
 
   return `
+    ${legumeCourant().avertissement ? `<p class="avertissement-legume" role="note">${echapper(legumeCourant().avertissement!)}</p>` : ''}
     <p class="sous-titre">${echapper(ctx.legume)} · ${echapper(ctx.stade)} · ${nombre(r.surfaceM2, 2)} m² · <a href="legumes.html#${selectLegume.value}">fiche ${echapper(ctx.legume.toLowerCase())}</a></p>
     <div class="synthese">
       <div class="anneau" style="--deg:${degres}deg" role="img" aria-label="${nombre(r.puissanceW)} W ; DLI ${nombre(r.dli, 1)} mol/m²/j"><div><strong>${nombre(r.puissanceW)}</strong><span>watts</span></div></div>
@@ -197,6 +221,7 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources
     <p>Entraxe entre lignes : <strong>${nombre(b.espacementM * 100)} cm</strong>, première ligne à ${nombre(b.margeBordM * 100)} cm du bord.</p>
     <p>${puissanceBarre}</p>
 
+    ${rendreLampe(r)}
     ${titre('Spectre et hauteur', 'led-bases.html#spectre', 'Le rôle du spectre')}
     <p><strong>Spectre :</strong> ${echapper(ctx.spectre)}</p>
     <p class="source">Source : ${echapper(sources.spectre)}</p>
@@ -259,6 +284,7 @@ function mettreAJour(): void {
   contenu.innerHTML = rendre(r, ctx, entrees.surface, { ppfd: p.ppfd.source, hauteur: p.hauteur_cm.source, spectre: p.spectre.source });
   dernierResume = resumeTexte(r, ctx);
   majBarreResume(r);
+  enregistrerEtat();
 }
 
 /**
@@ -300,11 +326,98 @@ async function copier(): Promise<void> {
   setTimeout(() => (boutonCopier.textContent = libelle), 2000);
 }
 
+/* ---------- État du formulaire : partage par lien et mémorisation locale ---------- */
+const CLE_MEMOIRE = 'optiled:calculateur';
+
+/** Champs propres à chaque mode d'installation : ceux de l'autre mode ne vont pas dans le lien. */
+const CHAMPS_MODE: Record<string, string[]> = {
+  rectangle: ['nb-rangs', 'longueur-rang', 'largeur-rang'],
+  rangs: ['longueur', 'largeur'],
+};
+
+/** État à partager : seulement ce qui diffère des valeurs par défaut, pour un lien court. */
+function lireEtat(): Etat {
+  const mode = radio('mode');
+  const etat: Etat = { legume: selectLegume.value };
+  if (radio('stade') !== 'croissance') etat.stade = radio('stade');
+  if (mode !== 'rectangle') etat.mode = mode;
+  const conseillee = String(parametresStade(legumeCourant(), radio('stade') as Stade)!.photoperiode.valeur).replace('.', ',');
+  for (const id of Object.keys(PARAMETRES)) {
+    const el = document.getElementById(id);
+    if (!(el instanceof HTMLInputElement) || el.type !== 'text' || CHAMPS_MODE[mode]?.includes(id)) continue;
+    const parDefaut = id === 'photoperiode' ? conseillee : el.defaultValue;
+    if (el.value.trim() !== parDefaut) etat[id] = el.value;
+  }
+  return etat;
+}
+
+/** Applique un état au formulaire (légume et stade d'abord : ils pré-remplissent la photopériode). */
+function appliquerEtat(etat: Etat): void {
+  if (etat.legume && trouverLegume(etat.legume)) {
+    selectLegume.value = etat.legume;
+    appliquerLegume();
+  }
+  for (const nom of ['stade', 'mode'] as const) {
+    const choix = etat[nom] && form.querySelector<HTMLInputElement>(`input[name="${nom}"][value="${etat[nom]}"]`);
+    if (choix && !choix.disabled) choix.checked = true;
+  }
+  appliquerStade();
+  appliquerMode();
+  for (const [id, valeur] of Object.entries(etat)) {
+    const el = document.getElementById(id);
+    if (el instanceof HTMLInputElement && el.type === 'text') el.value = valeur;
+  }
+}
+
+function lireMemoire(): Etat {
+  try {
+    return depuisParams(localStorage.getItem(CLE_MEMOIRE) ?? '');
+  } catch {
+    return {};
+  }
+}
+
+/** Met à jour l'adresse (lien partageable) et mémorise les réglages sur l'appareil. */
+function enregistrerEtat(): void {
+  const params = versParams(lireEtat());
+  try {
+    history.replaceState(null, '', `${location.pathname}${params ? `?${params}` : ''}${location.hash}`);
+  } catch {
+    /* adresse non modifiable (aperçu, iframe) : sans importance */
+  }
+  try {
+    localStorage.setItem(CLE_MEMOIRE, params);
+  } catch {
+    /* stockage indisponible (navigation privée) : sans importance */
+  }
+}
+
+async function partager(): Promise<void> {
+  const bouton = $<HTMLButtonElement>('partager');
+  const url = location.href;
+  const libelle = bouton.textContent;
+  try {
+    if (navigator.share) {
+      await navigator.share({ title: 'Mon calcul d’éclairage LED — OptiLED', url });
+      return;
+    }
+    await navigator.clipboard.writeText(url);
+    bouton.textContent = 'Lien copié ✓';
+  } catch (e) {
+    if ((e as Error).name === 'AbortError') return; // partage annulé par l'utilisateur
+    bouton.textContent = 'Échec';
+  }
+  setTimeout(() => (bouton.textContent = libelle), 2000);
+}
+
 remplirLegumes();
 remplirTuiles();
 boutonsPas();
 appliquerLegume();
 appliquerMode();
+// Priorité : réglages présents dans l'adresse (lien partagé), sinon derniers réglages mémorisés.
+const etatAdresse = depuisParams(location.search);
+appliquerEtat(Object.keys(etatAdresse).length > 0 ? etatAdresse : lireMemoire());
 
 selectLegume.addEventListener('change', appliquerLegume);
 form.addEventListener('change', (e) => {
@@ -317,5 +430,6 @@ form.addEventListener('input', mettreAJour);
 form.addEventListener('submit', (e) => e.preventDefault());
 boutonCopier.addEventListener('click', copier);
 $('imprimer').addEventListener('click', () => window.print());
+$('partager').addEventListener('click', partager);
 
 mettreAJour();

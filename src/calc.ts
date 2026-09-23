@@ -205,3 +205,33 @@ export function calculer(e: EntreesCalcul): ResultatCalcul {
     coutAnEur,
   };
 }
+
+export interface VerificationLampe {
+  /** Efficacité réelle de la lampe, µmol/J (PPF ÷ puissance) */
+  efficaciteUmolJ: number;
+  /** Nombre de lampes nécessaires pour fournir le PPF */
+  nombre: number;
+  /** PPFD moyen obtenu avec ce nombre de lampes, µmol/m²/s */
+  ppfdObtenu: number;
+  /** Appréciation de l'efficacité annoncée */
+  appreciation: 'faible' | 'correcte' | 'bonne' | 'douteuse';
+}
+
+/**
+ * Vérifie une lampe du commerce à partir de son PPF et de sa puissance réelle :
+ * efficacité, nombre de lampes pour atteindre le flux nécessaire, PPFD obtenu.
+ */
+export function verifierLampe(params: {
+  ppfLampe: number;
+  puissanceLampeW: number;
+  ppfNecessaire: number;
+  surfaceM2: number;
+  coefUtilisation: number;
+}): VerificationLampe {
+  const efficaciteUmolJ = params.ppfLampe / params.puissanceLampeW;
+  const nombre = Math.max(1, Math.ceil(params.ppfNecessaire / params.ppfLampe - 1e-9));
+  const ppfdObtenu = (nombre * params.ppfLampe * params.coefUtilisation) / params.surfaceM2;
+  const appreciation =
+    efficaciteUmolJ > 3.5 ? 'douteuse' : efficaciteUmolJ >= 2.5 ? 'bonne' : efficaciteUmolJ >= 2 ? 'correcte' : 'faible';
+  return { efficaciteUmolJ, nombre, ppfdObtenu, appreciation };
+}

@@ -165,15 +165,8 @@ input[type='text']:focus, select:focus { outline: none; border-color: var(--acce
 }
 
 /* ---------- Calculateur en page d'accueil ---------- */
-.bandeau--accueil { padding-bottom: 3.6rem; }
-.bandeau--accueil h1 { font-size: clamp(2rem, 6.5vw, 3.4rem); max-width: 20ch; }
-.bandeau--accueil .bandeau__etiquettes { margin-bottom: 0.6rem; }
 @media (max-width: 699px) {
-  .bandeau--accueil { padding-top: 1.4rem; padding-bottom: 3.2rem; }
-  .bandeau--accueil .bandeau__etiquettes span:not(:first-child) { display: none; }
-  .bandeau--accueil h1 { font-size: 2rem; margin: 0.4rem 0 0.5rem; }
-  .bandeau--accueil .chapo { font-size: 0.98rem; }
-}
+        }
 .calculateur { margin-top: -2.4rem; scroll-margin-top: 4.5rem; }
 
 .etape-num {

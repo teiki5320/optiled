@@ -237,7 +237,12 @@ export function sitemap(pages: string[], url = SITE_URL): string {
 
 /** Applique toutes les transformations à une page. */
 export function transformerPage(html: string, fichier: string): string {
+  const base = fichier === '404.html' ? `<base href="${SITE_URL}" />\n    ` : '';
   return mettreEnPageArticle(html, fichier)
+    // Tableaux qui défilent horizontalement : atteignables et nommés au clavier.
+    .replace(/<div class="tableau-defile">/g, '<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau (faire défiler horizontalement)">')
+    // La 404 peut être servie sous n'importe quel chemin : liens résolus depuis la racine du site.
+    .replace('<!--#head-->', `${base}<!--#head-->`)
     .replace('<!--#head-->', head())
     .replace('<!--#header-->', header(fichier))
     .replace('<!--#footer-->', footer())

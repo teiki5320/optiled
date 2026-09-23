@@ -15,7 +15,7 @@
     <main id="contenu">
       <div id="calculateur" class="calculateur conteneur">
       <section class="accueil__visuel" aria-labelledby="titre-accueil">
-        <p class="accueil__etiquettes"><span><!--#icone:calcul--> Calculateur gratuit</span><span>14 légumes</span><span>Plan de pose et liste d'achat</span></p>
+        <p class="accueil__etiquettes"><span><!--#icone:calcul--> Calculateur gratuit</span><span>15 cultures</span><span>Plan de pose et liste d'achat</span></p>
         <h1 id="titre-accueil">Combien de LED pour vos légumes ?</h1>
         <div class="accueil__chapo">
           <p>Choisissez un légume et vos dimensions : intensité à viser, puissance, nombre et disposition des barres LED, coût électrique et liste d'achat.</p>
@@ -76,7 +76,7 @@
           <summary>Options (électricité, barres LED, efficacité)</summary>
           <div class="grille">
             <label class="champ"><span>Prix du kWh (€)</span>
-              <input id="prix-kwh" type="text" inputmode="decimal" autocomplete="off" placeholder="ex. 0,20" /></label>
+              <input id="prix-kwh" type="text" inputmode="decimal" autocomplete="off" value="0,20" /></label>
             <label class="champ"><span>Jours d'éclairage par an</span>
               <input id="jours" type="text" inputmode="numeric" autocomplete="off" value="365" /></label>
             <label class="champ"><span>Longueur des barres LED (m)</span>
@@ -88,7 +88,15 @@
             <label class="champ"><span>Coefficient d'utilisation (0–1)</span>
               <input id="coef" type="text" inputmode="decimal" autocomplete="off" value="0,8" /></label>
           </div>
-          <small class="aide">Le coefficient d'utilisation représente la part de lumière qui atteint vraiment les plantes (pertes sur les bords, réflexions). Mettez 1 pour l'ignorer.</small>
+          <small class="aide">Prix du kWh : 0,20 € est un ordre de grandeur du tarif réglementé en France ; reportez le prix de votre facture. Le coefficient d'utilisation représente la part de lumière qui atteint vraiment les plantes (pertes sur les bords, réflexions). Mettez 1 pour l'ignorer.</small>
+          <p class="avance__titre">Vérifier une lampe du commerce</p>
+          <div class="grille">
+            <label class="champ"><span>PPF de la lampe (µmol/s)</span>
+              <input id="lampe-ppf" type="text" inputmode="decimal" autocomplete="off" placeholder="sur la fiche technique" /></label>
+            <label class="champ"><span>Puissance réelle (W)</span>
+              <input id="lampe-w" type="text" inputmode="decimal" autocomplete="off" placeholder="à la prise" /></label>
+          </div>
+          <small class="aide">Indiquez le PPF et la puissance consommée (pas l'« équivalent » en watts) : le calculateur vérifie l'efficacité annoncée et le nombre de lampes nécessaires.</small>
         </details>
       </form>
 
@@ -96,6 +104,7 @@
         <div class="titre-resultats">
           <h2><span class="etape-num">2</span> Résultats</h2>
           <div class="actions">
+            <button type="button" id="partager">Partager</button>
             <button type="button" id="copier">Copier</button>
             <button type="button" id="imprimer">Imprimer</button>
           </div>

@@ -178,3 +178,5 @@ input[type='text']:focus, select:focus { background: rgb(255 255 255 / 0.1); bor
   background: var(--alerte-clair); color: var(--texte); font-size: 0.85rem; line-height: 1.45;
   border: 1px solid color-mix(in srgb, var(--alerte) 35%, transparent);
 }
+
+.avance__titre { margin: 1.2rem 0 0.6rem; font-weight: 700; font-size: 0.95rem; }

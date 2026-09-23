@@ -5,8 +5,6 @@
    claires et chaleureuses, vert végétal pour l'action.
    ===================================================================== */
 
-@import '@fontsource-variable/bricolage-grotesque';
-@import '@fontsource-variable/inter';
 
 :root {
   /* Nuit : en-tête, bandeaux, pied de page (identiques en thème clair et sombre) */
@@ -44,8 +42,8 @@
   --rayon-petit: 10px;
   --ombre: 0 1px 2px rgb(16 32 22 / 0.05), 0 12px 32px -16px rgb(16 32 22 / 0.25);
   --ombre-forte: 0 2px 4px rgb(16 32 22 / 0.06), 0 22px 44px -18px rgb(16 32 22 / 0.35);
-  --police: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --police-titre: 'Bricolage Grotesque Variable', 'Inter Variable', system-ui, sans-serif;
+  --police: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --police-titre: system-ui, sans-serif;
   --police-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --largeur: 72rem;
 
@@ -371,15 +369,6 @@ img, svg { max-width: 100%; }
 .carte-guide__lire { margin-top: auto; padding-top: 0.5rem; display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 700; font-size: 0.9rem; color: var(--accent); }
 
 /* Cartes génériques (hérité) */
-.cartes { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); margin: 1rem 0; }
-.carte-lien {
-  display: flex; flex-direction: column; gap: 0.3rem; padding: 1.1rem 1.2rem;
-  border: 1px solid var(--bordure); border-radius: var(--rayon); background: var(--carte);
-  color: var(--texte); text-decoration: none; box-shadow: var(--ombre); transition: transform 0.15s;
-}
-.carte-lien:hover { transform: translateY(-2px); }
-.carte-lien strong { font-family: var(--police-titre); font-size: 1.1rem; }
-.carte-lien span { color: var(--attenue); font-size: 0.93rem; }
 
 /* ---------- Sections génériques ---------- */
 .section { padding: 3rem 0; }
@@ -393,51 +382,9 @@ img, svg { max-width: 100%; }
 }
 
 /* ---------- Accueil ---------- */
-.heros {
-  position: relative; overflow: hidden; isolation: isolate; color: var(--nuit-texte);
-  background:
-    radial-gradient(50% 70% at 78% 0%, rgb(181 107 255 / 0.35), transparent 70%),
-    radial-gradient(40% 60% at 95% 30%, rgb(255 77 109 / 0.22), transparent 70%),
-    radial-gradient(45% 60% at 60% 10%, rgb(91 124 255 / 0.25), transparent 70%),
-    var(--nuit);
-  padding: 2.5rem 0 0;
-}
-.heros::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--spectre); }
-.heros__grille { display: grid; gap: 1.5rem; align-items: center; }
-@media (min-width: 900px) { .heros__grille { grid-template-columns: 1.05fr 1fr; gap: 2.5rem; } .heros { padding-top: 3.5rem; } }
-.heros h1 { font-size: clamp(2.3rem, 7.5vw, 4rem); font-weight: 800; line-height: 1.02; letter-spacing: -0.03em; margin: 0.5rem 0 1rem; text-wrap: balance; }
-.heros h1 em {
-  font-style: normal; background: linear-gradient(90deg, #ffe0a3, #ff8fb1 45%, #b98bff);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.heros__texte > p { font-size: clamp(1.05rem, 2.6vw, 1.25rem); color: var(--nuit-attenue); max-width: 34rem; margin: 0 0 1.6rem; }
 .heros__actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
-.heros__pastille {
-  display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.82rem; font-weight: 600;
-  padding: 0.3rem 0.75rem 0.3rem 0.45rem; border-radius: 999px; border: 1px solid var(--nuit-bordure); background: rgb(255 255 255 / 0.05);
-}
-.heros__pastille b { background: var(--accent-vif); color: var(--nuit); border-radius: 999px; padding: 0.05rem 0.5rem; font-size: 0.75rem; }
-.heros__illustration { align-self: end; }
-.heros__illustration svg { display: block; width: 100%; height: auto; }
-.heros__chiffres {
-  position: relative; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
-  margin-top: 2rem; border-top: 1px solid var(--nuit-bordure);
-}
-@media (min-width: 700px) { .heros__chiffres { grid-template-columns: repeat(4, 1fr); } }
-.heros__chiffres div { padding: 1.1rem 0.25rem 1.3rem; }
-.heros__chiffres strong { display: block; font-family: var(--police-titre); font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 800; }
-.heros__chiffres span { color: var(--nuit-attenue); font-size: 0.85rem; }
 
 /* Étapes */
-.etapes { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); counter-reset: etape; }
-.etape { position: relative; padding: 1.3rem 1.3rem 1.2rem 1.3rem; border-radius: var(--rayon); background: var(--carte); border: 1px solid var(--bordure); box-shadow: var(--ombre); }
-.etape::before {
-  counter-increment: etape; content: counter(etape);
-  display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: 50%;
-  font-family: var(--police-titre); font-weight: 800; color: #062011; background: var(--accent-vif); margin-bottom: 0.7rem;
-}
-.etape h3 { margin: 0 0 0.3rem; font-size: 1.15rem; }
-.etape p { margin: 0; color: var(--attenue); font-size: 0.95rem; }
 
 /* Bloc « le spectre » */
 .spectre-bloc {
