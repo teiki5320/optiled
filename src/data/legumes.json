@@ -1,0 +1,548 @@
+{
+  "_lisezmoi": [
+    "Données des légumes pour le calculateur LED. Modifiez librement ce fichier puis relancez `npm run build`.",
+    "Chaque valeur est un objet { valeur, source } : indiquez toujours d'où vient le chiffre.",
+    "ppfd en µmol/m²/s, photoperiode en heures/jour, hauteur_cm = [min, max] de suspension au-dessus de la canopée.",
+    "stades.floraison = null pour les cultures récoltées avant floraison (feuilles, aromatiques, micro-pousses).",
+    "Les valeurs sont des ordres de grandeur indicatifs : ajustez-les selon la variété et vos mesures (PAR-mètre)."
+  ],
+  "references": {
+    "kozai": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press",
+    "faust": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI",
+    "both": "Both (Cornell CEA), Hydroponic Lettuce Handbook – DLI cible 17 mol/m²/j",
+    "dou": "Dou, Niu, Gu & Masabni (2018), HortScience 53(4) – basilic et DLI",
+    "gerovac": "Gerovac et al. (2016), HortScience 51(5) – micro-pousses sous LED",
+    "runkle": "Runkle (MSU Extension) – photopériode des cultures de jours longs",
+    "heuvelink": "Heuvelink (2018), Tomatoes, 2e éd., CABI",
+    "velez": "Velez-Ramirez et al. (2011), Trends in Plant Science – lésions en éclairage continu",
+    "pratique": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+  },
+  "legumes": [
+    {
+      "id": "laitue",
+      "nom": "Laitue",
+      "famille": "Légumes feuilles",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 250,
+            "source": "Both (Cornell CEA), Hydroponic Lettuce Handbook – DLI cible 17 mol/m²/j ; Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      }
+    },
+    {
+      "id": "epinard",
+      "nom": "Épinard",
+      "famille": "Légumes feuilles",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 280,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 12,
+            "source": "Runkle (MSU Extension) – photopériode des cultures de jours longs (plante de jours longs : montée en graines au-delà de ~14 h)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      }
+    },
+    {
+      "id": "roquette",
+      "nom": "Roquette",
+      "famille": "Légumes feuilles",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 250,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 14,
+            "source": "Runkle (MSU Extension) – photopériode des cultures de jours longs (limiter la montée en graines)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      }
+    },
+    {
+      "id": "basilic",
+      "nom": "Basilic",
+      "famille": "Aromatiques",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 300,
+            "source": "Dou, Niu, Gu & Masabni (2018), HortScience 53(4) – basilic et DLI (DLI optimal ≈ 12–17 mol/m²/j)"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Dou, Niu, Gu & Masabni (2018), HortScience 53(4) – basilic et DLI"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      }
+    },
+    {
+      "id": "persil",
+      "nom": "Persil",
+      "famille": "Aromatiques",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 250,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 14,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      }
+    },
+    {
+      "id": "coriandre",
+      "nom": "Coriandre",
+      "famille": "Aromatiques",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 250,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 12,
+            "source": "Runkle (MSU Extension) – photopériode des cultures de jours longs (monte vite en graines en jours longs)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      }
+    },
+    {
+      "id": "ciboulette",
+      "nom": "Ciboulette",
+      "famille": "Aromatiques",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 250,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      }
+    },
+    {
+      "id": "micro-pousses",
+      "nom": "Micro-pousses",
+      "famille": "Micro-pousses",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 150,
+            "source": "Gerovac et al. (2016), HortScience 51(5) – micro-pousses sous LED (plage testée 105–315 µmol/m²/s)"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Gerovac et al. (2016), HortScience 51(5) – micro-pousses sous LED"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              15,
+              25
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc froid 5000–6500 K riche en bleu (tiges courtes, bonne coloration)",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      }
+    },
+    {
+      "id": "fraise",
+      "nom": "Fraise (remontante)",
+      "famille": "Légumes fruits",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 250,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              30,
+              45
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": {
+          "ppfd": {
+            "valeur": 400,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (variétés remontantes / jours neutres)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              35,
+              50
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        }
+      }
+    },
+    {
+      "id": "tomate",
+      "nom": "Tomate",
+      "famille": "Légumes fruits",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 350,
+            "source": "Heuvelink (2018), Tomatoes, 2e éd., CABI ; Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Velez-Ramirez et al. (2011), Trends in Plant Science – lésions en éclairage continu (ne pas dépasser ~18 h)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              30,
+              45
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": {
+          "ppfd": {
+            "valeur": 500,
+            "source": "Heuvelink (2018), Tomatoes, 2e éd., CABI ; Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI (DLI ≈ 20–30 mol/m²/j)"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Velez-Ramirez et al. (2011), Trends in Plant Science – lésions en éclairage continu (ne pas dépasser ~18 h)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              35,
+              50
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        }
+      }
+    },
+    {
+      "id": "poivron",
+      "nom": "Poivron",
+      "famille": "Légumes fruits",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 350,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              30,
+              45
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": {
+          "ppfd": {
+            "valeur": 500,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              35,
+              50
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        }
+      }
+    },
+    {
+      "id": "piment",
+      "nom": "Piment",
+      "famille": "Légumes fruits",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 350,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              30,
+              45
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": {
+          "ppfd": {
+            "valeur": 500,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 14,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (certaines variétés fleurissent mieux en jours plus courts)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              35,
+              50
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        }
+      }
+    },
+    {
+      "id": "concombre",
+      "nom": "Concombre",
+      "famille": "Légumes fruits",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 300,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              30,
+              45
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": {
+          "ppfd": {
+            "valeur": 450,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              35,
+              50
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        }
+      }
+    },
+    {
+      "id": "aubergine",
+      "nom": "Aubergine",
+      "famille": "Légumes fruits",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 350,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              30,
+              45
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": {
+          "ppfd": {
+            "valeur": 500,
+            "source": "Faust & Logan (2018), HortScience 53(9) – revue des besoins en DLI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              35,
+              50
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm (far-red 730 nm optionnel)",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        }
+      }
+    }
+  ]
+}

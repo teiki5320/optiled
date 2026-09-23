@@ -1,0 +1,150 @@
+# Calculateur LED culture indoor
+
+Site web statique (Vite + TypeScript, sans backend), en français et pensé d'abord pour le mobile, qui aide un cultivateur à choisir l'éclairage LED adapté à un légume.
+
+**Entrées** : légume, stade (croissance ou floraison/fructification), dimensions (longueur × largeur, ou nombre de rangs), photopériode (pré-remplie), et en option : prix du kWh, jours d'éclairage par an, longueur et puissance des barres LED, efficacité des LED (2,7 µmol/J par défaut), coefficient d'utilisation.
+
+**Résultats** : PPFD cible, DLI, flux nécessaire (PPF), puissance électrique, nombre de barres et espacement, spectre, hauteur de suspension, consommation et coût annuels, et une liste d'achat. Deux boutons permettent de **copier** le résumé en texte brut ou de l'**imprimer** (feuille de style d'impression dédiée).
+
+## Démarrage
+
+```bash
+npm install
+npm run dev      # serveur de développement
+npm test         # tests unitaires (Vitest)
+npm run build    # vérification TypeScript + site statique dans dist/
+npm run preview  # prévisualise le contenu de dist/
+```
+
+Node.js 20 ou plus récent est requis.
+
+## Organisation du code
+
+| Fichier | Rôle |
+| --- | --- |
+| `src/data/legumes.json` | **Toutes les données légumes** : une valeur `{ valeur, source }` par paramètre |
+| `src/data.ts` | Types et accès aux données |
+| `src/calc.ts` | **Module de calcul isolé** (fonctions pures, aucun accès au DOM) |
+| `src/liste.ts` | Liste d'achat et résumé texte (copie) |
+| `src/main.ts` | Interface : lecture du formulaire, affichage |
+| `src/*.test.ts` | Tests Vitest (calculs, intégrité du JSON, liste d'achat) |
+
+## Modifier ou ajouter un légume
+
+Éditez `src/data/legumes.json`, puis relancez `npm test` et `npm run build`. Chaque légume ressemble à ceci :
+
+```json
+{
+  "id": "laitue",
+  "nom": "Laitue",
+  "famille": "Légumes feuilles",
+  "stades": {
+    "croissance": {
+      "ppfd":         { "valeur": 250, "source": "…" },
+      "photoperiode": { "valeur": 16,  "source": "…" },
+      "hauteur_cm":   { "valeur": [20, 30], "source": "…" },
+      "spectre":      { "valeur": "Blanc plein spectre 4000–5000 K…", "source": "…" }
+    },
+    "floraison": null
+  }
+}
+```
+
+- `ppfd` en µmol/m²/s, `photoperiode` en h/jour, `hauteur_cm` = [min, max] au-dessus du feuillage.
+- `floraison: null` pour les cultures récoltées avant floraison (le choix du stade est alors désactivé).
+- `famille` sert à regrouper la liste déroulante.
+- Chaque valeur **doit** avoir une `source` non vide : les tests vérifient la présence des sources et la plausibilité des valeurs (PPFD entre 50 et 1 500, photopériode ≤ 24 h, etc.).
+
+Les valeurs fournies sont des **ordres de grandeur indicatifs** tirés de la littérature horticole (références listées dans la clé `references` du JSON). Ajustez-les selon la variété et vos mesures au PAR-mètre.
+
+## Formules
+
+Notations : PPFD en µmol/m²/s, S la surface en m², h la photopériode en heures.
+
+**Surface**
+- Mode rectangle : `S = longueur × largeur`
+- Mode rangs : `S = nb_rangs × longueur_rang × largeur_rang`
+
+**DLI (Daily Light Integral)**, en mol/m²/jour :
+
+```
+DLI = PPFD × h × 3600 / 1 000 000
+```
+
+Exemple : 250 µmol/m²/s pendant 16 h → 14,4 mol/m²/j.
+
+**Flux photonique (PPF)**, en µmol/s :
+
+```
+PPF_utile      = PPFD × S
+PPF_nécessaire = PPF_utile / coefficient_d'utilisation
+```
+
+Le coefficient d'utilisation (0,8 par défaut) représente la part du flux émis qui atteint réellement la culture (pertes sur les bords, réflexions, allées). Mettez 1 pour l'ignorer.
+
+**Puissance électrique**, en W :
+
+```
+P = PPF_nécessaire / efficacité      (efficacité en µmol/J, 2,7 par défaut)
+```
+
+**Barres LED** (calculées pour chaque zone : le rectangle, ou chaque rang) :
+
+- Barres bout à bout dans la longueur : `ceil(longueur / longueur_barre − 0,25)` — on n'ajoute pas une barre pour combler moins d'un quart de sa longueur (au moins 1).
+- Lignes parallèles dans la largeur, au maximum de :
+  - l'uniformité : `ceil(largeur / hauteur_moyenne)`, l'entraxe entre lignes ne dépassant pas la hauteur de suspension moyenne (règle usuelle pour des optiques ~120°) ;
+  - la puissance, si la puissance d'une barre est connue : `ceil(P_zone / (barres_par_ligne × P_barre))`.
+- Entraxe = `largeur / lignes` ; la première ligne est placée à un demi-entraxe du bord.
+- Sans puissance de barre saisie, le site indique la puissance minimale que chaque barre doit fournir (`P / nb_barres`). Avec une puissance saisie, il indique le taux de gradation nécessaire (`P / puissance_installée`).
+- Longueur de barre par défaut : 1,2 m.
+
+**Consommation et coût**
+
+```
+kWh/jour = P × h / 1000
+kWh/an   = kWh/jour × jours_par_an       (365 par défaut)
+€/an     = kWh/an × prix_du_kWh
+```
+
+La consommation est calculée sur la puissance nécessaire (barres gradées à la valeur cible), pas sur la puissance maximale installée.
+
+**Liste d'achat** : les puissances affichées pour les barres, l'alimentation et le programmateur sont arrondies au multiple de 5 W supérieur ; l'alimentation et le programmateur prévoient 10 % de marge.
+
+## Déploiement sur IONOS (SFTP)
+
+Le site est entièrement statique : il suffit d'envoyer le contenu du dossier `dist/`. Comme `vite.config.ts` utilise `base: './'`, les chemins sont relatifs et le site fonctionne à la racine d'un domaine comme dans un sous-dossier.
+
+1. **Construire le site**
+   ```bash
+   npm install
+   npm run build
+   ```
+   Le dossier `dist/` contient `index.html` et `assets/`.
+
+2. **Récupérer les accès SFTP** dans l'espace client IONOS : *Hébergement* → votre contrat → *SFTP & SSH*. Notez l'hôte (du type `accessXXXXXXXX.webspace-data.io`), le port (22), l'utilisateur et le mot de passe (créez un utilisateur SFTP si besoin).
+
+3. **Repérer le dossier cible** : *Domaines & SSL* → votre domaine → le « répertoire » vers lequel il pointe (par exemple `/calculateur-led`). Créez-le si nécessaire.
+
+4. **Envoyer les fichiers**
+
+   *Avec FileZilla* : Fichier → Gestionnaire de sites → protocole **SFTP**, hôte, port 22, utilisateur, mot de passe. Ouvrez le dossier cible à droite, puis glissez-y **le contenu** de `dist/` (et non le dossier `dist` lui-même).
+
+   *En ligne de commande* :
+   ```bash
+   sftp -P 22 utilisateur@accessXXXXXXXX.webspace-data.io
+   sftp> cd /calculateur-led
+   sftp> lcd dist
+   sftp> put index.html
+   sftp> mkdir assets
+   sftp> put -r assets
+   sftp> bye
+   ```
+
+   *Ou avec rsync* (si l'accès SSH est inclus dans votre offre) :
+   ```bash
+   rsync -avz --delete -e "ssh -p 22" dist/ utilisateur@accessXXXXXXXX.webspace-data.io:/calculateur-led/
+   ```
+
+5. **Vérifier** en ouvrant le domaine dans un navigateur (videz le cache au besoin). Activez le certificat SSL dans IONOS : le bouton « Copier » utilise l'API presse-papiers, disponible uniquement en HTTPS (un repli existe pour les autres cas).
+
+À chaque mise à jour : `npm run build`, puis renvoyez le contenu de `dist/`. Les fichiers de `assets/` ont un nom qui change à chaque build ; avec FileZilla, supprimez les anciens pour ne pas encombrer l'hébergement (rsync `--delete` le fait automatiquement).
