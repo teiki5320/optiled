@@ -6,6 +6,7 @@ import { calculer, dimensionsZone, longueurBarreConseillee, nombrePlants, verifi
 import { depuisParams, PARAMETRES, versParams, type Etat } from './etat';
 import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data';
 import { euros, nombre } from './format';
+import { htmlTuiles } from './tuiles';
 import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste';
 import { jaugeDli, planBarres } from './schema';
 
@@ -32,11 +33,6 @@ function echapper(s: string): string {
 function nomCourt(nom: string): string {
   const n = nom.replace(/\s*\(.*\)$/, '');
   return n.charAt(0).toLowerCase() + n.slice(1);
-}
-
-/** « Légumes feuilles » → « legumes-feuilles » (même convention que les fiches). */
-function slug(s: string): string {
-  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
 /** Lit un champ numérique ; undefined s'il est vide. Accepte la virgule décimale. */
@@ -89,16 +85,8 @@ function legumeCourant() {
 
 /** Tuiles cliquables des légumes : elles pilotent la liste déroulante (masquée). */
 function remplirTuiles(): void {
-  const html: string[] = [];
-  for (const [famille, liste] of legumesParFamille()) {
-    for (const l of liste) {
-      html.push(
-        `<button type="button" class="tuile-legume tuile-legume--${slug(famille)}" data-legume="${l.id}" aria-pressed="false">` +
-          `<span class="tuile-legume__pastille" aria-hidden="true"><img src="images/legumes/${l.id}.webp" alt="" width="96" height="96" loading="lazy" decoding="async" onerror="this.remove()" /></span>${echapper(l.nom.replace(/\s*\(.*\)$/, ''))}</button>`,
-      );
-    }
-  }
-  tuilesLegumes.innerHTML = html.join('');
+  // Normalement déjà écrites au build ; sinon (serveur de développement), on les crée ici.
+  if (!tuilesLegumes.querySelector('[data-legume]')) tuilesLegumes.innerHTML = htmlTuiles();
   tuilesLegumes.addEventListener('click', (e) => {
     const bouton = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-legume]');
     if (!bouton || !bouton.dataset.legume) return;

@@ -8,6 +8,7 @@
  *   <!--#header-->          bandeau + navigation (la rubrique courante est mise en évidence)
  *   <!--#footer-->          pied de page
  *   <!--#fiches-->          fiches légumes générées depuis src/data/legumes.json
+ *   <!--#tuiles-->          tuiles des légumes du calculateur (src/tuiles.ts)
  *   <!--#climat-->          tableau des températures jour / nuit (même source)
  *   <!--#cartes:led-->      cartes des guides LED (idem avec culture)
  *   <!--#icone:nom-->       une icône de build/icones.ts
@@ -20,6 +21,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import type { Plugin } from 'vite';
 import { rendreFiches, rendreTableauClimat } from './fiches';
+import { htmlTuiles } from '../src/tuiles';
 import { icone, LOGO, type NomIcone } from './icones';
 
 export const NOM_SITE = 'OptiLED';
@@ -359,6 +361,7 @@ export function transformerPage(html: string, fichier: string): string {
   const base = fichier === '404.html' ? `<base href="${SITE_URL}" />\n    ` : '';
   const page = mettreEnPageArticle(html, fichier)
     .replace('<!--#climat-->', () => rendreTableauClimat())
+    .replace('<!--#tuiles-->', () => htmlTuiles())
     // Tableaux qui défilent horizontalement : atteignables et nommés au clavier.
     .replace(/<div class="tableau-defile">/g, () => `<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau ${++numeroTableau} (faire défiler horizontalement)">`)
     // La 404 peut être servie sous n'importe quel chemin : liens résolus depuis la racine du site.
