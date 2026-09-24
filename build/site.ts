@@ -210,7 +210,7 @@ export function footer(): string {
       <a class="logo" href="index.html">${logo('-pied')}<span><strong>${NOM_SITE}</strong><small>LED &amp; culture indoor</small></span></a>
       <p>Guides et outils gratuits pour cultiver des légumes sous LED, en intérieur.</p>
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la <a href="glossaire.html#sources">littérature horticole</a> : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
-      <p class="site-pied__note">Photos des guides et d'une partie des miniatures générées par intelligence artificielle ; autres miniatures et schémas dessinés pour le site.</p>
+      <p class="site-pied__note">Photos des guides et miniatures des cultures générées par intelligence artificielle ; schémas réalisés pour le site.</p>
       <p class="site-pied__note"><a href="mentions-legales.html">Mentions légales</a></p>
     </div>
     <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="glossaire.html">Glossaire</a></li></ul></div>
