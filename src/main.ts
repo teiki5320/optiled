@@ -7,6 +7,7 @@ import { depuisParams, PARAMETRES, versParams, type Etat } from './etat';
 import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data';
 import { euros, nombre } from './format';
 import { htmlTuiles, TUILES_PAR_LIGNE } from './tuiles';
+import { lampesConseillees, lienAmazon, MENTION_AFFILIATION } from './lampes';
 import { insecables, typographier } from './typo';
 import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste';
 import { jaugeDli, planBarres } from './schema';
@@ -80,6 +81,24 @@ function rendreLampe(r: ResultatCalcul): string {
   return `${titre('Votre lampe', 'led-choisir.html#fiche', 'Lire une fiche technique')}
     <p>Efficacité réelle : <strong>${nombre(v.efficaciteUmolJ, 2)} µmol/J</strong> (${APPRECIATIONS[v.appreciation]}).</p>
     <p>Il faut <strong>${v.nombre} lampe${v.nombre > 1 ? 's' : ''}</strong> de ${nombre(ppf)} µmol/s pour fournir ${nombre(r.ppfNecessaire)} µmol/s, soit un PPFD moyen d'environ <strong>${nombre(v.ppfdObtenu)} µmol/m²/s</strong> (cible : ${nombre(r.ppfd)}) et <strong>${nombre(v.nombre * w)} W</strong> consommés.</p>`;
+}
+
+/** Lampes du commerce (sélection Amazon.fr) qui fournissent assez de lumière pour la surface. */
+function rendreLampesCommerce(r: ResultatCalcul): string {
+  const propositions = lampesConseillees(r.ppfNecessaire, r.surfaceM2, radio('stade') as Stade);
+  if (propositions.length === 0) return '';
+  const cartes = propositions
+    .map(
+      (p) => `<li class="lampe-proposee">
+      <p class="lampe-proposee__nom"><strong>${p.nombre} × ${echapper(p.lampe.nom)}</strong></p>
+      <p class="lampe-proposee__detail">${nombre(p.ppfTotal)} µmol/s${p.lampe.ppf_estime ? ' (estimé)' : ''} pour ${nombre(r.ppfNecessaire)} nécessaires · ${nombre(p.puissanceW)} W au maximum · ${p.lampe.variateur ? 'avec variateur' : 'sans variateur'} · ${String(p.lampe.note).replace('.', ',')} ★ (${nombre(p.lampe.avis)} avis)</p>
+      <a class="bouton bouton--amazon" href="${lienAmazon(p.lampe)}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a>
+    </li>`,
+    )
+    .join('');
+  return `${titre('Lampes du commerce qui conviennent', 'lampes.html', 'Toute la sélection')}
+    <ul class="lampes-proposees">${cartes}</ul>
+    <p class="aide">Liens sponsorisés. ${MENTION_AFFILIATION} Prix et disponibilité sur Amazon.</p>`;
 }
 
 function legumeCourant() {
@@ -284,6 +303,7 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface): string
     <p>${puissanceBarre}</p>
 
     ${rendreLampe(r)}
+    ${rendreLampesCommerce(r)}
     ${titre('Spectre et hauteur', 'led-bases.html#spectre', 'Le rôle du spectre')}
     <p><strong>Spectre :</strong> ${echapper(ctx.spectre)}</p>
     <p><strong>Hauteur de suspension :</strong> ${r.hauteurCm[0]} à ${r.hauteurCm[1]} cm au-dessus du feuillage (monter si les feuilles blanchissent, descendre si les tiges s'étirent).</p>

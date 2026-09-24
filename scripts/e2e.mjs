@@ -65,6 +65,8 @@ try {
   verifier(/en mètres/.test(await page.textContent('#erreurs')) && (await page.getAttribute('#longueur', 'aria-invalid')) === 'true', 'longueur saisie en cm : erreur claire, champ signalé');
   await page.fill('#longueur', '1,2');
   verifier(/^Résultat : .* W, \d+ barres? LED\.$/.test((await page.textContent('#annonce-resultats')) ?? ''), "annonce courte pour les lecteurs d'écran");
+  const lienAmazon = await page.getAttribute('.lampe-proposee a', 'href').catch(() => null);
+  verifier(!!lienAmazon && /^https:\/\/www\.amazon\.fr\/dp\/B0\w{8}\?tag=optiled-21$/.test(lienAmazon) && (await page.getAttribute('.lampe-proposee a', 'rel')) === 'sponsored noopener', 'lampes du commerce proposées, lien Amazon sponsorisé avec identifiant');
   verifier((await page.locator('[data-legume]:not([hidden])').count()) === 4 && (await page.getAttribute('#tuiles-deplier', 'aria-expanded')) === 'false', 'liste des cultures repliée sur une ligne de 4');
   await page.click('#tuiles-deplier');
   await page.click('[data-legume="wasabi"]');

@@ -199,3 +199,10 @@ input[type='text']:focus, select:focus { background: rgb(255 255 255 / 0.1); bor
   .jauge__curseur { background: #111; }
   .jauge__curseur b { background: #111; color: #fff; }
 }
+
+/* Lampes du commerce proposées (sélection Amazon.fr) */
+.lampes-proposees { list-style: none; padding: 0; margin: 0.6rem 0; display: grid; gap: 0.6rem; }
+.lampe-proposee { background: rgb(255 255 255 / 0.05); border: 1px solid rgb(255 255 255 / 0.1); border-radius: 16px; padding: 0.8rem 1rem; display: grid; gap: 0.35rem; }
+.lampe-proposee p { margin: 0; }
+.lampe-proposee__detail { font-size: 0.86rem; color: var(--attenue); }
+.bouton--amazon { justify-self: start; font-size: 0.86rem; padding: 0.45rem 0.9rem; }

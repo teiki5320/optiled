@@ -533,3 +533,13 @@ img, svg { max-width: 100%; }
 /* Liste des sources (glossaire) */
 .sources { font-size: 0.9rem; color: var(--attenue); padding-left: 1.2rem; }
 .sources li { margin: 0.35rem 0; }
+
+/* Page « Lampes conseillées » */
+.lampes { list-style: none; padding: 0; display: grid; gap: 0.8rem; }
+@media (min-width: 760px) { .lampes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.prose .lampes li.lampe { margin: 0; padding: 1rem 1.1rem; border-radius: 18px; background: var(--carte); border: 1px solid var(--bordure); display: flex; flex-direction: column; gap: 0.4rem; }
+.lampe h3 { margin: 0; font-size: 1.05rem; }
+.lampe p { margin: 0; font-size: 0.9rem; }
+.lampe__note { color: var(--accent); font-weight: 700; }
+.lampe__note span { color: var(--attenue); font-weight: 500; }
+.lampe .bouton { align-self: flex-start; margin-top: 0.3rem; }

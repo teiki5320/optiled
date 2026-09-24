@@ -10,6 +10,7 @@
  *   <!--#fiches-->          fiches légumes générées depuis src/data/legumes.json
  *   <!--#tuiles-->          tuiles des légumes du calculateur (src/tuiles.ts)
  *   <!--#nb-cultures-->     nombre de cultures de legumes.json (texte ou attribut)
+ *   <!--#lampes-->          sélection de lampes Amazon.fr (src/data/lampes.json)
  *   <!--#sources-->         liste des références (glossaire), même source
  *   <!--#climat-->          tableau des températures jour / nuit (même source)
  *   <!--#cartes:led-->      cartes des guides LED (idem avec culture)
@@ -24,6 +25,7 @@ import { basename, resolve } from 'node:path';
 import type { Plugin } from 'vite';
 import { chargerLegumes, rendreFiches, rendreSources, rendreTableauClimat } from './fiches';
 import { htmlTuiles } from '../src/tuiles';
+import { rendreLampes } from './lampes';
 import { insecables } from '../src/typo';
 
 export { insecables };
@@ -37,7 +39,7 @@ export const SITE_URL = (process.env.SITE_URL ?? 'https://teiki5320.github.io/op
 /** Rubriques de la navigation principale ; `pages` = fichiers rattachés à la rubrique. */
 export const NAVIGATION: { href: string; libelle: string; pages: RegExp }[] = [
   { href: 'index.html', libelle: 'Calculateur', pages: /^(index|calculateur)\.html$/ },
-  { href: 'led.html', libelle: 'LED', pages: /^led(-.*)?\.html$/ },
+  { href: 'led.html', libelle: 'LED', pages: /^(led(-.*)?|lampes)\.html$/ },
   { href: 'culture.html', libelle: 'Culture', pages: /^culture(-.*)?\.html$/ },
   { href: 'legumes.html', libelle: 'Légumes', pages: /^legumes\.html$/ },
   { href: 'glossaire.html', libelle: 'Glossaire', pages: /^glossaire\.html$/ },
@@ -211,9 +213,10 @@ export function footer(): string {
       <p>Guides et outils gratuits pour cultiver des légumes sous LED, en intérieur.</p>
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la <a href="glossaire.html#sources">littérature horticole</a> : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
       <p class="site-pied__note">Photos des guides et miniatures des cultures générées par intelligence artificielle ; schémas réalisés pour le site.</p>
+      <p class="site-pied__note">Certains liens vers Amazon sont sponsorisés : en tant que Partenaire Amazon, l'éditeur réalise un bénéfice sur les achats remplissant les conditions requises.</p>
       <p class="site-pied__note"><a href="mentions-legales.html">Mentions légales</a></p>
     </div>
-    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="glossaire.html">Glossaire</a></li></ul></div>
+    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="glossaire.html">Glossaire</a></li></ul></div>
     ${colonne('led')}
     ${colonne('culture')}
   </div>
@@ -340,6 +343,7 @@ export function transformerPage(html: string, fichier: string): string {
     .replace('<!--#climat-->', () => rendreTableauClimat())
     .replace('<!--#tuiles-->', () => htmlTuiles())
     .replace('<!--#sources-->', () => rendreSources())
+    .replace('<!--#lampes-->', () => rendreLampes())
     // Tableaux qui défilent horizontalement : atteignables et nommés au clavier.
     .replace(/<div class="tableau-defile">/g, () => `<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau ${++numeroTableau} (faire défiler horizontalement)">`)
     // La 404 peut être servie sous n'importe quel chemin : liens résolus depuis la racine du site.
