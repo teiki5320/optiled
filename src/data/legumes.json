@@ -24,7 +24,9 @@
     "semenciers": "Catalogues semenciers (ordre de grandeur, varie selon la variété)",
     "rodriguez": "Rodriguez-Morrison, Llewellyn & Zheng (2021), Frontiers in Plant Science 12 – rendement du cannabis selon l'intensité lumineuse en intérieur",
     "chandra": "Chandra, Lata, Khan & ElSohly (2008), Physiology and Molecular Biology of Plants 14 : 299–306 – photosynthèse de Cannabis sativa selon PPFD, température et CO2 (optimum 25–30 °C)",
-    "reglementation": "Arrêté du 30 décembre 2021 portant application de l'article R. 5132-86 du code de la santé publique (France)"
+    "reglementation": "Arrêté du 30 décembre 2021 portant application de l'article R. 5132-86 du code de la santé publique (France)",
+    "mccree": "McCree (1972), Agricultural Meteorology 9 : 191–216 – spectre d'action de la photosynthèse des plantes cultivées",
+    "zhen": "Zhen & Bugbee (2020), Plant, Cell & Environment 43(5) : 1259–1272 – le rouge lointain et la notion de PAR étendu (400–750 nm)"
   },
   "legumes": [
     {
@@ -1380,7 +1382,7 @@
       "id": "chanvre-cbd",
       "nom": "Chanvre CBD",
       "famille": "Chanvre",
-      "avertissement": "En France, la culture du chanvre (Cannabis sativa L.) est réservée aux agriculteurs actifs, avec des semences certifiées de variétés inscrites au catalogue européen (THC ≤ 0,30 %). Un particulier ne peut pas en cultiver, même pour du CBD : c'est une infraction à la législation sur les stupéfiants. Ces données sont fournies à titre documentaire. (Arrêté du 30 décembre 2021 portant application de l'article R. 5132-86 du code de la santé publique.)",
+      "avertissement": "En France, la culture du chanvre (Cannabis sativa L.) est réservée aux agriculteurs actifs, avec des semences certifiées de variétés inscrites au catalogue européen (THC ≤ 0,30 %). Un particulier ne peut pas en cultiver, même pour du CBD : c'est une infraction à la législation sur les stupéfiants. Ces données sont fournies à titre documentaire.",
       "stades": {
         "croissance": {
           "ppfd": {

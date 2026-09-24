@@ -178,7 +178,7 @@ function espacementConseille(legume = legumeCourant()): number {
 function appliquerStade(): void {
   const p = parametresStade(trouverLegume(selectLegume.value)!, radio('stade') as Stade)!;
   champ('photoperiode').value = String(p.photoperiode.valeur).replace('.', ',');
-  $('photoperiode-aide').textContent = `Conseillé : ${p.photoperiode.valeur} h — ${p.photoperiode.source}`;
+  $('photoperiode-aide').textContent = `Conseillé : ${nombre(p.photoperiode.valeur, Number.isInteger(p.photoperiode.valeur) ? 0 : 1)} h par jour.`;
 }
 
 function appliquerMode(): void {
@@ -210,7 +210,7 @@ function tuile(libelle: string, valeur: string, unite: string, note = ''): strin
     ${note ? `<span class="note">${note}</span>` : ''}</div>`;
 }
 
-function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources: { ppfd: string; hauteur: string; spectre: string }): string {
+function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface): string {
   const b = r.barres;
   const dispo =
     `${b.lignesParZone} ligne${b.lignesParZone > 1 ? 's' : ''} de ${b.barresParLigne} barre${b.barresParLigne > 1 ? 's' : ''} bout à bout` +
@@ -250,7 +250,6 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources
       ${ctx.plants ? tuile('Plants', `≈ ${ctx.plants.total}`, '', `à ${ctx.plants.espacementCm} cm · ${nombre(r.puissanceW / ctx.plants.total, 1)} W/plant`) : ''}
     </div>
     ${jaugeDli(r.dli)}
-    <p class="source">Source PPFD : ${echapper(sources.ppfd)}</p>
 
     ${titre('Barres LED et disposition', 'led-installation.html#uniformite', 'Bien répartir la lumière')}
     <p><strong>${b.total} barre${b.total > 1 ? 's' : ''} de ${nombre(ctx.longueurBarreM, 2)} m</strong> : ${dispo}.</p>
@@ -261,9 +260,7 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface, sources
     ${rendreLampe(r)}
     ${titre('Spectre et hauteur', 'led-bases.html#spectre', 'Le rôle du spectre')}
     <p><strong>Spectre :</strong> ${echapper(ctx.spectre)}</p>
-    <p class="source">Source : ${echapper(sources.spectre)}</p>
     <p><strong>Hauteur de suspension :</strong> ${r.hauteurCm[0]} à ${r.hauteurCm[1]} cm au-dessus du feuillage (monter si les feuilles blanchissent, descendre si les tiges s'étirent).</p>
-    <p class="source">Source : ${echapper(sources.hauteur)}</p>
 
     ${titre('Consommation', 'led-choisir.html#chaleur', 'Chaleur et consommation')}
     <div class="tuiles">
@@ -341,7 +338,7 @@ function mettreAJour(): void {
         ? { largeurCm: Math.round(surface.largeurRangM * 100), espacementCm: espacementCm! }
         : undefined,
   });
-  contenu.innerHTML = rendre(r, ctx, entrees.surface, { ppfd: p.ppfd.source, hauteur: p.hauteur_cm.source, spectre: p.spectre.source });
+  contenu.innerHTML = rendre(r, ctx, entrees.surface);
   dernierResume = resumeTexte(r, ctx);
   majBarreResume(r);
   enregistrerEtat();

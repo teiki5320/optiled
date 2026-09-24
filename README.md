@@ -42,7 +42,7 @@ Node.js 20 ou plus récent est requis.
 | `build/fiches.ts` | Génération HTML des fiches légumes et du tableau des températures (guide climat) |
 | `src/site.css`, `src/theme.css`, `src/site.ts` | Styles communs, thème « Crépuscule » (police Urbanist hébergée avec le site, police de secours aux mêmes proportions) ; barre de progression et sommaire actif |
 | `src/schema.ts` | Visuels du calculateur : plan vu de dessus des barres LED, jauge du DLI |
-| `src/data/legumes.json` | **Toutes les données légumes** : une valeur `{ valeur, source }` par paramètre |
+| `src/data/legumes.json` | **Toutes les données légumes** : une valeur `{ valeur, source }` par paramètre ; la clé `references` alimente la section « Sources » du glossaire (marqueur `<!--#sources-->`). Les sources ne sont pas affichées dans le calculateur ni dans les fiches |
 | `src/data.ts` | Types et accès aux données |
 | `src/calc.ts` | **Module de calcul isolé** (fonctions pures, aucun accès au DOM) |
 | `src/liste.ts` | Liste d'achat et résumé texte (copie) |
@@ -97,6 +97,7 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 - `avertissement` (facultatif) : mise en garde affichée dans le calculateur et la fiche (ex. réglementation du chanvre CBD).
 - `famille` sert à regrouper la liste déroulante et les fiches.
 - `culture` : plages [min, max] de température (°C), humidité (%), pH, EC (mS/cm), jours jusqu'à la première récolte, espacement (cm, `null` pour un semis à la volée), et un conseil ; affichées dans les fiches légumes.
+- Toute nouvelle référence citée doit être ajoutée à `references` (elle apparaîtra dans le glossaire).
 - Chaque valeur **doit** avoir une `source` non vide : les tests vérifient la présence des sources et la plausibilité des valeurs (PPFD entre 50 et 1 500, photopériode ≤ 24 h, etc.).
 
 Les valeurs fournies sont des **ordres de grandeur indicatifs** tirés de la littérature horticole (références listées dans la clé `references` du JSON). Ajustez-les selon la variété et vos mesures au PAR-mètre.

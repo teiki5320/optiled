@@ -14,8 +14,8 @@ export function echapper(s: string): string {
 const nb = (n: number) => String(n).replace('.', ',');
 const plage = ([a, b]: [number, number], unite = '') => (a === b ? `${nb(a)}${unite}` : `${nb(a)}–${nb(b)}${unite}`);
 
-function ligne(libelle: string, valeur: string, source: string): string {
-  return `<tr><th scope="row">${libelle}</th><td>${valeur}<span class="source-ligne">${echapper(source)}</span></td></tr>`;
+function ligne(libelle: string, valeur: string): string {
+  return `<tr><th scope="row">${libelle}</th><td>${valeur}</td></tr>`;
 }
 
 function blocStade(titre: string, p: ParametresStade): string {
@@ -23,11 +23,11 @@ function blocStade(titre: string, p: ParametresStade): string {
   return `<div class="fiche-stade">
     <h4>${titre}</h4>
     <table class="fiche-table"><tbody>
-      ${ligne('PPFD', `${p.ppfd.valeur} µmol/m²/s`, p.ppfd.source)}
-      ${ligne('Photopériode', `${nb(p.photoperiode.valeur)} h/jour`, p.photoperiode.source)}
-      ${ligne('DLI obtenu', `${dli.toFixed(1).replace('.', ',')} mol/m²/j`, 'Calcul : PPFD × heures × 3 600 / 1 000 000')}
-      ${ligne('Hauteur des LED', `${plage(p.hauteur_cm.valeur, ' cm')}`, p.hauteur_cm.source)}
-      ${ligne('Spectre', echapper(p.spectre.valeur), p.spectre.source)}
+      ${ligne('PPFD', `${p.ppfd.valeur} µmol/m²/s`)}
+      ${ligne('Photopériode', `${nb(p.photoperiode.valeur)} h/jour`)}
+      ${ligne('DLI obtenu', `${dli.toFixed(1).replace('.', ',')} mol/m²/j`)}
+      ${ligne('Hauteur des LED', `${plage(p.hauteur_cm.valeur, ' cm')}`)}
+      ${ligne('Spectre', echapper(p.spectre.valeur))}
     </tbody></table>
   </div>`;
 }
@@ -87,21 +87,21 @@ export function rendreFiche(l: Legume): string {
       ${kpi('Humidité', plage(c.humidite_pct.valeur), '%')}
     </dl>
     <details class="fiche__detail">
-      <summary>Détail complet et sources</summary>
+      <summary>Détail complet</summary>
       <div class="fiche__stades">
         ${blocStade(floraison ? 'Lumière — croissance' : 'Lumière', croissance)}
         ${floraison ? blocStade('Lumière — floraison / fructification', floraison) : ''}
         <div class="fiche-stade">
           <h4>Conditions de culture</h4>
           <table class="fiche-table"><tbody>
-            ${ligne('Température (jour)', plage(c.temperature_c.valeur, ' °C'), c.temperature_c.source)}
-            ${ligne('Température (nuit)', plage(c.temperature_nuit_c.valeur, ' °C'), c.temperature_nuit_c.source)}
-            ${ligne('Humidité relative', plage(c.humidite_pct.valeur, ' %'), c.humidite_pct.source)}
-            ${ligne('pH de la solution', plage(c.ph.valeur), c.ph.source)}
-            ${ligne('EC de la solution', plage(c.ec_ms_cm.valeur, ' mS/cm'), c.ec_ms_cm.source)}
-            ${ligne('Délai de récolte', plage(c.jours_recolte.valeur, ' jours'), c.jours_recolte.source)}
-            ${ligne('Espacement', espacement, c.espacement_cm.source)}
-            ${ligne('Conseil', echapper(c.conseils.valeur), c.conseils.source)}
+            ${ligne('Température (jour)', plage(c.temperature_c.valeur, ' °C'))}
+            ${ligne('Température (nuit)', plage(c.temperature_nuit_c.valeur, ' °C'))}
+            ${ligne('Humidité relative', plage(c.humidite_pct.valeur, ' %'))}
+            ${ligne('pH de la solution', plage(c.ph.valeur))}
+            ${ligne('EC de la solution', plage(c.ec_ms_cm.valeur, ' mS/cm'))}
+            ${ligne('Délai de récolte', plage(c.jours_recolte.valeur, ' jours'))}
+            ${ligne('Espacement', espacement)}
+            ${ligne('Conseil', echapper(c.conseils.valeur))}
           </tbody></table>
         </div>
       </div>
@@ -149,4 +149,14 @@ export function rendreTableauClimat(legumes: Legume[] = chargerLegumes()): strin
             </tbody>
           </table>
         </div>`;
+}
+
+/** Liste des références (clé `references` de legumes.json), pour la section « Sources » du glossaire. */
+export function rendreSources(): string {
+  const refs = (JSON.parse(readFileSync(FICHIER, 'utf8')) as { references: Record<string, string> }).references;
+  const items = Object.values(refs)
+    .sort((a, b) => a.localeCompare(b, 'fr'))
+    .map((r) => `<li>${echapper(r)}</li>`)
+    .join('\n          ');
+  return `<ul class="sources">\n          ${items}\n        </ul>`;
 }

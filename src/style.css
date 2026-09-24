@@ -96,7 +96,6 @@ input[type='text']:focus, select:focus { outline: none; border-color: var(--acce
 .tuile .valeur small { font-family: var(--police); font-size: 0.78rem; font-weight: 500; color: var(--nuit-attenue); }
 .tuile .note { font-size: 0.76rem; color: var(--nuit-attenue); }
 
-.source { font-size: 0.76rem; color: var(--attenue); margin-top: 0.3rem; line-height: 1.45; }
 
 /* Jauge DLI */
 .jauge { margin: 2.2rem 0 0.3rem; }

@@ -479,7 +479,6 @@ img, svg { max-width: 100%; }
 .fiche-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
 .fiche-table th, .fiche-table td { text-align: left; vertical-align: top; padding: 0.4rem 0.3rem; border-bottom: 1px solid var(--bordure); }
 .fiche-table th { font-weight: 600; width: 40%; }
-.source-ligne { display: block; font-size: 0.74rem; color: var(--attenue); line-height: 1.4; margin-top: 0.1rem; }
 .fiche__action { margin-top: auto; }
 
 /* ---------- Glossaire ---------- */
@@ -554,3 +553,7 @@ img, svg { max-width: 100%; }
 .fiche--chanvre, .fiches-famille--chanvre { --famille: #9fd48a; }
 .fiche__avertissement { margin: 0; font-size: 0.88rem; }
 .fiche__miniature { width: 3.4rem; height: 3.4rem; border-radius: 50%; object-fit: cover; flex: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--famille) 55%, transparent); }
+
+/* Liste des sources (glossaire) */
+.sources { font-size: 0.9rem; color: var(--attenue); padding-left: 1.2rem; }
+.sources li { margin: 0.35rem 0; }

@@ -9,6 +9,7 @@
  *   <!--#footer-->          pied de page
  *   <!--#fiches-->          fiches légumes générées depuis src/data/legumes.json
  *   <!--#tuiles-->          tuiles des légumes du calculateur (src/tuiles.ts)
+ *   <!--#sources-->         liste des références (glossaire), même source
  *   <!--#climat-->          tableau des températures jour / nuit (même source)
  *   <!--#cartes:led-->      cartes des guides LED (idem avec culture)
  *   <!--#icone:nom-->       une icône de build/icones.ts
@@ -20,7 +21,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import type { Plugin } from 'vite';
-import { rendreFiches, rendreTableauClimat } from './fiches';
+import { rendreFiches, rendreSources, rendreTableauClimat } from './fiches';
 import { htmlTuiles } from '../src/tuiles';
 import { icone, LOGO, type NomIcone } from './icones';
 
@@ -204,7 +205,7 @@ export function footer(): string {
     <div class="site-pied__marque">
       <a class="logo" href="index.html">${LOGO}<span><strong>${NOM_SITE}</strong><small>LED &amp; culture indoor</small></span></a>
       <p>Guides et outils gratuits pour cultiver des légumes sous LED, en intérieur.</p>
-      <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la littérature horticole : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
+      <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la <a href="glossaire.html#sources">littérature horticole</a> : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
       <p class="site-pied__note">Photos des guides et miniatures des cultures générées par intelligence artificielle ; schémas réalisés pour le site.</p>
       <p class="site-pied__note"><a href="mentions-legales.html">Mentions légales</a></p>
     </div>
@@ -362,6 +363,7 @@ export function transformerPage(html: string, fichier: string): string {
   const page = mettreEnPageArticle(html, fichier)
     .replace('<!--#climat-->', () => rendreTableauClimat())
     .replace('<!--#tuiles-->', () => htmlTuiles())
+    .replace('<!--#sources-->', () => rendreSources())
     // Tableaux qui défilent horizontalement : atteignables et nommés au clavier.
     .replace(/<div class="tableau-defile">/g, () => `<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau ${++numeroTableau} (faire défiler horizontalement)">`)
     // La 404 peut être servie sous n'importe quel chemin : liens résolus depuis la racine du site.
