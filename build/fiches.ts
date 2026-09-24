@@ -43,6 +43,8 @@ const ICONES_FAMILLE: Record<string, NomIcone> = {
   'micro-pousses': 'graines',
   'legumes-fruits': 'fruit',
   chanvre: 'feuille',
+  'legumes-racines': 'pousse',
+  'epices-et-curiosites': 'fruit',
 };
 
 export function iconeFamille(famille: string): string {
@@ -65,6 +67,9 @@ function kpi(libelle: string, valeur: string, unite = ''): string {
 const DEPART_RECOLTE: Record<string, string> = {
   fraise: 'après plantation',
   'chanvre-cbd': 'jusqu\'aux fleurs',
+  romarin: 'après bouturage',
+  safran: 'après plantation',
+  wasabi: 'jusqu\'au rhizome',
 };
 
 export function rendreFiche(l: Legume): string {

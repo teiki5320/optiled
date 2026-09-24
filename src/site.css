@@ -429,6 +429,8 @@ img, svg { max-width: 100%; }
 .fiche--aromatiques, .fiches-famille--aromatiques { --famille: #1fb6a6; }
 .fiche--micro-pousses, .fiches-famille--micro-pousses { --famille: #9be234; }
 .fiche--legumes-fruits, .fiches-famille--legumes-fruits { --famille: #ff6b4a; }
+.fiche--legumes-racines, .fiches-famille--legumes-racines { --famille: #ff5f9e; }
+.fiche--epices-et-curiosites, .fiches-famille--epices-et-curiosites { --famille: #b48cff; }
 .fiche__tete {
   display: flex; align-items: center; gap: 0.8rem; padding: 1rem 1.1rem;
   background: linear-gradient(135deg, color-mix(in srgb, var(--famille) 16%, transparent), transparent 70%);

@@ -3,9 +3,9 @@
     "Données des légumes pour le calculateur LED. Modifiez librement ce fichier puis relancez `npm run build`.",
     "Chaque valeur est un objet { valeur, source } : indiquez toujours d'où vient le chiffre.",
     "ppfd en µmol/m²/s, photoperiode en heures/jour, hauteur_cm = [min, max] de suspension au-dessus de la canopée.",
-    "stades.floraison = null pour les cultures récoltées avant floraison (feuilles, aromatiques, micro-pousses).",
+    "stades.floraison = null pour les cultures récoltées avant floraison (feuilles, aromatiques, micro-pousses, racines, wasabi).",
     "Les valeurs sont des ordres de grandeur indicatifs : ajustez-les selon la variété et vos mesures (PAR-mètre).",
-    "culture : plages [min, max] de température de jour (temperature_c, °C) et de nuit (temperature_nuit_c, °C), texte court des températures à éviter (temperature_a_eviter), humidité relative (%), pH et EC (mS/cm) de la solution, jours_recolte = délai indicatif jusqu'à la première récolte, compté depuis le semis sauf mention contraire dans la source (fraise : depuis la plantation du plant ; chanvre : jusqu'à la récolte des fleurs), espacement entre plants (cm, null pour un semis à la volée)."
+    "culture : plages [min, max] de température de jour (temperature_c, °C) et de nuit (temperature_nuit_c, °C), texte court des températures à éviter (temperature_a_eviter), humidité relative (%), pH et EC (mS/cm) de la solution, jours_recolte = délai indicatif jusqu'à la première récolte, compté depuis le semis sauf mention contraire dans la source (fraise : depuis la plantation du plant ; romarin : depuis la bouture enracinée ; safran : depuis la plantation des cormes ; chanvre : jusqu'à la récolte des fleurs ; wasabi : jusqu'à la récolte du rhizome), espacement entre plants (cm, null pour un semis à la volée)."
   ],
   "references": {
     "kozai": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press",
@@ -26,7 +26,22 @@
     "chandra": "Chandra, Lata, Khan & ElSohly (2008), Physiology and Molecular Biology of Plants 14 : 299–306 – photosynthèse de Cannabis sativa selon PPFD, température et CO2 (optimum 25–30 °C)",
     "reglementation": "Arrêté du 30 décembre 2021 portant application de l'article R. 5132-86 du code de la santé publique (France)",
     "mccree": "McCree (1972), Agricultural Meteorology 9 : 191–216 – spectre d'action de la photosynthèse des plantes cultivées",
-    "zhen": "Zhen & Bugbee (2020), Plant, Cell & Environment 43(5) : 1259–1272 – le rouge lointain et la notion de PAR étendu (400–750 nm)"
+    "zhen": "Zhen & Bugbee (2020), Plant, Cell & Environment 43(5) : 1259–1272 – le rouge lointain et la notion de PAR étendu (400–750 nm)",
+    "gpn": "Greenhouse Product News (GPN) – Growing Hydroponic Leafy Greens ; Cornell University (CEA), via Hort Americas – DLI 12–17 mol/m²/j des légumes feuilles",
+    "wojciechowska": "Wojciechowska, Długosz-Grochowska, Kołton & Żupnik (2015), Scientia Horticulturae 187 : 80–86 – éclairage LED d'appoint de la mâche (200 µmol/m²/s, 16 h)",
+    "lopez": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI et températures des aromatiques",
+    "kohler": "Kohler & Lopez (2021), HortScience 56 : 431 – DLI, croissance et bouturage d'aromatiques (origan, menthe…)",
+    "walters_sauge": "Walters, Tarr & Lopez (2023), PLOS ONE – température et DLI chez la sauge",
+    "walters_aneth": "Walters & Lopez (2021), PLOS ONE – DLI et température chez l'aneth",
+    "virginia_tech": "HortTechnology 36(1) (2026), Virginia Tech – micro-tomates en ferme verticale : PPFD et DLI",
+    "guides_radis": "Guides commerciaux de culture du radis en intérieur – DLI, délai de récolte (valeurs indicatives)",
+    "gao": "Gao et al. (2023), Scientific Reports 13 – DLI de LED bleues et rouges et floraison du safran",
+    "nexsel": "Nexsel (fabricant) – guide de culture du safran en intérieur (guide commercial)",
+    "guides_safran": "Guides commerciaux de culture hydroponique du safran – pH et EC (valeurs indicatives)",
+    "ruamrungsri": "Ruamrungsri et al. (2025), Horticulturae 11(1) : 3 – spectre et intensité LED chez le wasabi",
+    "agritecture": "Agritecture – culture du wasabi en environnement contrôlé (températures, durée de culture)",
+    "sspn_wasabi": "Soil Science and Plant Nutrition 70(1) (2024) – nutrition du wasabi en hydroponie (pH, besoins nutritifs)",
+    "guides_wasabi": "Guides commerciaux de culture hydroponique du wasabi – pH et EC (valeurs indicatives)"
   },
   "legumes": [
     {
@@ -289,6 +304,179 @@
         },
         "conseils": {
           "valeur": "Pousse très vite : ressemez toutes les 1 à 2 semaines pour une récolte continue.",
+          "source": "Pratique culturale courante"
+        }
+      }
+    },
+    {
+      "id": "mache",
+      "nom": "Mâche",
+      "famille": "Légumes feuilles",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 200,
+            "source": "Wojciechowska et al. (2015), Scientia Horticulturae – éclairage LED d'appoint de la mâche en hiver (200 µmol/m²/s, 16 h) ; 200 × 16 h × 0,0036 = DLI 11,5 mol/m²/j, bas de la plage de 12–17 donnée par Greenhouse Product News (GPN) – Growing Hydroponic Leafy Greens ; Cornell University (CEA), via Hort Americas : DLI 12–17 mol/m²/j pour les légumes feuilles (la mâche se contente de peu de lumière)"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Wojciechowska et al. (2015), Scientia Horticulturae – éclairage LED d'appoint de la mâche en hiver (200 µmol/m²/s, 16 h) (essai en éclairage d'appoint l'hiver ; réduire à 12–14 h si la plante monte en graines)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            15,
+            18
+          ],
+          "source": "Ordre de grandeur (estimation) : plante de saison fraîche, cultivée en automne-hiver ; proche de l'optimum de 16–18 °C des légumes feuilles de saison fraîche dans Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            8,
+            12
+          ],
+          "source": "Ordre de grandeur (estimation) : la mâche supporte bien le froid et apprécie des nuits fraîches"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 20 °C (montée en graines, croissance bloquée)",
+          "source": "Ordre de grandeur (estimation) : la chaleur et les jours longs font monter la mâche en graines"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            70
+          ],
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – ambiance des cultures de légumes feuilles (ordre de grandeur ; l'humidité se pilote surtout via le VPD)"
+        },
+        "ph": {
+          "valeur": [
+            5.8,
+            6.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives (ordre de grandeur des légumes feuilles, pas de valeur propre à la mâche)"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            0.8,
+            1.2
+          ],
+          "source": "Ordre de grandeur repris de la laitue (Brechner & Both, Cornell University (CEA) – Hydroponic Lettuce Handbook) ; estimation, pas de valeur propre à la mâche"
+        },
+        "jours_recolte": {
+          "valeur": [
+            35,
+            50
+          ],
+          "source": "Ordre de grandeur (estimation, catalogues semenciers) : du semis à la récolte de la rosette"
+        },
+        "espacement_cm": {
+          "valeur": [
+            5,
+            8
+          ],
+          "source": "Ordre de grandeur (estimation) : petites rosettes serrées"
+        },
+        "conseils": {
+          "valeur": "Plante de saison fraîche : gardez-la vers 15–18 °C. La chaleur et les jours longs la font monter en graines ; si elle file, réduisez l'éclairage à 12–14 h. Récoltez la rosette entière en coupant au collet.",
+          "source": "Pratique culturale courante ; Wojciechowska et al. (2015), Scientia Horticulturae – éclairage LED d'appoint de la mâche en hiver (200 µmol/m²/s, 16 h)"
+        }
+      }
+    },
+    {
+      "id": "mesclun",
+      "nom": "Mesclun (jeunes pousses)",
+      "famille": "Légumes feuilles",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 250,
+            "source": "Valeurs reprises de la laitue et de la roquette : 250 × 16 h × 0,0036 = DLI 14,4 mol/m²/j, au milieu de la plage de 12–17 donnée par Greenhouse Product News (GPN) – Growing Hydroponic Leafy Greens ; Cornell University (CEA), via Hort Americas : DLI 12–17 mol/m²/j pour les légumes feuilles"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (valeur reprise de la laitue)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            16,
+            22
+          ],
+          "source": "Valeur reprise de la laitue : Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press ; Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) (laitue : optimum 16–18 °C, maximum 24 °C)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            12,
+            16
+          ],
+          "source": "Valeur reprise de la laitue et de la roquette (ordre de grandeur) ; Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107)"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 24 °C (montaison, amertume)",
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : maximum 24 °C pour la laitue"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            70
+          ],
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – ambiance des cultures de légumes feuilles (ordre de grandeur ; l'humidité se pilote surtout via le VPD)"
+        },
+        "ph": {
+          "valeur": [
+            5.6,
+            6.2
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives (valeur reprise de la laitue)"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            0.8,
+            1.2
+          ],
+          "source": "Valeur reprise de la laitue : Brechner & Both, Cornell University (CEA) – Hydroponic Lettuce Handbook ; Resh (2013), Hydroponic Food Production, 7e éd., CRC Press"
+        },
+        "jours_recolte": {
+          "valeur": [
+            21,
+            30
+          ],
+          "source": "Ordre de grandeur (estimation, catalogues semenciers) : du semis à la première coupe de jeunes pousses"
+        },
+        "espacement_cm": {
+          "valeur": null,
+          "source": "Semis dense à la volée (pas d'espacement entre plants)"
+        },
+        "conseils": {
+          "valeur": "Semez dense un mélange (laitues, roquette, moutarde, épinard…) et coupez aux ciseaux à 2–3 cm du substrat quand les feuilles font 8–10 cm : une ou deux repousses sont possibles. Ressemez toutes les 2 semaines pour une récolte continue.",
           "source": "Pratique culturale courante"
         }
       }
@@ -646,6 +834,446 @@
       }
     },
     {
+      "id": "thym",
+      "nom": "Thym",
+      "famille": "Aromatiques",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 270,
+            "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit ; 270 × 16 h × 0,0036 = DLI 15,6 mol/m²/j"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Ordre de grandeur (estimation : 14–16 h) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            20,
+            24
+          ],
+          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 22 °C le jour ; plage indicative)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            14,
+            18
+          ],
+          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 16 °C la nuit ; plage indicative)"
+        },
+        "temperature_a_eviter": {
+          "valeur": "< 10 °C (croissance quasi arrêtée)",
+          "source": "Ordre de grandeur (estimation) : plante méditerranéenne, croissance très lente au froid"
+        },
+        "humidite_pct": {
+          "valeur": [
+            40,
+            60
+          ],
+          "source": "Ordre de grandeur pour les aromatiques méditerranéennes : air plutôt sec pour limiter l'oïdium et les pourritures ; Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (l'humidité se pilote surtout via le VPD)"
+        },
+        "ph": {
+          "valeur": [
+            6,
+            7
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives (ordre de grandeur pour les aromatiques, pas de valeur propre à l'espèce)"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            0.8,
+            1.6
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – conduite des herbes aromatiques en hydroponie ; plage indicative (ordre de grandeur, pas de valeur propre à l'espèce)"
+        },
+        "jours_recolte": {
+          "valeur": [
+            56,
+            84
+          ],
+          "source": "Ordre de grandeur (estimation) : 8 à 12 semaines du semis à la première coupe (croissance lente)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            15,
+            20
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Croissance lente : partez de plants ou de boutures plutôt que de semis. Il craint l'excès d'eau : laissez sécher le substrat en surface entre deux arrosages. Ne coupez pas plus d'un tiers des tiges à la fois.",
+          "source": "Pratique culturale courante"
+        }
+      }
+    },
+    {
+      "id": "origan",
+      "nom": "Origan",
+      "famille": "Aromatiques",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 270,
+            "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit ; Kohler & Lopez (2021), HortScience 56 : 431 – DLI et aromatiques : origan et menthe +117 à 125 % de masse fraîche de 3 à 16 mol/m²/j, boutures enracinées à DLI 11–15 ; 270 × 16 h × 0,0036 = DLI 15,6 mol/m²/j"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            20,
+            24
+          ],
+          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 22 °C le jour ; plage indicative)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            14,
+            18
+          ],
+          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 16 °C la nuit ; plage indicative)"
+        },
+        "temperature_a_eviter": {
+          "valeur": "< 10 °C (croissance quasi arrêtée)",
+          "source": "Ordre de grandeur (estimation) : plante méditerranéenne, croissance très lente au froid"
+        },
+        "humidite_pct": {
+          "valeur": [
+            40,
+            65
+          ],
+          "source": "Ordre de grandeur pour les aromatiques méditerranéennes : air plutôt sec pour limiter l'oïdium et les pourritures ; Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (l'humidité se pilote surtout via le VPD)"
+        },
+        "ph": {
+          "valeur": [
+            6,
+            7
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives (ordre de grandeur pour les aromatiques, pas de valeur propre à l'espèce)"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1,
+            1.6
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – conduite des herbes aromatiques en hydroponie ; plage indicative (ordre de grandeur, pas de valeur propre à l'espèce)"
+        },
+        "jours_recolte": {
+          "valeur": [
+            56,
+            84
+          ],
+          "source": "Ordre de grandeur (estimation) : 8 à 12 semaines du semis à la première coupe, moins en partant de boutures enracinées"
+        },
+        "espacement_cm": {
+          "valeur": [
+            20,
+            25
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "La lumière fait beaucoup : de 3 à 16 mol/m²/j, la récolte fait plus que doubler. Se bouture facilement (enracinement bien réussi à DLI 11–15). Coupez régulièrement au-dessus d'un nœud pour garder une touffe compacte et évitez l'excès d'eau.",
+          "source": "Kohler & Lopez (2021), HortScience 56 : 431 – DLI et aromatiques : origan et menthe +117 à 125 % de masse fraîche de 3 à 16 mol/m²/j, boutures enracinées à DLI 11–15 ; pratique culturale courante"
+        }
+      }
+    },
+    {
+      "id": "romarin",
+      "nom": "Romarin",
+      "famille": "Aromatiques",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 300,
+            "source": "Ordre de grandeur (estimation) : plante méditerranéenne de plein soleil, placée dans le haut de la plage de Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit ; 300 × 16 h × 0,0036 = DLI 17,3 mol/m²/j"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Ordre de grandeur (estimation : 14–16 h) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            18,
+            24
+          ],
+          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 22 °C le jour) ; plage indicative"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            12,
+            16
+          ],
+          "source": "Ordre de grandeur (estimation) : le romarin apprécie des nuits fraîches"
+        },
+        "temperature_a_eviter": {
+          "valeur": "< 7 °C (dégâts de froid sur les jeunes plants)",
+          "source": "Ordre de grandeur (estimation) pour des plants en pot"
+        },
+        "humidite_pct": {
+          "valeur": [
+            40,
+            60
+          ],
+          "source": "Ordre de grandeur pour les aromatiques méditerranéennes : air plutôt sec pour limiter l'oïdium et les pourritures ; Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (l'humidité se pilote surtout via le VPD)"
+        },
+        "ph": {
+          "valeur": [
+            6,
+            7
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives (ordre de grandeur pour les aromatiques, pas de valeur propre à l'espèce)"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1,
+            1.6
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – conduite des herbes aromatiques en hydroponie ; plage indicative (ordre de grandeur, pas de valeur propre à l'espèce)"
+        },
+        "jours_recolte": {
+          "valeur": [
+            56,
+            84
+          ],
+          "source": "Ordre de grandeur (estimation) : 8 à 12 semaines depuis la plantation d'une bouture enracinée (le semis est bien plus long)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            25,
+            30
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Délai compté depuis la plantation d'une bouture enracinée : le semis germe mal et lentement. Les boutures mettent plus de 3 semaines à s'enraciner. Substrat très drainant et arrosages espacés : l'excès d'eau est la première cause d'échec.",
+          "source": "Pratique culturale courante ; Kohler & Lopez (2021), HortScience 56 : 431 – DLI et aromatiques : origan et menthe +117 à 125 % de masse fraîche de 3 à 16 mol/m²/j, boutures enracinées à DLI 11–15"
+        }
+      }
+    },
+    {
+      "id": "sauge",
+      "nom": "Sauge",
+      "famille": "Aromatiques",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 300,
+            "source": "Walters, Tarr & Lopez (2023), PLOS ONE – croissance de la sauge selon la température et la DLI (optimum ≈ 23,5 °C à DLI 18 mol/m²/j) ; 300 × 16 h × 0,0036 = DLI 17,3 mol/m²/j, proche de la DLI de 18 de l'optimum ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Ordre de grandeur (estimation : 14–16 h) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            21,
+            25
+          ],
+          "source": "Walters, Tarr & Lopez (2023), PLOS ONE – croissance de la sauge selon la température et la DLI (optimum ≈ 23,5 °C à DLI 18 mol/m²/j) ; plage indicative autour de l'optimum de 23,5 °C"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            15,
+            18
+          ],
+          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 16 °C la nuit) ; plage indicative"
+        },
+        "temperature_a_eviter": {
+          "valeur": "< 10 °C (croissance très lente)",
+          "source": "Ordre de grandeur (estimation) : plante méditerranéenne ; Walters, Tarr & Lopez (2023), PLOS ONE – croissance de la sauge selon la température et la DLI (optimum ≈ 23,5 °C à DLI 18 mol/m²/j)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            40,
+            60
+          ],
+          "source": "Ordre de grandeur pour les aromatiques méditerranéennes : air plutôt sec pour limiter l'oïdium et les pourritures ; Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (l'humidité se pilote surtout via le VPD)"
+        },
+        "ph": {
+          "valeur": [
+            6,
+            7
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives (ordre de grandeur pour les aromatiques, pas de valeur propre à l'espèce)"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1,
+            1.8
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – conduite des herbes aromatiques en hydroponie ; plage indicative (ordre de grandeur, pas de valeur propre à l'espèce)"
+        },
+        "jours_recolte": {
+          "valeur": [
+            56,
+            84
+          ],
+          "source": "Ordre de grandeur (estimation) : 8 à 12 semaines du semis ou de la bouture à la première récolte"
+        },
+        "espacement_cm": {
+          "valeur": [
+            25,
+            30
+          ],
+          "source": "Pratique culturale courante (ordre de grandeur)"
+        },
+        "conseils": {
+          "valeur": "Aime la chaleur et la lumière (optimum vers 23–24 °C avec une DLI d'environ 18). Les boutures mettent plus de 3 semaines à s'enraciner. Craint l'excès d'eau et l'air humide (oïdium) : aérez bien.",
+          "source": "Walters, Tarr & Lopez (2023), PLOS ONE – croissance de la sauge selon la température et la DLI (optimum ≈ 23,5 °C à DLI 18 mol/m²/j) ; pratique culturale courante"
+        }
+      }
+    },
+    {
+      "id": "aneth",
+      "nom": "Aneth",
+      "famille": "Aromatiques",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 300,
+            "source": "Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon la DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit ; 300 × 14 h × 0,0036 = DLI 15,1 mol/m²/j"
+          },
+          "photoperiode": {
+            "valeur": 14,
+            "source": "Ordre de grandeur (estimation) : l'aneth est une plante de jours longs qui monte en graines ; 14 h limitent la montaison tout en gardant une DLI suffisante ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            20,
+            26
+          ],
+          "source": "Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon la DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C) (masse fraîche qui augmente avec la température jusqu'à 27 °C) ; plage indicative"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            16,
+            20
+          ],
+          "source": "Ordre de grandeur (estimation) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+        },
+        "temperature_a_eviter": {
+          "valeur": "< 18 °C (croissance lente, lumière mal valorisée)",
+          "source": "Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon la DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            70
+          ],
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – ambiance des cultures de légumes feuilles (ordre de grandeur ; l'humidité se pilote surtout via le VPD)"
+        },
+        "ph": {
+          "valeur": [
+            5.5,
+            6.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives (ordre de grandeur pour les aromatiques, pas de valeur propre à l'espèce)"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1,
+            1.6
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – conduite des herbes aromatiques en hydroponie ; plage indicative (ordre de grandeur, pas de valeur propre à l'espèce)"
+        },
+        "jours_recolte": {
+          "valeur": [
+            30,
+            45
+          ],
+          "source": "Ordre de grandeur (estimation) : du semis à la première coupe ; Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon la DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C) : récolte environ 3 semaines après la mise en culture des plants"
+        },
+        "espacement_cm": {
+          "valeur": [
+            5,
+            10
+          ],
+          "source": "Ordre de grandeur (estimation) : semis en ligne ou en poquets serrés"
+        },
+        "conseils": {
+          "valeur": "Monte vite en graines : récoltez jeune et ressemez toutes les 3 à 4 semaines. Semez en place (racine pivotante qui supporte mal le repiquage). Il profite de la chaleur, jusqu'à environ 27 °C.",
+          "source": "Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon la DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C) ; pratique culturale courante"
+        }
+      }
+    },
+    {
       "id": "micro-pousses",
       "nom": "Micro-pousses",
       "famille": "Micro-pousses",
@@ -727,6 +1355,94 @@
         "conseils": {
           "valeur": "Semis dense sur substrat fin, 2 à 4 jours à l'obscurité (sous un poids), puis lumière. Récoltez au stade cotylédons ou premières vraies feuilles.",
           "source": "Pratique culturale courante"
+        }
+      }
+    },
+    {
+      "id": "radis",
+      "nom": "Radis",
+      "famille": "Légumes racines",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 350,
+            "source": "Guides commerciaux de culture du radis en intérieur (DLI ≥ 18 mol/m²/j, récolte en 25–30 jours ; valeurs indicatives) ; PPFD 250–350 µmol/m²/s (estimation) ; 350 × 14 h × 0,0036 = DLI 17,6 mol/m²/j, proche du seuil de 18"
+          },
+          "photoperiode": {
+            "valeur": 14,
+            "source": "Ordre de grandeur (estimation : 12–14 h) : le radis est une plante de jours longs qui monte en graines au-delà ; Guides commerciaux de culture du radis en intérieur (DLI ≥ 18 mol/m²/j, récolte en 25–30 jours ; valeurs indicatives)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              20,
+              30
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            16,
+            20
+          ],
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) (radis : optimum 16–18 °C, maximum 24 °C) ; Guides commerciaux de culture du radis en intérieur (DLI ≥ 18 mol/m²/j, récolte en 25–30 jours ; valeurs indicatives)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            10,
+            14
+          ],
+          "source": "Ordre de grandeur (estimation) : des nuits fraîches favorisent le grossissement de la racine ; Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107)"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 24 °C (montée en graines, racine creuse et piquante)",
+          "source": "Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) : maximum 24 °C pour le radis ; Guides commerciaux de culture du radis en intérieur (DLI ≥ 18 mol/m²/j, récolte en 25–30 jours ; valeurs indicatives)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            70
+          ],
+          "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press – ambiance des cultures de légumes feuilles (ordre de grandeur ; l'humidité se pilote surtout via le VPD)"
+        },
+        "ph": {
+          "valeur": [
+            6,
+            6.8
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives (ordre de grandeur, pas de valeur propre au radis)"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1.2,
+            2
+          ],
+          "source": "Ordre de grandeur (estimation) : Resh (2013), Hydroponic Food Production, 7e éd., CRC Press ; pas de valeur propre au radis dans les sources citées"
+        },
+        "jours_recolte": {
+          "valeur": [
+            25,
+            30
+          ],
+          "source": "Guides commerciaux de culture du radis en intérieur (DLI ≥ 18 mol/m²/j, récolte en 25–30 jours ; valeurs indicatives) : du semis à la récolte"
+        },
+        "espacement_cm": {
+          "valeur": [
+            4,
+            5
+          ],
+          "source": "Ordre de grandeur (estimation) : éclaircissage à 4–5 cm"
+        },
+        "conseils": {
+          "valeur": "Utilisez un bac ou un substrat d'au moins 15 cm de profondeur. N'éclairez pas plus de 12 à 14 h et gardez-le au frais, sinon il monte en graines sans former de racine. Éclaircissez tôt à 4–5 cm et récoltez dès que la racine fait 2–3 cm.",
+          "source": "Pratique culturale courante ; Guides commerciaux de culture du radis en intérieur (DLI ≥ 18 mol/m²/j, récolte en 25–30 jours ; valeurs indicatives)"
         }
       }
     },
@@ -943,6 +1659,114 @@
         "conseils": {
           "valeur": "Choisissez des variétés naines ou cerises. Fleurs autofertiles, mais il faut les secouer (ou les faire vibrer) pour libérer le pollen. Tuteurez.",
           "source": "Pratique culturale courante"
+        }
+      }
+    },
+    {
+      "id": "tomate-naine",
+      "nom": "Tomate naine (micro-tomate)",
+      "famille": "Légumes fruits",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 250,
+            "source": "Ordre de grandeur (estimation) : plantule compacte, valeur un peu inférieure à la tomate classique ; 250 × 16 h × 0,0036 = DLI 14,4 mol/m²/j ; Heuvelink (2018), Tomatoes, 2e éd., CABI"
+          },
+          "photoperiode": {
+            "valeur": 16,
+            "source": "Velez-Ramirez et al. (2011), Trends in Plant Science – lésions en éclairage continu (ne pas dépasser ~18 h)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              25,
+              40
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": {
+          "ppfd": {
+            "valeur": 350,
+            "source": "HortTechnology 36(1) (2026), Virginia Tech – micro-tomates en ferme verticale : PPFD ≈ 350 µmol/m²/s sans gain au-delà, DLI 22,7–27,9 mol/m²/j (meilleur Brix à 27,9) ; 350 × 18 h × 0,0036 = DLI 22,7 mol/m²/j"
+          },
+          "photoperiode": {
+            "valeur": 18,
+            "source": "HortTechnology 36(1) (2026), Virginia Tech – micro-tomates en ferme verticale : PPFD ≈ 350 µmol/m²/s sans gain au-delà, DLI 22,7–27,9 mol/m²/j (meilleur Brix à 27,9) : 18 h à 350 µmol/m²/s donnent 22,7 mol/m²/j ; la DLI de 27,9 (≈ 22 h) améliore encore le Brix, mais Velez-Ramirez et al. (2011), Trends in Plant Science signalent des lésions de la tomate en éclairage quasi continu"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              30,
+              45
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc chaud 3 000–3 500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        }
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            20,
+            26
+          ],
+          "source": "Valeur reprise de la tomate : Heuvelink (2018), Tomatoes, 2e éd., CABI ; Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, tableau 3.3 (températures mensuelles optimales, minimales et maximales, p. 107) (tomate : optimum 21–24 °C, maximum 27 °C)"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            17,
+            19
+          ],
+          "source": "Valeur reprise de la tomate : Maynard & Hochmuth (2007), Knott's Handbook for Vegetable Growers, 5e éd., Wiley, culture sous serre (p. 81) : minimum de nuit 17–18 °C"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 30 °C le jour (fleurs qui avortent)",
+          "source": "Valeur reprise de la tomate : Heuvelink (2018), Tomatoes, 2e éd., CABI – stress thermique et nouaison"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            65
+          ],
+          "source": "Valeur reprise de la tomate : Heuvelink (2018), Tomatoes, 2e éd., CABI – climat de serre ; ordre de grandeur"
+        },
+        "ph": {
+          "valeur": [
+            5.5,
+            6.5
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            2,
+            3
+          ],
+          "source": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – culture hydroponique de la tomate ; plage indicative un peu plus basse que pour la tomate classique (petites plantes, estimation)"
+        },
+        "jours_recolte": {
+          "valeur": [
+            70,
+            100
+          ],
+          "source": "Ordre de grandeur (estimation, catalogues semenciers) : les micro-tomates sont plus précoces que les tomates classiques ; du semis à la première récolte"
+        },
+        "espacement_cm": {
+          "valeur": [
+            25,
+            30
+          ],
+          "source": "Ordre de grandeur (estimation) : plante compacte de 20 à 30 cm"
+        },
+        "conseils": {
+          "valeur": "Choisissez une variété de micro-tomate (20–30 cm de haut) : pas besoin de tuteur. Secouez les grappes en fleur pour libérer le pollen. Au-delà de 350 µmol/m²/s, il n'y a pas de gain : pour augmenter la lumière reçue, allongez plutôt la durée d'éclairage (sans dépasser 18 h).",
+          "source": "HortTechnology 36(1) (2026), Virginia Tech – micro-tomates en ferme verticale : PPFD ≈ 350 µmol/m²/s sans gain au-delà, DLI 22,7–27,9 mol/m²/j (meilleur Brix à 27,9) ; pratique culturale courante"
         }
       }
     },
@@ -1484,6 +2308,204 @@
         "conseils": {
           "valeur": "Réduisez la photopériode à 12 h pour déclencher la floraison, avec une obscurité totale la nuit (la moindre fuite de lumière perturbe la plante). Surveillez l'humidité en fin de floraison.",
           "source": "Pratique culturale courante"
+        }
+      }
+    },
+    {
+      "id": "safran",
+      "nom": "Safran",
+      "famille": "Épices et curiosités",
+      "avertissement": "Culture difficile au rendement très faible : une seule floraison par an et environ 150 fleurs pour 1 g de safran sec. Les valeurs données sont des ordres de grandeur.",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 200,
+            "source": "Nexsel (fabricant) – guide de culture du safran en intérieur : PPFD 150–200 µmol/m²/s (guide commercial) ; 200 × 12 h × 0,0036 = DLI 8,6 mol/m²/j (feuillage après la floraison, ordre de grandeur)"
+          },
+          "photoperiode": {
+            "valeur": 12,
+            "source": "Ordre de grandeur (estimation) pour la phase de feuillage qui suit la floraison (reconstitution des cormes, automne-printemps)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              30,
+              45
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        },
+        "floraison": {
+          "ppfd": {
+            "valeur": 100,
+            "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction ; 100 × 10 h × 0,0036 = DLI 3,6 mol/m²/j, soit environ 42 jours pour cumuler 150 mol/m²"
+          },
+          "photoperiode": {
+            "valeur": 10,
+            "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              30,
+              45
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "LED bleues + rouges à large bande (spectre de l'essai), ou blanc plein spectre",
+            "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction ; Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          }
+        }
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            15,
+            20
+          ],
+          "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction (essai à ≈ 18 °C en moyenne) ; induction florale vers 15 °C ; plage indicative"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            8,
+            12
+          ],
+          "source": "Ordre de grandeur (estimation) : nuits fraîches d'automne"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 23 °C pendant la floraison (fleurs qui avortent ou retardées)",
+          "source": "Ordre de grandeur (estimation) : la floraison est déclenchée par la baisse de température d'automne (≈ 15 °C) ; Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction"
+        },
+        "humidite_pct": {
+          "valeur": [
+            50,
+            70
+          ],
+          "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction (essai à ≈ 70 % d'humidité) ; plage indicative"
+        },
+        "ph": {
+          "valeur": [
+            6,
+            6.5
+          ],
+          "source": "Guides commerciaux de culture hydroponique du safran (pH ≈ 6,0–6,5, EC ≈ 1,0–1,3 mS/cm ; valeurs indicatives)"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1,
+            1.3
+          ],
+          "source": "Guides commerciaux de culture hydroponique du safran (pH ≈ 6,0–6,5, EC ≈ 1,0–1,3 mS/cm ; valeurs indicatives)"
+        },
+        "jours_recolte": {
+          "valeur": [
+            40,
+            60
+          ],
+          "source": "Délai compté depuis la plantation des cormes (fin d'été) jusqu'aux fleurs : Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction (≈ 5 à 6 semaines de fin septembre à début novembre) ; ordre de grandeur"
+        },
+        "espacement_cm": {
+          "valeur": [
+            8,
+            10
+          ],
+          "source": "Ordre de grandeur (estimation) : cormes de taille moyenne"
+        },
+        "conseils": {
+          "valeur": "Une seule récolte par an, en automne. Plantez des cormes de bonne taille en fin d'été : la floraison vient avant les feuilles. Stade « floraison » = induction et floraison, environ 10 h de lumière vers 15–18 °C pendant 5 à 6 semaines (150 mol/m² cumulés). Cueillez les fleurs le matin et séchez les stigmates. Stade « croissance » = feuillage qui suit la floraison et reconstitue les cormes pour l'année suivante ; laissez-le jaunir, puis gardez les cormes au sec et au chaud l'été.",
+          "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction ; Nexsel (fabricant) – guide de culture du safran en intérieur : PPFD 150–200 µmol/m²/s (guide commercial) ; pratique culturale courante"
+        }
+      }
+    },
+    {
+      "id": "wasabi",
+      "nom": "Wasabi",
+      "famille": "Épices et curiosités",
+      "avertissement": "Culture expérimentale : le rhizome demande 12 à 18 mois de culture au frais (8–20 °C) avec une eau fraîche et courante. Les valeurs données sont des ordres de grandeur.",
+      "stades": {
+        "croissance": {
+          "ppfd": {
+            "valeur": 120,
+            "source": "Ruamrungsri, Utrapen, Tateing, Panjama & Inkham (2025), Horticulturae 11(1) : 3 – spectre et intensité LED (35, 60, 90 et 140 µmol/m²/s) chez le wasabi 'Daruma' : la biomasse augmente jusqu'à 140 µmol/m²/s, intensité la plus forte testée ; 120 × 12 h × 0,0036 = DLI 5,2 mol/m²/j (plante d'ombre, compromis prudent pour limiter la chaleur des lampes ; 60 µmol/m²/s reste un minimum)"
+          },
+          "photoperiode": {
+            "valeur": 12,
+            "source": "Ordre de grandeur (estimation) : plante d'ombre ; Ruamrungsri, Utrapen, Tateing, Panjama & Inkham (2025), Horticulturae 11(1) : 3 – spectre et intensité LED (35, 60, 90 et 140 µmol/m²/s) chez le wasabi 'Daruma' (photopériode de l'essai non reprise ici)"
+          },
+          "hauteur_cm": {
+            "valeur": [
+              30,
+              50
+            ],
+            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+          },
+          "spectre": {
+            "valeur": "Blanc + rouge (rouge : blanc 1:1) ou blanc plein spectre",
+            "source": "Ruamrungsri, Utrapen, Tateing, Panjama & Inkham (2025), Horticulturae 11(1) : 3 – spectre et intensité LED (35, 60, 90 et 140 µmol/m²/s) chez le wasabi 'Daruma' : les spectres riches en rouge favorisent la croissance et les glucosinolates"
+          }
+        },
+        "floraison": null
+      },
+      "culture": {
+        "temperature_c": {
+          "valeur": [
+            12,
+            18
+          ],
+          "source": "Agritecture – culture du wasabi en environnement contrôlé (8–20 °C, stress au-delà de 24 °C, rhizome en 12–18 mois) ; plage indicative au milieu de 8–20 °C"
+        },
+        "temperature_nuit_c": {
+          "valeur": [
+            8,
+            12
+          ],
+          "source": "Agritecture – culture du wasabi en environnement contrôlé (8–20 °C, stress au-delà de 24 °C, rhizome en 12–18 mois) (ordre de grandeur)"
+        },
+        "temperature_a_eviter": {
+          "valeur": "> 24 °C (stress, pourritures)",
+          "source": "Agritecture – culture du wasabi en environnement contrôlé (8–20 °C, stress au-delà de 24 °C, rhizome en 12–18 mois)"
+        },
+        "humidite_pct": {
+          "valeur": [
+            70,
+            90
+          ],
+          "source": "Ordre de grandeur (estimation) : plante de sous-bois et de bord de ruisseau qui aime l'air humide ; Agritecture – culture du wasabi en environnement contrôlé (8–20 °C, stress au-delà de 24 °C, rhizome en 12–18 mois)"
+        },
+        "ph": {
+          "valeur": [
+            6,
+            6.5
+          ],
+          "source": "Soil Science and Plant Nutrition 70(1) (2024) – nutrition minérale de cultivars de wasabi en hydroponie (croissance optimale à pH 6,0, besoins nutritifs faibles) ; Guides commerciaux de culture hydroponique du wasabi (pH 6,0–6,5, EC 1,0–1,4 mS/cm ; valeurs indicatives)"
+        },
+        "ec_ms_cm": {
+          "valeur": [
+            1,
+            1.4
+          ],
+          "source": "Guides commerciaux de culture hydroponique du wasabi (pH 6,0–6,5, EC 1,0–1,4 mS/cm ; valeurs indicatives) ; Soil Science and Plant Nutrition 70(1) (2024) – nutrition minérale de cultivars de wasabi en hydroponie (croissance optimale à pH 6,0, besoins nutritifs faibles)"
+        },
+        "jours_recolte": {
+          "valeur": [
+            365,
+            540
+          ],
+          "source": "Agritecture – culture du wasabi en environnement contrôlé (8–20 °C, stress au-delà de 24 °C, rhizome en 12–18 mois) : 12 à 18 mois pour le rhizome (les feuilles et pétioles se récoltent bien plus tôt)"
+        },
+        "espacement_cm": {
+          "valeur": [
+            20,
+            30
+          ],
+          "source": "Ordre de grandeur (estimation)"
+        },
+        "conseils": {
+          "valeur": "Très difficile : il lui faut de la fraîcheur (12–18 °C), de l'ombre, une forte humidité et une eau fraîche, bien oxygénée et si possible courante. Les feuilles et pétioles se récoltent au bout de quelques mois ; le rhizome demande 12 à 18 mois. Préférez un éclairage modéré : plus de lumière augmente la croissance mais aussi la chaleur.",
+          "source": "Agritecture – culture du wasabi en environnement contrôlé (8–20 °C, stress au-delà de 24 °C, rhizome en 12–18 mois) ; Ruamrungsri, Utrapen, Tateing, Panjama & Inkham (2025), Horticulturae 11(1) : 3 – spectre et intensité LED (35, 60, 90 et 140 µmol/m²/s) chez le wasabi 'Daruma' ; pratique culturale courante"
         }
       }
     }

@@ -23,8 +23,8 @@ export interface ContexteAlertes {
 export const EFFICACITE_DOUTEUSE = 3.2;
 
 // Espèces chez qui l'éclairage quasi continu provoque des lésions documentées (Velez-Ramirez et al., 2011).
-const SENSIBLES_ECLAIRAGE_CONTINU = ['tomate', 'aubergine'];
-const MONTAISON = ['epinard', 'coriandre', 'roquette'];
+const SENSIBLES_ECLAIRAGE_CONTINU = ['tomate', 'tomate-naine', 'aubergine'];
+const MONTAISON = ['epinard', 'coriandre', 'roquette', 'mache', 'radis', 'aneth'];
 
 function majuscule(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
@@ -40,8 +40,8 @@ export function alertes(c: ContexteAlertes): string[] {
     a.push(`Avec ${h} h de lumière, le chanvre risque de passer en floraison trop tôt : gardez au moins 16 à 18 h en croissance.`);
   } else if (SENSIBLES_ECLAIRAGE_CONTINU.includes(c.legumeId) && duree > 18) {
     a.push(`${majuscule(c.nom)} : au-delà de 18 h par jour, on s'approche de l'éclairage continu, qui provoque des lésions des feuilles. Revenez à 16–18 h.`);
-  } else if (MONTAISON.includes(c.legumeId) && duree > 14) {
-    a.push(`${majuscule(c.nom)} : au-delà de 14 h par jour, risque de montée en graines. ${c.photoperiodeConseilleeH} h sont conseillées.`);
+  } else if (MONTAISON.includes(c.legumeId) && duree > Math.max(14, c.photoperiodeConseilleeH)) {
+    a.push(`${majuscule(c.nom)} : au-delà de ${Math.max(14, c.photoperiodeConseilleeH)} h par jour, risque de montée en graines. ${c.photoperiodeConseilleeH} h sont conseillées.`);
   } else if (duree > 20) {
     a.push(`${h} h de lumière par jour, c'est beaucoup : les plantes ont besoin d'une période d'obscurité, et la facture augmente. ${c.photoperiodeConseilleeH} h sont conseillées.`);
   }

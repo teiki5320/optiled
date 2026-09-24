@@ -79,6 +79,8 @@
 .tuile-legume--micro-pousses { --famille: #cfe58a; }
 .tuile-legume--legumes-fruits { --famille: #f4a08e; }
 .tuile-legume--chanvre { --famille: #9fd48a; }
+.tuile-legume--legumes-racines { --famille: #f0a3c4; }
+.tuile-legume--epices-et-curiosites { --famille: #c7b0f0; }
 
 .segments { background: rgb(255 255 255 / 0.06); border: 0; border-radius: 999px; padding: 0.25rem; }
 .segments label { border-radius: 999px; color: var(--nuit-attenue); }

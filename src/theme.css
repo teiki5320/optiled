@@ -144,6 +144,8 @@ a { color: var(--accent); }
 .fiche--aromatiques, .fiches-famille--aromatiques { --famille: #8fcfc3; }
 .fiche--micro-pousses, .fiches-famille--micro-pousses { --famille: #cfe58a; }
 .fiche--legumes-fruits, .fiches-famille--legumes-fruits { --famille: #f4a08e; }
+.fiche--legumes-racines, .fiches-famille--legumes-racines { --famille: #f0a3c4; }
+.fiche--epices-et-curiosites, .fiches-famille--epices-et-curiosites { --famille: #c7b0f0; }
 .fiche__icone { border-radius: 50%; color: #1b1322; }
 .fiche__kpi div { background: rgb(255 255 255 / 0.06); border-radius: 14px; }
 .fiche__detail summary { color: var(--accent); }

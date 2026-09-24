@@ -15,6 +15,7 @@
     "test:watch": "vitest",
     "images": "node scripts/images.mjs",
     "planche": "node scripts/decouper-planche.mjs",
+    "miniatures": "node scripts/miniatures.mjs",
     "test:e2e": "node scripts/e2e.mjs"
   },
   "devDependencies": {

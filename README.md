@@ -66,7 +66,7 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 
 - `public/images/guides/<page>-800.webp` et `-1600.webp` : photo de couverture de chaque guide (affichée sous le bandeau et en vignette dans les cartes). Le texte alternatif est déclaré dans `RUBRIQUES` (`build/site.ts`, champ `photo`). Une page sans photo s'affiche simplement sans couverture.
 - Pour ajouter ou remplacer une photo : placez `<page>.png` (ou `.jpg`) dans un dossier, puis `npm run images -- <dossier>` génère les deux WebP recadrés en 16:9.
-- `public/images/legumes/<id>.webp` : miniature ronde de chaque culture (tuiles du calculateur, en-tête des fiches). Elles sont découpées dans une seule planche : `npm run planche -- planche.png 5 3 laitue epinard …` (ids dans l'ordre de lecture, `-` pour sauter une case). Sans miniature, la tuile garde sa pastille de couleur.
+- `public/images/legumes/<id>.webp` : miniature ronde de chaque culture (tuiles du calculateur, en-tête des fiches). Elles sont découpées dans une seule planche : `npm run planche -- planche.png 5 3 laitue epinard …` (ids dans l'ordre de lecture, `-` pour sauter une case). Sans miniature, la tuile garde sa pastille de couleur. Les miniatures des cultures ajoutées ensuite (mâche, mesclun, thym, origan, romarin, sauge, aneth, tomate naine, radis, safran, wasabi) sont dessinées en SVG dans `scripts/miniatures.mjs` : `npm run miniatures` les régénère (même fond et même cadrage).
 - `public/images/schemas/*.svg` : schémas explicatifs insérés dans les guides avec `<figure class="schema">`.
 - Les photos actuelles ont été générées par IA (ElevenLabs, modèle Seedream) ; le pied de page le signale.
 - Un test vérifie que chaque image référencée existe et possède un texte alternatif.
@@ -96,7 +96,7 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 - `floraison: null` pour les cultures récoltées avant floraison (le choix du stade est alors désactivé).
 - `avertissement` (facultatif) : mise en garde affichée dans le calculateur et la fiche (ex. réglementation du chanvre CBD).
 - `famille` sert à regrouper la liste déroulante et les fiches.
-- `culture` : plages [min, max] de température de jour (`temperature_c`) et de nuit (`temperature_nuit_c`) en °C, ce qu'il faut éviter (`temperature_a_eviter`, texte), humidité (%), pH, EC (mS/cm), jours jusqu'à la première récolte (depuis le semis, sauf fraise : depuis la plantation, et chanvre : jusqu'à la récolte des fleurs), espacement (cm, `null` pour un semis à la volée), et un conseil ; affichées dans les fiches légumes. Les températures alimentent aussi le tableau du guide climat.
+- `culture` : plages [min, max] de température de jour (`temperature_c`) et de nuit (`temperature_nuit_c`) en °C, ce qu'il faut éviter (`temperature_a_eviter`, texte), humidité (%), pH, EC (mS/cm), jours jusqu'à la première récolte (depuis le semis, sauf fraise et safran : depuis la plantation, romarin : depuis la bouture, chanvre : jusqu'à la récolte des fleurs, wasabi : jusqu'à la récolte du rhizome), espacement (cm, `null` pour un semis à la volée), et un conseil ; affichées dans les fiches légumes. Les températures alimentent aussi le tableau du guide climat.
 - Toute nouvelle référence citée doit être ajoutée à `references` (elle apparaîtra dans le glossaire).
 - Chaque valeur **doit** avoir une `source` non vide : les tests vérifient la présence des sources et la plausibilité des valeurs (PPFD entre 50 et 1 500, photopériode ≤ 24 h, etc.).
 
