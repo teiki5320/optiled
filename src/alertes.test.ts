@@ -37,3 +37,10 @@ describe('alertes du calculateur', () => {
     expect(alertes({ ...base, rangTropEtroit: { largeurCm: 40, espacementCm: 50 } })[0]).toContain('plus étroits');
   });
 });
+
+describe('efficacité saisie', () => {
+  it('alerte au-delà de 3,2 µmol/J', () => {
+    expect(alertes({ ...base, efficaciteUmolJ: 3.6 })[0]).toContain('3,6 µmol/J');
+    expect(alertes({ ...base, efficaciteUmolJ: 2.7 })).toEqual([]);
+  });
+});

@@ -164,6 +164,8 @@ describe('validerEntrees', () => {
     ['coefficient > 1', { coefUtilisation: 1.2 }],
     ['prix négatif', { prixKwh: -0.1 }],
     ['valeur NaN', { photoperiodeH: NaN }],
+    ['dimensions saisies en centimètres', { surface: { mode: 'rectangle', longueurM: 120, largeurM: 60 } }],
+    ['trop de rangs', { surface: { mode: 'rangs', nbRangs: 500, longueurM: 1, largeurRangM: 0.4 } }],
   ] as [string, Partial<EntreesCalcul>][])('%s', (_nom, modif) => {
     expect(validerEntrees({ ...base, ...modif }).length).toBeGreaterThan(0);
   });

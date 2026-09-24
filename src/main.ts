@@ -7,6 +7,7 @@ import { depuisParams, PARAMETRES, versParams, type Etat } from './etat';
 import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data';
 import { euros, nombre } from './format';
 import { htmlTuiles } from './tuiles';
+import { insecables, typographier } from './typo';
 import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste';
 import { jaugeDli, planBarres } from './schema';
 
@@ -24,6 +25,8 @@ const zoneErreurs = $<HTMLParagraphElement>('erreurs');
 const boutonCopier = $<HTMLButtonElement>('copier');
 
 let dernierResume = '';
+/** Au-delà, le plan deviendrait illisible et lent à dessiner. */
+const PLAN_BARRES_MAX = 400;
 
 function echapper(s: string): string {
   return s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
@@ -145,11 +148,11 @@ function appliquerLegume(): void {
   if (sansFloraison) {
     (form.querySelector('input[value="croissance"]') as HTMLInputElement).checked = true;
     const pluriel = /s$/.test(legume.nom.replace(/\s*\(.*\)$/, ''));
-    aide.textContent = `${legume.nom.replace(/\s*\(.*\)$/, '')} se récolte${pluriel ? 'nt' : ''} avant floraison : seul le stade croissance s'applique.`;
+    aide.textContent = typographier(`${legume.nom.replace(/\s*\(.*\)$/, '')} se récolte${pluriel ? 'nt' : ''} avant floraison : seul le stade croissance s'applique.`);
   }
   aide.hidden = !sansFloraison;
   const avertissement = $<HTMLElement>('legume-avertissement');
-  avertissement.textContent = legume.avertissement ?? '';
+  avertissement.textContent = typographier(legume.avertissement ?? '');
   avertissement.hidden = !legume.avertissement;
   majTuiles();
   appliquerEspacement(legume);
@@ -164,10 +167,11 @@ function appliquerEspacement(legume = legumeCourant()): void {
   input.value = e === null ? '' : String(espacementConseille(legume));
   input.placeholder = e === null ? 'semis dense' : '';
   form.querySelectorAll<HTMLButtonElement>('[data-cible="espacement"]').forEach((b) => (b.disabled = e === null));
-  $('espacement-aide').textContent =
+  $('espacement-aide').textContent = typographier(
     e === null
       ? `${nomCourt(legume.nom)} se sème à la volée : pas d'espacement entre plants.`
-      : `Conseillé : ${e[0]} à ${e[1]} cm. Sert à compter les plants ; la lumière, elle, se calcule par m² de culture.`;
+      : `Conseillé : ${e[0]} à ${e[1]} cm. Sert à compter les plants ; la lumière, elle, se calcule par m² de culture.`,
+  );
 }
 
 function espacementConseille(legume = legumeCourant()): number {
@@ -178,7 +182,7 @@ function espacementConseille(legume = legumeCourant()): number {
 function appliquerStade(): void {
   const p = parametresStade(trouverLegume(selectLegume.value)!, radio('stade') as Stade)!;
   champ('photoperiode').value = String(p.photoperiode.valeur).replace('.', ',');
-  $('photoperiode-aide').textContent = `Conseillé : ${nombre(p.photoperiode.valeur, Number.isInteger(p.photoperiode.valeur) ? 0 : 1)} h par jour.`;
+  $('photoperiode-aide').textContent = typographier(`Conseillé : ${nombre(p.photoperiode.valeur, Number.isInteger(p.photoperiode.valeur) ? 0 : 1)} h par jour.`);
 }
 
 function appliquerMode(): void {
@@ -253,7 +257,7 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface): string
 
     ${titre('Barres LED et disposition', 'led-installation.html#uniformite', 'Bien répartir la lumière')}
     <p><strong>${b.total} barre${b.total > 1 ? 's' : ''} de ${nombre(ctx.longueurBarreM, 2)} m</strong> : ${dispo}.</p>
-    <figure class="plan-cadre">${planBarres(surface, b, ctx.longueurBarreM)}<figcaption>Vue de dessus, à l'échelle. Les barres sont centrées dans la longueur.</figcaption></figure>
+    ${b.total <= PLAN_BARRES_MAX ? `<figure class="plan-cadre">${planBarres(surface, b, ctx.longueurBarreM)}<figcaption>Vue de dessus, à l'échelle. Les barres sont centrées dans la longueur.</figcaption></figure>` : `<p class="aide">Plan non dessiné au-delà de ${PLAN_BARRES_MAX} barres.</p>`}
     <p>Entraxe entre lignes : <strong>${nombre(b.espacementM * 100)} cm</strong>, première ligne à ${nombre(b.margeBordM * 100)} cm du bord.</p>
     <p>${puissanceBarre}</p>
 
@@ -303,14 +307,16 @@ function mettreAJour(): void {
     }
     r = calculer(entrees);
   } catch (e) {
-    zoneErreurs.textContent = (e as Error).message;
+    zoneErreurs.textContent = typographier((e as Error).message);
     zoneErreurs.hidden = false;
+    signalerChamps((e as Error).message);
     contenu.classList.add('perime');
     majBarreResume(null);
     dernierResume = '';
     return;
   }
   zoneErreurs.hidden = true;
+  signalerChamps('');
   contenu.classList.remove('perime');
 
   const ctx: ContexteListe = {
@@ -331,6 +337,7 @@ function mettreAJour(): void {
     stade,
     photoperiodeH: entrees.photoperiodeH,
     photoperiodeConseilleeH: p.photoperiode.valeur,
+    efficaciteUmolJ: entrees.efficaciteUmolJ,
     longueurBarreM,
     longueurZoneM,
     rangTropEtroit:
@@ -338,10 +345,40 @@ function mettreAJour(): void {
         ? { largeurCm: Math.round(surface.largeurRangM * 100), espacementCm: espacementCm! }
         : undefined,
   });
-  contenu.innerHTML = rendre(r, ctx, entrees.surface);
+  contenu.innerHTML = insecables(rendre(r, ctx, entrees.surface));
   dernierResume = resumeTexte(r, ctx);
   majBarreResume(r);
+  annoncer(r);
   enregistrerEtat();
+}
+
+/** Champs concernés par un message d'erreur : marqués aria-invalid pour les lecteurs d'écran. */
+const CHAMPS_ERREUR: [RegExp, string[]][] = [
+  [/longueur des barres/i, ['longueur-barre']],
+  [/^La longueur|Les dimensions/m, ['longueur', 'longueur-rang']],
+  [/^La largeur|Les dimensions/m, ['largeur', 'largeur-rang']],
+  [/rangs/, ['nb-rangs']],
+  [/photopériode/, ['photoperiode']],
+  [/efficacité/, ['efficacite']],
+  [/coefficient/, ['coef']],
+  [/puissance des barres/, ['puissance-barre']],
+  [/prix du kWh/, ['prix-kwh']],
+  [/jours d'éclairage/, ['jours']],
+  [/espacement/, ['espacement']],
+];
+function signalerChamps(message: string): void {
+  const ids = new Set(CHAMPS_ERREUR.filter(([motif]) => motif.test(message)).flatMap(([, ids]) => ids));
+  form.querySelectorAll<HTMLInputElement>('input[type="text"]').forEach((c) => {
+    if (ids.has(c.id)) c.setAttribute('aria-invalid', 'true');
+    else c.removeAttribute('aria-invalid');
+  });
+}
+
+/** Annonce courte aux lecteurs d'écran (et non tout le bloc de résultats à chaque frappe). */
+const zoneAnnonce = $('annonce-resultats');
+function annoncer(r: ResultatCalcul): void {
+  const texte = `Résultat : ${nombre(r.puissanceW)} W, ${r.barres.total} barre${r.barres.total > 1 ? 's' : ''} LED.`;
+  if (zoneAnnonce.textContent !== texte) zoneAnnonce.textContent = texte;
 }
 
 /**
@@ -503,3 +540,6 @@ $('imprimer').addEventListener('click', () => window.print());
 $('partager').addEventListener('click', partager);
 
 mettreAJour();
+// Arrivée directe sur les résultats (#resultats, position restaurée) : la barre ne doit pas les recouvrir.
+suivreResultats();
+window.addEventListener('load', suivreResultats);

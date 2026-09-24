@@ -386,32 +386,6 @@ img, svg { max-width: 100%; }
 
 /* Étapes */
 
-/* Bloc « le spectre » */
-.spectre-bloc {
-  border-radius: calc(var(--rayon) + 4px); padding: clamp(1.3rem, 4vw, 2.2rem); color: var(--nuit-texte);
-  background: radial-gradient(60% 100% at 100% 0%, rgb(181 107 255 / 0.25), transparent 70%), var(--nuit);
-  display: grid; gap: 1.5rem;
-}
-@media (min-width: 900px) { .spectre-bloc { grid-template-columns: 1fr 1.2fr; align-items: center; } }
-.spectre-bloc h2 { font-size: clamp(1.5rem, 4vw, 2.1rem); margin: 0 0 0.6rem; font-weight: 800; }
-.spectre-bloc p { color: var(--nuit-attenue); margin: 0 0 1rem; }
-.spectre { position: relative; padding-top: 2.4rem; }
-.spectre__barre {
-  height: 3.2rem; border-radius: 12px;
-  background: linear-gradient(90deg, #3b0a6b 0%, #6a2fd6 6%, #3d5bff 17%, #1fb6ff 27%, #22d39a 36%, #9be234 46%, #ffe13b 55%, #ffa928 63%, #ff5a2e 72%, #e3143d 82%, #8b0a2a 92%, #3a0613 100%);
-  box-shadow: 0 0 40px -6px rgb(181 107 255 / 0.5);
-}
-.spectre__par {
-  position: absolute; top: 0.4rem; left: 5.2%; right: 20.8%; height: 1.6rem;
-  border: 2px solid var(--nuit-texte); border-bottom: 0; border-radius: 8px 8px 0 0;
-  display: grid; place-items: center; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em;
-}
-.spectre__par span { background: var(--nuit); padding: 0 0.5rem; transform: translateY(-0.95rem); }
-.spectre__echelle { display: flex; justify-content: space-between; margin-top: 0.4rem; font-family: var(--police-mono); font-size: 0.72rem; color: var(--nuit-attenue); }
-.spectre__legende { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-top: 1rem; font-size: 0.85rem; }
-.spectre__legende div { border-left: 3px solid; padding-left: 0.6rem; }
-.spectre__legende b { display: block; color: var(--nuit-texte); }
-.spectre__legende span { color: var(--nuit-attenue); }
 
 /* Pastilles légumes */
 .pastilles { display: flex; flex-wrap: wrap; gap: 0.5rem; }

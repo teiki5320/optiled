@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Calculateur gratuit d'éclairage LED pour cultiver des légumes en intérieur : PPFD, DLI, puissance, nombre et disposition des barres LED, coût électrique et liste d'achat." />
+    <meta name="description" content="Calculateur gratuit d'éclairage LED pour légumes d'intérieur : PPFD, DLI, puissance, nombre et disposition des barres, coût électrique et liste d'achat." />
     <title>OptiLED — Calculateur d'éclairage LED pour la culture indoor</title>
     <!--#head-->
   </head>
@@ -12,7 +12,7 @@
     <main id="contenu">
       <div id="calculateur" class="calculateur conteneur">
       <section class="accueil__visuel" aria-labelledby="titre-accueil">
-        <p class="accueil__etiquettes"><span><!--#icone:calcul--> Calculateur gratuit</span><span>15 cultures</span><span>Plan de pose et liste d'achat</span></p>
+        <p class="accueil__etiquettes"><span><!--#icone:calcul--> Calculateur gratuit</span><span><!--#nb-cultures--> cultures</span><span>Plan de pose et liste d'achat</span></p>
         <h1 id="titre-accueil">Combien de LED pour vos légumes ?</h1>
         <div class="accueil__chapo">
           <p>Choisissez un légume et vos dimensions : intensité à viser, puissance, nombre et disposition des barres LED, coût électrique et liste d'achat.</p>
@@ -33,8 +33,8 @@
         <fieldset class="champ">
           <legend>Stade</legend>
           <div class="segments">
-            <label><input type="radio" name="stade" value="croissance" checked /> Croissance</label>
-            <label><input type="radio" name="stade" value="floraison" /> Floraison / fructification</label>
+            <label><input type="radio" name="stade" value="croissance" checked aria-describedby="stade-aide" /> Croissance</label>
+            <label><input type="radio" name="stade" value="floraison" aria-describedby="stade-aide" /> Floraison / fructification</label>
           </div>
           <small id="stade-aide" class="aide" hidden></small>
         </fieldset>
@@ -65,13 +65,13 @@
 
         <div class="champ">
           <label for="espacement">Espacement entre plants (cm)</label>
-          <div class="pas"><button type="button" data-cible="espacement" data-pas="-5" data-min="5" aria-label="Réduire l'espacement">−</button><input id="espacement" type="text" inputmode="decimal" autocomplete="off" /><button type="button" data-cible="espacement" data-pas="5" data-min="5" aria-label="Augmenter l'espacement">+</button></div>
+          <div class="pas"><button type="button" data-cible="espacement" data-pas="-5" data-min="5" aria-label="Réduire l'espacement">−</button><input id="espacement" aria-describedby="espacement-aide" type="text" inputmode="decimal" autocomplete="off" /><button type="button" data-cible="espacement" data-pas="5" data-min="5" aria-label="Augmenter l'espacement">+</button></div>
           <small class="aide" id="espacement-aide">Sert à compter les plants ; la lumière, elle, se calcule par m² de culture.</small>
         </div>
 
         <div class="champ">
           <label for="photoperiode">Photopériode (heures/jour)</label>
-          <div class="pas"><button type="button" data-cible="photoperiode" data-pas="-1" data-min="1" data-max="24" aria-label="Une heure de moins">−</button><input id="photoperiode" type="text" inputmode="decimal" autocomplete="off" /><button type="button" data-cible="photoperiode" data-pas="1" data-min="1" data-max="24" aria-label="Une heure de plus">+</button></div>
+          <div class="pas"><button type="button" data-cible="photoperiode" data-pas="-1" data-min="1" data-max="24" aria-label="Une heure de moins">−</button><input id="photoperiode" aria-describedby="photoperiode-aide" type="text" inputmode="decimal" autocomplete="off" /><button type="button" data-cible="photoperiode" data-pas="1" data-min="1" data-max="24" aria-label="Une heure de plus">+</button></div>
           <small class="aide" id="photoperiode-aide"></small>
         </div>
 
@@ -103,7 +103,7 @@
         </details>
       </form>
 
-      <section id="resultats" class="carte" aria-live="polite">
+      <section id="resultats" class="carte">
         <div class="titre-resultats">
           <h2><span class="etape-num">2</span> Résultats</h2>
           <div class="actions">
@@ -112,7 +112,8 @@
             <button type="button" id="imprimer">Imprimer</button>
           </div>
         </div>
-        <p id="erreurs" class="erreurs" hidden></p>
+        <p id="erreurs" class="erreurs" role="alert" hidden></p>
+        <p id="annonce-resultats" class="visuellement-cache" aria-live="polite"></p>
         <div id="contenu-resultats"></div>
       </section>
 

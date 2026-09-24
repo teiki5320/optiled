@@ -35,6 +35,12 @@ const CHOIX: Record<string, RegExp> = {
 /** Nombre saisi à la française ou non (chiffres, une virgule ou un point). */
 const NOMBRE = /^\d{1,6}([.,]\d{1,4})?$/;
 
+/** « 1 700 » → « 1700 » : les espaces des milliers ne passent pas dans l'adresse. */
+function normaliser(champ: string, valeur: string): string {
+  const v = valeur.trim();
+  return CHOIX[champ] ? v : v.replace(/[\s\u00a0\u202f]/g, '');
+}
+
 function valide(champ: string, valeur: string): boolean {
   return (CHOIX[champ] ?? NOMBRE).test(valeur);
 }
@@ -43,7 +49,7 @@ function valide(champ: string, valeur: string): boolean {
 export function versParams(etat: Etat): string {
   const p = new URLSearchParams();
   for (const [champ, court] of Object.entries(PARAMETRES)) {
-    const v = etat[champ]?.trim();
+    const v = etat[champ] === undefined ? '' : normaliser(champ, etat[champ]);
     if (v && valide(champ, v)) p.set(court, v);
   }
   return p.toString();

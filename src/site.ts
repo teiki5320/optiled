@@ -47,9 +47,19 @@ function menuMobile(): void {
   menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => (menu.open = false)));
 }
 
+/**
+ * Page 404 : son <base> pointe vers la racine du site, donc « #contenu » mènerait à l'accueil.
+ * Le lien d'évitement vise explicitement la page courante.
+ */
+function lienEvitement(): void {
+  const lien = document.querySelector<HTMLAnchorElement>('a.evitement');
+  if (lien && document.querySelector('base')) lien.href = `${location.href.split('#')[0]}#contenu`;
+}
+
 progressionLecture();
 sommaireActif();
 menuMobile();
+lienEvitement();
 
 /** Mode hors ligne : enregistre le service worker (site publié en HTTPS uniquement). */
 if (import.meta.env.PROD && 'serviceWorker' in navigator && location.protocol === 'https:') {

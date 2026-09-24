@@ -5,7 +5,7 @@
     "ppfd en µmol/m²/s, photoperiode en heures/jour, hauteur_cm = [min, max] de suspension au-dessus de la canopée.",
     "stades.floraison = null pour les cultures récoltées avant floraison (feuilles, aromatiques, micro-pousses).",
     "Les valeurs sont des ordres de grandeur indicatifs : ajustez-les selon la variété et vos mesures (PAR-mètre).",
-    "culture : plages [min, max] de température de jour (temperature_c, °C) et de nuit (temperature_nuit_c, °C), texte court des températures à éviter (temperature_a_eviter), humidité relative (%), pH et EC (mS/cm) de la solution, jours_recolte = délai indicatif jusqu'à la première récolte, compté depuis le semis sauf mention contraire dans la source (fraise : depuis la plantation du plant), espacement entre plants (cm, null pour un semis à la volée)."
+    "culture : plages [min, max] de température de jour (temperature_c, °C) et de nuit (temperature_nuit_c, °C), texte court des températures à éviter (temperature_a_eviter), humidité relative (%), pH et EC (mS/cm) de la solution, jours_recolte = délai indicatif jusqu'à la première récolte, compté depuis le semis sauf mention contraire dans la source (fraise : depuis la plantation du plant ; chanvre : jusqu'à la récolte des fleurs), espacement entre plants (cm, null pour un semis à la volée)."
   ],
   "references": {
     "kozai": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press",
@@ -51,7 +51,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -139,7 +139,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -227,7 +227,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -315,7 +315,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -403,7 +403,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -491,7 +491,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -579,7 +579,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -667,7 +667,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc froid 5000–6500 K riche en bleu (tiges courtes, bonne coloration)",
+            "valeur": "Blanc froid 5 000–6 500 K riche en bleu (tiges courtes, bonne coloration)",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -752,7 +752,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -773,7 +773,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
+            "valeur": "Blanc chaud 3 000–3 500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -860,7 +860,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -881,7 +881,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
+            "valeur": "Blanc chaud 3 000–3 500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -968,7 +968,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -989,7 +989,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
+            "valeur": "Blanc chaud 3 000–3 500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -1076,7 +1076,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -1097,7 +1097,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
+            "valeur": "Blanc chaud 3 000–3 500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -1184,7 +1184,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -1205,7 +1205,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
+            "valeur": "Blanc chaud 3 000–3 500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -1292,7 +1292,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -1313,7 +1313,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
+            "valeur": "Blanc chaud 3 000–3 500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
@@ -1401,7 +1401,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc plein spectre 4000–5000 K (≈ 20 % de bleu), IRC ≥ 80",
+            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         },
@@ -1422,7 +1422,7 @@
             "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           },
           "spectre": {
-            "valeur": "Blanc chaud 3000–3500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
+            "valeur": "Blanc chaud 3 000–3 500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
             "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }

@@ -20,3 +20,10 @@ describe('état du calculateur dans l’adresse', () => {
     expect(versParams({ legume: 'Tomate!', longueur: '' })).toBe('');
   });
 });
+
+describe('nombres avec espaces', () => {
+  it('« 1 700 » est gardé dans le lien', () => {
+    expect(versParams({ 'lampe-ppf': '1 700' })).toBe('ppf=1700');
+    expect(versParams({ 'lampe-ppf': '1 700' })).toBe('ppf=1700');
+  });
+});

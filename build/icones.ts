@@ -9,12 +9,9 @@ const TRACES = {
   livre: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
   calcul: '<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8M16 14v4M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"/>',
   couches: '<path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/>',
-  fiole: '<path d="M9 3h6M10 3v6L4.5 19a2 2 0 0 0 1.8 3h11.4a2 2 0 0 0 1.8-3L14 9V3"/><path d="M7 15h10"/>',
-  vent: '<path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>',
   jauge: '<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',
   coche: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
   depart: '<circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z"/>',
-  soleil: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
   horloge: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
   fleche: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
   menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
@@ -29,15 +26,17 @@ export function icone(nom: NomIcone, classe = 'icone'): string {
   return `<svg class="${classe}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TRACES[nom]}</svg>`;
 }
 
-/** Logo : une barre LED qui éclaire une pousse. */
-export const LOGO = `<svg class="logo-marque" viewBox="0 0 40 40" aria-hidden="true">
+/** Logo : une barre LED qui éclaire une pousse. `suffixe` rend ses identifiants uniques dans la page (en-tête et pied). */
+export function logo(suffixe = ''): string {
+  return `<svg class="logo-marque" viewBox="0 0 40 40" aria-hidden="true">
   <defs>
-    <linearGradient id="logo-lum" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe7b0" stop-opacity=".9"/><stop offset="1" stop-color="#ff5fa2" stop-opacity="0"/></linearGradient>
-    <linearGradient id="logo-barre" x1="0" x2="1"><stop offset="0" stop-color="#5b7cff"/><stop offset=".5" stop-color="#c26bff"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient>
+    <linearGradient id="logo-lum${suffixe}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe7b0" stop-opacity=".9"/><stop offset="1" stop-color="#ff5fa2" stop-opacity="0"/></linearGradient>
+    <linearGradient id="logo-barre${suffixe}" x1="0" x2="1"><stop offset="0" stop-color="#5b7cff"/><stop offset=".5" stop-color="#c26bff"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient>
   </defs>
   <rect width="40" height="40" rx="10" fill="#0f1f16"/>
-  <path d="M9 11h22l6 24H3z" fill="url(#logo-lum)" opacity=".55"/>
-  <rect x="7" y="7" width="26" height="5" rx="2.5" fill="url(#logo-barre)"/>
+  <path d="M9 11h22l6 24H3z" fill="url(#logo-lum${suffixe})" opacity=".55"/>
+  <rect x="7" y="7" width="26" height="5" rx="2.5" fill="url(#logo-barre${suffixe})"/>
   <path d="M20 34V24" stroke="#7ee2a0" stroke-width="2.2" stroke-linecap="round"/>
   <path d="M20 26c-4.5 0-7-2.5-7.5-6.5 4.5 0 7 2.5 7.5 6.5ZM20 24c4.5 0 7-2.5 7.5-6.5-4.5 0-7 2.5-7.5 6.5Z" fill="#7ee2a0"/>
 </svg>`;
+}

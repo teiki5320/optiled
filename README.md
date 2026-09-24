@@ -30,7 +30,7 @@ npm run preview  # prévisualise le contenu de dist/
 npm run test:e2e # test de bout en bout dans Chromium (après npm run build)
 ```
 
-Node.js 20 ou plus récent est requis.
+Node.js 22.12 ou plus récent est requis (Vite 8 et Vitest 5).
 
 ## Organisation du code
 
@@ -57,7 +57,7 @@ Node.js 20 ou plus récent est requis.
 
 1. Copiez une page existante (par exemple `led-bases.html`) sous un nouveau nom à la racine.
 2. Gardez les marqueurs `<!--#head-->`, `<!--#header-->` et `<!--#footer-->` : le build les remplace par les parties communes. La page est ajoutée automatiquement au build et au `sitemap.xml`. Une page d'article (`<main id="contenu" class="page">` avec fil d'Ariane et `<article class="prose">` contenant `h1`, `p.chapo` et `nav.sommaire`) reçoit automatiquement le bandeau de titre et le sommaire latéral.
-   Autres marqueurs : `<!--#cartes:led-->` / `<!--#cartes:culture-->` (cartes des guides), `<!--#icone:nom-->` (icône de `build/icones.ts`), `<!--#fiches-->`.
+   Autres marqueurs : `<!--#cartes:led-->` / `<!--#cartes:culture-->` (cartes des guides), `<!--#icone:nom-->` (icône de `build/icones.ts`), `<!--#fiches-->`, `<!--#climat-->` (tableau des températures), `<!--#tuiles-->` (tuiles du calculateur), `<!--#sources-->` (liste des références), `<!--#nb-cultures-->` (nombre de cultures).
 3. Pour l'ajouter à une rubrique, nommez-la `led-….html` ou `culture-….html` et déclarez-la dans `RUBRIQUES` (`build/site.ts`) : elle apparaîtra dans les cartes, le pied de page et la numérotation « Guide n sur N ».
 
 Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, `encadre attention`, `formule`, `tableau-defile` + `tableau`, `suite`, `bouton` / `bouton bouton--plein`.
@@ -96,7 +96,7 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 - `floraison: null` pour les cultures récoltées avant floraison (le choix du stade est alors désactivé).
 - `avertissement` (facultatif) : mise en garde affichée dans le calculateur et la fiche (ex. réglementation du chanvre CBD).
 - `famille` sert à regrouper la liste déroulante et les fiches.
-- `culture` : plages [min, max] de température (°C), humidité (%), pH, EC (mS/cm), jours jusqu'à la première récolte, espacement (cm, `null` pour un semis à la volée), et un conseil ; affichées dans les fiches légumes.
+- `culture` : plages [min, max] de température de jour (`temperature_c`) et de nuit (`temperature_nuit_c`) en °C, ce qu'il faut éviter (`temperature_a_eviter`, texte), humidité (%), pH, EC (mS/cm), jours jusqu'à la première récolte (depuis le semis, sauf fraise : depuis la plantation, et chanvre : jusqu'à la récolte des fleurs), espacement (cm, `null` pour un semis à la volée), et un conseil ; affichées dans les fiches légumes. Les températures alimentent aussi le tableau du guide climat.
 - Toute nouvelle référence citée doit être ajoutée à `references` (elle apparaîtra dans le glossaire).
 - Chaque valeur **doit** avoir une `source` non vide : les tests vérifient la présence des sources et la plausibilité des valeurs (PPFD entre 50 et 1 500, photopériode ≤ 24 h, etc.).
 
@@ -160,7 +160,7 @@ La consommation est calculée sur la puissance nécessaire (barres gradées à l
 - Chaque page reçoit une adresse canonique, des balises de partage (Open Graph : image `public/images/partage/<page>.jpg`, 1200 × 630) et, pour l'accueil et les guides, des données structurées schema.org (`build/site.ts`, fonction `referencement`).
 - Le site est installable et consultable hors ligne (`public/manifest.webmanifest`, `public/sw.js`) ; changez `VERSION` dans `sw.js` pour forcer le renouvellement du cache.
 - Mesure d'audience facultative et sans cookie (Plausible) : `PLAUSIBLE_DOMAIN=mon-domaine.fr npm run build`. Sans cette variable, aucun script de mesure n'est ajouté.
-- Mentions légales : `mentions-legales.html` (site personnel non commercial : seul l'hébergeur est obligatoire). Le commentaire « À COMPLÉTER » en haut de la page liste ce qu'il faudrait ajouter si le site devenait professionnel. Si la mesure d'audience est activée, mettez à jour la rubrique « Données et cookies » de cette page.
+- Mentions légales : `mentions-legales.html` (site personnel non commercial : seul l'hébergeur est obligatoire). Le commentaire « À COMPLÉTER » de la rubrique Éditeur liste ce qu'il faudrait ajouter si le site devenait professionnel. Si la mesure d'audience est activée, mettez à jour la rubrique « Données personnelles et cookies » de cette page.
 
 ## Domaine personnalisé (IONOS + GitHub Pages)
 

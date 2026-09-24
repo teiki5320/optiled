@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "Calculateur d'éclairage LED pour la culture de légumes en intérieur",
   "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",

@@ -136,8 +136,6 @@ a { color: var(--accent); }
 .suite small { color: var(--accent); }
 
 /* ---------- Accueil (blocs communs) ---------- */
-.spectre-bloc { background: radial-gradient(60% 100% at 100% 0%, rgb(247 192 122 / 0.18), transparent 70%), var(--verre-fort); border: 1px solid var(--bordure); border-radius: 32px; }
-.spectre__par span { background: #2a1a32; }
 .encart-calcul { background: radial-gradient(60% 120% at 0% 0%, rgb(247 192 122 / 0.22), transparent 70%), var(--nuit-2); border-color: var(--nuit-bordure); border-radius: 32px; }
 
 /* ---------- Fiches légumes ---------- */

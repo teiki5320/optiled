@@ -15,7 +15,12 @@ export interface ContexteAlertes {
   longueurZoneM: number;
   /** Largeur d'un rang (mode rangs) et espacement conseillé, en cm */
   rangTropEtroit?: { largeurCm: number; espacementCm: number };
+  /** Efficacité saisie dans les options (µmol/J) */
+  efficaciteUmolJ?: number;
 }
+
+/** Au-delà, l'efficacité annoncée par un fabricant est rarement mesurée de façon indépendante. */
+export const EFFICACITE_DOUTEUSE = 3.2;
 
 // Espèces chez qui l'éclairage quasi continu provoque des lésions documentées (Velez-Ramirez et al., 2011).
 const SENSIBLES_ECLAIRAGE_CONTINU = ['tomate', 'aubergine'];
@@ -44,7 +49,10 @@ export function alertes(c: ContexteAlertes): string[] {
     a.push(`Les barres (${c.longueurBarreM.toFixed(2).replace('.', ',')} m) sont plus longues que l'installation (${c.longueurZoneM.toFixed(2).replace('.', ',')} m) : elles dépasseront et une partie de la lumière sera perdue. Choisissez des barres plus courtes.`);
   }
   if (c.rangTropEtroit) {
-    a.push(`Les rangs (${c.rangTropEtroit.largeurCm} cm) sont plus étroits que l'espacement conseillé entre plants (${c.rangTropEtroit.espacementCm} cm) : les plants déborderont sur l'allée. Élargissez les rangs ou comptez une seule ligne de plants par rang.`);
+    a.push(`Les rangs (${c.rangTropEtroit.largeurCm} cm) sont plus étroits que l'espacement choisi entre plants (${c.rangTropEtroit.espacementCm} cm) : les plants déborderont sur l'allée. Élargissez les rangs ou comptez une seule ligne de plants par rang.`);
+  }
+  if (c.efficaciteUmolJ !== undefined && c.efficaciteUmolJ > EFFICACITE_DOUTEUSE) {
+    a.push(`Une efficacité de ${String(c.efficaciteUmolJ).replace('.', ',')} µmol/J est rare : vérifiez la fiche technique (PPF mesuré ÷ puissance consommée). Une valeur surestimée sous-dimensionne l'éclairage.`);
   }
   return a;
 }

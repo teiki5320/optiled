@@ -96,6 +96,10 @@ export function calculerSurface(s: Surface): number {
   return z.zones * z.longueurM * z.largeurM;
 }
 
+/** Bornes de saisie : au-delà, il s'agit presque toujours d'une erreur d'unité (cm au lieu de m). */
+export const DIMENSION_MAX_M = 50;
+export const RANGS_MAX = 100;
+
 /** Retourne la liste des erreurs de saisie (vide si tout est valide). */
 export function validerEntrees(e: EntreesCalcul): string[] {
   const erreurs: string[] = [];
@@ -108,8 +112,13 @@ export function validerEntrees(e: EntreesCalcul): string[] {
   const z = dimensionsZone(e.surface);
   positif(z.longueurM, 'La longueur');
   positif(z.largeurM, 'La largeur');
+  if (z.longueurM > DIMENSION_MAX_M || z.largeurM > DIMENSION_MAX_M) {
+    erreurs.push(`Les dimensions ne peuvent pas dépasser ${DIMENSION_MAX_M} m : elles s'expriment en mètres (1,20 et non 120).`);
+  }
   if (e.surface.mode === 'rangs' && (!Number.isInteger(e.surface.nbRangs) || e.surface.nbRangs < 1)) {
     erreurs.push('Le nombre de rangs doit être un entier ≥ 1.');
+  } else if (e.surface.mode === 'rangs' && e.surface.nbRangs > RANGS_MAX) {
+    erreurs.push(`Le nombre de rangs ne peut pas dépasser ${RANGS_MAX}.`);
   }
   positif(e.efficaciteUmolJ, "L'efficacité des LED");
   if (e.efficaciteUmolJ > 5) erreurs.push("L'efficacité dépasse 5 µmol/J : valeur irréaliste.");

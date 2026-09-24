@@ -61,6 +61,12 @@ function kpi(libelle: string, valeur: string, unite = ''): string {
   return `<div><dt>${libelle}</dt><dd>${valeur}${unite ? `<small>${unite}</small>` : ''}</dd></div>`;
 }
 
+/** Point de départ du délai de récolte, quand il n'est pas le semis. */
+const DEPART_RECOLTE: Record<string, string> = {
+  fraise: 'après plantation',
+  'chanvre-cbd': 'jusqu\'aux fleurs',
+};
+
 export function rendreFiche(l: Legume): string {
   const c = l.culture;
   const croissance = l.stades.croissance;
@@ -80,10 +86,10 @@ export function rendreFiche(l: Legume): string {
       ${kpi('PPFD', ppfd, 'µmol/m²/s')}
       ${kpi('DLI', floraison ? `${dli(croissance)} → ${dli(floraison)}` : dli(croissance), 'mol/m²/j')}
       ${kpi('Lumière', floraison && floraison.photoperiode.valeur !== croissance.photoperiode.valeur ? `${nb(croissance.photoperiode.valeur)} → ${nb(floraison.photoperiode.valeur)}` : nb(croissance.photoperiode.valeur), 'h/jour')}
-      ${kpi('Température', plage(c.temperature_c.valeur), '°C')}
+      ${kpi('Température (jour)', plage(c.temperature_c.valeur), '°C')}
       ${kpi('pH', plage(c.ph.valeur))}
       ${kpi('EC', plage(c.ec_ms_cm.valeur), 'mS/cm')}
-      ${kpi('Récolte', plage(c.jours_recolte.valeur), 'jours')}
+      ${kpi('Récolte', plage(c.jours_recolte.valeur), DEPART_RECOLTE[l.id] ? `jours ${DEPART_RECOLTE[l.id]}` : 'jours')}
       ${kpi('Humidité', plage(c.humidite_pct.valeur), '%')}
     </dl>
     <details class="fiche__detail">
@@ -99,7 +105,7 @@ export function rendreFiche(l: Legume): string {
             ${ligne('Humidité relative', plage(c.humidite_pct.valeur, ' %'))}
             ${ligne('pH de la solution', plage(c.ph.valeur))}
             ${ligne('EC de la solution', plage(c.ec_ms_cm.valeur, ' mS/cm'))}
-            ${ligne('Délai de récolte', plage(c.jours_recolte.valeur, ' jours'))}
+            ${ligne('Délai de récolte', `${plage(c.jours_recolte.valeur, ' jours')} ${DEPART_RECOLTE[l.id] ?? 'après semis'}`)}
             ${ligne('Espacement', espacement)}
             ${ligne('Conseil', echapper(c.conseils.valeur))}
           </tbody></table>

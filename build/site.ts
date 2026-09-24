@@ -9,6 +9,7 @@
  *   <!--#footer-->          pied de page
  *   <!--#fiches-->          fiches légumes générées depuis src/data/legumes.json
  *   <!--#tuiles-->          tuiles des légumes du calculateur (src/tuiles.ts)
+ *   <!--#nb-cultures-->     nombre de cultures de legumes.json (texte ou attribut)
  *   <!--#sources-->         liste des références (glossaire), même source
  *   <!--#climat-->          tableau des températures jour / nuit (même source)
  *   <!--#cartes:led-->      cartes des guides LED (idem avec culture)
@@ -21,9 +22,12 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import type { Plugin } from 'vite';
-import { rendreFiches, rendreSources, rendreTableauClimat } from './fiches';
+import { chargerLegumes, rendreFiches, rendreSources, rendreTableauClimat } from './fiches';
 import { htmlTuiles } from '../src/tuiles';
-import { icone, LOGO, type NomIcone } from './icones';
+import { insecables } from '../src/typo';
+
+export { insecables };
+import { icone, logo, type NomIcone } from './icones';
 
 export const NOM_SITE = 'OptiLED';
 
@@ -80,7 +84,7 @@ export function rubriqueDe(fichier: string): Rubrique | null {
   return null;
 }
 
-const FAVICON = `data:image/svg+xml,${encodeURIComponent(LOGO.replace('class="logo-marque" ', 'xmlns="http://www.w3.org/2000/svg" '))}`;
+const FAVICON = `data:image/svg+xml,${encodeURIComponent(logo().replace('class="logo-marque" ', 'xmlns="http://www.w3.org/2000/svg" '))}`;
 
 export function head(): string {
   return `<link rel="icon" href="${FAVICON}" />
@@ -186,7 +190,7 @@ export function header(fichier: string): string {
 <div class="progression" aria-hidden="true"></div>
 <header class="site-entete">
   <div class="conteneur site-entete__barre">
-    <a class="logo" href="index.html">${LOGO}<span><strong>${NOM_SITE}</strong><small>LED &amp; culture indoor</small></span></a>
+    <a class="logo" href="index.html">${logo()}<span><strong>${NOM_SITE}</strong><small>LED &amp; culture indoor</small></span></a>
     <nav class="site-nav" aria-label="Navigation principale"><ul>${liens}</ul></nav>
     ${/^(index|calculateur)\.html$/.test(fichier) ? '' : `<a class="bouton bouton--plein bouton--entete" href="index.html#calculateur">${icone('calcul')}<span>Calculer</span></a>`}
     <details class="menu-mobile">
@@ -203,7 +207,7 @@ export function footer(): string {
   return `<footer class="site-pied">
   <div class="conteneur site-pied__grille">
     <div class="site-pied__marque">
-      <a class="logo" href="index.html">${LOGO}<span><strong>${NOM_SITE}</strong><small>LED &amp; culture indoor</small></span></a>
+      <a class="logo" href="index.html">${logo('-pied')}<span><strong>${NOM_SITE}</strong><small>LED &amp; culture indoor</small></span></a>
       <p>Guides et outils gratuits pour cultiver des légumes sous LED, en intérieur.</p>
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la <a href="glossaire.html#sources">littérature horticole</a> : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
       <p class="site-pied__note">Photos des guides et miniatures des cultures générées par intelligence artificielle ; schémas réalisés pour le site.</p>
@@ -326,39 +330,11 @@ export function sitemap(pages: string[], url = SITE_URL): string {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
-const UNITES = ['°C', '°', '%', 'kWh', 'kW', 'Wh', 'W', 'µmol', 'mol', 'kPa', 'mS', 'cm', 'mm', 'm²', 'm³', 'm', 'nm', 'h', 'j', 's', '€', 'L', 'l', 'lm', 'lx', 'ml', 'mL', 'kg', 'g', 'ppm', 'K'];
-const FIN_UNITE = UNITES.map((u) => u.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
-
-/**
- * Typographie française : espaces insécables devant « ; ? ! : », dans les guillemets,
- * entre un nombre et son unité et dans les milliers (3 600). Seul le texte est touché,
- * pas les balises ni le contenu de script, style, pre, code et textarea.
- */
-export function insecables(html: string): string {
-  let ignore = 0;
-  return html
-    .split(/(<[^>]*>)/)
-    .map((morceau) => {
-      if (morceau.startsWith('<')) {
-        const m = /^<(\/?)(script|style|pre|code|textarea)\b/i.exec(morceau);
-        if (m) ignore = Math.max(0, ignore + (m[1] ? -1 : 1));
-        return morceau;
-      }
-      if (ignore || !morceau.trim()) return morceau;
-      return morceau
-        .replace(/ ([;?!])/g, ' $1')
-        .replace(/ :(?=\s|$)/g, ' :')
-        .replace(/« /g, '« ')
-        .replace(/ »/g, ' »')
-        .replace(/(\d) (?=\d{3}(?!\d))/g, '$1 ')
-        .replace(new RegExp(`(\\d) (?=(?:${FIN_UNITE})(?![\\p{L}\\d]))`, 'gu'), '$1 ');
-    })
-    .join('');
-}
-
 /** Applique toutes les transformations à une page. */
 export function transformerPage(html: string, fichier: string): string {
   let numeroTableau = 0;
+  // Nombre de cultures, tiré des données (avant tout : il peut figurer dans la description).
+  html = html.replace(/<!--#nb-cultures-->/g, () => String(chargerLegumes().length));
   const base = fichier === '404.html' ? `<base href="${SITE_URL}" />\n    ` : '';
   const page = mettreEnPageArticle(html, fichier)
     .replace('<!--#climat-->', () => rendreTableauClimat())
