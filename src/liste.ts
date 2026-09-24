@@ -33,8 +33,8 @@ export function arrondiPuissance(w: number): number {
 export function listeAchat(r: ResultatCalcul, c: ContexteListe): ArticleAchat[] {
   const b = r.barres;
   const puissanceBarre = c.puissanceBarreW
-    ? `${nombre(c.puissanceBarreW)} W (gradable : réglée à ~${nombre(b.tauxGradation * 100)} %)`
-    : `≥ ${nombre(arrondiPuissance(b.puissanceParBarreNecessaireW))} W chacune, idéalement gradable`;
+    ? `${nombre(c.puissanceBarreW)} W, avec variateur réglé à ~${nombre(b.tauxGradation * 100)} %`
+    : `≥ ${nombre(arrondiPuissance(b.puissanceParBarreNecessaireW))} W chacune, avec variateur (fortement conseillé)`;
 
   return [
     {
