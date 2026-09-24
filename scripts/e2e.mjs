@@ -36,8 +36,13 @@ try {
 
   await page.goto(BASE, { waitUntil: 'networkidle' });
   const resultats = () => page.textContent('#contenu-resultats');
+  // Liste repliée sur une ligne : on la déplie si la culture n'est pas visible.
+  const choisirCulture = async (id) => {
+    if (await page.isHidden(`[data-legume="${id}"]`)) await page.click('#tuiles-deplier');
+    await page.click(`[data-legume="${id}"]`);
+  };
   verifier(/PPFD cible\s*250/.test(await resultats()), 'calcul par défaut (laitue, 250 µmol/m²/s)');
-  await page.click('[data-legume="tomate"]');
+  await choisirCulture('tomate');
   verifier(/PPFD cible\s*350/.test(await resultats()), 'tuile tomate : 350 µmol/m²/s en croissance');
   await page.click('label:has(input[value="floraison"])');
   verifier(/PPFD cible\s*500/.test(await resultats()), 'tomate en fructification : 500 µmol/m²/s');
@@ -52,7 +57,7 @@ try {
   verifier(/Plants\s*≈ 8 /.test(await resultats()), 'laitue 1,2 × 0,6 m à 25 cm : ≈ 8 plants');
   await page.fill('#longueur', '0,6');
   verifier(/barres? LED de 0,60\sm/.test(await resultats()), 'étagère de 60 cm : barres de 0,60 m choisies automatiquement');
-  await page.click('[data-legume="tomate"]');
+  await choisirCulture('tomate');
   await page.fill('#photoperiode', '22');
   verifier(/18\sh/.test(await page.textContent('.alerte-calcul').catch(() => '')), 'alerte au-delà de 18 h pour la tomate');
   await page.fill('#photoperiode', '16');
@@ -60,6 +65,10 @@ try {
   verifier(/en mètres/.test(await page.textContent('#erreurs')) && (await page.getAttribute('#longueur', 'aria-invalid')) === 'true', 'longueur saisie en cm : erreur claire, champ signalé');
   await page.fill('#longueur', '1,2');
   verifier(/^Résultat : .* W, \d+ barres? LED\.$/.test((await page.textContent('#annonce-resultats')) ?? ''), "annonce courte pour les lecteurs d'écran");
+  verifier((await page.locator('[data-legume]:not([hidden])').count()) === 4 && (await page.getAttribute('#tuiles-deplier', 'aria-expanded')) === 'false', 'liste des cultures repliée sur une ligne de 4');
+  await page.click('#tuiles-deplier');
+  await page.click('[data-legume="wasabi"]');
+  verifier((await page.getAttribute('[data-legume="wasabi"]', 'aria-pressed')) === 'true' && (await page.locator('[data-legume]:not([hidden])').count()) === 4, 'choisir dans la liste dépliée sélectionne la culture et replie la liste');
   verifier((await page.locator('[data-omelette-injected]').count()) === 0, "aucun code d'outil de maquette dans la page");
 
   const scripts = await page.$$eval('script[src]', (els) => els.map((e) => e.src));

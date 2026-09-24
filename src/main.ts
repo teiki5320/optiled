@@ -6,7 +6,7 @@ import { calculer, dimensionsZone, longueurBarreConseillee, nombrePlants, verifi
 import { depuisParams, PARAMETRES, versParams, type Etat } from './etat';
 import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data';
 import { euros, nombre } from './format';
-import { htmlTuiles } from './tuiles';
+import { htmlTuiles, TUILES_PAR_LIGNE } from './tuiles';
 import { insecables, typographier } from './typo';
 import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste';
 import { jaugeDli, planBarres } from './schema';
@@ -94,24 +94,46 @@ function remplirTuiles(): void {
     const bouton = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-legume]');
     if (!bouton || !bouton.dataset.legume) return;
     selectLegume.value = bouton.dataset.legume;
+    // Choisir dans la liste dépliée la referme : la culture choisie reste sur la ligne visible.
+    const etaitDepliee = tuilesDepliees;
+    tuilesDepliees = false;
     appliquerLegume();
     mettreAJour();
+    if (etaitDepliee) tuilesLegumes.querySelector<HTMLButtonElement>(`[data-legume="${bouton.dataset.legume}"]`)?.focus();
   });
 }
 
+/** Liste repliée : une ligne (la culture choisie et les premières) ; la flèche déplie toutes les cultures. */
+let tuilesDepliees = false;
+const boutonDeplier = $<HTMLButtonElement>('tuiles-deplier');
+const libelleDeplier = boutonDeplier.querySelector('span')!.textContent ?? '';
+
 function majTuiles(): void {
-  tuilesLegumes.querySelectorAll<HTMLButtonElement>('[data-legume]').forEach((b) => {
-    const choisi = b.dataset.legume === selectLegume.value;
+  const tuiles = [...tuilesLegumes.querySelectorAll<HTMLButtonElement>('[data-legume]')];
+  const choisie = tuiles.find((b) => b.dataset.legume === selectLegume.value);
+  const visibles = new Set(tuilesDepliees ? tuiles : [choisie, ...tuiles.filter((b) => b !== choisie)].slice(0, TUILES_PAR_LIGNE));
+  tuiles.forEach((b) => {
+    const choisi = b === choisie;
     b.setAttribute('aria-pressed', String(choisi));
     // Une seule tuile atteignable par Tab ; les flèches parcourent les autres.
     b.tabIndex = choisi ? 0 : -1;
+    b.hidden = !visibles.has(b);
+  });
+  boutonDeplier.setAttribute('aria-expanded', String(tuilesDepliees));
+  boutonDeplier.querySelector('span')!.textContent = tuilesDepliees ? 'Réduire la liste' : libelleDeplier;
+}
+
+function deplierTuiles(): void {
+  boutonDeplier.addEventListener('click', () => {
+    tuilesDepliees = !tuilesDepliees;
+    majTuiles();
   });
 }
 
 /** Flèches, Début et Fin pour parcourir les tuiles de légumes au clavier. */
 function navigationTuiles(): void {
   tuilesLegumes.addEventListener('keydown', (e) => {
-    const tuiles = [...tuilesLegumes.querySelectorAll<HTMLButtonElement>('[data-legume]')];
+    const tuiles = [...tuilesLegumes.querySelectorAll<HTMLButtonElement>('[data-legume]:not([hidden])')];
     const i = tuiles.indexOf(document.activeElement as HTMLButtonElement);
     if (i < 0) return;
     const cible = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: tuiles.length - 1 }[e.key];
@@ -519,6 +541,7 @@ async function partager(): Promise<void> {
 remplirLegumes();
 remplirTuiles();
 navigationTuiles();
+deplierTuiles();
 boutonsPas();
 appliquerLegume();
 appliquerMode();

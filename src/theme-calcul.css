@@ -56,7 +56,17 @@
 .etape-num { background: var(--degrade); color: #2a1422; }
 .champ > label, .champ > span, legend { font-weight: 600; font-size: 0.92rem; color: var(--nuit-attenue); }
 
-.tuiles-legumes { display: grid; grid-template-columns: repeat(auto-fill, minmax(6.2rem, 1fr)); gap: 0.5rem; margin: 0 0 1.2rem; }
+.tuiles-legumes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; margin: 0 0 0.6rem; }
+.tuile-legume { text-align: center; line-height: 1.15; overflow-wrap: anywhere; }
+@media (max-width: 420px) { .tuiles-legumes { gap: 0.35rem; } .tuiles-legumes .tuile-legume { font-size: 0.74rem; padding: 0.55rem 0.15rem; } }
+.tuiles-deplier {
+  display: flex; align-items: center; justify-content: center; gap: 0.4rem; width: 100%; margin: 0 0 1.2rem;
+  padding: 0.55rem; border-radius: 14px; cursor: pointer; font: 600 0.88rem var(--police); color: #f3dbe0;
+  background: rgb(255 255 255 / 0.05); border: 1px solid rgb(255 255 255 / 0.1);
+}
+.tuiles-deplier:hover { background: rgb(255 255 255 / 0.09); }
+.tuiles-deplier svg { transition: transform 0.2s; }
+.tuiles-deplier[aria-expanded='true'] svg { transform: rotate(180deg); }
 .tuile-legume {
   --famille: #9fd49a;
   display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
