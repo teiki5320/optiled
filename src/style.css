@@ -137,6 +137,8 @@ input[type='text']:focus, select:focus { outline: none; border-color: var(--acce
 .plan-zone { fill: #1d3b28; stroke: #3c6b50; stroke-width: 1.5; }
 .plan-halo { fill: #ffe7b0; opacity: 0.07; }
 .plan-barre { fill: url(#plan-spectre); }
+.plan-plant { fill: #6fcf7a; fill-opacity: 0.55; stroke: #a8f0b0; stroke-width: 1.2; }
+.plan-legende-plant { display: inline-block; width: 0.8em; height: 0.8em; border-radius: 50%; background: #6fcf7a; border: 1px solid #a8f0b0; vertical-align: -0.05em; margin-left: 0.3em; }
 .plan-cote { stroke: #a3b8a9; stroke-width: 1.2; fill: none; }
 .plan-cote--entraxe { stroke: #ffc15e; stroke-dasharray: 3 3; }
 .plan-texte { fill: #eef5ef; font: 600 12px var(--police); }

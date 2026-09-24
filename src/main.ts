@@ -279,7 +279,7 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface): string
 
     ${titre('Barres LED et disposition', 'led-installation.html#uniformite', 'Bien répartir la lumière')}
     <p><strong>${b.total} barre${b.total > 1 ? 's' : ''} de ${nombre(ctx.longueurBarreM, 2)} m</strong> : ${dispo}.</p>
-    ${b.total <= PLAN_BARRES_MAX ? `<figure class="plan-cadre">${planBarres(surface, b, ctx.longueurBarreM)}<figcaption>Vue de dessus, à l'échelle. Les barres sont centrées dans la longueur.</figcaption></figure>` : `<p class="aide">Plan non dessiné au-delà de ${PLAN_BARRES_MAX} barres.</p>`}
+    ${b.total <= PLAN_BARRES_MAX ? `<figure class="plan-cadre">${planBarres(surface, b, ctx.longueurBarreM, ctx.plantsPlan)}<figcaption>Vue de dessus, à l'échelle. Les barres sont centrées dans la longueur.${ctx.plantsPlan ? ` <span class="plan-legende-plant" aria-hidden="true"></span> Emplacement d'un plant (espacement ${nombre(ctx.plantsPlan.espacementM * 100)} cm).` : ''}</figcaption></figure>` : `<p class="aide">Plan non dessiné au-delà de ${PLAN_BARRES_MAX} barres.</p>`}
     <p>Entraxe entre lignes : <strong>${nombre(b.espacementM * 100)} cm</strong>, première ligne à ${nombre(b.margeBordM * 100)} cm du bord.</p>
     <p>${puissanceBarre}</p>
 
@@ -352,7 +352,10 @@ function mettreAJour(): void {
     avertissement: legume.avertissement,
   };
   const plantation = espacementCm !== undefined ? nombrePlants(surface, espacementCm) : undefined;
-  if (plantation && espacementCm !== undefined) ctx.plants = { total: plantation.total, espacementCm };
+  if (plantation && espacementCm !== undefined) {
+    ctx.plants = { total: plantation.total, espacementCm };
+    ctx.plantsPlan = { parLigne: plantation.parLigne, lignes: plantation.lignes, espacementM: espacementCm / 100 };
+  }
   ctx.alertes = alertes({
     legumeId: legume.id,
     nom: nomCourt(legume.nom),
@@ -362,6 +365,7 @@ function mettreAJour(): void {
     efficaciteUmolJ: entrees.efficaciteUmolJ,
     longueurBarreM,
     longueurZoneM,
+    longueurLigneM: r.barres.barresParLigne * longueurBarreM,
     rangTropEtroit:
       plantation?.rangTropEtroit && surface.mode === 'rangs'
         ? { largeurCm: Math.round(surface.largeurRangM * 100), espacementCm: espacementCm! }

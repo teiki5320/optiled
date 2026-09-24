@@ -13,6 +13,8 @@ export interface ContexteAlertes {
   photoperiodeConseilleeH: number;
   longueurBarreM: number;
   longueurZoneM: number;
+  /** Longueur d'une ligne de barres bout à bout (m) */
+  longueurLigneM?: number;
   /** Largeur d'un rang (mode rangs) et espacement conseillé, en cm */
   rangTropEtroit?: { largeurCm: number; espacementCm: number };
   /** Efficacité saisie dans les options (µmol/J) */
@@ -47,6 +49,8 @@ export function alertes(c: ContexteAlertes): string[] {
   }
   if (c.longueurBarreM > c.longueurZoneM + 0.02) {
     a.push(`Les barres (${c.longueurBarreM.toFixed(2).replace('.', ',')} m) sont plus longues que l'installation (${c.longueurZoneM.toFixed(2).replace('.', ',')} m) : elles dépasseront et une partie de la lumière sera perdue. Choisissez des barres plus courtes.`);
+  } else if (c.longueurLigneM !== undefined && c.longueurLigneM > c.longueurZoneM * 1.15 + 0.02) {
+    a.push(`Les barres bout à bout (${c.longueurLigneM.toFixed(2).replace('.', ',')} m) dépassent l'installation (${c.longueurZoneM.toFixed(2).replace('.', ',')} m) : une partie de la lumière sera perdue. Essayez une autre longueur de barre (options).`);
   }
   if (c.rangTropEtroit) {
     a.push(`Les rangs (${c.rangTropEtroit.largeurCm} cm) sont plus étroits que l'espacement choisi entre plants (${c.rangTropEtroit.espacementCm} cm) : les plants déborderont sur l'allée. Élargissez les rangs ou comptez une seule ligne de plants par rang.`);

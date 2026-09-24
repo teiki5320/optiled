@@ -13,6 +13,8 @@ export interface ContexteListe {
   avertissement?: string;
   /** Nombre de plants et espacement, si la culture se plante à espacement régulier */
   plants?: { total: number; espacementCm: number };
+  /** Grille des plants pour le plan vu de dessus */
+  plantsPlan?: { parLigne: number; lignes: number; espacementM: number };
   /** Autres mises en garde du calculateur (photopériode, barres trop longues…) */
   alertes?: string[];
 }

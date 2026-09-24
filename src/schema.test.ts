@@ -37,3 +37,18 @@ describe('jauge DLI', () => {
     expect(jaugeDli(14.4)).toContain('14,4');
   });
 });
+
+describe('plan : emplacements des plants', () => {
+  it('dessine une grille de plants centrée dans la zone', () => {
+    const e = { ...base, surface: { mode: 'rectangle' as const, longueurM: 1.2, largeurM: 0.6 } };
+    const r = calculer(e);
+    const svg = planBarres(e.surface, r.barres, 1.2, { parLigne: 4, lignes: 2, espacementM: 0.3 });
+    expect(svg.match(/class="plan-plant"/g)).toHaveLength(8);
+    expect(svg).toContain('8 emplacements de plants');
+  });
+  it('ne dessine pas les plants au-delà de la limite', () => {
+    const r = calculer(base);
+    const svg = planBarres(base.surface, r.barres, base.longueurBarreM, { parLigne: 100, lignes: 100, espacementM: 0.05 });
+    expect(svg).not.toContain('plan-plant');
+  });
+});

@@ -44,3 +44,10 @@ describe('efficacité saisie', () => {
     expect(alertes({ ...base, efficaciteUmolJ: 2.7 })).toEqual([]);
   });
 });
+
+describe('lignes de barres trop longues', () => {
+  it('alerte quand les barres bout à bout dépassent nettement la zone', () => {
+    expect(alertes({ ...base, longueurBarreM: 1.2, longueurZoneM: 1.6, longueurLigneM: 2.4 })[0]).toContain('2,40 m');
+    expect(alertes({ ...base, longueurBarreM: 0.9, longueurZoneM: 1.6, longueurLigneM: 1.8 })).toEqual([]);
+  });
+});

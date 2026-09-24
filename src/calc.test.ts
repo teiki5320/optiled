@@ -205,6 +205,9 @@ describe('longueurBarreConseillee', () => {
     expect(longueurBarreConseillee(0.6)).toBe(0.6);
     expect(longueurBarreConseillee(0.45)).toBe(0.3);
     expect(longueurBarreConseillee(0.2)).toBe(0.3);
+    // 1,60 m : 2 × 0,90 m plutôt que 2 × 1,20 m qui dépasseraient de 80 cm
+    expect(longueurBarreConseillee(1.6)).toBe(0.9);
+    expect(longueurBarreConseillee(3)).toBe(0.6);
   });
 });
 

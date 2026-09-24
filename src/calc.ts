@@ -249,11 +249,21 @@ export function verifierLampe(params: {
 export const LONGUEURS_BARRES_M = [1.2, 0.9, 0.6, 0.3];
 
 /**
- * Longueur de barre conseillée quand l'utilisateur n'en impose pas :
- * la plus grande longueur du commerce qui tient dans la longueur de la zone (≥ 0,3 m).
+ * Longueur de barre conseillée quand l'utilisateur n'en impose pas : parmi les longueurs du
+ * commerce qui tiennent dans la zone, celle dont les barres bout à bout (même règle que
+ * repartirBarres) couvrent le mieux la longueur. Un dépassement compte double (lumière perdue
+ * hors de la culture) ; à couverture égale, les barres les plus longues (moins nombreuses) l'emportent.
+ * Ex. 1,60 m : 2 × 0,90 m (1,80 m) plutôt que 2 × 1,20 m (2,40 m).
  */
 export function longueurBarreConseillee(longueurZoneM: number): number {
-  return LONGUEURS_BARRES_M.find((l) => l <= longueurZoneM + 0.02) ?? LONGUEURS_BARRES_M[LONGUEURS_BARRES_M.length - 1];
+  const candidates = LONGUEURS_BARRES_M.filter((l) => l <= longueurZoneM + 0.02);
+  if (candidates.length === 0) return LONGUEURS_BARRES_M[LONGUEURS_BARRES_M.length - 1];
+  const ecart = (l: number) => {
+    const total = Math.max(1, Math.ceil(longueurZoneM / l - TOLERANCE_LONGUEUR)) * l;
+    const n = total / l;
+    return 2 * Math.max(0, total - longueurZoneM) + Math.max(0, longueurZoneM - total) + 0.02 * n;
+  };
+  return candidates.reduce((meilleure, l) => (ecart(l) < ecart(meilleure) - 1e-9 ? l : meilleure));
 }
 
 export interface Plantation {

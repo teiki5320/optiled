@@ -160,6 +160,8 @@ input[type='text']:focus, select:focus { background: rgb(255 255 255 / 0.1); bor
 .plan-zone { fill: #3a2140; stroke: #6a3d5e; }
 .plan-halo { fill: #ffe2a8; opacity: 0.14; }
 .plan-barre { fill: #ffe6b8; }
+.plan-plant { fill: #8fd49a; fill-opacity: 0.5; stroke: #bff0c5; }
+.plan-legende-plant { background: #8fd49a; border-color: #bff0c5; }
 .plan-cote { stroke: #e6c3cc; }
 .plan-cote--entraxe { stroke: #f7c07a; }
 .plan-texte { fill: #f6ecf0; font-family: var(--police); }
