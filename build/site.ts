@@ -15,6 +15,7 @@
  *   <!--#climat-->          tableau des températures jour / nuit (même source)
  *   <!--#cartes:led-->      cartes des guides LED (idem avec culture)
  *   <!--#icone:nom-->       une icône de build/icones.ts
+ *   <!--#conseils-->        liste des articles de conseil publiés (build/conseils.ts)
  *   <!--#puissances-surfaces--> etc.  tableaux calculés des guides d'achat (build/guides-achat.ts)
  *
  * Les pages led-*.html, culture-*.html, glossaire.html et mentions-legales.html écrites avec le modèle d'article
@@ -28,6 +29,7 @@ import { chargerLegumes, rendreFiches, rendreSources, rendreTableauClimat } from
 import { htmlTuiles } from '../src/tuiles.ts';
 import { rendreLampes } from './lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
+import { pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils } from './conseils.ts';
 import { rendreComparaisonLampes, rendreDliSemis, rendreEffetEfficacite, rendreEtageresSemis, rendrePuissancesCultures, rendrePuissancesSurfaces } from './guides-achat.ts';
 import { insecables } from '../src/typo.ts';
 
@@ -45,6 +47,7 @@ export const NAVIGATION: { href: string; libelle: string; pages: RegExp }[] = [
   { href: 'led.html', libelle: 'LED', pages: /^(led(-.*)?|lampes)\.html$/ },
   { href: 'culture.html', libelle: 'Culture', pages: /^culture(-.*)?\.html$/ },
   { href: 'legumes.html', libelle: 'Légumes', pages: /^legumes?(-.*)?\.html$/ },
+  { href: 'conseils.html', libelle: 'Conseils', pages: /^conseils?(-.*)?\.html$/ },
   { href: 'glossaire.html', libelle: 'Glossaire', pages: /^glossaire\.html$/ },
 ];
 
@@ -126,6 +129,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
   const r = rubriqueDe(fichier);
   const guide = r ? RUBRIQUES[r].guides.find((g) => g.fichier === fichier) : undefined;
   const pageLegume = fichier.startsWith(PREFIXE_PAGE_LEGUME);
+  const pageConseil = fichier.startsWith(PREFIXE_PAGE_CONSEIL);
 
   const donnees: object[] = [];
   if (fichier === 'index.html') {
@@ -166,9 +170,10 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
       },
     );
   }
-  if (pageLegume) {
+  if (pageLegume || pageConseil) {
     const titreArticle = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, '').trim() ?? titre;
-    const nom = html.match(/<p class="fil">[\s\S]*›\s*([^<›]+?)\s*<\/p>/)?.[1] ?? titreArticle;
+    const nom = pageLegume ? (html.match(/<p class="fil">[\s\S]*›\s*([^<›]+?)\s*<\/p>/)?.[1] ?? titreArticle) : titreArticle;
+    const datePublication = html.match(/<meta name="date-publication" content="([^"]+)"/)?.[1];
     donnees.push(
       {
         '@context': 'https://schema.org',
@@ -178,6 +183,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
         image,
         inLanguage: 'fr',
         mainEntityOfPage: adresse,
+        ...(datePublication ? { datePublished: datePublication } : {}),
         author: { '@type': 'Organization', name: NOM_SITE },
         publisher: { '@type': 'Organization', name: NOM_SITE },
       },
@@ -186,7 +192,9 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Accueil', item: url },
-          { '@type': 'ListItem', position: 2, name: 'Fiches légumes', item: `${url}legumes.html` },
+          pageLegume
+            ? { '@type': 'ListItem', position: 2, name: 'Fiches légumes', item: `${url}legumes.html` }
+            : { '@type': 'ListItem', position: 2, name: 'Conseils', item: `${url}conseils.html` },
           { '@type': 'ListItem', position: 3, name: nom, item: adresse },
         ],
       },
@@ -194,7 +202,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
   }
   const json = donnees.map((d) => `<script type="application/ld+json">${JSON.stringify(d).replace(/</g, '\\u003c')}</script>`).join('\n    ');
   return `<link rel="canonical" href="${adresse}" />
-    <meta property="og:type" content="${guide || pageLegume ? 'article' : 'website'}" />
+    <meta property="og:type" content="${guide || pageLegume || pageConseil ? 'article' : 'website'}" />
     <meta property="og:site_name" content="${NOM_SITE}" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:title" content="${attribut(titre)}" />
@@ -249,7 +257,7 @@ export function footer(): string {
       <p class="site-pied__note">Certains liens vers Amazon sont sponsorisés : en tant que Partenaire Amazon, l'éditeur réalise un bénéfice sur les achats remplissant les conditions requises.</p>
       <p class="site-pied__note"><a href="mentions-legales.html">Mentions légales</a></p>
     </div>
-    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="glossaire.html">Glossaire</a></li></ul></div>
+    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="glossaire.html">Glossaire</a></li></ul></div>
     ${colonne('led')}
     ${colonne('culture')}
   </div>
@@ -321,7 +329,13 @@ export function mettreEnPageArticle(html: string, fichier: string): string {
   const guides = r ? RUBRIQUES[r].guides : [];
   const rang = guides.findIndex((g) => g.fichier === fichier);
   const etiquette = [
-    r ? `${icone(guides[rang]?.icone ?? 'livre')} ${RUBRIQUES[r].nom}` : `${icone('livre')} Référence`,
+    r
+      ? `${icone(guides[rang]?.icone ?? 'livre')} ${RUBRIQUES[r].nom}`
+      : fichier.startsWith(PREFIXE_PAGE_CONSEIL)
+        ? `${icone('ampoule')} Conseils`
+        : fichier.startsWith(PREFIXE_PAGE_LEGUME)
+          ? `${icone('feuille')} Fiche culture`
+          : `${icone('livre')} Référence`,
     rang >= 0 ? `Guide ${rang + 1} sur ${guides.length}` : '',
     `${icone('horloge')} ${tempsLecture(corps)} min de lecture`,
   ]
@@ -357,10 +371,15 @@ export function pagesHtml(racine: string): Record<string, string> {
   return entrees;
 }
 
-/** Toutes les entrées du build multi-pages : pages écrites + pages détaillées des cultures (générées). */
+/** Pages générées au build (elles n'existent pas sur le disque) : cultures et articles de conseil publiés. */
+export function pagesGenerees(): Map<string, string> {
+  return new Map([...pagesLegumes(), ...pagesConseils()]);
+}
+
+/** Toutes les entrées du build multi-pages : pages écrites + pages générées. */
 export function toutesLesPages(racine: string): Record<string, string> {
   const entrees = pagesHtml(racine);
-  for (const f of pagesLegumes().keys()) entrees[f.replace(/\.html$/, '')] = resolve(racine, f);
+  for (const f of pagesGenerees().keys()) entrees[f.replace(/\.html$/, '')] = resolve(racine, f);
   return entrees;
 }
 
@@ -368,15 +387,16 @@ export function toutesLesPages(racine: string): Record<string, string> {
 export function sourcePage(racine: string, fichier: string): string {
   const chemin = resolve(racine, fichier);
   if (existsSync(chemin)) return readFileSync(chemin, 'utf8');
-  const genere = pagesLegumes().get(fichier);
+  const genere = pagesGenerees().get(fichier);
   if (genere === undefined) throw new Error(`Page inconnue : ${fichier}`);
   return genere;
 }
 
-/** Nom de fichier d'une page générée (legume-<id>.html) à partir d'un chemin ou d'une adresse, ou null. */
+/** Nom de fichier d'une page générée (legume-<id>.html, conseil-<slug>.html) à partir d'un chemin ou d'une adresse, ou null. */
 function pageGeneree(id: string): string | null {
   const f = basename(id.split('?')[0]);
-  return f.startsWith(PREFIXE_PAGE_LEGUME) && pagesLegumes().has(f) ? f : null;
+  if (!f.startsWith(PREFIXE_PAGE_LEGUME) && !f.startsWith(PREFIXE_PAGE_CONSEIL)) return null;
+  return pagesGenerees().has(f) ? f : null;
 }
 
 export function sitemap(pages: string[], url = SITE_URL): string {
@@ -399,6 +419,7 @@ export function transformerPage(html: string, fichier: string): string {
     .replace('<!--#tuiles-->', () => htmlTuiles())
     .replace('<!--#sources-->', () => rendreSources())
     .replace('<!--#lampes-->', () => rendreLampes())
+    .replace('<!--#conseils-->', () => rendreListeConseils())
     .replace('<!--#puissances-surfaces-->', () => rendrePuissancesSurfaces())
     .replace('<!--#puissances-cultures-->', () => rendrePuissancesCultures())
     .replace('<!--#effet-efficacite-->', () => rendreEffetEfficacite())

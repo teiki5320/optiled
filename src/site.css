@@ -544,6 +544,12 @@ img, svg { max-width: 100%; }
 .tableau--fiche th { width: 45%; font-weight: 600; }
 .suite--familles a:last-child:not(:first-child) { text-align: left; }
 .voisines { margin-top: 2.5rem; }
+
+/* ---------- Conseils ---------- */
+.conseils-liste { padding: 2rem 0 1rem; max-width: 52rem; }
+.conseils-liste > h2 { margin-top: 2.2rem; }
+.conseils { padding-left: 1.1rem; }
+.conseils li { margin: 0.45rem 0; }
 .voisines h2 { font-size: 1.3rem; margin: 0; }
 .fiche__miniature { width: 3.4rem; height: 3.4rem; border-radius: 50%; object-fit: cover; flex: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--famille) 55%, transparent); }
 

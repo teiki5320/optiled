@@ -10,6 +10,7 @@ Site web statique (Vite + TypeScript, sans backend), en français et pensé d'ab
 | `culture.html` + `culture-*.html` | Guides culture : démarrer, substrats et hydroponie, nutriments/pH/EC, climat, semis, problèmes et ravageurs |
 | `legumes.html` | Fiches légumes, **générées au build** depuis `src/data/legumes.json` ; chaque fiche mène à sa page détaillée |
 | `legume-<id>.html` | **Page détaillée de chaque culture** (26 pages), générée au build par `build/pages-legumes.ts` : lumière par stade, exemple chiffré pour 1 m², lampes qui conviennent, climat, solution nutritive, espacement et récolte, cultures de la même famille. Ces pages n'existent pas sur le disque : le plugin du site les fournit à Vite (build et serveur de développement) |
+| `conseils.html` + `conseil-<slug>.html` | **Conseils** : un article par question, publié à sa date (voir « Articles de conseil » ci-dessous) |
 | `glossaire.html` | Glossaire des termes techniques |
 
 Le calculateur accepte un légume présélectionné dans l'adresse : `index.html?legume=tomate#calculateur`. Tous les réglages différents des valeurs par défaut sont reflétés dans l'adresse (`?l=tomate&s=floraison&n=3…`, voir `src/etat.ts`) : le bouton **Partager** envoie ce lien, et les derniers réglages sont mémorisés sur l'appareil du visiteur. Chaque bloc de résultat renvoie vers le guide qui l'explique ; sur mobile, une barre fixe rappelle la puissance et le nombre de barres pendant la saisie.
@@ -71,6 +72,14 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 - `lampes.html` + `build/lampes.ts` (marqueur `<!--#lampes-->`) : page de la sélection, groupée par format.
 - Aucun prix affiché (ils changent en permanence). À revérifier chaque mois : note, disponibilité, chiffres ; mettre à jour `verifie_le`.
 - La mention obligatoire « En tant que Partenaire Amazon… » figure près des liens, dans le pied de page et dans les mentions légales.
+
+## Articles de conseil
+
+- Un article = un fichier `contenu/conseils/<slug>.html` : un commentaire d'en-tête (`titre`, `description` de 70 à 180 caractères, `publie_le` au format AAAA-MM-JJ, `theme` parmi `lumiere`, `cultures`, `eau`, `installation`), puis le corps en HTML qui commence par `<p class="chapo">` (la réponse courte) et contient des `<h2 id="…">` (le sommaire est construit automatiquement).
+- `build/conseils.ts` ne construit que les articles dont la date est passée (date du jour à Paris) : page `conseil-<slug>.html`, liste de `conseils.html` (marqueur `<!--#conseils-->`), sitemap, suggestions « À lire aussi ». Les articles programmés restent dans le dépôt sans être publiés.
+- Publication automatique : le workflow GitHub Pages se relance chaque lundi à 5 h UTC ; il suffit donc de dater les articles d'un lundi.
+- Prévisualiser le site à une date future : `DATE_PUBLICATION=2027-01-04 npm run build`.
+- Les tests vérifient l'en-tête de chaque article et ses liens internes tels qu'ils seront à sa date de publication (un article ne peut renvoyer qu'à un article publié avant lui).
 
 ## Images
 

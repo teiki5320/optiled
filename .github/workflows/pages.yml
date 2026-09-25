@@ -3,6 +3,9 @@ name: Publier sur GitHub Pages
 on:
   push:
     branches: [main]
+  # Chaque lundi à 5 h UTC (7 h à Paris en été, 6 h en hiver) : publie les articles de conseil programmés.
+  schedule:
+    - cron: '0 5 * * 1'
   workflow_dispatch:
 
 permissions:
