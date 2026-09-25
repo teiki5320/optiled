@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { header, insecables, mesureAudience, mettreEnPageArticle, NAVIGATION, referencement, sitemap, tempsLecture } from './site.ts';
+import { header, insecables, mesureAudience, mettreEnPageArticle, NAVIGATION, referencement, RUBRIQUES, sitemap, tempsLecture } from './site.ts';
 
 describe('en-tête', () => {
   it('met en évidence la rubrique de la page courante', () => {
@@ -43,7 +43,7 @@ describe('mise en page des articles', () => {
     const html = mettreEnPageArticle(modele, 'led-choisir.html');
     expect(html).toMatch(/<header class="bandeau bandeau--led">[\s\S]*<h1>Titre<\/h1>[\s\S]*Chapô[\s\S]*<\/header>/);
     expect(html).toMatch(/<aside class="article__cote"><nav class="sommaire"/);
-    expect(html).toContain('Guide 2 sur 3');
+    expect(html).toContain(`Guide 2 sur ${RUBRIQUES.led.guides.length}`);
     expect(html).toContain('<nav class="suite">');
     expect(html.match(/<h1>/g)).toHaveLength(1);
   });

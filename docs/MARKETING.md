@@ -11,7 +11,7 @@ Mis à jour le 25 septembre 2026. Compagnon de INFRA.md.
 - **Différenciation** (d'après le code) :
   - 26 cultures avec des valeurs sourcées (références listées dans le glossaire) ;
   - calcul complet dans le navigateur, sans compte ni cookie, utilisable hors ligne (PWA) ;
-  - 9 guides (3 sur les LED, 6 sur la culture), des fiches légumes, un glossaire ;
+  - 12 guides (6 sur les LED, dont 3 guides d'achat, et 6 sur la culture), des fiches légumes, un glossaire ;
   - lien de partage des réglages et liste d'achat à copier ou imprimer ;
   - sélection de lampes du commerce reliée aux besoins calculés.
 
@@ -32,6 +32,7 @@ Mis à jour le 25 septembre 2026. Compagnon de INFRA.md.
 |---|---|---|
 | Référencement naturel (base technique) | Sitemap, robots.txt, adresses canoniques, Open Graph et Twitter Card avec images de partage 1200 × 630, données structurées schema.org (WebApplication, Article) | ✅ |
 | Google Search Console | Propriété `optiled.fr` vérifiée, sitemap envoyé le 25 septembre 2026 (16 pages découvertes) | ✅ |
+| Guides d'achat | 3 guides (`led-puissance`, `led-comparer`, `led-semis`) avec tableaux calculés depuis les données du site, sans prix ni liens Amazon dans le texte | ✅ |
 | Pages détaillées par culture | 26 pages `legume-<id>.html` (lumière, exemple pour 1 m², lampes, climat, solution nutritive, récolte) | ✅ |
 | Partage par les visiteurs | Bouton « Partager » du calculateur (lien avec les réglages) | ✅ |
 | Installation sur mobile | Manifest et service worker (PWA) | ✅ |
@@ -42,7 +43,7 @@ Mis à jour le 25 septembre 2026. Compagnon de INFRA.md.
 | Métrique | Valeur | Objectif |
 |---|---|---|
 | Visiteurs | non mesuré (Plausible prévu dans le code, non activé) | à définir après activation d'une mesure |
-| Pages indexées par Google | à vérifier dans la console Search Console | 42 pages indexées (toutes celles du sitemap) |
+| Pages indexées par Google | à vérifier dans la console Search Console | 45 pages indexées (toutes celles du sitemap) |
 | Clics vers Amazon | à vérifier dans la console Partenaires Amazon | à définir |
 | Commissions Amazon | à vérifier dans la console Partenaires Amazon | premier seuil de paiement (25 € d'après la console) |
 

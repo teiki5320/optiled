@@ -6,7 +6,7 @@ Site web statique (Vite + TypeScript, sans backend), en français et pensé d'ab
 | --- | --- |
 | `index.html` | **Accueil = calculateur** : PPFD, DLI, PPF, puissance, barres LED et plan de pose, coût annuel, liste d'achat (copie / impression) ; les guides sont accessibles par le menu et le pied de page |
 | `calculateur.html` | Ancienne adresse du calculateur : redirige vers l'accueil en gardant le légume choisi (sans JavaScript, la redirection de secours mène à l'accueil sans le légume) |
-| `led.html` + `led-*.html` | Guides LED : bases (PAR, PPFD, DLI, spectre), choisir ses LED, installer et mesurer |
+| `led.html` + `led-*.html` | Guides LED : bases (PAR, PPFD, DLI, spectre), choisir ses LED, installer et mesurer ; guides d'achat : puissance selon la surface, comparer des lampes, LED pour semis et boutures (tableaux calculés par `build/guides-achat.ts`) |
 | `culture.html` + `culture-*.html` | Guides culture : démarrer, substrats et hydroponie, nutriments/pH/EC, climat, semis, problèmes et ravageurs |
 | `legumes.html` | Fiches légumes, **générées au build** depuis `src/data/legumes.json` ; chaque fiche mène à sa page détaillée |
 | `legume-<id>.html` | **Page détaillée de chaque culture** (26 pages), générée au build par `build/pages-legumes.ts` : lumière par stade, exemple chiffré pour 1 m², lampes qui conviennent, climat, solution nutritive, espacement et récolte, cultures de la même famille. Ces pages n'existent pas sur le disque : le plugin du site les fournit à Vite (build et serveur de développement) |
@@ -59,7 +59,7 @@ Node.js 22.12 ou plus récent est requis (Vite 8 et Vitest 5).
 
 1. Copiez une page existante (par exemple `led-bases.html`) sous un nouveau nom à la racine.
 2. Gardez les marqueurs `<!--#head-->`, `<!--#header-->` et `<!--#footer-->` : le build les remplace par les parties communes. La page est ajoutée automatiquement au build et au `sitemap.xml`. Une page d'article (`<main id="contenu" class="page">` avec fil d'Ariane et `<article class="prose">` contenant `h1`, `p.chapo` et `nav.sommaire`) reçoit automatiquement le bandeau de titre et le sommaire latéral.
-   Autres marqueurs : `<!--#cartes:led-->` / `<!--#cartes:culture-->` (cartes des guides), `<!--#icone:nom-->` (icône de `build/icones.ts`), `<!--#fiches-->`, `<!--#climat-->` (tableau des températures), `<!--#tuiles-->` (tuiles du calculateur), `<!--#sources-->` (liste des références), `<!--#nb-cultures-->` (nombre de cultures).
+   Autres marqueurs : `<!--#cartes:led-->` / `<!--#cartes:culture-->` (cartes des guides), `<!--#icone:nom-->` (icône de `build/icones.ts`), `<!--#fiches-->`, `<!--#climat-->` (tableau des températures), `<!--#tuiles-->` (tuiles du calculateur), `<!--#sources-->` (liste des références), `<!--#nb-cultures-->` (nombre de cultures), et pour les guides d'achat `<!--#puissances-surfaces-->`, `<!--#puissances-cultures-->`, `<!--#effet-efficacite-->`, `<!--#comparaison-lampes-->`, `<!--#etageres-semis-->`, `<!--#dli-semis-->` (tableaux calculés, `build/guides-achat.ts`).
 3. Pour l'ajouter à une rubrique, nommez-la `led-….html` ou `culture-….html` et déclarez-la dans `RUBRIQUES` (`build/site.ts`) : elle apparaîtra dans les cartes, le pied de page et la numérotation « Guide n sur N ».
 
 Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, `encadre attention`, `formule`, `tableau-defile` + `tableau`, `suite`, `bouton` / `bouton bouton--plein`.

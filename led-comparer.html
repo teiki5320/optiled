@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Comparer deux lampes LED horticoles en quatre étapes : efficacité réelle, lumière reçue sur votre surface, besoin de la culture et consommation. Avec un comparatif chiffré." />
+    <title>Comparer des lampes LED horticoles — OptiLED</title>
+    <!--#head-->
+  </head>
+  <body>
+    <!--#header-->
+    <main id="contenu" class="page">
+      <p class="fil"><a href="index.html">Accueil</a> › <a href="led.html">Éclairage LED</a></p>
+      <article class="prose">
+        <h1>Comparer des lampes LED horticoles</h1>
+        <p class="chapo">Deux lampes au même prix, à la même puissance affichée, peuvent donner des résultats très différents. Voici une méthode en quatre étapes pour les départager avec leurs chiffres, et un comparatif calculé pour les modèles de notre sélection.</p>
+
+        <nav class="sommaire" aria-label="Sommaire">
+          <strong>Dans cette page</strong>
+          <ol>
+            <li><a href="#chiffres">Les chiffres à relever</a></li>
+            <li><a href="#methode">La méthode en quatre étapes</a></li>
+            <li><a href="#exemple">Exemple : deux lampes de 100 W</a></li>
+            <li><a href="#comparatif">Comparatif de la sélection</a></li>
+            <li><a href="#pas-comparable">Ce qui ne permet pas de comparer</a></li>
+          </ol>
+        </nav>
+
+        <h2 id="chiffres">Les chiffres à relever</h2>
+        <p>Avant de comparer, notez pour chaque lampe :</p>
+        <ul>
+          <li>le <a href="glossaire.html#ppf">PPF</a>, en µmol/s : la lumière utile produite par la lampe ;</li>
+          <li>la puissance réelle, en watts, consommée à la prise ;</li>
+          <li>la surface couverte annoncée par le fabricant, en croissance et en floraison ;</li>
+          <li>la présence d'un variateur (<a href="glossaire.html#gradation">gradation</a>).</li>
+        </ul>
+        <p>Si le PPF manque, la comparaison devient hasardeuse : certains fabricants ne donnent que l'efficacité (µmol/J), dont on peut déduire le PPF (efficacité × puissance). Le détail de chaque ligne d'une fiche technique est expliqué dans <a href="led-choisir.html#fiche">Lire une fiche technique</a>.</p>
+
+        <h2 id="methode">La méthode en quatre étapes</h2>
+        <h3>1. Calculer l'efficacité</h3>
+        <p class="formule">Efficacité (µmol/J) = PPF (µmol/s) / puissance réelle (W)</p>
+        <p>Repères : moins de 2,0 µmol/J, c'est faible ; de 2,0 à 2,5, correct ; de 2,5 à 3,2, bon. Au-delà de 3,2 pour un produit grand public, le PPF annoncé est probablement surestimé.</p>
+        <h3>2. Ramener la lumière à votre surface</h3>
+        <p>Ce qui compte pour les plantes, c'est la lumière reçue par m² (le <a href="glossaire.html#ppfd">PPFD</a>), qui dépend de la surface que vous éclairez vraiment :</p>
+        <p class="formule">PPFD moyen ≈ PPF × 0,8 / surface (m²)</p>
+        <p>Le coefficient 0,8 tient compte de la lumière perdue sur les bords, dans une tente à parois réfléchissantes.</p>
+        <h3>3. Comparer au besoin de la culture</h3>
+        <p>Chaque culture a un PPFD conseillé : environ 150 µmol/m²/s pour des micro-pousses, 250 pour des salades, 500 pour des tomates en fructification. Les valeurs de chaque culture sont dans les <a href="legumes.html">fiches légumes</a>. Une lampe qui n'atteint pas ce niveau sur votre surface ne conviendra pas, quelle que soit sa note.</p>
+        <h3>4. Estimer la consommation</h3>
+        <p class="formule">Consommation (kWh par an) = puissance réelle × heures par jour × 365 / 1 000</p>
+        <p>À lumière égale, la lampe la plus efficace consomme moins. L'écart se retrouve chaque année sur la facture : voir <a href="led-puissance.html#efficacite">Même lumière, puissance différente</a>.</p>
+
+        <h2 id="exemple">Exemple : deux lampes de 100 W</h2>
+        <p>Deux panneaux consomment chacun 100 W à la prise, pour une tente de 60 × 60 cm (0,36 m²).</p>
+        <div class="tableau-defile">
+          <table class="tableau">
+            <thead><tr><th></th><th>Lampe A</th><th>Lampe B</th></tr></thead>
+            <tbody>
+              <tr><td>PPF annoncé</td><td>190 µmol/s</td><td>270 µmol/s</td></tr>
+              <tr><td>Efficacité (PPF / 100 W)</td><td>1,9 µmol/J</td><td>2,7 µmol/J</td></tr>
+              <tr><td>PPFD moyen sur 0,36 m² (× 0,8)</td><td>environ 420 µmol/m²/s</td><td>environ 600 µmol/m²/s</td></tr>
+              <tr><td>Salades (250)</td><td>convient</td><td>convient, avec le variateur baissé</td></tr>
+              <tr><td>Tomates en fructification (500)</td><td>insuffisant</td><td>convient</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Même puissance, même consommation, mais la lampe B fournit 40 % de lumière en plus. Pour des salades, les deux font l'affaire ; pour des légumes fruits, seule la B suffit sur cette surface.</p>
+
+        <h2 id="comparatif">Comparatif de la sélection</h2>
+        <p>Les lampes de notre <a href="lampes.html">sélection</a> qui publient un PPF, classées par puissance. Le PPFD moyen est calculé sur la surface de croissance annoncée par le fabricant ; la consommation correspond à la lampe réglée au maximum, 16 h par jour.</p>
+        <!--#comparaison-lampes-->
+        <p class="aide">« Estimé » : PPF déduit de la puissance et de l'efficacité annoncées. Chiffres des fabricants, relevés sur les annonces ; une mesure au PAR-mètre reste le meilleur arbitre (voir <a href="led-installation.html#mesurer">Mesurer la lumière</a>).</p>
+
+        <h2 id="pas-comparable">Ce qui ne permet pas de comparer</h2>
+        <ul>
+          <li><strong>Les lumens et les lux :</strong> ils mesurent la lumière vue par l'œil humain, pas celle utile aux plantes. Voir <a href="led-bases.html#lumens-lux">Pourquoi oublier les lumens et les lux</a>.</li>
+          <li><strong>Les « watts équivalents » :</strong> seule la puissance à la prise compte.</li>
+          <li><strong>Le nombre de diodes :</strong> il ne dit rien de la lumière produite.</li>
+          <li><strong>Le PPFD maximal au centre :</strong> sans la hauteur de mesure et les valeurs des bords, ce chiffre isolé est flatteur mais peu utile.</li>
+        </ul>
+        <div class="encadre"><p><strong>À retenir :</strong> PPF, puissance réelle et surface suffisent pour comparer honnêtement deux lampes. Le <a href="index.html#calculateur">calculateur</a> vérifie une lampe précise pour votre culture et votre surface (« Vérifier une lampe du commerce »).</p></div>
+      </article>
+
+      <nav class="suite" aria-label="Pages suivantes">
+        <a href="led-puissance.html"><small>← Précédent</small>Quelle puissance pour ma surface ?</a>
+        <a href="led-semis.html"><small>Suivant →</small>LED pour semis et boutures</a>
+      </nav>
+    </main>
+    <!--#footer-->
+    <script type="module" src="/src/site.ts"></script>
+  </body>
+</html>

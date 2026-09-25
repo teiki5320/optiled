@@ -15,6 +15,7 @@
  *   <!--#climat-->          tableau des températures jour / nuit (même source)
  *   <!--#cartes:led-->      cartes des guides LED (idem avec culture)
  *   <!--#icone:nom-->       une icône de build/icones.ts
+ *   <!--#puissances-surfaces--> etc.  tableaux calculés des guides d'achat (build/guides-achat.ts)
  *
  * Les pages led-*.html, culture-*.html, glossaire.html et mentions-legales.html écrites avec le modèle d'article
  * (fil d'Ariane, <article class="prose"> avec h1, chapo et sommaire) reçoivent
@@ -27,6 +28,7 @@ import { chargerLegumes, rendreFiches, rendreSources, rendreTableauClimat } from
 import { htmlTuiles } from '../src/tuiles.ts';
 import { rendreLampes } from './lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
+import { rendreComparaisonLampes, rendreDliSemis, rendreEffetEfficacite, rendreEtageresSemis, rendrePuissancesCultures, rendrePuissancesSurfaces } from './guides-achat.ts';
 import { insecables } from '../src/typo.ts';
 
 export { insecables };
@@ -65,6 +67,9 @@ export const RUBRIQUES: Record<Rubrique, { nom: string; hub: string; guides: Gui
       { fichier: 'led-bases.html', titre: 'Les bases : PAR, PPFD, DLI et spectre', resume: 'Pourquoi les lumens ne servent à rien pour les plantes, et quels chiffres regarder à la place.', icone: 'ampoule', photo: "Barre LED horticole allumée au-dessus d'un bac de laitues" },
       { fichier: 'led-choisir.html', titre: 'Choisir ses LED', resume: 'Formats, lecture d’une fiche technique, dimensionnement et pièges du marketing.', icone: 'coche', photo: "Barres LED, panneau LED, tube LED et alimentation posés sur un plan de travail" },
       { fichier: 'led-installation.html', titre: 'Installer, régler et mesurer', resume: 'Hauteur, espacement, photopériode, gradation et mesure au PAR-mètre.', icone: 'jauge', photo: "Réglage de la hauteur d'une barre LED au-dessus de basilic, capteur PAR posé sur le bac" },
+      { fichier: 'led-puissance.html', titre: 'Quelle puissance pour ma surface ?', resume: 'Les watts réels à prévoir selon la taille de l’étagère ou de la tente, et selon la culture.', icone: 'calcul', photo: '' },
+      { fichier: 'led-comparer.html', titre: 'Comparer des lampes LED', resume: 'Départager deux modèles avec leurs chiffres, et comparatif de notre sélection.', icone: 'coche', photo: '' },
+      { fichier: 'led-semis.html', titre: 'LED pour semis et boutures', resume: 'Peu de puissance, au bon endroit : réglettes, hauteur et durée pour les jeunes plants.', icone: 'pousse', photo: '' },
     ],
   },
   culture: {
@@ -394,6 +399,12 @@ export function transformerPage(html: string, fichier: string): string {
     .replace('<!--#tuiles-->', () => htmlTuiles())
     .replace('<!--#sources-->', () => rendreSources())
     .replace('<!--#lampes-->', () => rendreLampes())
+    .replace('<!--#puissances-surfaces-->', () => rendrePuissancesSurfaces())
+    .replace('<!--#puissances-cultures-->', () => rendrePuissancesCultures())
+    .replace('<!--#effet-efficacite-->', () => rendreEffetEfficacite())
+    .replace('<!--#comparaison-lampes-->', () => rendreComparaisonLampes())
+    .replace('<!--#etageres-semis-->', () => rendreEtageresSemis())
+    .replace('<!--#dli-semis-->', () => rendreDliSemis())
     // Tableaux qui défilent horizontalement : atteignables et nommés au clavier.
     .replace(/<div class="tableau-defile">/g, () => `<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau ${++numeroTableau} (faire défiler horizontalement)">`)
     // La 404 peut être servie sous n'importe quel chemin : liens résolus depuis la racine du site.
