@@ -1,16 +1,16 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { pagesHtml, transformerPage } from './site.ts';
+import { sourcePage, toutesLesPages, transformerPage } from './site.ts';
 
 const racine = resolve(import.meta.dirname, '..');
-const pages = Object.keys(pagesHtml(racine)).map((n) => `${n}.html`);
+const pages = Object.keys(toutesLesPages(racine)).map((n) => `${n}.html`);
 /** Pages de redirection (ancienne adresse du calculateur) : pas de contenu propre. */
-const estRedirection = (page: string) => readFileSync(resolve(racine, page), 'utf8').includes('http-equiv="refresh"');
+const estRedirection = (page: string) => sourcePage(racine, page).includes('http-equiv="refresh"');
 
 /** HTML d'une page tel que publié (parties communes incluses). */
 function contenu(page: string): string {
-  return transformerPage(readFileSync(resolve(racine, page), 'utf8'), page);
+  return transformerPage(sourcePage(racine, page), page);
 }
 
 const ids = (html: string) => new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
@@ -53,7 +53,7 @@ describe('liens internes', () => {
 
     if (estRedirection(page)) continue;
     it(`${page} : titre, description et marqueurs communs`, () => {
-      const html = readFileSync(resolve(racine, page), 'utf8');
+      const html = sourcePage(racine, page);
       expect(html).toMatch(/<title>[^<]+<\/title>/);
       expect(html).toContain('<!--#header-->');
       expect(html).toContain('<!--#footer-->');

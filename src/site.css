@@ -425,12 +425,12 @@ img, svg { max-width: 100%; }
   display: flex; flex-direction: column; background: var(--carte); border: 1px solid var(--bordure);
   border-radius: var(--rayon); box-shadow: var(--ombre); overflow: hidden;
 }
-.fiche--legumes-feuilles, .fiches-famille--legumes-feuilles { --famille: #3ccf7a; }
-.fiche--aromatiques, .fiches-famille--aromatiques { --famille: #1fb6a6; }
-.fiche--micro-pousses, .fiches-famille--micro-pousses { --famille: #9be234; }
-.fiche--legumes-fruits, .fiches-famille--legumes-fruits { --famille: #ff6b4a; }
-.fiche--legumes-racines, .fiches-famille--legumes-racines { --famille: #ff5f9e; }
-.fiche--epices-et-curiosites, .fiches-famille--epices-et-curiosites { --famille: #b48cff; }
+.fiche--legumes-feuilles, .fiches-famille--legumes-feuilles, .fiche-page__intro--legumes-feuilles { --famille: #3ccf7a; }
+.fiche--aromatiques, .fiches-famille--aromatiques, .fiche-page__intro--aromatiques { --famille: #1fb6a6; }
+.fiche--micro-pousses, .fiches-famille--micro-pousses, .fiche-page__intro--micro-pousses { --famille: #9be234; }
+.fiche--legumes-fruits, .fiches-famille--legumes-fruits, .fiche-page__intro--legumes-fruits { --famille: #ff6b4a; }
+.fiche--legumes-racines, .fiches-famille--legumes-racines, .fiche-page__intro--legumes-racines { --famille: #ff5f9e; }
+.fiche--epices-et-curiosites, .fiches-famille--epices-et-curiosites, .fiche-page__intro--epices-et-curiosites { --famille: #b48cff; }
 .fiche__tete {
   display: flex; align-items: center; gap: 0.8rem; padding: 1rem 1.1rem;
   background: linear-gradient(135deg, color-mix(in srgb, var(--famille) 16%, transparent), transparent 70%);
@@ -528,6 +528,23 @@ img, svg { max-width: 100%; }
 
 .fiche--chanvre, .fiches-famille--chanvre { --famille: #9fd48a; }
 .fiche__avertissement { margin: 0; font-size: 0.88rem; }
+.fiche__lien { color: inherit; text-decoration: none; }
+.fiche__lien:hover { text-decoration: underline; }
+.fiche__action { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+/* ---------- Page détaillée d'une culture ---------- */
+.fiche-page__intro {
+  --famille: var(--accent-vif);
+  display: flex; align-items: center; gap: 1.1rem; margin: 1.5rem 0; padding: 1rem 1.2rem; border-radius: var(--rayon);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--famille) 14%, transparent), transparent 75%);
+  border: 1px solid var(--bordure);
+}
+.fiche-page__intro p { margin: 0; }
+.prose .fiche-page__miniature { width: 6rem; height: 6rem; margin: 0; border-radius: 50%; object-fit: cover; flex: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--famille) 55%, transparent); }
+.tableau--fiche th { width: 45%; font-weight: 600; }
+.suite--familles a:last-child:not(:first-child) { text-align: left; }
+.voisines { margin-top: 2.5rem; }
+.voisines h2 { font-size: 1.3rem; margin: 0; }
 .fiche__miniature { width: 3.4rem; height: 3.4rem; border-radius: 50%; object-fit: cover; flex: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--famille) 55%, transparent); }
 
 /* Liste des sources (glossaire) */

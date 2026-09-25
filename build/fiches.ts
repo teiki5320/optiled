@@ -5,6 +5,9 @@ import { calculerDli } from '../src/calc.ts';
 import type { Legume, ParametresStade } from '../src/data.ts';
 import { icone, type NomIcone } from './icones.ts';
 
+/** Page détaillée d'une culture (générée par build/pages-legumes.ts). */
+const pageDetaillee = (id: string) => `legume-${id}.html`;
+
 const FICHIER = resolve(import.meta.dirname, '../src/data/legumes.json');
 
 export function echapper(s: string): string {
@@ -64,7 +67,7 @@ function kpi(libelle: string, valeur: string, unite = ''): string {
 }
 
 /** Point de départ du délai de récolte, quand il n'est pas le semis. */
-const DEPART_RECOLTE: Record<string, string> = {
+export const DEPART_RECOLTE: Record<string, string> = {
   fraise: 'après plantation',
   'chanvre-cbd': 'jusqu\'aux fleurs',
   romarin: 'après bouturage',
@@ -82,7 +85,7 @@ export function rendreFiche(l: Legume): string {
   return `<article class="fiche fiche--${slug(l.famille)}" id="${l.id}">
   <header class="fiche__tete">
     ${miniature(l) || `<span class="fiche__icone">${iconeFamille(l.famille)}</span>`}
-    <div><h3>${echapper(l.nom)}</h3><p class="fiche__famille">${echapper(l.famille)}</p></div>
+    <div><h3><a class="fiche__lien" href="${pageDetaillee(l.id)}">${echapper(l.nom)}</a></h3><p class="fiche__famille">${echapper(l.famille)}</p></div>
   </header>
   <div class="fiche__corps">
     ${l.avertissement ? `<p class="encadre attention fiche__avertissement">${echapper(l.avertissement)}</p>` : ''}
@@ -117,7 +120,7 @@ export function rendreFiche(l: Legume): string {
         </div>
       </div>
     </details>
-    <p class="fiche__action"><a class="bouton-lien plein" href="index.html?legume=${l.id}#calculateur">${icone('calcul')} Calculer l'éclairage</a></p>
+    <p class="fiche__action"><a class="bouton-lien" href="${pageDetaillee(l.id)}">Fiche complète ${icone('fleche', 'icone icone--petite')}</a> <a class="bouton-lien plein" href="index.html?legume=${l.id}#calculateur">${icone('calcul')} Calculer l'éclairage</a></p>
   </div>
 </article>`;
 }

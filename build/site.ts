@@ -26,6 +26,7 @@ import type { Plugin } from 'vite';
 import { chargerLegumes, rendreFiches, rendreSources, rendreTableauClimat } from './fiches.ts';
 import { htmlTuiles } from '../src/tuiles.ts';
 import { rendreLampes } from './lampes.ts';
+import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
 import { insecables } from '../src/typo.ts';
 
 export { insecables };
@@ -41,7 +42,7 @@ export const NAVIGATION: { href: string; libelle: string; pages: RegExp }[] = [
   { href: 'index.html', libelle: 'Calculateur', pages: /^(index|calculateur)\.html$/ },
   { href: 'led.html', libelle: 'LED', pages: /^(led(-.*)?|lampes)\.html$/ },
   { href: 'culture.html', libelle: 'Culture', pages: /^culture(-.*)?\.html$/ },
-  { href: 'legumes.html', libelle: 'Légumes', pages: /^legumes\.html$/ },
+  { href: 'legumes.html', libelle: 'Légumes', pages: /^legumes?(-.*)?\.html$/ },
   { href: 'glossaire.html', libelle: 'Glossaire', pages: /^glossaire\.html$/ },
 ];
 
@@ -119,6 +120,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
   const adresse = urlPage(fichier, url);
   const r = rubriqueDe(fichier);
   const guide = r ? RUBRIQUES[r].guides.find((g) => g.fichier === fichier) : undefined;
+  const pageLegume = fichier.startsWith(PREFIXE_PAGE_LEGUME);
 
   const donnees: object[] = [];
   if (fichier === 'index.html') {
@@ -159,9 +161,35 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
       },
     );
   }
+  if (pageLegume) {
+    const titreArticle = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, '').trim() ?? titre;
+    const nom = html.match(/<p class="fil">[\s\S]*›\s*([^<›]+?)\s*<\/p>/)?.[1] ?? titreArticle;
+    donnees.push(
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: titreArticle,
+        description,
+        image,
+        inLanguage: 'fr',
+        mainEntityOfPage: adresse,
+        author: { '@type': 'Organization', name: NOM_SITE },
+        publisher: { '@type': 'Organization', name: NOM_SITE },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: url },
+          { '@type': 'ListItem', position: 2, name: 'Fiches légumes', item: `${url}legumes.html` },
+          { '@type': 'ListItem', position: 3, name: nom, item: adresse },
+        ],
+      },
+    );
+  }
   const json = donnees.map((d) => `<script type="application/ld+json">${JSON.stringify(d).replace(/</g, '\\u003c')}</script>`).join('\n    ');
   return `<link rel="canonical" href="${adresse}" />
-    <meta property="og:type" content="${guide ? 'article' : 'website'}" />
+    <meta property="og:type" content="${guide || pageLegume ? 'article' : 'website'}" />
     <meta property="og:site_name" content="${NOM_SITE}" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:title" content="${attribut(titre)}" />
@@ -315,13 +343,35 @@ export function mettreEnPageArticle(html: string, fichier: string): string {
   return html.replace(main[0], nouveau);
 }
 
-/** Toutes les pages HTML à la racine du projet (entrées du build multi-pages). */
+/** Pages HTML écrites à la racine du projet. */
 export function pagesHtml(racine: string): Record<string, string> {
   const entrees: Record<string, string> = {};
   for (const f of readdirSync(racine)) {
     if (f.endsWith('.html')) entrees[f.replace(/\.html$/, '')] = resolve(racine, f);
   }
   return entrees;
+}
+
+/** Toutes les entrées du build multi-pages : pages écrites + pages détaillées des cultures (générées). */
+export function toutesLesPages(racine: string): Record<string, string> {
+  const entrees = pagesHtml(racine);
+  for (const f of pagesLegumes().keys()) entrees[f.replace(/\.html$/, '')] = resolve(racine, f);
+  return entrees;
+}
+
+/** Contenu source d'une page (avec marqueurs) : fichier écrit, ou page générée. */
+export function sourcePage(racine: string, fichier: string): string {
+  const chemin = resolve(racine, fichier);
+  if (existsSync(chemin)) return readFileSync(chemin, 'utf8');
+  const genere = pagesLegumes().get(fichier);
+  if (genere === undefined) throw new Error(`Page inconnue : ${fichier}`);
+  return genere;
+}
+
+/** Nom de fichier d'une page générée (legume-<id>.html) à partir d'un chemin ou d'une adresse, ou null. */
+function pageGeneree(id: string): string | null {
+  const f = basename(id.split('?')[0]);
+  return f.startsWith(PREFIXE_PAGE_LEGUME) && pagesLegumes().has(f) ? f : null;
 }
 
 export function sitemap(pages: string[], url = SITE_URL): string {
@@ -364,14 +414,31 @@ export function pluginSite(): Plugin {
     configResolved(config) {
       racine = config.root;
     },
+    // Pages détaillées des cultures : elles n'existent pas sur le disque, on les fournit à Vite.
+    resolveId(id) {
+      return pageGeneree(id) ? resolve(racine, basename(id.split('?')[0])) : null;
+    },
+    load(id) {
+      const f = pageGeneree(id);
+      return f ? sourcePage(racine, f) : null;
+    },
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        const f = req.url ? pageGeneree(req.url) : null;
+        if (!f) return next();
+        const html = await server.transformIndexHtml(req.url!, sourcePage(racine, f));
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.end(html);
+      });
+    },
     transformIndexHtml(html, ctx) {
       return transformerPage(html, basename(ctx.filename));
     },
     generateBundle() {
       // Les pages marquées noindex (404, redirections) ne vont pas dans le sitemap.
-      const pages = Object.entries(pagesHtml(racine))
-        .filter(([, chemin]) => !readFileSync(chemin, 'utf8').includes('content="noindex"'))
-        .map(([nom]) => `${nom}.html`);
+      const pages = Object.keys(toutesLesPages(racine))
+        .map((nom) => `${nom}.html`)
+        .filter((f) => !sourcePage(racine, f).includes('content="noindex"'));
       this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap(pages) });
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}sitemap.xml\n` });
     },

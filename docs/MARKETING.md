@@ -32,6 +32,7 @@ Mis à jour le 25 septembre 2026. Compagnon de INFRA.md.
 |---|---|---|
 | Référencement naturel (base technique) | Sitemap, robots.txt, adresses canoniques, Open Graph et Twitter Card avec images de partage 1200 × 630, données structurées schema.org (WebApplication, Article) | ✅ |
 | Google Search Console | Propriété `optiled.fr` vérifiée, sitemap envoyé le 25 septembre 2026 (16 pages découvertes) | ✅ |
+| Pages détaillées par culture | 26 pages `legume-<id>.html` (lumière, exemple pour 1 m², lampes, climat, solution nutritive, récolte) | ✅ |
 | Partage par les visiteurs | Bouton « Partager » du calculateur (lien avec les réglages) | ✅ |
 | Installation sur mobile | Manifest et service worker (PWA) | ✅ |
 | Réseaux sociaux, forums, communautés de jardinage | Aucune trace dans le dépôt | ⬜ |
@@ -41,7 +42,7 @@ Mis à jour le 25 septembre 2026. Compagnon de INFRA.md.
 | Métrique | Valeur | Objectif |
 |---|---|---|
 | Visiteurs | non mesuré (Plausible prévu dans le code, non activé) | à définir après activation d'une mesure |
-| Pages indexées par Google | à vérifier dans la console Search Console (16 pages découvertes le 25 septembre 2026) | 16 pages indexées |
+| Pages indexées par Google | à vérifier dans la console Search Console | 42 pages indexées (toutes celles du sitemap) |
 | Clics vers Amazon | à vérifier dans la console Partenaires Amazon | à définir |
 | Commissions Amazon | à vérifier dans la console Partenaires Amazon | premier seuil de paiement (25 € d'après la console) |
 

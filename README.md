@@ -8,7 +8,8 @@ Site web statique (Vite + TypeScript, sans backend), en français et pensé d'ab
 | `calculateur.html` | Ancienne adresse du calculateur : redirige vers l'accueil en gardant le légume choisi (sans JavaScript, la redirection de secours mène à l'accueil sans le légume) |
 | `led.html` + `led-*.html` | Guides LED : bases (PAR, PPFD, DLI, spectre), choisir ses LED, installer et mesurer |
 | `culture.html` + `culture-*.html` | Guides culture : démarrer, substrats et hydroponie, nutriments/pH/EC, climat, semis, problèmes et ravageurs |
-| `legumes.html` | Fiches légumes, **générées au build** depuis `src/data/legumes.json` |
+| `legumes.html` | Fiches légumes, **générées au build** depuis `src/data/legumes.json` ; chaque fiche mène à sa page détaillée |
+| `legume-<id>.html` | **Page détaillée de chaque culture** (26 pages), générée au build par `build/pages-legumes.ts` : lumière par stade, exemple chiffré pour 1 m², lampes qui conviennent, climat, solution nutritive, espacement et récolte, cultures de la même famille. Ces pages n'existent pas sur le disque : le plugin du site les fournit à Vite (build et serveur de développement) |
 | `glossaire.html` | Glossaire des termes techniques |
 
 Le calculateur accepte un légume présélectionné dans l'adresse : `index.html?legume=tomate#calculateur`. Tous les réglages différents des valeurs par défaut sont reflétés dans l'adresse (`?l=tomate&s=floraison&n=3…`, voir `src/etat.ts`) : le bouton **Partager** envoie ce lien, et les derniers réglages sont mémorisés sur l'appareil du visiteur. Chaque bloc de résultat renvoie vers le guide qui l'explique ; sur mobile, une barre fixe rappelle la puissance et le nombre de barres pendant la saisie.
@@ -40,6 +41,7 @@ Node.js 22.12 ou plus récent est requis (Vite 8 et Vitest 5).
 | `build/site.ts` | Plugin Vite : en-tête, menu, pied de page, cartes de guides, mise en page automatique des articles (bandeau, sommaire latéral, temps de lecture), espaces insécables de la typographie française ; génère `sitemap.xml` et `robots.txt` |
 | `build/icones.ts` | Icônes SVG et logo |
 | `build/fiches.ts` | Génération HTML des fiches légumes et du tableau des températures (guide climat) |
+| `build/pages-legumes.ts` | Pages détaillées des cultures (`legume-<id>.html`) ; pas de liens d'achat pour une culture qui a un `avertissement` |
 | `src/site.css`, `src/theme.css`, `src/site.ts` | Styles communs, thème « Crépuscule » (police Urbanist hébergée avec le site, police de secours aux mêmes proportions) ; barre de progression et sommaire actif |
 | `src/schema.ts` | Visuels du calculateur : plan vu de dessus des barres LED, jauge du DLI |
 | `src/data/legumes.json` | **Toutes les données légumes** : une valeur `{ valeur, source }` par paramètre ; la clé `references` alimente la section « Sources » du glossaire (marqueur `<!--#sources-->`). Les sources ne sont pas affichées dans le calculateur ni dans les fiches |

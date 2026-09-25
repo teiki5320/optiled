@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config';
-import { pagesHtml, pluginSite } from './build/site.ts';
+import { pluginSite, toutesLesPages } from './build/site.ts';
 
 export default defineConfig({
   // Chemins relatifs : le site fonctionne aussi bien à la racine
@@ -7,7 +7,7 @@ export default defineConfig({
   base: './',
   plugins: [pluginSite()],
   build: {
-    rollupOptions: { input: pagesHtml(import.meta.dirname) },
+    rollupOptions: { input: toutesLesPages(import.meta.dirname) },
   },
   test: {
     environment: 'node',
