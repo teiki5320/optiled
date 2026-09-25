@@ -1,4 +1,4 @@
-import brut from './data/legumes.json';
+import brut from './data/legumes.json' with { type: 'json' };
 
 /** Une valeur accompagnée de sa source bibliographique. */
 export interface ValeurSourcee<T> {

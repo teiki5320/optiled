@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { header, insecables, mesureAudience, mettreEnPageArticle, NAVIGATION, referencement, sitemap, tempsLecture } from './site';
+import { header, insecables, mesureAudience, mettreEnPageArticle, NAVIGATION, referencement, sitemap, tempsLecture } from './site.ts';
 
 describe('en-tête', () => {
   it('met en évidence la rubrique de la page courante', () => {

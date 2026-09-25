@@ -2,7 +2,7 @@
  * Tuiles des légumes du calculateur. Module pur, partagé entre le build (tuiles écrites
  * dans la page : rien ne bouge à l'affichage) et le navigateur.
  */
-import { legumesParFamille } from './data';
+import { legumesParFamille } from './data.ts';
 
 function echapper(s: string): string {
   return s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);

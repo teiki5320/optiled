@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { alertes, type ContexteAlertes } from './alertes';
+import { alertes, type ContexteAlertes } from './alertes.ts';
 
 const base: ContexteAlertes = { legumeId: 'laitue', nom: 'Laitue', stade: 'croissance', photoperiodeH: 16, photoperiodeConseilleeH: 16, longueurBarreM: 1.2, longueurZoneM: 1.2 };
 

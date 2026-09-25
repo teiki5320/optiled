@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import brut from './data/legumes.json';
-import { LEGUMES, legumesParFamille, parametresStade, trouverLegume } from './data';
+import brut from './data/legumes.json' with { type: 'json' };
+import { LEGUMES, legumesParFamille, parametresStade, trouverLegume } from './data.ts';
 
 describe('legumes.json', () => {
   it('contient les légumes demandés', () => {

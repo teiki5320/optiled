@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { LAMPES, lampesConseillees, lienAmazon, TAG_AMAZON } from './lampes';
+import { LAMPES, lampesConseillees, lienAmazon, TAG_AMAZON } from './lampes.ts';
 
 describe('sélection de lampes', () => {
   it('données cohérentes', () => {

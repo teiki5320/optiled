@@ -1,9 +1,9 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { pagesHtml, transformerPage } from './site';
+import { pagesHtml, transformerPage } from './site.ts';
 
-const racine = resolve(__dirname, '..');
+const racine = resolve(import.meta.dirname, '..');
 const pages = Object.keys(pagesHtml(racine)).map((n) => `${n}.html`);
 /** Pages de redirection (ancienne adresse du calculateur) : pas de contenu propre. */
 const estRedirection = (page: string) => readFileSync(resolve(racine, page), 'utf8').includes('http-equiv="refresh"');

@@ -2,8 +2,8 @@
  * Lampes du commerce (Amazon.fr) : données et choix des modèles qui conviennent.
  * Module pur, partagé entre le build (page « Lampes ») et le calculateur.
  */
-import brut from './data/lampes.json';
-import type { Stade } from './data';
+import brut from './data/lampes.json' with { type: 'json' };
+import type { Stade } from './data.ts';
 
 export interface Lampe {
   id: string;

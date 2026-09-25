@@ -1,11 +1,11 @@
 /** Génère, au build, le HTML des fiches légumes à partir de src/data/legumes.json. */
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { calculerDli } from '../src/calc';
-import type { Legume, ParametresStade } from '../src/data';
-import { icone, type NomIcone } from './icones';
+import { calculerDli } from '../src/calc.ts';
+import type { Legume, ParametresStade } from '../src/data.ts';
+import { icone, type NomIcone } from './icones.ts';
 
-const FICHIER = resolve(__dirname, '../src/data/legumes.json');
+const FICHIER = resolve(import.meta.dirname, '../src/data/legumes.json');
 
 export function echapper(s: string): string {
   return s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
@@ -51,7 +51,7 @@ export function iconeFamille(famille: string): string {
   return icone(ICONES_FAMILLE[slug(famille)] ?? 'pousse');
 }
 
-const DOSSIER_MINIATURES = resolve(__dirname, '../public/images/legumes');
+const DOSSIER_MINIATURES = resolve(import.meta.dirname, '../public/images/legumes');
 
 /** Miniature photo du légume (public/images/legumes/<id>.webp), ou chaîne vide. */
 export function miniature(l: Legume): string {

@@ -10,7 +10,7 @@ import {
   longueurBarreConseillee,
   nombrePlants,
   type EntreesCalcul,
-} from './calc';
+} from './calc.ts';
 
 const base: EntreesCalcul = {
   ppfd: 250,

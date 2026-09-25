@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { calculer, type EntreesCalcul } from './calc';
-import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste';
+import { calculer, type EntreesCalcul } from './calc.ts';
+import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste.ts';
 
 const entrees: EntreesCalcul = {
   ppfd: 250,

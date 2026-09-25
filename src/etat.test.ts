@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { depuisParams, versParams } from './etat';
+import { depuisParams, versParams } from './etat.ts';
 
 describe('état du calculateur dans l’adresse', () => {
   it('aller-retour sans perte', () => {

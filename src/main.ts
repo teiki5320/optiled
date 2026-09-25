@@ -1,16 +1,16 @@
-import './site';
+import './site.ts';
 import './style.css';
 import './theme-calcul.css';
-import { alertes } from './alertes';
-import { calculer, dimensionsZone, longueurBarreConseillee, nombrePlants, verifierLampe, type EntreesCalcul, type ResultatCalcul, type Surface } from './calc';
-import { depuisParams, PARAMETRES, versParams, type Etat } from './etat';
-import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data';
-import { euros, nombre } from './format';
-import { htmlTuiles, TUILES_PAR_LIGNE } from './tuiles';
-import { lampesConseillees, lienAmazon, MENTION_AFFILIATION } from './lampes';
-import { insecables, typographier } from './typo';
-import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste';
-import { jaugeDli, planBarres } from './schema';
+import { alertes } from './alertes.ts';
+import { calculer, dimensionsZone, longueurBarreConseillee, nombrePlants, verifierLampe, type EntreesCalcul, type ResultatCalcul, type Surface } from './calc.ts';
+import { depuisParams, PARAMETRES, versParams, type Etat } from './etat.ts';
+import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data.ts';
+import { euros, nombre } from './format.ts';
+import { htmlTuiles, TUILES_PAR_LIGNE } from './tuiles.ts';
+import { lampesConseillees, lienAmazon, MENTION_AFFILIATION } from './lampes.ts';
+import { insecables, typographier } from './typo.ts';
+import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste.ts';
+import { jaugeDli, planBarres } from './schema.ts';
 
 /** DLI qui remplit entièrement l'anneau de synthèse (mol/m²/j). */
 const DLI_ANNEAU_MAX = 40;

@@ -2,8 +2,8 @@
  * Visuels du calculateur (fonctions pures, renvoient du HTML/SVG) :
  * plan vu de dessus de la disposition des barres, et jauge du DLI.
  */
-import { dimensionsZone, type ResultatBarres, type Surface } from './calc';
-import { nombre } from './format';
+import { dimensionsZone, type ResultatBarres, type Surface } from './calc.ts';
+import { nombre } from './format.ts';
 
 const LARGEUR_SVG = 600;
 const MARGE = { gauche: 46, haut: 34, droite: 14, bas: 14 };

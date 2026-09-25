@@ -23,13 +23,13 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import type { Plugin } from 'vite';
-import { chargerLegumes, rendreFiches, rendreSources, rendreTableauClimat } from './fiches';
-import { htmlTuiles } from '../src/tuiles';
-import { rendreLampes } from './lampes';
-import { insecables } from '../src/typo';
+import { chargerLegumes, rendreFiches, rendreSources, rendreTableauClimat } from './fiches.ts';
+import { htmlTuiles } from '../src/tuiles.ts';
+import { rendreLampes } from './lampes.ts';
+import { insecables } from '../src/typo.ts';
 
 export { insecables };
-import { icone, logo, type NomIcone } from './icones';
+import { icone, logo, type NomIcone } from './icones.ts';
 
 export const NOM_SITE = 'OptiLED';
 
@@ -95,7 +95,7 @@ export function head(): string {
     <meta name="theme-color" content="#1b1322" />`;
 }
 
-const DOSSIER_PARTAGE = resolve(__dirname, '../public/images/partage');
+const DOSSIER_PARTAGE = resolve(import.meta.dirname, '../public/images/partage');
 
 function attribut(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -223,7 +223,7 @@ export function footer(): string {
 </footer>`;
 }
 
-const DOSSIER_PHOTOS = resolve(__dirname, '../public/images/guides');
+const DOSSIER_PHOTOS = resolve(import.meta.dirname, '../public/images/guides');
 
 /** Photo d'un guide (srcset 800/1600 px), ou chaîne vide si elle n'existe pas encore. */
 export function photoGuide(fichier: string, alt: string, sizes: string, chargement: 'lazy' | 'eager' = 'lazy'): string {

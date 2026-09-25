@@ -2,7 +2,7 @@
  * Mises en garde du calculateur (réglages possibles mais déconseillés).
  * Module pur : renvoie des messages, sans accès au DOM.
  */
-import type { Stade } from './data';
+import type { Stade } from './data.ts';
 
 export interface ContexteAlertes {
   legumeId: string;

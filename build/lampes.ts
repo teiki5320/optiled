@@ -1,8 +1,8 @@
 /**
  * Page « Lampes » : la sélection Amazon.fr, groupée par format, générée depuis src/data/lampes.json.
  */
-import { LAMPES, LAMPES_VERIFIEES_LE, lienAmazon, MENTION_AFFILIATION, type Lampe } from '../src/lampes';
-import { echapper } from './fiches';
+import { LAMPES, LAMPES_VERIFIEES_LE, lienAmazon, MENTION_AFFILIATION, type Lampe } from '../src/lampes.ts';
+import { echapper } from './fiches.ts';
 
 const nb = (n: number) => String(n).replace('.', ',');
 const m2 = (v: number) => nb(Math.round(v * 100) / 100);

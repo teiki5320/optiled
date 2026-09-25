@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { chargerLegumes, echapper, rendreFiche, rendreFiches } from './fiches';
+import { chargerLegumes, echapper, rendreFiche, rendreFiches } from './fiches.ts';
 
 describe('fiches légumes', () => {
   const legumes = chargerLegumes();

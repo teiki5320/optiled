@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { calculer, type EntreesCalcul } from './calc';
-import { jaugeDli, planBarres } from './schema';
+import { calculer, type EntreesCalcul } from './calc.ts';
+import { jaugeDli, planBarres } from './schema.ts';
 
 const base: EntreesCalcul = {
   ppfd: 500,

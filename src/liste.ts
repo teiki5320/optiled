@@ -1,5 +1,5 @@
-import type { ResultatCalcul } from './calc';
-import { euros, nombre } from './format';
+import type { ResultatCalcul } from './calc.ts';
+import { euros, nombre } from './format.ts';
 
 export interface ContexteListe {
   legume: string;
