@@ -21,6 +21,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { echapper } from './fiches.ts';
+import { icone, type NomIcone } from './icones.ts';
 
 export const PREFIXE_PAGE_CONSEIL = 'conseil-';
 export const DOSSIER_CONSEILS = resolve(import.meta.dirname, '../contenu/conseils');
@@ -154,20 +155,28 @@ export function pagesConseils(date = dateDuJour()): Map<string, string> {
   return new Map(publies.map((c) => [c.fichier, sourcePageConseil(c, publies)]));
 }
 
-/** Liste des articles publiés, groupés par thème (page conseils.html, marqueur <!--#conseils-->). */
+/** Icône de chaque thème sur les cartes. */
+const ICONES_THEMES: Record<Theme, NomIcone> = { lumiere: 'ampoule', cultures: 'pousse', eau: 'goutte', installation: 'thermometre' };
+
+/** Date courte d'une carte (« 21 sept. 2026 »). */
+export function dateCourte(iso: string): string {
+  const [a, m, j] = iso.split('-').map(Number);
+  return new Date(Date.UTC(a, m - 1, j)).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+}
+
+/** Cartes des articles publiés, du plus récent au plus ancien (page conseils.html, marqueur <!--#conseils-->). */
 export function rendreListeConseils(date = dateDuJour()): string {
   const publies = conseilsPublies(date);
   if (publies.length === 0) return '<p>Les premiers articles arrivent bientôt.</p>';
-  const recents = publies.slice(0, 3);
-  const parTheme = (Object.keys(THEMES) as Theme[])
-    .map((t) => {
-      const liste = publies.filter((c) => c.theme === t).sort((a, b) => a.titre.localeCompare(b.titre, 'fr'));
-      if (!liste.length) return '';
-      return `<h2 id="theme-${t}">${THEMES[t]}</h2>
-        <ul class="conseils">${liste.map((c) => `<li><a href="${c.fichier}">${echapper(c.titre)}</a></li>`).join('')}</ul>`;
-    })
-    .join('\n        ');
-  return `<h2 id="recents">Derniers articles</h2>
-        <nav class="suite suite--familles">${recents.map((c) => `<a href="${c.fichier}"><small>${dateLongue(c.publieLe)}</small>${echapper(c.titre)}</a>`).join('')}</nav>
-        ${parTheme}`;
+  return `<div class="cartes-guides cartes-conseils">${publies
+    .map(
+      (c) => `<a class="carte-guide carte-conseil--${c.theme}" href="${c.fichier}">
+      <span class="carte-guide__icone">${icone(ICONES_THEMES[c.theme])}</span>
+      <time class="carte-guide__date" datetime="${c.publieLe}">${dateCourte(c.publieLe)}</time>
+      <strong>${echapper(c.titre)}</strong>
+      <span>${echapper(c.description)}</span>
+      <span class="carte-guide__lire">Lire l'article ${icone('fleche', 'icone icone--petite')}</span>
+    </a>`,
+    )
+    .join('')}</div>`;
 }
