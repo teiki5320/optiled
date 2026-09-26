@@ -1,6 +1,7 @@
 // Convertit des photos sources (PNG/JPG) en WebP optimisés pour le site.
 // Usage : node scripts/images.mjs <dossier-source>
 // Chaque fichier <nom>.png donne public/images/guides/<nom>-1600.webp et <nom>-800.webp.
+// Pour un article de conseil (conseil-<slug>), il donne aussi l'image de partage public/images/partage/<nom>.jpg.
 import { readdirSync, mkdirSync } from 'node:fs';
 import { basename, extname, join, resolve } from 'node:path';
 import sharp from 'sharp';
@@ -21,6 +22,11 @@ for (const f of readdirSync(source).filter((f) => /\.(png|jpe?g)$/i.test(f))) {
       .resize({ width: largeur, height: Math.round((largeur * 9) / 16), fit: 'cover' })
       .webp({ quality: largeur > 1000 ? 74 : 72 })
       .toFile(dest);
+    console.log(`${dest.replace(process.cwd() + '/', '')} : ${Math.round(info.size / 1024)} Ko`);
+  }
+  if (nom.startsWith('conseil-')) {
+    const dest = resolve('public/images/partage', `${nom}.jpg`);
+    const info = await sharp(join(source, f)).resize({ width: 1200, height: 630, fit: 'cover' }).jpeg({ quality: 80, mozjpeg: true }).toFile(dest);
     console.log(`${dest.replace(process.cwd() + '/', '')} : ${Math.round(info.size / 1024)} Ko`);
   }
 }

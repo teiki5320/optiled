@@ -29,12 +29,14 @@ import { chargerLegumes, rendreFiches, rendreSources, rendreTableauClimat } from
 import { htmlTuiles } from '../src/tuiles.ts';
 import { rendreLampes } from './lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
-import { pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils } from './conseils.ts';
+import { pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, tousLesConseils } from './conseils.ts';
 import { rendreComparaisonLampes, rendreDliSemis, rendreEffetEfficacite, rendreEtageresSemis, rendrePuissancesCultures, rendrePuissancesSurfaces } from './guides-achat.ts';
 import { insecables } from '../src/typo.ts';
 
 export { insecables };
 import { icone, logo, type NomIcone } from './icones.ts';
+import { photoGuide } from './photos.ts';
+export { photoGuide };
 
 export const NOM_SITE = 'OptiLED';
 
@@ -264,16 +266,6 @@ export function footer(): string {
 </footer>`;
 }
 
-const DOSSIER_PHOTOS = resolve(import.meta.dirname, '../public/images/guides');
-
-/** Photo d'un guide (srcset 800/1600 px), ou chaîne vide si elle n'existe pas encore. */
-export function photoGuide(fichier: string, alt: string, sizes: string, chargement: 'lazy' | 'eager' = 'lazy'): string {
-  const nom = fichier.replace(/\.html$/, '');
-  if (!existsSync(resolve(DOSSIER_PHOTOS, `${nom}-1600.webp`))) return '';
-  const prioritaire = chargement === 'eager' ? ' fetchpriority="high"' : '';
-  return `<img src="images/guides/${nom}-800.webp" srcset="images/guides/${nom}-800.webp 800w, images/guides/${nom}-1600.webp 1600w" sizes="${sizes}" width="1600" height="900" alt="${alt.replace(/"/g, '&quot;')}" loading="${chargement}" decoding="async"${prioritaire} />`;
-}
-
 /** Cartes des guides d'une rubrique (accueil et pages de rubrique). */
 export function cartesGuides(r: Rubrique): string {
   return `<div class="cartes-guides cartes-guides--${r}">${RUBRIQUES[r].guides
@@ -293,6 +285,14 @@ export function cartesGuides(r: Rubrique): string {
 /** Photo de couverture d'un guide, qui chevauche le bas du bandeau. */
 function couverture(g: Guide): string {
   const img = photoGuide(g.fichier, g.photo, '(min-width: 1100px) 1040px, 94vw', 'eager');
+  return img ? `<div class="conteneur"><figure class="article__couverture">${img}</figure></div>` : '';
+}
+
+/** Photo de couverture d'un article de conseil, s'il en a une. */
+function couvertureConseil(fichier: string): string {
+  if (!fichier.startsWith(PREFIXE_PAGE_CONSEIL)) return '';
+  const c = tousLesConseils().find((x) => x.fichier === fichier);
+  const img = c?.photo ? photoGuide(fichier, c.photo, '(min-width: 1100px) 1040px, 94vw', 'eager') : '';
   return img ? `<div class="conteneur"><figure class="article__couverture">${img}</figure></div>` : '';
 }
 
@@ -352,7 +352,7 @@ export function mettreEnPageArticle(html: string, fichier: string): string {
       ${chapo.replace('class="chapo"', 'class="chapo bandeau__chapo"')}
     </div>
   </header>
-  ${guides[rang] ? couverture(guides[rang]) : ''}
+  ${guides[rang] ? couverture(guides[rang]) : couvertureConseil(fichier)}
   <div class="conteneur article__grille${sommaire ? '' : ' article__grille--seule'}">
     ${sommaire ? `<aside class="article__cote">${sommaire}</aside>` : ''}
     <article class="prose">${corps}</article>

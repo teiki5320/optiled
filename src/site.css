@@ -569,3 +569,6 @@ img, svg { max-width: 100%; }
 .lampe__note { color: var(--accent); font-weight: 700; }
 .lampe__note span { color: var(--attenue); font-weight: 500; }
 .lampe .bouton { align-self: flex-start; margin-top: 0.3rem; }
+.carte-guide:has(.carte-guide__photo img) .carte-guide__date {
+  color: #fff; background: rgb(0 0 0 / 0.45); padding: 0.2rem 0.55rem; border-radius: 999px; backdrop-filter: blur(4px);
+}

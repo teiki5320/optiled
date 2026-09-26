@@ -9,6 +9,7 @@
  *   description: Phrase de 70 à 170 caractères pour les moteurs de recherche.
  *   publie_le: 2026-09-25
  *   theme: lumiere
+ *   photo: Texte alternatif de la photo (facultatif ; photo dans public/images/guides/conseil-<slug>-800.webp et -1600.webp)
  *   -->
  *   <p class="chapo">Réponse courte…</p>
  *   <h2 id="…">…</h2> …
@@ -22,6 +23,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { echapper } from './fiches.ts';
 import { icone, type NomIcone } from './icones.ts';
+import { photoGuide } from './photos.ts';
 
 export const PREFIXE_PAGE_CONSEIL = 'conseil-';
 export const DOSSIER_CONSEILS = resolve(import.meta.dirname, '../contenu/conseils');
@@ -42,6 +44,8 @@ export interface Conseil {
   description: string;
   publieLe: string;
   theme: Theme;
+  /** Texte alternatif de la photo, ou chaîne vide. */
+  photo: string;
   corps: string;
 }
 
@@ -74,6 +78,7 @@ export function lireConseil(slug: string, source: string): Conseil {
     description: champs.description,
     publieLe: champs.publie_le,
     theme: champs.theme as Theme,
+    photo: champs.photo ?? '',
     corps: source.slice(entete[0].length).trim(),
   };
 }
@@ -171,6 +176,7 @@ export function rendreListeConseils(date = dateDuJour()): string {
   return `<div class="cartes-guides cartes-conseils">${publies
     .map(
       (c) => `<a class="carte-guide carte-conseil--${c.theme}" href="${c.fichier}">
+      <span class="carte-guide__photo">${c.photo ? photoGuide(c.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw') : ''}</span>
       <span class="carte-guide__icone">${icone(ICONES_THEMES[c.theme])}</span>
       <time class="carte-guide__date" datetime="${c.publieLe}">${dateCourte(c.publieLe)}</time>
       <strong>${echapper(c.titre)}</strong>
