@@ -1,5 +1,5 @@
 // Convertit des photos sources (PNG/JPG) en WebP optimisés pour le site.
-// Usage : node scripts/images.mjs <dossier-source>
+// Usage : node scripts/images.mjs <dossier-source> [sous-dossier de public/images, « guides » par défaut]
 // Chaque fichier <nom>.png donne public/images/guides/<nom>-1600.webp et <nom>-800.webp.
 // Pour un article de conseil (conseil-<slug>), il donne aussi l'image de partage public/images/partage/<nom>.jpg.
 import { readdirSync, mkdirSync } from 'node:fs';
@@ -11,7 +11,7 @@ if (!source) {
   console.error('Usage : node scripts/images.mjs <dossier-source>');
   process.exit(1);
 }
-const sortie = resolve('public/images/guides');
+const sortie = resolve('public/images', process.argv[3] ?? 'guides');
 mkdirSync(sortie, { recursive: true });
 
 for (const f of readdirSync(source).filter((f) => /\.(png|jpe?g)$/i.test(f))) {

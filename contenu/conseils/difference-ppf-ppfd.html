@@ -1,0 +1,46 @@
+<!--
+titre: Quelle différence entre PPF et PPFD ?
+description: Le PPF décrit la lumière émise par la lampe, le PPFD celle que reçoivent les plantes. Définitions, unités, calcul de l'un à l'autre et usage sur une fiche technique.
+publie_le: 2026-10-12
+theme: lumiere
+photo: Main tenant le capteur d'un PAR-mètre à hauteur des feuilles de salades, sous un panneau LED dans une tente de culture
+-->
+<p class="chapo">Le <strong>PPF</strong> mesure la lumière utile qui <strong>sort de la lampe</strong>, en µmol/s : c'est une caractéristique du luminaire. Le <strong>PPFD</strong> mesure celle qui <strong>arrive sur les feuilles</strong>, en µmol/m²/s : elle dépend de la lampe, mais aussi de la surface, de la hauteur et de l'endroit où l'on mesure.</p>
+
+<h2 id="definitions">Deux mesures de la même lumière</h2>
+<p>Les deux valeurs comptent des photons dans la bande utile à la photosynthèse, le <a href="glossaire.html#par">PAR</a> (400 à 700 nm). Elles ne répondent pas à la même question.</p>
+<div class="tableau-defile">
+  <table class="tableau">
+    <thead><tr><th></th><th>PPF</th><th>PPFD</th></tr></thead>
+    <tbody>
+      <tr><td>Nom complet</td><td>Photosynthetic Photon Flux</td><td>Photosynthetic Photon Flux Density</td></tr>
+      <tr><td>Ce qu'il mesure</td><td>Tous les photons PAR émis par la lampe chaque seconde</td><td>Les photons PAR reçus par une surface chaque seconde</td></tr>
+      <tr><td>Unité</td><td>µmol/s</td><td>µmol/m²/s</td></tr>
+      <tr><td>Décrit</td><td>La lampe</td><td>La lumière à un endroit précis</td></tr>
+      <tr><td>Mesuré par</td><td>Le fabricant, en sphère intégrante</td><td>Vous, avec un PAR-mètre</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Une image simple : le PPF est le débit d'un arrosoir, le PPFD la quantité d'eau qui tombe sur chaque mètre carré. Un même arrosoir mouille beaucoup une petite zone ou peu une grande. Voir aussi <a href="glossaire.html#ppf">PPF</a> et <a href="glossaire.html#ppfd">PPFD</a> dans le glossaire.</p>
+
+<h2 id="passer">Passer de l'un à l'autre</h2>
+<p>Si toute la lumière tombait sur la culture, le PPFD moyen serait le PPF divisé par la surface. En réalité, une partie se perd sur les bords et dans les allées, ou est absorbée par les parois. On applique donc un <a href="glossaire.html#coefficient-utilisation">coefficient d'utilisation</a>, d'environ 0,8 dans une tente à parois réfléchissantes, plus bas sur une étagère ouverte :</p>
+<p class="formule">PPFD moyen ≈ PPF × coefficient d'utilisation / surface (m²)</p>
+<p>Exemple : une lampe de 540 µmol/s dans une tente de 1 m² donne un PPFD moyen d'environ 430 µmol/m²/s. La même lampe sur 2 m² n'en donne plus qu'environ 215 : assez pour des salades, trop peu pour des tomates en fructification. Le détail est dans <a href="led-bases.html#ppf-ppfd">PPF et PPFD : ce qui sort de la lampe, ce qui arrive sur la feuille</a>.</p>
+<p>Ce calcul donne une moyenne. Le PPFD est toujours plus élevé au centre qu'aux coins, et il augmente quand on rapproche la lampe (voir <a href="conseil-hauteur-lampe-led.html">À quelle hauteur placer une lampe LED</a>).</p>
+
+<h2 id="utiliser">À quoi sert chacun</h2>
+<h3>Le PPF, pour choisir la lampe</h3>
+<p>Le PPF permet de comparer des lampes entre elles et de calculer leur <a href="glossaire.html#efficacite">efficacité</a> : PPF divisé par la puissance réelle à la prise, en µmol/J. De 2,5 à 3,2 µmol/J, l'efficacité est bonne ; sous 2,0 µmol/J, elle est faible. Une fiche technique sans PPF ni efficacité est un mauvais signe. Voir <a href="led-choisir.html#fiche">Lire une fiche technique</a>.</p>
+<h3>Le PPFD, pour régler la culture</h3>
+<p>Le PPFD est la valeur que la plante « voit ». C'est lui que donnent les fiches des cultures : environ 150 µmol/m²/s pour les <a href="legume-micro-pousses.html">micro-pousses</a>, 250 pour la <a href="legume-laitue.html">laitue</a>, 300 pour le <a href="legume-basilic.html">basilic</a>, 350 en croissance et 500 en fructification pour la <a href="legume-tomate.html">tomate</a>. Multiplié par la durée d'éclairage, il donne la dose quotidienne, le <a href="glossaire.html#dli">DLI</a>.</p>
+
+<h2 id="carte">La carte PPFD d'une fiche technique</h2>
+<p>Beaucoup de fabricants publient une carte de PPFD : des valeurs mesurées en plusieurs points, à une hauteur donnée. Elle est utile, à condition de vérifier trois choses :</p>
+<ul>
+  <li><strong>La hauteur et la surface</strong> de la mesure, qui doivent correspondre à votre installation.</li>
+  <li><strong>Les parois</strong> : une mesure dans une tente réfléchissante donne des chiffres plus flatteurs qu'une étagère ouverte.</li>
+  <li><strong>Les bords</strong>, et pas seulement la valeur du centre, souvent mise en avant.</li>
+</ul>
+<p>Pour connaître le PPFD réel chez vous, mesurez en plusieurs points : voir <a href="led-installation.html#grille">Méthode de mesure en grille</a>.</p>
+<div class="encadre"><p><strong>À retenir :</strong> le PPF (µmol/s) sert à choisir et comparer les lampes, le PPFD (µmol/m²/s) à régler la lumière sur vos plantes. Le <a href="index.html#calculateur">calculateur</a> passe de l'un à l'autre pour votre surface.</p></div>
