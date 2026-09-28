@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { chargerLegumes } from './fiches.ts';
-import { descriptionLegume, exempleCalcul, fichierLegume, pagesLegumes } from './pages-legumes.ts';
+import { descriptionLegume, exempleCalcul, fichierLegume, pagesLegumes, stadeLePlusExigeant } from './pages-legumes.ts';
 import { transformerPage } from './site.ts';
 
 const legumes = chargerLegumes();
@@ -25,8 +25,32 @@ describe('pages détaillées des cultures', () => {
     });
   }
 
-  it('description dans la limite habituelle des moteurs de recherche', () => {
-    for (const l of legumes) expect(descriptionLegume(l).length, l.id).toBeLessThan(200);
+  it('description et titre dans les limites habituelles des moteurs de recherche', () => {
+    for (const l of legumes) {
+      expect(descriptionLegume(l).length, l.id).toBeLessThanOrEqual(158);
+      const titre = pages.get(fichierLegume(l.id))!.match(/<title>([^<]+)<\/title>/)![1];
+      expect(titre.length, l.id).toBeLessThanOrEqual(65);
+    }
+  });
+
+  it("pas de note ni de nombre d'avis Amazon", () => {
+    for (const [fichier, html] of pages) expect(html, fichier).not.toMatch(/★|\bavis\)/);
+  });
+
+  it('on dimensionne pour le stade au PPFD le plus élevé', () => {
+    for (const l of legumes) {
+      const f = l.stades.floraison;
+      expect(stadeLePlusExigeant(l), l.id).toBe(f && f.ppfd.valeur >= l.stades.croissance.ppfd.valeur ? 'floraison' : 'croissance');
+    }
+    const tomate = pages.get(fichierLegume('tomate'))!;
+    expect(tomate).toContain('une phase de floraison et de fructification, plus gourmande en lumière');
+    expect(tomate).toContain('On dimensionne l’installation pour la floraison et la fructification, le stade le plus exigeant');
+    // Safran : la floraison (100 µmol/m²/s) demande moins que la croissance (200), et ne donne pas de fruits.
+    const safran = pages.get(fichierLegume('safran'))!;
+    expect(stadeLePlusExigeant(legumes.find((l) => l.id === 'safran')!)).toBe('croissance');
+    expect(safran).toContain('C’est la croissance qui demande le plus de lumière');
+    expect(safran).toContain('On dimensionne l’installation pour la croissance');
+    expect(safran).not.toMatch(/fructification|plus gourmande en lumière/);
   });
 
   it("l'exemple sur 1 m² reprend le calcul du calculateur", () => {

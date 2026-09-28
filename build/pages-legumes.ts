@@ -87,17 +87,34 @@ function carteLampe(p: Proposition, r: ResultatCalcul): string {
   return `<li class="lampe">
   <h3>${p.nombre} × ${echapper(l.nom)}</h3>
   <p>${nb(p.ppfTotal)} µmol/s${l.ppf_estime ? ' (estimé)' : ''} pour ${nb(r.ppfNecessaire)} nécessaires · ${nb(p.puissanceW)} W au maximum · ${l.variateur ? 'avec variateur' : 'sans variateur'}</p>
-  <p class="lampe__note">${nb(l.note, 1)} ★ <span>(${nb(l.avis)} avis)</span></p>
   <a class="bouton" href="${lienAmazon(l)}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a>
 </li>`;
 }
 
-/** Description courte (balise meta), construite à partir des valeurs de la fiche. */
+/** Description courte (balise meta), construite à partir des valeurs de la fiche (158 caractères au plus). */
 export function descriptionLegume(l: Legume): string {
   const c = l.stades.croissance;
   const f = l.stades.floraison;
   const ppfd = f ? `${c.ppfd.valeur} puis ${f.ppfd.valeur}` : `${c.ppfd.valeur}`;
-  return `${l.nom} en intérieur sous LED : ${ppfd} µmol/m²/s pendant ${nb(c.photoperiode.valeur)} h par jour, ${plage(l.culture.temperature_c.valeur, ' °C')} le jour, pH ${plage(l.culture.ph.valeur)}, première récolte en ${plage(l.culture.jours_recolte.valeur)} jours.`;
+  const heures = f && f.photoperiode.valeur !== c.photoperiode.valeur ? `${nb(c.photoperiode.valeur)} puis ${nb(f.photoperiode.valeur)}` : nb(c.photoperiode.valeur);
+  const temperature = plage(l.culture.temperature_c.valeur, ' °C');
+  const valeurs = `${ppfd} µmol/m²/s, ${heures} h par jour, ${temperature} le jour, pH ${plage(l.culture.ph.valeur)}, première récolte en ${plage(l.culture.jours_recolte.valeur)} jours.`;
+  const complete = `${l.nom} en intérieur sous LED : ${valeurs}`;
+  // Nom long (« Tomate naine (micro-tomate) ») : on raccourcit l'accroche plutôt que les valeurs.
+  return complete.length <= 158 ? complete : `${l.nom} sous LED : ${valeurs}`;
+}
+
+/** Libellés du stade de floraison : les légumes fruits fleurissent pour fructifier, les autres cultures non. */
+export function libellesFloraison(l: Legume): { titre: string; de: string; la: string } {
+  return l.famille === 'Légumes fruits'
+    ? { titre: 'Floraison et fructification', de: 'floraison et de fructification', la: 'la floraison et la fructification' }
+    : { titre: 'Floraison', de: 'floraison', la: 'la floraison' };
+}
+
+/** Stade le plus gourmand en lumière (PPFD le plus élevé), celui pour lequel on dimensionne l'installation. */
+export function stadeLePlusExigeant(l: Legume): Stade {
+  const f = l.stades.floraison;
+  return f && f.ppfd.valeur >= l.stades.croissance.ppfd.valeur ? 'floraison' : 'croissance';
 }
 
 /** Contenu HTML complet (avec marqueurs) de la page détaillée d'une culture. */
@@ -110,8 +127,9 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
 
   const exempleCroissance = exempleCalcul(croissance);
   const exempleFloraison = floraison ? exempleCalcul(floraison) : null;
-  const plus = exempleFloraison ?? exempleCroissance;
-  const stadeLampes: Stade = floraison ? 'floraison' : 'croissance';
+  const stadeLampes = stadeLePlusExigeant(l);
+  const plus = stadeLampes === 'floraison' && exempleFloraison ? exempleFloraison : exempleCroissance;
+  const libFloraison = libellesFloraison(l);
   // Pas de liens d'achat pour une culture soumise à une mise en garde (réglementation du chanvre…).
   const lampes = l.avertissement ? [] : lampesConseillees(plus.ppfNecessaire, plus.surfaceM2, stadeLampes);
 
@@ -125,11 +143,15 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
       id: 'lumiere',
       titre: 'Besoins en lumière',
       html: floraison
-        ? `<p>La culture passe par deux stades : une phase de croissance (feuillage), puis une phase de floraison et de fructification, plus gourmande en lumière.</p>
+        ? `${
+            stadeLampes === 'floraison'
+              ? `<p>La culture passe par deux stades : une phase de croissance (feuillage), puis une phase de ${libFloraison.de}, plus gourmande en lumière.</p>`
+              : `<p>La culture passe par deux stades aux besoins différents : la croissance (feuillage) et ${libFloraison.la}. C’est la croissance qui demande le plus de lumière.</p>`
+          }
         <h3>Croissance</h3>
         ${tableauLumiere(croissance, 'Lumière en croissance')}
-        <h3>Floraison et fructification</h3>
-        ${tableauLumiere(floraison, 'Lumière en floraison et fructification')}`
+        <h3>${libFloraison.titre}</h3>
+        ${tableauLumiere(floraison, `Lumière en ${libFloraison.titre.toLowerCase()}`)}`
         : `<p>Cette culture se récolte avant la floraison : un seul réglage de lumière suffit pour tout le cycle.</p>
         ${tableauLumiere(croissance, 'Lumière')}`,
     },
@@ -138,8 +160,14 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
       titre: 'Exemple : éclairer 1 m²',
       html: `<p>Pour une surface de 1 × 1 m, avec des LED d’une efficacité de 2,7 µmol/J et 80 % de la lumière qui atteint réellement la culture (les réglages par défaut du calculateur) :</p>
         ${blocExemple(floraison ? 'En croissance' : 'Installation conseillée', exempleCroissance, croissance)}
-        ${exempleFloraison && floraison ? blocExemple('En floraison et fructification', exempleFloraison, floraison) : ''}
-        ${floraison ? '<p>On dimensionne l’installation pour la floraison, puis on baisse l’intensité avec un variateur pendant la croissance.</p>' : ''}
+        ${exempleFloraison && floraison ? blocExemple(`En ${libFloraison.titre.toLowerCase()}`, exempleFloraison, floraison) : ''}
+        ${
+          floraison
+            ? stadeLampes === 'floraison'
+              ? `<p>On dimensionne l’installation pour ${libFloraison.la}, le stade le plus exigeant, puis on baisse l’intensité avec un variateur pendant la croissance.</p>`
+              : `<p>On dimensionne l’installation pour la croissance, le stade le plus exigeant, puis on baisse l’intensité avec un variateur pendant ${libFloraison.la}.</p>`
+            : ''
+        }
         ${plants ? `<p>Sur 1 m², à ${nb(Math.round((espacement![0] + espacement![1]) / 2 / 5) * 5)} cm d’écart, on place environ <strong>${plants.total} plant${plants.total > 1 ? 's' : ''}</strong>.</p>` : ''}
         <p><a class="bouton bouton--plein" href="index.html?legume=${l.id}#calculateur">Calculer pour mes dimensions</a></p>`,
     },
@@ -148,7 +176,7 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
           {
             id: 'lampes',
             titre: 'Lampes du commerce qui conviennent',
-            html: `<p>Quelques modèles de la <a href="lampes.html">sélection de lampes</a> qui fournissent assez de lumière pour 1 m² ${floraison ? 'en floraison' : ''}. D’autres lampes conviennent aussi : l’important est le PPF (en µmol/s) et la surface couverte.</p>
+            html: `<p>Quelques modèles de la <a href="lampes.html">sélection de lampes</a> qui fournissent assez de lumière pour 1 m²${floraison ? ` en ${stadeLampes === 'floraison' ? libFloraison.titre.toLowerCase() : 'croissance'}` : ''}. D’autres lampes conviennent aussi : l’important est le PPF (en µmol/s) et la surface couverte.</p>
         <ul class="lampes">${lampes.map((p) => carteLampe(p, plus)).join('\n')}</ul>
         <p class="aide">Liens sponsorisés. ${MENTION_AFFILIATION}</p>`,
           },
@@ -200,7 +228,7 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="${echapper(descriptionLegume(l))}" />
-    <title>${nom} en intérieur : lumière LED et conditions de culture — OptiLED</title>
+    <title>${nom} en intérieur sous LED — OptiLED</title>
     <!--#head-->
   </head>
   <body>

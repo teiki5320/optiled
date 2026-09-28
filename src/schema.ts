@@ -3,7 +3,7 @@
  * plan vu de dessus de la disposition des barres, et jauge du DLI.
  */
 import { dimensionsZone, type ResultatBarres, type Surface } from './calc.ts';
-import { nombre } from './format.ts';
+import { accord, nombre } from './format.ts';
 
 const LARGEUR_SVG = 600;
 const MARGE = { gauche: 46, haut: 34, droite: 14, bas: 14 };
@@ -82,8 +82,8 @@ export function planBarres(surface: Surface, b: ResultatBarres, longueurBarreM: 
   }
 
   const largeur = Math.max(MARGE.gauche + Math.max(lZone, longueurLigne) + MARGE.droite, 260);
-  const legendePlants = dessinerPlants && plants ? `, ${zones * plants.parLigne * plants.lignes} emplacements de plants espacés de ${nombre(plants.espacementM * 100)} cm` : '';
-  return `<svg class="plan" viewBox="0 0 ${Math.round(largeur)} ${Math.round(hauteur)}" role="img" aria-label="Plan vu de dessus : ${b.total} barres LED, ${b.lignesParZone} ligne(s) de ${b.barresParLigne} barre(s) par zone, entraxe ${nombre(b.espacementM * 100)} cm${legendePlants}">
+  const legendePlants = dessinerPlants && plants ? `, ${zones * plants.parLigne * plants.lignes} ${accord(zones * plants.parLigne * plants.lignes, 'emplacement')} de plants espacés de ${nombre(plants.espacementM * 100)} cm` : '';
+  return `<svg class="plan" viewBox="0 0 ${Math.round(largeur)} ${Math.round(hauteur)}" role="img" aria-label="Plan vu de dessus : ${b.total} ${accord(b.total, 'barre')} LED, ${b.lignesParZone} ${accord(b.lignesParZone, 'ligne')} de ${b.barresParLigne} ${accord(b.barresParLigne, 'barre')} par zone, entraxe ${nombre(b.espacementM * 100)} cm${legendePlants}">
   <defs><linearGradient id="plan-spectre" x1="0" x2="1"><stop offset="0" stop-color="#5b7cff"/><stop offset=".5" stop-color="#c26bff"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient></defs>
   ${elements.join('')}
   ${cotes.join('')}

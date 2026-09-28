@@ -44,11 +44,11 @@ export const SURFACES: { nom: string; longueurM: number; largeurM: number }[] = 
   { nom: 'Tente', longueurM: 1.2, largeurM: 1.2 },
 ];
 
-/** Niveaux de lumière repris des fiches : semis, salades, aromatiques et croissance des légumes fruits, fructification. */
+/** Niveaux de lumière repris des fiches : semis, salades, croissance des légumes fruits, fructification (les aromatiques, 250 à 300, se situent entre les deux colonnes du milieu). */
 export const NIVEAUX: { ppfd: number; libelle: string }[] = [
   { ppfd: 150, libelle: 'Semis (150)' },
   { ppfd: 250, libelle: 'Salades (250)' },
-  { ppfd: 350, libelle: 'Aromatiques (350)' },
+  { ppfd: 350, libelle: 'Légumes fruits en croissance (350)' },
   { ppfd: 500, libelle: 'Fructification (500)' },
 ];
 

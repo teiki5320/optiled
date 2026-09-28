@@ -2,15 +2,16 @@ import './site.ts';
 import './style.css';
 import './theme-calcul.css';
 import { alertes } from './alertes.ts';
-import { calculer, dimensionsZone, longueurBarreConseillee, nombrePlants, verifierLampe, type EntreesCalcul, type ResultatCalcul, type Surface } from './calc.ts';
+import { calculer, dimensionsZone, longueurBarreConseillee, nombrePlants, validerEntrees, verifierLampe, type EntreesCalcul, type ResultatCalcul, type Surface } from './calc.ts';
 import { depuisParams, PARAMETRES, versParams, type Etat } from './etat.ts';
 import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data.ts';
-import { euros, nombre } from './format.ts';
+import { accord, euros, nombre } from './format.ts';
 import { htmlTuiles, TUILES_PAR_LIGNE } from './tuiles.ts';
 import { lampesConseillees, lienAmazon, MENTION_AFFILIATION } from './lampes.ts';
 import { insecables, typographier } from './typo.ts';
 import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste.ts';
 import { jaugeDli, planBarres } from './schema.ts';
+import { erreursParChamp } from './champs-erreur.ts';
 
 /** DLI qui remplit entièrement l'anneau de synthèse (mol/m²/j). */
 const DLI_ANNEAU_MAX = 40;
@@ -91,7 +92,7 @@ function rendreLampesCommerce(r: ResultatCalcul): string {
     .map(
       (p) => `<li class="lampe-proposee">
       <p class="lampe-proposee__nom"><strong>${p.nombre} × ${echapper(p.lampe.nom)}</strong></p>
-      <p class="lampe-proposee__detail">${nombre(p.ppfTotal)} µmol/s${p.lampe.ppf_estime ? ' (estimé)' : ''} pour ${nombre(r.ppfNecessaire)} nécessaires · ${nombre(p.puissanceW)} W au maximum · ${p.lampe.variateur ? 'avec variateur' : 'sans variateur'} · ${String(p.lampe.note).replace('.', ',')} ★ (${nombre(p.lampe.avis)} avis)</p>
+      <p class="lampe-proposee__detail">${nombre(p.ppfTotal)} µmol/s${p.lampe.ppf_estime ? ' (estimé)' : ''} pour ${nombre(r.ppfNecessaire)} nécessaires · ${nombre(p.puissanceW)} W au maximum · ${p.lampe.variateur ? 'avec variateur' : 'sans variateur'}</p>
       <a class="bouton bouton--amazon" href="${lienAmazon(p.lampe)}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a>
     </li>`,
     )
@@ -280,7 +281,7 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface): string
     ${(ctx.alertes ?? []).map((a) => `<p class="alerte-calcul" role="note">${echapper(a)}</p>`).join('')}
     <p class="sous-titre">${echapper(ctx.legume)} · ${echapper(ctx.stade)} · ${nombre(r.surfaceM2, 2)} m² · <a href="legumes.html#${selectLegume.value}">fiche ${echapper(nomCourt(ctx.legume))}</a></p>
     <div class="synthese">
-      <div class="anneau" style="--deg:${degres}deg" role="img" aria-label="${nombre(r.puissanceW)} W ; DLI ${nombre(r.dli, 1)} mol/m²/j"><div><strong>${nombre(r.puissanceW)}</strong><span>watts</span></div></div>
+      <div class="anneau" style="--deg:${degres}deg" role="img" aria-label="${nombre(r.puissanceW)} W ; DLI ${nombre(r.dli, 1)} mol/m²/j"><div><strong>${nombre(r.puissanceW)}</strong><span>${accord(Math.round(r.puissanceW), 'watt')}</span></div></div>
       <div class="synthese__texte">
         <p class="synthese__titre">${b.total} barre${b.total > 1 ? 's' : ''} LED de ${nombre(ctx.longueurBarreM, 2)} m</p>
         <p>${parBarreCourt} · à ${r.hauteurCm[0]}–${r.hauteurCm[1]} cm du feuillage</p>
@@ -343,22 +344,25 @@ function mettreAJour(): void {
   };
 
   let r: ResultatCalcul;
+  const erreurs: string[] = [];
+  if (espacementCm !== undefined && !(espacementCm >= 5 && espacementCm <= 300)) {
+    erreurs.push("L'espacement entre plants doit être compris entre 5 et 300 cm.");
+  }
+  erreurs.push(...validerEntrees(entrees));
   try {
-    if (espacementCm !== undefined && !(espacementCm >= 5 && espacementCm <= 300)) {
-      throw new RangeError("L'espacement entre plants doit être compris entre 5 et 300 cm.");
-    }
+    if (erreurs.length > 0) throw new RangeError(erreurs.join(' '));
     r = calculer(entrees);
   } catch (e) {
     zoneErreurs.textContent = typographier((e as Error).message);
     zoneErreurs.hidden = false;
-    signalerChamps((e as Error).message);
+    signalerChamps(erreurs.length > 0 ? erreurs : [(e as Error).message]);
     contenu.classList.add('perime');
     majBarreResume(null);
     dernierResume = '';
     return;
   }
   zoneErreurs.hidden = true;
-  signalerChamps('');
+  signalerChamps([]);
   contenu.classList.remove('perime');
 
   const ctx: ContexteListe = {
@@ -398,25 +402,39 @@ function mettreAJour(): void {
   enregistrerEtat();
 }
 
-/** Champs concernés par un message d'erreur : marqués aria-invalid pour les lecteurs d'écran. */
-const CHAMPS_ERREUR: [RegExp, string[]][] = [
-  [/longueur des barres/i, ['longueur-barre']],
-  [/^La longueur|Les dimensions/m, ['longueur', 'longueur-rang']],
-  [/^La largeur|Les dimensions/m, ['largeur', 'largeur-rang']],
-  [/rangs/, ['nb-rangs']],
-  [/photopériode/, ['photoperiode']],
-  [/efficacité/, ['efficacite']],
-  [/coefficient/, ['coef']],
-  [/puissance des barres/, ['puissance-barre']],
-  [/prix du kWh/, ['prix-kwh']],
-  [/jours d'éclairage/, ['jours']],
-  [/espacement/, ['espacement']],
-];
-function signalerChamps(message: string): void {
-  const ids = new Set(CHAMPS_ERREUR.filter(([motif]) => motif.test(message)).flatMap(([, ids]) => ids));
+/**
+ * Champs concernés par les erreurs : marqués aria-invalid, avec le message affiché juste
+ * sous le champ et relié par aria-describedby (le récapitulatif des résultats reste affiché).
+ * Le message disparaît dès que le champ redevient valide.
+ */
+function signalerChamps(messages: string[]): void {
+  const parChamp = erreursParChamp(messages, lireNombre);
   form.querySelectorAll<HTMLInputElement>('input[type="text"]').forEach((c) => {
-    if (ids.has(c.id)) c.setAttribute('aria-invalid', 'true');
-    else c.removeAttribute('aria-invalid');
+    const textes = parChamp.get(c.id);
+    const idMessage = `${c.id}-erreur`;
+    let message = document.getElementById(idMessage);
+    const decrit = (c.getAttribute('aria-describedby') ?? '').split(/\s+/).filter((x) => x && x !== idMessage);
+    if (!textes) {
+      c.removeAttribute('aria-invalid');
+      if (message) message.hidden = true;
+      if (decrit.length) c.setAttribute('aria-describedby', decrit.join(' '));
+      else c.removeAttribute('aria-describedby');
+      return;
+    }
+    if (!message) {
+      message = document.createElement('small');
+      message.id = idMessage;
+      message.className = 'champ__erreur';
+      const conteneur = c.closest('.champ');
+      // Dans un <label>, le message ne doit pas s'ajouter au nom du champ : il reste lu
+      // comme description grâce à aria-describedby.
+      if (conteneur?.tagName === 'LABEL') message.setAttribute('aria-hidden', 'true');
+      (conteneur ?? c.parentElement!).append(message);
+    }
+    message.textContent = typographier(textes.join(' '));
+    message.hidden = false;
+    c.setAttribute('aria-invalid', 'true');
+    c.setAttribute('aria-describedby', [idMessage, ...decrit].join(' '));
   });
 }
 

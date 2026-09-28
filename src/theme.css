@@ -6,16 +6,17 @@
 /* Police hébergée avec le site (pas de requête vers Google : RGPD et affichage plus rapide). */
 @import '@fontsource-variable/urbanist';
 
-/* Police de secours aux proportions d'Urbanist : le texte ne bouge pas quand Urbanist arrive. */
+/* Police de secours aux proportions d'Urbanist : le texte ne bouge pas quand Urbanist arrive.
+   size-adjust mesuré sur tout le site (retours à la ligne identiques avec Arial et Urbanist,
+   gras compris) : à 95,9 %, les pastilles de legumes.html passaient d'une à deux lignes (CLS 0,34). */
 @font-face {
   font-family: 'Urbanist Repli';
   src: local('Arial'), local('Helvetica'), local('Liberation Sans');
-  size-adjust: 95.9%;
+  size-adjust: 99.25%;
   ascent-override: 99%;
   descent-override: 26%;
   line-gap-override: 0%;
 }
-
 :root, :root:where(*) {
   --nuit: #1b1322;
   --nuit-2: #2a1a32;
@@ -88,8 +89,13 @@ a { color: var(--accent); }
 .bouton--plein:hover { background: var(--degrade); filter: brightness(1.05); }
 
 /* ---------- Bandeaux ---------- */
-.bandeau { background: var(--ciel); padding: 3rem 0 3.4rem; }
-.bandeau::before { opacity: 1; background: radial-gradient(40% 70% at 82% 100%, rgb(255 226 168 / 0.45), transparent 70%); }
+/* Ciel du bandeau : l'orange et l'ambre restent dans la marge basse (3,4rem), sous le chapô,
+   pour que le texte clair garde un contraste ≥ 4,5:1 sur toute sa hauteur. */
+.bandeau {
+  background: linear-gradient(180deg, #23162e 0, #4a2446 40%, #86394e calc(100% - 3.4rem), #c4634f calc(100% - 1.8rem), #f7c07a 100%);
+  padding: 3rem 0 3.4rem;
+}
+.bandeau::before { opacity: 1; background: radial-gradient(45% 3.4rem at 82% 100%, rgb(255 226 168 / 0.45), transparent 100%); }
 .bandeau::after { display: none; }
 .bandeau h1 { font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
 .bandeau__chapo, .bandeau .chapo { color: #f3dbe0; }
@@ -154,15 +160,10 @@ a { color: var(--accent); }
 .site-pied { background: #150f1b; }
 .site-pied::before { background: var(--spectre); }
 
-@media print {
-  :root, :root:where(*) { --fond: #fff; --carte: #fff; --texte: #000; --attenue: #444; --bordure: #ddd; --verre: #fff; }
-  body { background: #fff; }
-}
-
 /* ---------- Impression : fond blanc et textes contrastés, quel que soit le thème ---------- */
 @media print {
   :root, :root:where(*) {
-    --fond: #fff; --carte: #fff; --texte: #111; --attenue: #444; --bordure: #ccc;
+    --fond: #fff; --carte: #fff; --verre: #fff; --texte: #111; --attenue: #444; --bordure: #ccc;
     --nuit: #f1f1f1; --nuit-2: #f1f1f1; --nuit-texte: #111; --nuit-attenue: #444;
     --accent: #7a3e12; --accent-clair: #f3f3f3;
   }

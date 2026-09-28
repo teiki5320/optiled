@@ -23,6 +23,15 @@ describe('plan des barres', () => {
     expect(svg).toContain('2,40 m');
   });
 
+  it('libellé accordé au singulier pour une seule barre', () => {
+    const e: EntreesCalcul = { ...base, ppfd: 100, surface: { mode: 'rectangle', longueurM: 0.6, largeurM: 0.15 }, hauteurCm: [20, 30], longueurBarreM: 0.6, puissanceBarreW: undefined };
+    const r = calculer(e);
+    expect(r.barres.total).toBe(1);
+    const svg = planBarres(e.surface, r.barres, 0.6);
+    expect(svg).toContain('1 barre LED, 1 ligne de 1 barre par zone');
+    expect(svg).not.toMatch(/\(s\)/);
+  });
+
   it("affiche l'entraxe quand il y a plusieurs lignes", () => {
     const e: EntreesCalcul = { ...base, ppfd: 250, surface: { mode: 'rectangle', longueurM: 1.2, largeurM: 0.6 }, hauteurCm: [20, 30], puissanceBarreW: undefined };
     const r = calculer(e);

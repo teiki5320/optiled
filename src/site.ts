@@ -37,12 +37,21 @@ function sommaireActif(): void {
   sections.forEach((s) => observateur.observe(s));
 }
 
-/** Referme le menu mobile quand on choisit un lien ou qu'on touche ailleurs. */
+/**
+ * Referme le menu mobile quand on choisit un lien, qu'on touche ailleurs ou qu'on appuie
+ * sur Échap (le focus revient alors sur le bouton « Menu »).
+ */
 function menuMobile(): void {
   const menu = document.querySelector<HTMLDetailsElement>('.menu-mobile');
   if (!menu) return;
+  const bouton = menu.querySelector<HTMLElement>('summary');
   document.addEventListener('click', (e) => {
     if (menu.open && !menu.contains(e.target as Node)) menu.open = false;
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || !menu.open) return;
+    menu.open = false;
+    bouton?.focus();
   });
   menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => (menu.open = false)));
 }

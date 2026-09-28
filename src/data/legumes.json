@@ -841,11 +841,11 @@
         "croissance": {
           "ppfd": {
             "valeur": 270,
-            "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit ; 270 × 16 h × 0,0036 = DLI 15,6 mol/m²/j"
+            "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit ; 270 × 16 h × 0,0036 = DLI 15,6 mol/m²/j"
           },
           "photoperiode": {
             "valeur": 16,
-            "source": "Ordre de grandeur (estimation : 14–16 h) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+            "source": "Ordre de grandeur (estimation : 14–16 h) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
           },
           "hauteur_cm": {
             "valeur": [
@@ -867,14 +867,14 @@
             20,
             24
           ],
-          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 22 °C le jour ; plage indicative)"
+          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 22 °C le jour ; plage indicative)"
         },
         "temperature_nuit_c": {
           "valeur": [
             14,
             18
           ],
-          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 16 °C la nuit ; plage indicative)"
+          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 16 °C la nuit ; plage indicative)"
         },
         "temperature_a_eviter": {
           "valeur": "< 10 °C (croissance quasi arrêtée)",
@@ -929,11 +929,11 @@
         "croissance": {
           "ppfd": {
             "valeur": 270,
-            "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit ; Kohler & Lopez (2021), HortScience 56 : 431 – DLI et aromatiques : origan et menthe +117 à 125 % de masse fraîche de 3 à 16 mol/m²/j, boutures enracinées à DLI 11–15 ; 270 × 16 h × 0,0036 = DLI 15,6 mol/m²/j"
+            "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit ; Kohler & Lopez (2021), HortScience 56 : 431 – DLI et aromatiques : origan et menthe +117 à 125 % de masse fraîche de 3 à 16 mol/m²/j, boutures enracinées à DLI 11–15 ; 270 × 16 h × 0,0036 = DLI 15,6 mol/m²/j"
           },
           "photoperiode": {
             "valeur": 16,
-            "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+            "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
           },
           "hauteur_cm": {
             "valeur": [
@@ -955,14 +955,14 @@
             20,
             24
           ],
-          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 22 °C le jour ; plage indicative)"
+          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 22 °C le jour ; plage indicative)"
         },
         "temperature_nuit_c": {
           "valeur": [
             14,
             18
           ],
-          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 16 °C la nuit ; plage indicative)"
+          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 16 °C la nuit ; plage indicative)"
         },
         "temperature_a_eviter": {
           "valeur": "< 10 °C (croissance quasi arrêtée)",
@@ -1017,11 +1017,11 @@
         "croissance": {
           "ppfd": {
             "valeur": 300,
-            "source": "Ordre de grandeur (estimation) : plante méditerranéenne de plein soleil, placée dans le haut de la plage de Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit ; 300 × 16 h × 0,0036 = DLI 17,3 mol/m²/j"
+            "source": "Ordre de grandeur (estimation) : plante méditerranéenne de plein soleil, placée dans le haut de la plage de Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit ; 300 × 16 h × 0,0036 = DLI 17,3 mol/m²/j"
           },
           "photoperiode": {
             "valeur": 16,
-            "source": "Ordre de grandeur (estimation : 14–16 h) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+            "source": "Ordre de grandeur (estimation : 14–16 h) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
           },
           "hauteur_cm": {
             "valeur": [
@@ -1043,7 +1043,7 @@
             18,
             24
           ],
-          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 22 °C le jour) ; plage indicative"
+          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 22 °C le jour) ; plage indicative"
         },
         "temperature_nuit_c": {
           "valeur": [
@@ -1105,11 +1105,11 @@
         "croissance": {
           "ppfd": {
             "valeur": 300,
-            "source": "Walters, Tarr & Lopez (2023), PLOS ONE – croissance de la sauge selon la température et la DLI (optimum ≈ 23,5 °C à DLI 18 mol/m²/j) ; 300 × 16 h × 0,0036 = DLI 17,3 mol/m²/j, proche de la DLI de 18 de l'optimum ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+            "source": "Walters, Tarr & Lopez (2023), PLOS ONE – croissance de la sauge selon la température et le DLI (optimum ≈ 23,5 °C à DLI 18 mol/m²/j) ; 300 × 16 h × 0,0036 = DLI 17,3 mol/m²/j, proche du DLI de 18 de l'optimum ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
           },
           "photoperiode": {
             "valeur": 16,
-            "source": "Ordre de grandeur (estimation : 14–16 h) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+            "source": "Ordre de grandeur (estimation : 14–16 h) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
           },
           "hauteur_cm": {
             "valeur": [
@@ -1131,18 +1131,18 @@
             21,
             25
           ],
-          "source": "Walters, Tarr & Lopez (2023), PLOS ONE – croissance de la sauge selon la température et la DLI (optimum ≈ 23,5 °C à DLI 18 mol/m²/j) ; plage indicative autour de l'optimum de 23,5 °C"
+          "source": "Walters, Tarr & Lopez (2023), PLOS ONE – croissance de la sauge selon la température et le DLI (optimum ≈ 23,5 °C à DLI 18 mol/m²/j) ; plage indicative autour de l'optimum de 23,5 °C"
         },
         "temperature_nuit_c": {
           "valeur": [
             15,
             18
           ],
-          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 16 °C la nuit) ; plage indicative"
+          "source": "Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit (consigne 16 °C la nuit) ; plage indicative"
         },
         "temperature_a_eviter": {
           "valeur": "< 10 °C (croissance très lente)",
-          "source": "Ordre de grandeur (estimation) : plante méditerranéenne ; Walters, Tarr & Lopez (2023), PLOS ONE – croissance de la sauge selon la température et la DLI (optimum ≈ 23,5 °C à DLI 18 mol/m²/j)"
+          "source": "Ordre de grandeur (estimation) : plante méditerranéenne ; Walters, Tarr & Lopez (2023), PLOS ONE – croissance de la sauge selon la température et le DLI (optimum ≈ 23,5 °C à DLI 18 mol/m²/j)"
         },
         "humidite_pct": {
           "valeur": [
@@ -1180,8 +1180,8 @@
           "source": "Pratique culturale courante (ordre de grandeur)"
         },
         "conseils": {
-          "valeur": "Aime la chaleur et la lumière (optimum vers 23–24 °C avec une DLI d'environ 18). Les boutures mettent plus de 3 semaines à s'enraciner. Craint l'excès d'eau et l'air humide (oïdium) : aérez bien.",
-          "source": "Walters, Tarr & Lopez (2023), PLOS ONE – croissance de la sauge selon la température et la DLI (optimum ≈ 23,5 °C à DLI 18 mol/m²/j) ; pratique culturale courante"
+          "valeur": "Aime la chaleur et la lumière (optimum vers 23–24 °C avec un DLI d'environ 18). Les boutures mettent plus de 3 semaines à s'enraciner. Craint l'excès d'eau et l'air humide (oïdium) : aérez bien.",
+          "source": "Walters, Tarr & Lopez (2023), PLOS ONE – croissance de la sauge selon la température et le DLI (optimum ≈ 23,5 °C à DLI 18 mol/m²/j) ; pratique culturale courante"
         }
       }
     },
@@ -1193,11 +1193,11 @@
         "croissance": {
           "ppfd": {
             "valeur": 300,
-            "source": "Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon la DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit ; 300 × 14 h × 0,0036 = DLI 15,1 mol/m²/j"
+            "source": "Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon le DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit ; 300 × 14 h × 0,0036 = DLI 15,1 mol/m²/j"
           },
           "photoperiode": {
             "valeur": 14,
-            "source": "Ordre de grandeur (estimation) : l'aneth est une plante de jours longs qui monte en graines ; 14 h limitent la montaison tout en gardant une DLI suffisante ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+            "source": "Ordre de grandeur (estimation) : l'aneth est une plante de jours longs qui monte en graines ; 14 h limitent la montaison tout en gardant un DLI suffisant ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
           },
           "hauteur_cm": {
             "valeur": [
@@ -1219,18 +1219,18 @@
             20,
             26
           ],
-          "source": "Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon la DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C) (masse fraîche qui augmente avec la température jusqu'à 27 °C) ; plage indicative"
+          "source": "Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon le DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C) (masse fraîche qui augmente avec la température jusqu'à 27 °C) ; plage indicative"
         },
         "temperature_nuit_c": {
           "valeur": [
             16,
             20
           ],
-          "source": "Ordre de grandeur (estimation) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimale ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
+          "source": "Ordre de grandeur (estimation) ; Lopez, Michigan State University (Produce Grower) – Improve culinary herb yields : DLI optimal ≈ 15–16 mol/m²/j (10–20), 16 h, 22 °C le jour / 16 °C la nuit"
         },
         "temperature_a_eviter": {
           "valeur": "< 18 °C (croissance lente, lumière mal valorisée)",
-          "source": "Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon la DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C)"
+          "source": "Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon le DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C)"
         },
         "humidite_pct": {
           "valeur": [
@@ -1258,7 +1258,7 @@
             30,
             45
           ],
-          "source": "Ordre de grandeur (estimation) : du semis à la première coupe ; Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon la DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C) : récolte environ 3 semaines après la mise en culture des plants"
+          "source": "Ordre de grandeur (estimation) : du semis à la première coupe ; Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon le DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C) : récolte environ 3 semaines après la mise en culture des plants"
         },
         "espacement_cm": {
           "valeur": [
@@ -1269,7 +1269,7 @@
         },
         "conseils": {
           "valeur": "Monte vite en graines : récoltez jeune et ressemez toutes les 3 à 4 semaines. Semez en place (racine pivotante qui supporte mal le repiquage). Il profite de la chaleur, jusqu'à environ 27 °C.",
-          "source": "Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon la DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C) ; pratique culturale courante"
+          "source": "Walters & Lopez (2021), PLOS ONE – croissance de l'aneth selon le DLI et la température (masse fraîche croissante jusqu'à 27 °C, lumière valorisée au-dessus de 18 °C) ; pratique culturale courante"
         }
       }
     },
@@ -1695,7 +1695,7 @@
           },
           "photoperiode": {
             "valeur": 18,
-            "source": "HortTechnology 36(1) (2026), Virginia Tech – micro-tomates en ferme verticale : PPFD ≈ 350 µmol/m²/s sans gain au-delà, DLI 22,7–27,9 mol/m²/j (meilleur Brix à 27,9) : 18 h à 350 µmol/m²/s donnent 22,7 mol/m²/j ; la DLI de 27,9 (≈ 22 h) améliore encore le Brix, mais Velez-Ramirez et al. (2011), Trends in Plant Science signalent des lésions de la tomate en éclairage quasi continu"
+            "source": "HortTechnology 36(1) (2026), Virginia Tech – micro-tomates en ferme verticale : PPFD ≈ 350 µmol/m²/s sans gain au-delà, DLI 22,7–27,9 mol/m²/j (meilleur Brix à 27,9) : 18 h à 350 µmol/m²/s donnent 22,7 mol/m²/j ; le DLI de 27,9 (≈ 22 h) améliore encore le Brix, mais Velez-Ramirez et al. (2011), Trends in Plant Science signalent des lésions de la tomate en éclairage quasi continu"
           },
           "hauteur_cm": {
             "valeur": [
@@ -1765,7 +1765,7 @@
           "source": "Ordre de grandeur (estimation) : plante compacte de 20 à 30 cm"
         },
         "conseils": {
-          "valeur": "Choisissez une variété de micro-tomate (20–30 cm de haut) : pas besoin de tuteur. Secouez les grappes en fleur pour libérer le pollen. Au-delà de 350 µmol/m²/s, il n'y a pas de gain : pour augmenter la lumière reçue, allongez plutôt la durée d'éclairage (sans dépasser 18 h).",
+          "valeur": "Choisissez une variété de micro-tomate (20–30 cm de haut) : elle tient généralement seule, mais un petit tuteur peut aider quand les fruits chargent. Secouez les grappes en fleur pour libérer le pollen. Au-delà de 350 µmol/m²/s, il n'y a pas de gain : pour augmenter la lumière reçue, allongez plutôt la durée d'éclairage (sans dépasser 18 h).",
           "source": "HortTechnology 36(1) (2026), Virginia Tech – micro-tomates en ferme verticale : PPFD ≈ 350 µmol/m²/s sans gain au-delà, DLI 22,7–27,9 mol/m²/j (meilleur Brix à 27,9) ; pratique culturale courante"
         }
       }
@@ -2341,11 +2341,11 @@
         "floraison": {
           "ppfd": {
             "valeur": 100,
-            "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction ; 100 × 10 h × 0,0036 = DLI 3,6 mol/m²/j, soit environ 42 jours pour cumuler 150 mol/m²"
+            "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulé (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction ; 100 × 10 h × 0,0036 = DLI 3,6 mol/m²/j, soit environ 42 jours pour cumuler 150 mol/m²"
           },
           "photoperiode": {
             "valeur": 10,
-            "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction"
+            "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulé (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction"
           },
           "hauteur_cm": {
             "valeur": [
@@ -2356,7 +2356,7 @@
           },
           "spectre": {
             "valeur": "LED bleues + rouges à large bande (spectre de l'essai), ou blanc plein spectre",
-            "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction ; Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
+            "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulé (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction ; Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
           }
         }
       },
@@ -2366,7 +2366,7 @@
             15,
             20
           ],
-          "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction (essai à ≈ 18 °C en moyenne) ; induction florale vers 15 °C ; plage indicative"
+          "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulé (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction (essai à ≈ 18 °C en moyenne) ; induction florale vers 15 °C ; plage indicative"
         },
         "temperature_nuit_c": {
           "valeur": [
@@ -2377,14 +2377,14 @@
         },
         "temperature_a_eviter": {
           "valeur": "> 23 °C pendant la floraison (fleurs qui avortent ou retardées)",
-          "source": "Ordre de grandeur (estimation) : la floraison est déclenchée par la baisse de température d'automne (≈ 15 °C) ; Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction"
+          "source": "Ordre de grandeur (estimation) : la floraison est déclenchée par la baisse de température d'automne (≈ 15 °C) ; Gao et al. (2023), Scientific Reports 13 – DLI cumulé (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction"
         },
         "humidite_pct": {
           "valeur": [
             50,
             70
           ],
-          "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction (essai à ≈ 70 % d'humidité) ; plage indicative"
+          "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulé (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction (essai à ≈ 70 % d'humidité) ; plage indicative"
         },
         "ph": {
           "valeur": [
@@ -2405,7 +2405,7 @@
             40,
             60
           ],
-          "source": "Délai compté depuis la plantation des cormes (fin d'été) jusqu'aux fleurs : Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction (≈ 5 à 6 semaines de fin septembre à début novembre) ; ordre de grandeur"
+          "source": "Délai compté depuis la plantation des cormes (fin d'été) jusqu'aux fleurs : Gao et al. (2023), Scientific Reports 13 – DLI cumulé (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction (≈ 5 à 6 semaines de fin septembre à début novembre) ; ordre de grandeur"
         },
         "espacement_cm": {
           "valeur": [
@@ -2416,7 +2416,7 @@
         },
         "conseils": {
           "valeur": "Une seule récolte par an, en automne. Plantez des cormes de bonne taille en fin d'été : la floraison vient avant les feuilles. Stade « floraison » = induction et floraison, environ 10 h de lumière vers 15–18 °C pendant 5 à 6 semaines (150 mol/m² cumulés). Cueillez les fleurs le matin et séchez les stigmates. Stade « croissance » = feuillage qui suit la floraison et reconstitue les cormes pour l'année suivante ; laissez-le jaunir, puis gardez les cormes au sec et au chaud l'été.",
-          "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulée (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction ; Nexsel (fabricant) – guide de culture du safran en intérieur : PPFD 150–200 µmol/m²/s (guide commercial) ; pratique culturale courante"
+          "source": "Gao et al. (2023), Scientific Reports 13 – DLI cumulé (LED bleues + rouges à large bande, 100 µmol/m²/s, 10 h, ≈ 18 °C) et floraison du safran : optimum à 150 mol/m² cumulés pendant l'induction ; Nexsel (fabricant) – guide de culture du safran en intérieur : PPFD 150–200 µmol/m²/s (guide commercial) ; pratique culturale courante"
         }
       }
     },

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { header, insecables, mesureAudience, mettreEnPageArticle, NAVIGATION, referencement, RUBRIQUES, sitemap, tempsLecture } from './site.ts';
+import { fichiersImagesNonPubliees, header, insecables, mesureAudience, mettreEnPageArticle, NAVIGATION, referencement, RUBRIQUES, sitemap, tempsLecture } from './site.ts';
 
 describe('en-tête', () => {
   it('met en évidence la rubrique de la page courante', () => {
@@ -99,5 +99,14 @@ describe('espaces insécables', () => {
   });
   it("pas d'unité collée à un mot", () => {
     expect(insecables('<p>2 mois, 3 heures</p>')).toBe('<p>2 mois, 3 heures</p>');
+  });
+});
+
+describe('images des articles programmés', () => {
+  it('ne publie pas les images des articles futurs', () => {
+    expect(fichiersImagesNonPubliees('2999-01-01')).toEqual([]);
+    const avant = fichiersImagesNonPubliees('2000-01-01');
+    expect(avant.length).toBeGreaterThan(0);
+    expect(avant.every((f) => /^images\/(guides|partage)\/conseil-/.test(f))).toBe(true);
   });
 });

@@ -22,14 +22,14 @@
  * (fil d'Ariane, <article class="prose"> avec h1, chapo et sommaire) reçoivent
  * automatiquement un bandeau de titre, un sommaire latéral et un temps de lecture.
  */
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import type { Plugin } from 'vite';
 import { chargerLegumes, rendreFiches, rendreSources, rendreTableauClimat } from './fiches.ts';
 import { htmlTuiles } from '../src/tuiles.ts';
 import { rendreLampes } from './lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
-import { pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, tousLesConseils } from './conseils.ts';
+import { conseilsPublies, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, tousLesConseils } from './conseils.ts';
 import { rendreComparaisonLampes, rendreDliSemis, rendreEffetEfficacite, rendreEtageresSemis, rendrePuissancesCultures, rendrePuissancesSurfaces } from './guides-achat.ts';
 import { insecables } from '../src/typo.ts';
 
@@ -97,10 +97,10 @@ export function rubriqueDe(fichier: string): Rubrique | null {
   return null;
 }
 
-const FAVICON = `data:image/svg+xml,${encodeURIComponent(logo().replace('class="logo-marque" ', 'xmlns="http://www.w3.org/2000/svg" '))}`;
-
+/** Icônes publiées dans public/ (générées par scripts/favicon.mjs) : adresses réelles, utilisables par les moteurs de recherche. */
 export function head(): string {
-  return `<link rel="icon" href="${FAVICON}" />
+  return `<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="icones/favicon-96.png" sizes="96x96" type="image/png" />
     <link rel="apple-touch-icon" href="icones/apple-touch-icon.png" />
     <link rel="manifest" href="manifest.webmanifest" />
     <meta name="theme-color" content="#1b1322" />`;
@@ -239,7 +239,7 @@ export function header(fichier: string): string {
     <nav class="site-nav" aria-label="Navigation principale"><ul>${liens}</ul></nav>
     ${/^(index|calculateur)\.html$/.test(fichier) ? '' : `<a class="bouton bouton--plein bouton--entete" href="index.html#calculateur">${icone('calcul')}<span>Calculer</span></a>`}
     <details class="menu-mobile">
-      <summary aria-label="Ouvrir le menu">${icone('menu')}<span>Menu</span></summary>
+      <summary aria-label="Menu">${icone('menu')}<span>Menu</span></summary>
       <nav aria-label="Navigation principale (mobile)"><ul>${liens}</ul></nav>
     </details>
   </div>
@@ -271,9 +271,9 @@ export function cartesGuides(r: Rubrique): string {
   return `<div class="cartes-guides cartes-guides--${r}">${RUBRIQUES[r].guides
     .map(
       (g, i) => `<a class="carte-guide" href="${g.fichier}">
-      <span class="carte-guide__photo">${photoGuide(g.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw')}</span>
+      <span class="carte-guide__photo">${photoGuide(g.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw', i === 0 ? 'eager' : 'lazy')}</span>
       <span class="carte-guide__icone">${icone(g.icone)}</span>
-      <span class="carte-guide__num">${String(i + 1).padStart(2, '0')}</span>
+      <span class="carte-guide__num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
       <strong>${g.titre}</strong>
       <span>${g.resume}</span>
       <span class="carte-guide__lire">Lire le guide ${icone('fleche', 'icone icone--petite')}</span>
@@ -439,12 +439,22 @@ export function transformerPage(html: string, fichier: string): string {
   return insecables(page);
 }
 
+/** Images (photo et partage) des articles de conseil pas encore publiés, chemins relatifs au dossier de sortie. */
+export function fichiersImagesNonPubliees(date?: string): string[] {
+  const publies = new Set(conseilsPublies(date).map((c) => c.slug));
+  return tousLesConseils()
+    .filter((c) => !publies.has(c.slug))
+    .flatMap((c) => [800, 1600].map((l) => `images/guides/${PREFIXE_PAGE_CONSEIL}${c.slug}-${l}.webp`).concat(`images/partage/${PREFIXE_PAGE_CONSEIL}${c.slug}.jpg`));
+}
+
 export function pluginSite(): Plugin {
   let racine = process.cwd();
+  let sortie = resolve(racine, 'dist');
   return {
     name: 'optiled-site',
     configResolved(config) {
       racine = config.root;
+      sortie = resolve(config.root, config.build.outDir);
     },
     // Pages détaillées des cultures : elles n'existent pas sur le disque, on les fournit à Vite.
     resolveId(id) {
@@ -473,6 +483,10 @@ export function pluginSite(): Plugin {
         .filter((f) => !sourcePage(racine, f).includes('content="noindex"'));
       this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap(pages) });
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}sitemap.xml\n` });
+    },
+    closeBundle() {
+      // Les photos des articles programmés ne sont publiées qu'avec l'article (public/ est copié en entier).
+      for (const f of fichiersImagesNonPubliees()) rmSync(resolve(sortie, f), { force: true });
     },
   };
 }

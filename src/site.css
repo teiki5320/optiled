@@ -1,80 +1,20 @@
 /* =====================================================================
-   OptiLED — styles communs
-   Direction : « chambre de culture ». Bandeaux sombres éclairés par les
-   couleurs du spectre LED (bleu → violet → rouge), pages de lecture
-   claires et chaleureuses, vert végétal pour l'action.
+   OptiLED — styles communs (mise en page et composants)
+   Les couleurs, polices, rayons et ombres (jetons) sont définis dans
+   theme.css, chargé juste après : thème sombre « Crépuscule » unique.
    ===================================================================== */
 
 
 :root {
-  /* Nuit : en-tête, bandeaux, pied de page (identiques en thème clair et sombre) */
-  --nuit: #0c1510;
-  --nuit-2: #14231a;
-  --nuit-3: #1d3025;
-  --nuit-texte: #eef5ef;
-  --nuit-attenue: #a3b8a9;
-  --nuit-bordure: rgb(255 255 255 / 0.1);
-
-  /* Surfaces de lecture */
-  --fond: #f7f5ef;
-  --carte: #ffffff;
-  --texte: #16201a;
-  --attenue: #56645a;
-  --bordure: #e4e0d4;
-  --accent: #1d7a43;
-  --accent-vif: #3ccf7a;
-  --accent-clair: #e6f4ea;
-  --alerte: #8f5400;
-  --alerte-clair: #fff3d9;
-  --erreur: #b3261e;
-
-  /* Spectre LED */
-  --bleu: #5b7cff;
+  /* Jetons propres à ce fichier (non redéfinis par theme.css) */
   --violet: #b56bff;
-  --rouge: #ff4d6d;
-  --ambre: #ffc15e;
-  --spectre: linear-gradient(90deg, var(--bleu), var(--violet) 50%, var(--rouge));
-
-  /* Couleur de rubrique (surchargée par .bandeau--led, --culture…) */
-  --r: var(--accent-vif);
-
-  --rayon: 16px;
-  --rayon-petit: 10px;
-  --ombre: 0 1px 2px rgb(16 32 22 / 0.05), 0 12px 32px -16px rgb(16 32 22 / 0.25);
-  --ombre-forte: 0 2px 4px rgb(16 32 22 / 0.06), 0 22px 44px -18px rgb(16 32 22 / 0.35);
-  --police: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --police-titre: system-ui, sans-serif;
   --police-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --largeur: 72rem;
 
-  color-scheme: light dark;
   font-family: var(--police);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --fond: #0a110d;
-    --carte: #111b15;
-    --texte: #e5ede7;
-    --attenue: #9aab9f;
-    --bordure: #223128;
-    --accent: #5fdc93;
-    --accent-clair: #15271c;
-    --alerte: #ffc66b;
-    --alerte-clair: #2a2213;
-    --erreur: #ff8a7d;
-    --ombre: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -16px rgb(0 0 0 / 0.6);
-    --ombre-forte: 0 2px 4px rgb(0 0 0 / 0.3), 0 22px 44px -18px rgb(0 0 0 / 0.7);
-  }
-}
-
-.bandeau--led, .article--led, .cartes-guides--led { --r: var(--violet); }
-.bandeau--culture, .article--culture, .cartes-guides--culture { --r: var(--accent-vif); }
-.bandeau--reference, .article--reference { --r: var(--bleu); }
-.bandeau--legumes { --r: #ff7a45; }
-.bandeau--calcul { --r: var(--ambre); }
 
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -447,9 +387,9 @@ img, svg { max-width: 100%; }
 .fiche__kpi dt { font-size: 0.72rem; color: var(--attenue); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
 .fiche__kpi dd { margin: 0; font-family: var(--police-titre); font-weight: 750; font-size: 1.08rem; line-height: 1.25; }
 .fiche__kpi dd small { font-family: var(--police); font-weight: 500; font-size: 0.72rem; color: var(--attenue); margin-left: 0.15rem; }
-.fiche__detail { border-top: 1px dashed var(--bordure); padding-top: 0.6rem; }
-.fiche__detail summary { cursor: pointer; font-weight: 650; font-size: 0.9rem; color: var(--accent); }
-.fiche__detail[open] summary { margin-bottom: 0.6rem; }
+.fiche__detail { border-top: 1px dashed var(--bordure); }
+/* Zone cliquable d'au moins 44 px de haut (l'espace vient du padding, plus de celui du bloc). */
+.fiche__detail summary { cursor: pointer; font-weight: 650; font-size: 0.9rem; color: var(--accent); padding: 0.7rem 0; }
 .fiche__stades { display: grid; gap: 0.9rem; }
 .fiche-stade h4 { margin: 0 0 0.3rem; font-size: 0.9rem; color: var(--attenue); text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--police); }
 .fiche-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }

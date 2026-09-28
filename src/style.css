@@ -155,6 +155,8 @@ input[type='text']:focus, select:focus { outline: none; border-color: var(--acce
 }
 
 .erreurs { color: var(--erreur); font-weight: 600; }
+/* Message sous le champ fautif (créé par signalerChamps dans main.ts) */
+.champ__erreur { color: var(--erreur); font-weight: 600; font-size: 0.82rem; line-height: 1.4; }
 .pas input[aria-invalid="true"], input[aria-invalid="true"] { border-color: var(--erreur); box-shadow: 0 0 0 1px var(--erreur); }
 .perime { opacity: 0.35; }
 

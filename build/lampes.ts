@@ -12,7 +12,6 @@ function carte(l: Lampe): string {
   const surface = l.couverture_m2 ? ` · ${m2(l.couverture_m2.croissance)} m² en croissance, ${m2(l.couverture_m2.floraison)} m² en floraison` : '';
   return `<li class="lampe">
   <h3>${echapper(l.nom)}</h3>
-  <p class="lampe__note">${nb(l.note)} ★ <span>(${l.avis.toLocaleString('fr-FR').replace(/ /g, ' ')} avis)</span></p>
   <p>${echapper(l.dimensions)} · ${l.puissance_w} W · ${lumiere}${surface} · ${l.variateur ? 'avec variateur' : 'sans variateur'}</p>
   <a class="bouton" href="${lienAmazon(l)}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a>
 </li>`;
@@ -40,5 +39,5 @@ export function rendreLampes(): string {
     return `<h2 id="${g.id}">${g.titre}</h2>\n${note}<ul class="lampes">${liste.map(carte).join('\n')}</ul>`;
   }).join('\n');
   return `${sections}
-<p class="aide">Notes relevées sur Amazon.fr le ${dateVerification()}. ${MENTION_AFFILIATION}</p>`;
+<p class="aide">Sélection vérifiée sur Amazon.fr le ${dateVerification()}. ${MENTION_AFFILIATION}</p>`;
 }

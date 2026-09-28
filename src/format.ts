@@ -14,3 +14,8 @@ export function nombre(v: number, decimales = 0): string {
 export function euros(v: number): string {
   return `${nombre(v, 2)} €`;
 }
+
+/** Accord en nombre à la française : pluriel à partir de 2 (« 1,5 watt », « 2 watts »). */
+export function accord(n: number, singulier: string, pluriel = `${singulier}s`): string {
+  return Math.abs(n) >= 2 ? pluriel : singulier;
+}
