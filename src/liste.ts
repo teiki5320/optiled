@@ -1,5 +1,5 @@
 import type { ResultatCalcul } from './calc.ts';
-import { euros, nombre } from './format.ts';
+import { accord, euros, nombre } from './format.ts';
 
 export interface ContexteListe {
   legume: string;
@@ -76,7 +76,7 @@ export function resumeTexte(r: ResultatCalcul, c: ContexteListe): string {
     `DLI : ${nombre(r.dli, 1)} mol/m²/jour (${nombre(c.photoperiodeH)} h/jour)`,
     `Flux nécessaire (PPF) : ${nombre(r.ppfNecessaire)} µmol/s`,
     `Puissance électrique : ${nombre(r.puissanceW)} W (${nombre(r.densitePuissanceWm2)} W/m²)`,
-    `Barres : ${b.total} × ${nombre(c.longueurBarreM, 2)} m — ${b.lignesParZone} ligne(s) de ${b.barresParLigne} barre(s)` +
+    `Barres : ${b.total} × ${nombre(c.longueurBarreM, 2)} m — ${b.lignesParZone} ${accord(b.lignesParZone, 'ligne')} de ${b.barresParLigne} ${accord(b.barresParLigne, 'barre')}` +
       (b.zones > 1 ? ` par rang, ${b.zones} rangs` : ''),
     `Entraxe des lignes : ${nombre(b.espacementM * 100)} cm (1re ligne à ${nombre(b.margeBordM * 100)} cm du bord)`,
     `Hauteur de suspension : ${r.hauteurCm[0]}–${r.hauteurCm[1]} cm`,

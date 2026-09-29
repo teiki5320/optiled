@@ -35,7 +35,7 @@ import { insecables } from '../src/typo.ts';
 
 export { insecables };
 import { icone, logo, type NomIcone } from './icones.ts';
-import { photoGuide } from './photos.ts';
+import { CARTES_PREMIERE_RANGEE, photoGuide } from './photos.ts';
 export { photoGuide };
 
 export const NOM_SITE = 'OptiLED';
@@ -112,6 +112,20 @@ function attribut(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 }
 
+/**
+ * Décode les entités HTML d'un texte lu dans une page (titre, description, h1…) : echapper()
+ * y met par exemple &#39; pour l'apostrophe. Sans ce décodage, attribut() et le JSON-LD
+ * les échapperaient une seconde fois (« d&amp;#39;heures »).
+ */
+export function decoderEntites(s: string): string {
+  const nommees: Record<string, string> = { amp: '&', quot: '"', apos: "'", lt: '<', gt: '>', nbsp: '\u00a0' };
+  return s.replace(/&(?:#(\d+)|#x([0-9a-f]+)|([a-z]+));/gi, (m, dec?: string, hex?: string, nom?: string) => {
+    if (dec) return String.fromCodePoint(Number(dec));
+    if (hex) return String.fromCodePoint(parseInt(hex, 16));
+    return nommees[nom!.toLowerCase()] ?? m;
+  });
+}
+
 /** Adresse publique d'une page (l'accueil est servi à la racine). */
 export function urlPage(fichier: string, url = SITE_URL): string {
   return fichier === 'index.html' ? url : `${url}${fichier}`;
@@ -123,8 +137,8 @@ export function urlPage(fichier: string, url = SITE_URL): string {
  */
 export function referencement(html: string, fichier: string, url = SITE_URL): string {
   if (/content="noindex"/.test(html)) return '';
-  const titre = html.match(/<title>([^<]*)<\/title>/)?.[1]?.trim() ?? NOM_SITE;
-  const description = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '';
+  const titre = decoderEntites(html.match(/<title>([^<]*)<\/title>/)?.[1]?.trim() ?? NOM_SITE);
+  const description = decoderEntites(html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '');
   const nom = fichier.replace(/\.html$/, '');
   const image = `${url}images/partage/${existsSync(resolve(DOSSIER_PARTAGE, `${nom}.jpg`)) ? nom : 'accueil'}.jpg`;
   const adresse = urlPage(fichier, url);
@@ -148,7 +162,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
     });
   }
   if (r && guide) {
-    const titreArticle = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, '').trim() ?? guide.titre;
+    const titreArticle = decoderEntites(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, '').trim() ?? guide.titre);
     donnees.push(
       {
         '@context': 'https://schema.org',
@@ -173,8 +187,9 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
     );
   }
   if (pageLegume || pageConseil) {
-    const titreArticle = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, '').trim() ?? titre;
-    const nom = pageLegume ? (html.match(/<p class="fil">[\s\S]*›\s*([^<›]+?)\s*<\/p>/)?.[1] ?? titreArticle) : titreArticle;
+    const titreArticle = decoderEntites(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, '').trim() ?? titre);
+    const filLegume = html.match(/<p class="fil">[\s\S]*›\s*([^<›]+?)\s*<\/p>/)?.[1];
+    const nom = pageLegume && filLegume ? decoderEntites(filLegume) : titreArticle;
     const datePublication = html.match(/<meta name="date-publication" content="([^"]+)"/)?.[1];
     donnees.push(
       {
@@ -255,7 +270,7 @@ export function footer(): string {
       <a class="logo" href="index.html">${logo('-pied')}<span><strong>${NOM_SITE}</strong><small>LED &amp; culture indoor</small></span></a>
       <p>Guides et outils gratuits pour cultiver des légumes sous LED, en intérieur.</p>
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la <a href="glossaire.html#sources">littérature horticole</a> : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
-      <p class="site-pied__note">Photos des guides et miniatures des cultures générées par intelligence artificielle ; schémas réalisés pour le site.</p>
+      <p class="site-pied__note">Photos (guides, conseils, cultures) et certains schémas des guides Culture générés par intelligence artificielle ; les autres schémas sont réalisés pour le site.</p>
       <p class="site-pied__note">Certains liens vers Amazon sont sponsorisés : en tant que Partenaire Amazon, l'éditeur réalise un bénéfice sur les achats remplissant les conditions requises.</p>
       <p class="site-pied__note"><a href="mentions-legales.html">Mentions légales</a></p>
     </div>
@@ -271,7 +286,7 @@ export function cartesGuides(r: Rubrique): string {
   return `<div class="cartes-guides cartes-guides--${r}">${RUBRIQUES[r].guides
     .map(
       (g, i) => `<a class="carte-guide" href="${g.fichier}">
-      <span class="carte-guide__photo">${photoGuide(g.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw', i === 0 ? 'eager' : 'lazy')}</span>
+      <span class="carte-guide__photo">${photoGuide(g.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw', i < CARTES_PREMIERE_RANGEE ? 'eager' : 'lazy', i === 0)}</span>
       <span class="carte-guide__icone">${icone(g.icone)}</span>
       <span class="carte-guide__num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
       <strong>${g.titre}</strong>

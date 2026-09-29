@@ -5,7 +5,7 @@
 import { calculer, calculerDli, longueurBarreConseillee, type ResultatCalcul } from '../src/calc.ts';
 import type { Legume } from '../src/data.ts';
 import { LAMPES, type Lampe } from '../src/lampes.ts';
-import { chargerLegumes, echapper } from './fiches.ts';
+import { chargerLegumes, echapper, libellesFloraison, stadeLePlusExigeant } from './fiches.ts';
 import { fichierLegume } from './pages-legumes.ts';
 
 /** Réglages par défaut du calculateur. */
@@ -63,9 +63,20 @@ export function rendrePuissancesSurfaces(): string {
   );
 }
 
-/** Stade le plus exigeant d'une culture. */
+/** PPFD du stade le plus exigeant d'une culture. */
 function ppfdMax(l: Legume): number {
   return Math.max(l.stades.croissance.ppfd.valeur, l.stades.floraison?.ppfd.valeur ?? 0);
+}
+
+/**
+ * Stade retenu, précisé seulement pour les cultures à deux stades : « en fructification » pour les
+ * légumes fruits, « en floraison » ou « en croissance » pour les autres (le safran demande plus de
+ * lumière pour son feuillage que pour sa floraison). Sans parenthèses, pour ne pas les doubler
+ * après un nom comme « Tomate naine (micro-tomate) ».
+ */
+export function libelleStadeExigeant(l: Legume): string {
+  if (!l.stades.floraison) return '';
+  return stadeLePlusExigeant(l) === 'floraison' ? `en ${libellesFloraison(l).court}` : 'en croissance';
 }
 
 /** Besoin de chaque culture (stade le plus exigeant) : PPF et puissance par m², puissance pour une tente de 60 × 60 cm. */
@@ -76,7 +87,7 @@ export function rendrePuissancesCultures(legumes: Legume[] = chargerLegumes()): 
     tries.map((l) => {
       const p = ppfdMax(l);
       return [
-        `<a href="${fichierLegume(l.id)}">${echapper(l.nom)}</a>${l.stades.floraison ? ' <small>(floraison)</small>' : ''}`,
+        `<a href="${fichierLegume(l.id)}">${echapper(l.nom)}</a>${libelleStadeExigeant(l) ? ` <small>${libelleStadeExigeant(l)}</small>` : ''}`,
         nb(p),
         `${nb(Math.round(p / COEF_UTILISATION))} µmol/s`,
         `${nb(Math.round(puissance(p, 1)))} W`,

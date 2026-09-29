@@ -41,7 +41,8 @@ export function alertes(c: ContexteAlertes): string[] {
   } else if (c.legumeId === 'chanvre-cbd' && c.stade === 'croissance' && duree < 16) {
     a.push(`Avec ${h} h de lumière, le chanvre risque de passer en floraison trop tôt : gardez au moins 16 à 18 h en croissance.`);
   } else if (SENSIBLES_ECLAIRAGE_CONTINU.includes(c.legumeId) && duree > 18) {
-    a.push(`${majuscule(c.nom)} : au-delà de 18 h par jour, on s'approche de l'éclairage continu, qui provoque des lésions des feuilles. Revenez à 16–18 h.`);
+    // Durée conseillée par les données : 16 h pour la tomate et l'aubergine, 18 h pour la tomate naine en fructification.
+    a.push(`${majuscule(c.nom)} : au-delà de 18 h par jour, on s'approche de l'éclairage continu, qui provoque des lésions des feuilles. Revenez à ${String(c.photoperiodeConseilleeH).replace('.', ',')} h.`);
   } else if (MONTAISON.includes(c.legumeId) && duree > Math.max(14, c.photoperiodeConseilleeH)) {
     a.push(`${majuscule(c.nom)} : au-delà de ${Math.max(14, c.photoperiodeConseilleeH)} h par jour, risque de montée en graines. ${c.photoperiodeConseilleeH} h sont conseillées.`);
   } else if (duree > 20) {

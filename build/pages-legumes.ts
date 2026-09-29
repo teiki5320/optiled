@@ -5,9 +5,11 @@
  * la même mise en page que les guides.
  */
 import { calculer, calculerDli, longueurBarreConseillee, nombrePlants, type ResultatCalcul, type Surface } from '../src/calc.ts';
-import type { Legume, ParametresStade, Stade } from '../src/data.ts';
+import type { Legume, ParametresStade } from '../src/data.ts';
 import { lampesConseillees, lienAmazon, MENTION_AFFILIATION, type Proposition } from '../src/lampes.ts';
-import { chargerLegumes, DEPART_RECOLTE, echapper, miniature, slug } from './fiches.ts';
+import { chargerLegumes, DEPART_RECOLTE, echapper, libellesFloraison, miniature, slug, stadeLePlusExigeant } from './fiches.ts';
+
+export { libellesFloraison, stadeLePlusExigeant };
 
 export const PREFIXE_PAGE_LEGUME = 'legume-';
 
@@ -91,30 +93,37 @@ function carteLampe(p: Proposition, r: ResultatCalcul): string {
 </li>`;
 }
 
+/**
+ * Cultures dont la floraison précède la phase de feuillage (le safran fleurit à l'automne, puis
+ * ses feuilles reconstituent les cormes) : la description donne les stades dans cet ordre.
+ */
+export const FLORAISON_AVANT_FEUILLAGE = new Set(['safran']);
+
+/** Délai de récolte de la description, quand « première récolte » serait trompeur. */
+function recolteDescription(l: Legume): string {
+  const jours = `${plage(l.culture.jours_recolte.valeur)} jours`;
+  // Wasabi : feuilles et pétioles se récoltent au bout de quelques mois, le rhizome bien plus tard.
+  if (l.id === 'wasabi') return `feuilles au bout de quelques mois, rhizome en ${jours}`;
+  return `première récolte en ${jours}`;
+}
+
 /** Description courte (balise meta), construite à partir des valeurs de la fiche (158 caractères au plus). */
 export function descriptionLegume(l: Legume): string {
   const c = l.stades.croissance;
   const f = l.stades.floraison;
-  const ppfd = f ? `${c.ppfd.valeur} puis ${f.ppfd.valeur}` : `${c.ppfd.valeur}`;
-  const heures = f && f.photoperiode.valeur !== c.photoperiode.valeur ? `${nb(c.photoperiode.valeur)} puis ${nb(f.photoperiode.valeur)}` : nb(c.photoperiode.valeur);
   const temperature = plage(l.culture.temperature_c.valeur, ' °C');
-  const valeurs = `${ppfd} µmol/m²/s, ${heures} h par jour, ${temperature} le jour, pH ${plage(l.culture.ph.valeur)}, première récolte en ${plage(l.culture.jours_recolte.valeur)} jours.`;
+  let lumiere: string;
+  if (f && FLORAISON_AVANT_FEUILLAGE.has(l.id)) {
+    lumiere = `${f.ppfd.valeur} µmol/m²/s et ${nb(f.photoperiode.valeur)} h en floraison, puis ${c.ppfd.valeur} et ${nb(c.photoperiode.valeur)} h pour le feuillage`;
+  } else {
+    const ppfd = f ? `${c.ppfd.valeur} puis ${f.ppfd.valeur}` : `${c.ppfd.valeur}`;
+    const heures = f && f.photoperiode.valeur !== c.photoperiode.valeur ? `${nb(c.photoperiode.valeur)} puis ${nb(f.photoperiode.valeur)}` : nb(c.photoperiode.valeur);
+    lumiere = `${ppfd} µmol/m²/s, ${heures} h par jour`;
+  }
+  const valeurs = `${lumiere}, ${temperature} le jour, pH ${plage(l.culture.ph.valeur)}, ${recolteDescription(l)}.`;
   const complete = `${l.nom} en intérieur sous LED : ${valeurs}`;
   // Nom long (« Tomate naine (micro-tomate) ») : on raccourcit l'accroche plutôt que les valeurs.
   return complete.length <= 158 ? complete : `${l.nom} sous LED : ${valeurs}`;
-}
-
-/** Libellés du stade de floraison : les légumes fruits fleurissent pour fructifier, les autres cultures non. */
-export function libellesFloraison(l: Legume): { titre: string; de: string; la: string } {
-  return l.famille === 'Légumes fruits'
-    ? { titre: 'Floraison et fructification', de: 'floraison et de fructification', la: 'la floraison et la fructification' }
-    : { titre: 'Floraison', de: 'floraison', la: 'la floraison' };
-}
-
-/** Stade le plus gourmand en lumière (PPFD le plus élevé), celui pour lequel on dimensionne l'installation. */
-export function stadeLePlusExigeant(l: Legume): Stade {
-  const f = l.stades.floraison;
-  return f && f.ppfd.valeur >= l.stades.croissance.ppfd.valeur ? 'floraison' : 'croissance';
 }
 
 /** Contenu HTML complet (avec marqueurs) de la page détaillée d'une culture. */

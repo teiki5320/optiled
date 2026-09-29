@@ -2,7 +2,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { calculerDli } from '../src/calc.ts';
-import type { Legume, ParametresStade } from '../src/data.ts';
+import type { Legume, ParametresStade, Stade } from '../src/data.ts';
 import { icone, type NomIcone } from './icones.ts';
 
 /** Page détaillée d'une culture (générée par build/pages-legumes.ts). */
@@ -67,6 +67,19 @@ function kpi(libelle: string, valeur: string, unite = ''): string {
 }
 
 /** Point de départ du délai de récolte, quand il n'est pas le semis. */
+/** Libellés du stade de floraison : les légumes fruits fleurissent pour fructifier, les autres cultures non. */
+export function libellesFloraison(l: Legume): { titre: string; de: string; la: string; court: string } {
+  return l.famille === 'Légumes fruits'
+    ? { titre: 'Floraison et fructification', de: 'floraison et de fructification', la: 'la floraison et la fructification', court: 'fructification' }
+    : { titre: 'Floraison', de: 'floraison', la: 'la floraison', court: 'floraison' };
+}
+
+/** Stade le plus gourmand en lumière (PPFD le plus élevé), celui pour lequel on dimensionne l'installation. */
+export function stadeLePlusExigeant(l: Legume): Stade {
+  const f = l.stades.floraison;
+  return f && f.ppfd.valeur >= l.stades.croissance.ppfd.valeur ? 'floraison' : 'croissance';
+}
+
 export const DEPART_RECOLTE: Record<string, string> = {
   fraise: 'après plantation',
   'chanvre-cbd': 'jusqu\'aux fleurs',
@@ -104,7 +117,7 @@ export function rendreFiche(l: Legume): string {
       <summary>Détail complet</summary>
       <div class="fiche__stades">
         ${blocStade(floraison ? 'Lumière — croissance' : 'Lumière', croissance)}
-        ${floraison ? blocStade('Lumière — floraison / fructification', floraison) : ''}
+        ${floraison ? blocStade(`Lumière — ${libellesFloraison(l).titre.toLowerCase()}`, floraison) : ''}
         <div class="fiche-stade">
           <h4>Conditions de culture</h4>
           <table class="fiche-table"><tbody>

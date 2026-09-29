@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { aLireAussi, type Conseil, conseilsPublies, dateDuJour, lireConseil, pagesConseils, sourcePageConseil, THEMES, tousLesConseils } from './conseils.ts';
+import { aLireAussi, type Conseil, conseilsPublies, dateDuJour, lireConseil, pagesConseils, rendreListeConseils, sourcePageConseil, THEMES, tousLesConseils } from './conseils.ts';
 import { sourcePage, toutesLesPages, transformerPage } from './site.ts';
 
 const racine = resolve(import.meta.dirname, '..');
@@ -95,6 +95,33 @@ describe('articles de conseil', () => {
       if (page.startsWith('conseil-')) continue;
       for (const [, cible] of sourcePage(racine, page).matchAll(/href="(conseil-[^"#?]+\.html)/g)) expect(publies.has(cible), `${page} → ${cible}`).toBe(true);
     }
+  });
+
+  it('apostrophes échappées une seule fois dans les balises de partage et le JSON-LD', () => {
+    const c = tous.find((x) => x.slug === 'heures-de-lumiere-par-jour')!;
+    expect(c.titre).toContain("'");
+    const html = transformerPage(sourcePageConseil(c, tous), c.fichier);
+    const partage = [...html.matchAll(/<meta (?:property="og:|name="twitter:)[^>]*>/g)].map((m) => m[0]).join('\n');
+    const jsonLd = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => m[1]).join('\n');
+    expect(jsonLd).not.toBe('');
+    for (const bloc of [partage, jsonLd]) {
+      expect(bloc).not.toContain('&amp;#');
+      expect(bloc).not.toContain('&#39;');
+    }
+    expect(partage).toContain(`<meta property="og:title" content="${c.titrePage} — OptiLED" />`);
+    const donnees = jsonLd.split('\n').map((j) => JSON.parse(j));
+    expect(donnees.find((d) => d['@type'] === 'Article').headline).toBe(c.titre);
+    expect(donnees.find((d) => d['@type'] === 'Article').description).toBe(c.description);
+    expect(donnees.find((d) => d['@type'] === 'BreadcrumbList').itemListElement[2].name).toBe(c.titre);
+  });
+
+  it('liste : trois premières photos chargées d’emblée, priorité réseau pour la première', () => {
+    const images = [...rendreListeConseils('2999-01-01').matchAll(/<img [^>]*>/g)].map((m) => m[0]);
+    expect(images.length).toBeGreaterThanOrEqual(4);
+    expect(images.slice(0, 3).every((img) => img.includes('loading="eager"'))).toBe(true);
+    expect(images.slice(3).every((img) => img.includes('loading="lazy"'))).toBe(true);
+    expect(images.filter((img) => img.includes('fetchpriority="high"'))).toHaveLength(1);
+    expect(images[0]).toContain('fetchpriority="high"');
   });
 
   it("l'en-tête incomplet est refusé", () => {

@@ -3,7 +3,7 @@
  * - Fichiers du build (assets/, noms à empreinte), images, icônes : cache d'abord.
  * Changer VERSION invalide les anciens caches (à faire quand une image ou le manifest change).
  * Seules les réponses valides sont gardées ; les anciens fichiers du build sont retirés. */
-const VERSION = 'optiled-v2';
+const VERSION = 'optiled-v3';
 const PRECHARGE = ['./', './index.html', './legumes.html', './led.html', './culture.html', './glossaire.html', './manifest.webmanifest'];
 
 self.addEventListener('install', (e) => {

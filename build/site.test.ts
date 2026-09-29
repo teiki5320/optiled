@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { fichiersImagesNonPubliees, header, insecables, mesureAudience, mettreEnPageArticle, NAVIGATION, referencement, RUBRIQUES, sitemap, tempsLecture } from './site.ts';
+import { cartesGuides, decoderEntites, fichiersImagesNonPubliees, header, insecables, mesureAudience, mettreEnPageArticle, NAVIGATION, referencement, RUBRIQUES, sitemap, tempsLecture } from './site.ts';
 
 describe('en-tête', () => {
   it('met en évidence la rubrique de la page courante', () => {
@@ -99,6 +99,31 @@ describe('espaces insécables', () => {
   });
   it("pas d'unité collée à un mot", () => {
     expect(insecables('<p>2 mois, 3 heures</p>')).toBe('<p>2 mois, 3 heures</p>');
+  });
+});
+
+describe('entités HTML', () => {
+  it('décode les entités numériques et nommées', () => {
+    expect(decoderEntites('d&#39;heures &amp; &quot;x&quot; &#60;b&#62; &lt;&gt; &#x27;')).toBe(`d'heures & "x" <b> <> '`);
+    expect(decoderEntites('&inconnue;')).toBe('&inconnue;');
+  });
+
+  it('pas de double échappement dans les balises de partage', () => {
+    const h = referencement(`<html><head><title>L&#39;éclairage &amp; les LED</title><meta name="description" content="Durée d&#39;éclairage conseillée pour une culture." /></head></html>`, 'legumes.html', 'https://exemple.fr/');
+    expect(h).toContain(`<meta property="og:title" content="L'éclairage &amp; les LED" />`);
+    expect(h).toContain(`<meta property="og:description" content="Durée d'éclairage conseillée pour une culture." />`);
+    expect(h).not.toContain('&amp;#');
+  });
+});
+
+describe('cartes des guides', () => {
+  it('première rangée chargée d’emblée, priorité réseau pour la première photo seulement', () => {
+    const images = [...cartesGuides('culture').matchAll(/<img [^>]*>/g)].map((m) => m[0]);
+    expect(images.length).toBeGreaterThanOrEqual(4);
+    images.forEach((img, i) => {
+      expect(img, `carte ${i + 1}`).toContain(i < 3 ? 'loading="eager"' : 'loading="lazy"');
+      expect(img.includes('fetchpriority="high"'), `carte ${i + 1}`).toBe(i === 0);
+    });
   });
 });
 

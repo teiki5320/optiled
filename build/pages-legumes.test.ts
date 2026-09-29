@@ -33,6 +33,17 @@ describe('pages détaillées des cultures', () => {
     }
   });
 
+  it('description : stades dans l’ordre du cycle et délai de récolte non trompeur', () => {
+    const description = (id: string) => descriptionLegume(legumes.find((l) => l.id === id)!);
+    // Safran : la floraison (100 µmol/m²/s, 10 h) précède le feuillage (200, 12 h).
+    expect(description('safran')).toContain('100 µmol/m²/s et 10 h en floraison, puis 200 et 12 h pour le feuillage');
+    expect(description('safran')).not.toContain('200 puis 100');
+    // Wasabi : les feuilles se récoltent bien avant le rhizome.
+    expect(description('wasabi')).toContain('rhizome en 365 à 540 jours');
+    expect(description('wasabi')).not.toContain('première récolte');
+    expect(description('tomate')).toContain('350 puis 500 µmol/m²/s');
+  });
+
   it("pas de note ni de nombre d'avis Amazon", () => {
     for (const [fichier, html] of pages) expect(html, fichier).not.toMatch(/★|\bavis\)/);
   });

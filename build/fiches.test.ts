@@ -15,9 +15,13 @@ describe('fiches légumes', () => {
     expect(html).toContain('index.html?legume=laitue#calculateur');
   });
 
-  it('les fruits ont un bloc floraison, pas les feuilles', () => {
-    expect(rendreFiche(legumes.find((l) => l.id === 'tomate')!)).toContain('floraison / fructification');
-    expect(rendreFiche(legumes.find((l) => l.id === 'laitue')!)).not.toContain('floraison / fructification');
+  it('bloc floraison intitulé selon la culture, absent pour les feuilles', () => {
+    const fiche = (id: string) => rendreFiche(legumes.find((l) => l.id === id)!);
+    expect(fiche('tomate')).toContain('<h4>Lumière — floraison et fructification</h4>');
+    // Safran et chanvre fleurissent sans donner de fruits.
+    expect(fiche('safran')).toContain('<h4>Lumière — floraison</h4>');
+    expect(fiche('safran')).not.toContain('fructification');
+    expect(fiche('laitue')).not.toMatch(/Lumière — floraison/);
   });
 
   it('échappe le HTML', () => {

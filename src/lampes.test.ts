@@ -2,10 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { LAMPES, lampesConseillees, lienAmazon, TAG_AMAZON } from './lampes.ts';
 
 describe('sélection de lampes', () => {
+  // La note Amazon (≥ 4 étoiles) n'est plus enregistrée ni publiée : ce critère de sélection est
+  // vérifié à la main chaque mois sur la page du produit (date dans `verifie_le`).
   it('données cohérentes', () => {
     for (const l of LAMPES) {
       expect(l.asin).toMatch(/^B0[0-9A-Z]{8}$/);
-      expect(l.note).toBeGreaterThanOrEqual(4);
       expect(l.puissance_w).toBeGreaterThan(0);
       if (l.ppf !== null) {
         expect(l.couverture_m2).not.toBeNull();
@@ -15,6 +16,7 @@ describe('sélection de lampes', () => {
       }
     }
     expect(new Set(LAMPES.map((l) => l.id)).size).toBe(LAMPES.length);
+    expect(LAMPES.every((l) => !('note' in l) && !('avis' in l)), 'ni note ni nombre d’avis dans les données').toBe(true);
   });
 
   it('lien Amazon avec identifiant partenaire', () => {

@@ -18,8 +18,6 @@ export interface Lampe {
   couverture_m2: { croissance: number; floraison: number } | null;
   dimensions: string;
   variateur: boolean;
-  note: number;
-  avis: number;
   source_ppf: string;
 }
 

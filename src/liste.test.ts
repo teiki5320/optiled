@@ -42,6 +42,14 @@ describe('liste d’achat', () => {
     expect(texte).toContain("Liste d'achat");
     expect(texte).toMatch(/Coût électrique annuel : 97,33/);
   });
+
+  it('accorde « ligne » et « barre » au nombre', () => {
+    const r = calculer(entrees);
+    const texte = resumeTexte(r, ctx);
+    const b = r.barres;
+    expect(texte).not.toMatch(/\(s\)/);
+    expect(texte).toContain(`${b.lignesParZone} ligne${b.lignesParZone > 1 ? 's' : ''} de ${b.barresParLigne} barre${b.barresParLigne > 1 ? 's' : ''}`);
+  });
 });
 
 describe('résumé : plants, alertes et avertissement', () => {

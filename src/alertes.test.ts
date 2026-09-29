@@ -23,6 +23,12 @@ describe('alertes du calculateur', () => {
     expect(alertes({ ...base, legumeId: 'aubergine', nom: 'Aubergine', photoperiodeH: 19 })[0]).toContain('lésions');
     expect(alertes({ ...base, legumeId: 'poivron', nom: 'Poivron', photoperiodeH: 19 })).toEqual([]);
   });
+  it('éclairage continu : on revient à la durée conseillée pour le stade', () => {
+    // Aubergine et tomate : 16 h, y compris en fructification ; tomate naine : 18 h en fructification.
+    expect(alertes({ ...base, legumeId: 'aubergine', nom: 'Aubergine', stade: 'floraison', photoperiodeH: 20 })[0]).toContain('Revenez à 16 h.');
+    expect(alertes({ ...base, legumeId: 'tomate', nom: 'Tomate', stade: 'floraison', photoperiodeH: 20 })[0]).toContain('Revenez à 16 h.');
+    expect(alertes({ ...base, legumeId: 'tomate-naine', nom: 'Tomate naine', stade: 'floraison', photoperiodeH: 20, photoperiodeConseilleeH: 18 })[0]).toContain('Revenez à 18 h.');
+  });
   it('montaison des cultures de jours longs', () => {
     expect(alertes({ ...base, legumeId: 'epinard', nom: 'Épinard', photoperiodeH: 16, photoperiodeConseilleeH: 12 })[0]).toContain('montée en graines');
   });
