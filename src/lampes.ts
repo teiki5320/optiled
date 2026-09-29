@@ -18,6 +18,8 @@ export interface Lampe {
   couverture_m2: { croissance: number; floraison: number } | null;
   dimensions: string;
   variateur: boolean;
+  /** false : « actuellement indisponible » sur Amazon.fr lors de la dernière vérification */
+  disponible?: boolean;
   source_ppf: string;
 }
 
@@ -53,7 +55,7 @@ export function lampesConseillees(ppfNecessaire: number, surfaceM2: number, stad
   if (!(ppfNecessaire > 0) || !(surfaceM2 > 0)) return [];
   const propositions: (Proposition & { score: number })[] = [];
   for (const lampe of LAMPES) {
-    if (lampe.ppf === null || lampe.couverture_m2 === null) continue;
+    if (lampe.ppf === null || lampe.couverture_m2 === null || lampe.disponible === false) continue;
     const couverture = lampe.couverture_m2[stade];
     const nombre = Math.max(Math.ceil(ppfNecessaire / lampe.ppf - 1e-9), Math.ceil((surfaceM2 * 0.8) / couverture - 1e-9), 1);
     const ppfTotal = nombre * lampe.ppf;

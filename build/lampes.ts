@@ -12,7 +12,7 @@ function carte(l: Lampe): string {
   const surface = l.couverture_m2 ? ` · ${m2(l.couverture_m2.croissance)} m² en croissance, ${m2(l.couverture_m2.floraison)} m² en floraison` : '';
   return `<li class="lampe">
   <h3>${echapper(l.nom)}</h3>
-  <p>${echapper(l.dimensions)} · ${l.puissance_w} W · ${lumiere}${surface} · ${l.variateur ? 'avec variateur' : 'sans variateur'}</p>
+  <p>${echapper(l.dimensions)} · ${l.puissance_w} W · ${lumiere}${surface} · ${l.variateur ? 'avec variateur' : 'sans variateur'}</p>${l.disponible === false ? `\n  <p class="aide">Indisponible sur Amazon.fr lors de la dernière vérification.</p>` : ''}
   <a class="bouton" href="${lienAmazon(l)}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a>
 </li>`;
 }

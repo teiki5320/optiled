@@ -13,6 +13,7 @@ import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from '.
 import { jaugeDli, planBarres } from './schema.ts';
 import { erreursParChamp } from './champs-erreur.ts';
 import { resumeCalculPartage } from './partage.ts';
+import { BUDGET, gammePourPuissance, mentionReleve, multiplier, texteFourchette } from './budget.ts';
 
 /** DLI qui remplit entièrement l'anneau de synthèse (mol/m²/j). */
 const DLI_ANNEAU_MAX = 40;
@@ -103,6 +104,25 @@ function rendreLampesCommerce(r: ResultatCalcul): string {
   return `${titre('Lampes du commerce qui conviennent', 'lampes.html', 'Toute la sélection')}
     <ul class="lampes-proposees">${cartes}</ul>
     <p class="aide">Liens sponsorisés. ${MENTION_AFFILIATION} Prix et disponibilité sur Amazon.</p>`;
+}
+
+/**
+ * Encart « Budget indicatif » : fourchette de la gamme de lampe qui correspond à la puissance
+ * calculée (src/data/budget.json) et électricité déjà calculée. Jamais de prix par produit ni de lien d'achat.
+ */
+function rendreBudget(r: ResultatCalcul): string {
+  const { gamme, nombre: n } = gammePourPuissance(r.puissanceW);
+  const poste = BUDGET.lampes[gamme];
+  const lampe = `${n > 1 ? `${n} × ` : ''}${poste.libelle.charAt(0).toLowerCase()}${poste.libelle.slice(1)}`;
+  const electricite = r.coutAnEur === null
+    ? 'indiquez le prix du kWh dans les options pour l’estimer'
+    : `<strong>${euros(r.coutAnEur / 12)}</strong> par mois, <strong>${euros(r.coutAnEur)}</strong> par an`;
+  return `${titre('Budget indicatif', 'led-choisir.html#budget', 'Budget selon l’installation')}
+    <div class="budget-indicatif">
+      <p><strong>Lampe</strong>, ${echapper(lampe)} pour ${nombre(r.puissanceW)} W : <strong>${texteFourchette(multiplier(poste.fourchette, n))}</strong></p>
+      <p><strong>Électricité</strong> : ${electricite}</p>
+      <p class="aide">${mentionReleve()}</p>
+    </div>`;
 }
 
 function legumeCourant() {
@@ -318,6 +338,8 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface): string
       ${tuile('Par an', nombre(r.consoAnKwh), 'kWh')}
       ${cout}
     </div>
+
+    ${rendreBudget(r)}
 
     ${titre("Liste d'achat", 'led-choisir.html#checklist', "Checklist d'achat")}
     <table class="achats"><tbody>${achats}</tbody></table>`;

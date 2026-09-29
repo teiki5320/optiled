@@ -11,6 +11,8 @@ Site web statique (Vite + TypeScript, sans backend), en français et pensé d'ab
 | `legumes.html` | Fiches légumes, **générées au build** depuis `src/data/legumes.json` ; chaque fiche mène à sa page détaillée |
 | `legume-<id>.html` | **Page détaillée de chaque culture** (26 pages), générée au build par `build/pages-legumes.ts` : lumière par stade, exemple chiffré pour 1 m², lampes qui conviennent, climat, solution nutritive, espacement et récolte, cultures de la même famille. Ces pages n'existent pas sur le disque : le plugin du site les fournit à Vite (build et serveur de développement) |
 | `conseils.html` + `conseil-<slug>.html` | **Conseils** : un article par question, publié à sa date (voir « Articles de conseil » ci-dessous) |
+| `lampes.html` | Sélection de lampes Amazon.fr, groupée par format |
+| `meilleures-lampes.html` | **Meilleures lampes LED horticoles (mois année)** : choix recommandé et alternative par besoin, mis à jour chaque mois (voir « Budget et page mensuelle » ci-dessous) |
 | `glossaire.html` | Glossaire des termes techniques |
 
 Le calculateur accepte un légume présélectionné dans l'adresse : `index.html?legume=tomate#calculateur`. Tous les réglages différents des valeurs par défaut sont reflétés dans l'adresse (`?l=tomate&s=floraison&n=3…`, voir `src/etat.ts`) : le bouton **Partager** envoie ce lien, et les derniers réglages sont mémorisés sur l'appareil du visiteur. Chaque bloc de résultat renvoie vers le guide qui l'explique ; sur mobile, une barre fixe rappelle la puissance et le nombre de barres pendant la saisie.
@@ -49,6 +51,8 @@ Node.js 22.12 ou plus récent est requis (Vite 8 et Vitest 5).
 | `src/data.ts` | Types et accès aux données |
 | `src/calc.ts` | **Module de calcul isolé** (fonctions pures, aucun accès au DOM) |
 | `src/liste.ts` | Liste d'achat et résumé texte (copie) |
+| `src/budget.ts`, `build/budget.ts` | Fourchettes de prix par gamme (`src/data/budget.json`), encart du calculateur et budgets de départ |
+| `build/meilleures-lampes.ts` | Page mensuelle `meilleures-lampes.html` |
 | `src/alertes.ts` | Mises en garde du calculateur (photopériode, barres trop longues, rangs étroits) |
 | `src/etat.ts` | Réglages ↔ adresse de la page (lien de partage) |
 | `src/format.ts` | Mise en forme des nombres à la française |
@@ -60,7 +64,7 @@ Node.js 22.12 ou plus récent est requis (Vite 8 et Vitest 5).
 
 1. Copiez une page existante (par exemple `led-bases.html`) sous un nouveau nom à la racine.
 2. Gardez les marqueurs `<!--#head-->`, `<!--#header-->` et `<!--#footer-->` : le build les remplace par les parties communes. La page est ajoutée automatiquement au build et au `sitemap.xml`. Une page d'article (`<main id="contenu" class="page">` avec fil d'Ariane et `<article class="prose">` contenant `h1`, `p.chapo` et `nav.sommaire`) reçoit automatiquement le bandeau de titre et le sommaire latéral.
-   Autres marqueurs : `<!--#cartes:led-->` / `<!--#cartes:culture-->` (cartes des guides), `<!--#icone:nom-->` (icône de `build/icones.ts`), `<!--#fiches-->`, `<!--#climat-->` (tableau des températures), `<!--#tuiles-->` (tuiles du calculateur), `<!--#sources-->` (liste des références), `<!--#nb-cultures-->` (nombre de cultures), et pour les guides d'achat `<!--#puissances-surfaces-->`, `<!--#puissances-cultures-->`, `<!--#effet-efficacite-->`, `<!--#comparaison-lampes-->`, `<!--#etageres-semis-->`, `<!--#dli-semis-->` (tableaux calculés, `build/guides-achat.ts`).
+   Autres marqueurs : `<!--#cartes:led-->` / `<!--#cartes:culture-->` (cartes des guides), `<!--#icone:nom-->` (icône de `build/icones.ts`), `<!--#fiches-->`, `<!--#climat-->` (tableau des températures), `<!--#tuiles-->` (tuiles du calculateur), `<!--#sources-->` (liste des références), `<!--#nb-cultures-->` (nombre de cultures), et pour les guides d'achat `<!--#puissances-surfaces-->`, `<!--#puissances-cultures-->`, `<!--#effet-efficacite-->`, `<!--#comparaison-lampes-->`, `<!--#etageres-semis-->`, `<!--#dli-semis-->` (tableaux calculés, `build/guides-achat.ts`), `<!--#budget:etagere-->` / `<!--#budget:tente-->` (budgets de départ, `build/budget.ts`), `<!--#meilleures-lampes-->`, `<!--#mois-lampes-->`, `<!--#lampes-verifiees-le-->`, `<!--#mention-affiliation-->`.
 3. Pour l'ajouter à une rubrique, nommez-la `led-….html` ou `culture-….html` et déclarez-la dans `RUBRIQUES` (`build/site.ts`) : elle apparaîtra dans les cartes, le pied de page et la numérotation « Guide n sur N ».
 
 Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, `encadre attention`, `formule`, `tableau-defile` + `tableau`, `suite`, `bouton` / `bouton bouton--plein`.
@@ -70,8 +74,26 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 - `src/data/lampes.json` : sélection de lampes vendues sur Amazon.fr (note ≥ 4 étoiles), avec ASIN, puissance, PPF (publié ou estimé = puissance × efficacité annoncée), surface couverte, variateur, date de vérification (`verifie_le`) ; la note Amazon est vérifiée à la main chaque mois mais n'est ni enregistrée ni publiée. Une lampe sans PPF exploitable (`ppf: null`) n'apparaît que dans « Autres modèles populaires ».
 - `src/lampes.ts` : identifiant Partenaires Amazon (`TAG_AMAZON`, à changer à un seul endroit), liens `amazon.fr/dp/<ASIN>?tag=…` (`rel="sponsored"`), et choix des lampes qui conviennent (`lampesConseillees` : assez de PPF, au moins 80 % de la surface couverte, au plus 6 lampes, au plus 2,5 fois le besoin).
 - `lampes.html` + `build/lampes.ts` (marqueur `<!--#lampes-->`) : page de la sélection, groupée par format.
-- Aucun prix affiché (ils changent en permanence). À revérifier chaque mois : note, disponibilité, chiffres ; mettre à jour `verifie_le`.
+- Aucun prix par produit (ils changent en permanence) ; seules des fourchettes par gamme sont publiées (`src/data/budget.json`). À revérifier chaque mois : note, disponibilité, chiffres, fourchettes ; mettre à jour `verifie_le` et `releve_le`.
 - La mention obligatoire « En tant que Partenaire Amazon… » figure près des liens, dans le pied de page et dans les mentions légales.
+- `disponible: false` (facultatif) : lampe « actuellement indisponible » lors de la vérification ; elle reste sur `lampes.html` avec une mention, mais n'est plus proposée par le calculateur ni recommandée sur `meilleures-lampes.html`. Retirer le champ quand elle revient en stock.
+
+## Budget et page mensuelle
+
+**`src/data/budget.json`** : fourchettes de prix **par gamme**, jamais par produit (règles du Programme Partenaires Amazon : ni prix d'un produit précis, ni note).
+
+- `releve_le` : date du relevé (AAAA-MM-JJ), affichée partout : « Prix relevés sur Amazon.fr le …, à titre indicatif ».
+- `lampes` : gammes `barres` (lots de réglettes pour étagère), `appoint` (ampoules, lampes à pince), `petits` (panneaux ≤ 100 W), `moyens` (> 100 à 200 W), `grands` (> 200 W) ; `accessoires` : `minuterie`, `thermo-hygrometre`, `tente-80`, `extracteur-100` (extracteur + gaine), `ventilateur-pince`, `ph-metre`. Chaque poste : `libelle` et `fourchette` = `[min, max]` en euros, ou `null`.
+- Méthode : relever à la main les prix affichés sur Amazon.fr (lampes : toutes celles de `lampes.json` de la gamme, sauf indisponibles ; accessoires : 2 à 4 articles courants d'une recherche, hors sponsorisés et haut de gamme), garder le minimum et le maximum, arrondir la borne basse vers le bas et la haute vers le haut, à 5 € sous 50 € et à 10 € au-delà (`fourchetteDepuisPrix` dans `src/budget.ts`). Aucun ASIN, nom de modèle ni prix individuel dans le fichier (les tests le vérifient).
+- `fourchette: null` : le site affiche « prix en cours de relevé » ; tout le reste fonctionne.
+- Affichage : encart « Budget indicatif » du calculateur (gamme selon la puissance calculée, `gammePourPuissance`, plus l'électricité par mois et par an), budgets de départ de `debuter.html` et `tente.html` (marqueurs `<!--#budget:etagere-->` et `<!--#budget:tente-->`, `build/budget.ts` : lampe + accessoires + électricité, calculés depuis `legumes.json`), tableau « Budget par gamme » de `meilleures-lampes.html`. Pas de lien d'achat à côté d'une fourchette.
+
+**`meilleures-lampes.html`** (`build/meilleures-lampes.ts`, marqueur `<!--#meilleures-lampes-->`) : une seule page, mise à jour chaque mois.
+
+- Le mois et l'année viennent de `verifie_le` de `lampes.json` (marqueurs `<!--#mois-lampes-->` dans le `<title>` et le `h1`, `<!--#lampes-verifiees-le-->` dans `date-modification`, donc `dateModified`) : mettre à jour `verifie_le` suffit à changer le titre.
+- Besoins (`BESOINS`) : semis et micro-pousses sur étagère, étagère de salades et d'aromatiques (60 × 30 cm), tentes de 60 × 60, 80 × 80 et 100 × 100 cm (légumes fruits en fructification). Pour chacun, `lampesConseillees` (mêmes règles que le calculateur) donne le choix recommandé et une alternative, avec efficacité, PPF, PPFD moyen sur la surface et consommation. Une lampe sans PPF ou indisponible n'est jamais recommandée.
+- Divulgation d'affiliation en haut de page, liens « Voir sur Amazon » en `rel="sponsored noopener"`, méthode publiée, aucun prix par produit ni note.
+- Liens : menu Lampes (entrée active), encadré en haut de `lampes.html`, pied de page, sitemap (automatique), `debuter.html`, `tente.html`, `led-choisir.html`.
 
 ## Articles de conseil
 

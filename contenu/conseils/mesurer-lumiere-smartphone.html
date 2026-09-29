@@ -1,0 +1,59 @@
+<!--
+titre: Peut-on mesurer la lumière de ses plantes avec son téléphone ?
+titre_court: Mesurer la lumière de ses plantes avec son téléphone
+description: Applications de mesure, conversion lux → PPFD, marge d'erreur publiée et méthode : ce qu'un téléphone permet de mesurer, et quand un PAR-mètre s'impose.
+publie_le: 2026-12-07
+theme: lumiere
+photo: Main tenant un téléphone à plat au-dessus de jeunes laitues sous une réglette LED, capteur couvert d'un papier blanc
+-->
+<p class="chapo"><strong>Oui, pour un ordre de grandeur.</strong> Une application de mesure ou un luxmètre donnent une <strong>estimation</strong> du <a href="glossaire.html#ppfd">PPFD</a> sous une LED blanche : à 10 à 20 % près dans le meilleur des cas, après calibration, et parfois beaucoup plus loin sans précautions. C'est assez pour savoir si une salade reçoit 250 µmol/m²/s plutôt que 100, ou pour comparer deux positions. Pour régler finement une tente de tomates, un PAR-mètre reste la référence.</p>
+
+<h2 id="principe">Comment un téléphone mesure la lumière</h2>
+<p>Les applications de mesure pour plantes reposent sur deux principes :</p>
+<ul>
+  <li><strong>Le capteur de luminosité</strong>, celui qui règle l'éclairage de l'écran, en haut de la face avant. Il donne des <a href="glossaire.html#lux">lux</a> ; l'application (PPFD Meter, par exemple, ou un simple luxmètre) les multiplie par un facteur selon le type de lampe choisi.</li>
+  <li><strong>La caméra</strong> : Photone analyse les données brutes de la caméra frontale, et ses développeurs recommandent de la couvrir d'un diffuseur en papier blanc.</li>
+</ul>
+<p>Dans les deux cas, la mesure de départ est calée sur l'œil humain, qui compte peu le bleu et le rouge utiles aux plantes (voir <a href="led-bases.html#lumens-lux">pourquoi oublier les lumens et les lux</a>). La conversion en photons n'est possible que si l'on connaît le spectre.</p>
+<p>Pour les LED blanches, une analyse de 205 spectres (Sharakshane, 2018) donne 13,5 à 15,7 µmol/m²/s pour 1 000 lux selon la température de couleur et l'indice de rendu des couleurs, soit 15 à 7 % près. Cela fait environ 65 lux pour 1 µmol/m²/s, le repère utilisé sur ce site :</p>
+<p class="formule">PPFD ≈ lux / 65 (LED blanche, estimation)</p>
+<p>Le facteur change avec la source : Apogee Instruments indique 54 lux par µmol/m²/s pour la lumière du soleil. Sous une lampe rouge-bleu, la conversion ne fonctionne pas : les lux sous-estiment fortement la lumière utile.</p>
+
+<h2 id="erreur">Quelle marge d'erreur ?</h2>
+<ul>
+  <li><strong>Sans calibration</strong>, les études recensées par Odenwald (2020) relèvent des écarts de plus de 150 % pour les applications de luxmètre. Des téléphones du même modèle ne donnent pas tous la même valeur, surtout en lumière faible.</li>
+  <li><strong>Après une calibration</strong>, la même étude obtient environ ±12 % au-dessus de 3 000 lux et ±16 % entre 100 et 3 000 lux. Sous une lampe de culture, on est presque toujours au-dessus de 3 000 lux : 250 µmol/m²/s correspondent à environ 16 000 lux en LED blanche.</li>
+  <li><strong>Un vrai luxmètre</strong> n'est pas exact non plus : 10 à 20 % d'écart selon sa classe de précision.</li>
+  <li><strong>Les applications spécialisées</strong> : l'éditeur de Photone a comparé son application et PPFD Meter à un capteur quantique LI-COR sous une LED blanche 3 000 K. Il annonce ±2 % pour Photone, et de −11 % à +24 % pour PPFD Meter selon le téléphone, avec une pointe à +90 %. C'est un test mené par un concurrent, à lire avec prudence.</li>
+</ul>
+<p>Une mesure au téléphone est surtout fiable <strong>en relatif</strong> : pour comparer deux positions, ou avant et après un réglage.</p>
+
+<h2 id="methode">Une méthode pour une mesure utile</h2>
+<ol>
+  <li><strong>Choisissez le bon type de lampe</strong> dans l'application (LED blanche, avec la température de couleur si elle est demandée). Sous une lampe rouge-bleu ou très enrichie en rouge, ne vous fiez pas au chiffre.</li>
+  <li><strong>Utilisez un diffuseur</strong> : celui que recommande l'application, ou une feuille de papier blanc fin posée sur le capteur. Gardez toujours le même, sinon les mesures ne sont plus comparables.</li>
+  <li><strong>Placez le capteur à plat</strong>, à la hauteur du sommet des plantes, tourné vers la lampe. Repérez où il se trouve sur votre téléphone. Ne faites pas d'ombre avec la main ou le corps.</li>
+  <li><strong>Mesurez en grille</strong> : 9 points sur la surface de culture, puis la moyenne et l'uniformité (valeur minimale ÷ moyenne). Voir la <a href="led-installation.html#grille">méthode de mesure en grille</a>.</li>
+  <li><strong>Mesurez dans les conditions réelles</strong> : lampe allumée depuis quelques minutes, tente fermée, à la hauteur et à la gradation de travail. Recommencez après chaque réglage.</li>
+  <li><strong>Calibrez une fois</strong> si vous le pouvez : empruntez un PAR-mètre, faites une mesure au même endroit avec les deux appareils, et notez le rapport entre les deux. Appliquez-le ensuite à vos relevés.</li>
+</ol>
+<p>Comparez ensuite la moyenne aux besoins des fiches : environ 150 µmol/m²/s pour les <a href="legume-micro-pousses.html">micro-pousses</a>, 250 pour la <a href="legume-laitue.html">laitue</a>, 300 pour le <a href="legume-basilic.html">basilic</a>, 500 pour la <a href="legume-tomate.html">tomate</a> en fructification. Exemple : 20 000 lux sous une LED blanche donnent grossièrement 270 à 360 µmol/m²/s, de quoi cultiver des salades et du basilic. L'aspect des plantes complète la mesure (voir <a href="conseil-manque-de-lumiere-signes.html">les signes d'un manque de lumière</a>).</p>
+
+<h2 id="par-metre">Quand un vrai PAR-mètre vaut le coup</h2>
+<p>Un PAR-mètre (capteur quantique) mesure directement les photons, quel que soit le spectre s'il est conçu pour les LED. Il se justifie surtout :</p>
+<ul>
+  <li>sous une lampe rouge-bleu ou enrichie en rouge, où le téléphone et le luxmètre se trompent ;</li>
+  <li>pour des légumes-fruits en tente, où l'écart entre 400 et 600 µmol/m²/s change la récolte (voir <a href="tente.html">cultiver dans une tente</a>) ;</li>
+  <li>pour vérifier la carte PPFD annoncée par un fabricant (voir <a href="conseil-difference-ppf-ppfd.html">PPF et PPFD</a>) ;</li>
+  <li>pour régler la gradation au plus juste sur plusieurs installations et éviter de consommer pour rien.</li>
+</ul>
+<p>Un capteur de marque reconnue coûte plusieurs centaines d'euros. Pour une étagère de salades et d'aromatiques sous LED blanche, une application bien utilisée suffit. Les autres options sont décrites dans <a href="led-installation.html#mesurer">Mesurer la lumière</a>.</p>
+<div class="encadre"><p><strong>À retenir :</strong> sous une LED blanche, le téléphone donne un ordre de grandeur (PPFD ≈ lux / 65), à 10 à 20 % près au mieux. Mesurez avec un diffuseur, à plat, en 9 points, et fiez-vous surtout aux comparaisons. Sous une lampe rouge-bleu ou pour des tomates en tente, préférez un PAR-mètre. Le <a href="index.html#calculateur">calculateur</a> indique le PPFD à viser.</p></div>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li>A. Sharakshane, <a href="https://www.biorxiv.org/content/10.1101/289280.full.pdf">« An easy estimate of the PFDD for a plant illuminated with white LEDs: 1000 lx = 15 µmol/s/m² »</a>, bioRxiv (2018).</li>
+  <li>S. Odenwald, <a href="https://theoryandpractice.citizenscienceassociation.org/articles/10.5334/cstp.254">« Smartphone Sensors for Citizen Science Applications: Light and Sound »</a>, Citizen Science: Theory and Practice (2020).</li>
+  <li>Apogee Instruments, <a href="https://www.apogeeinstruments.com/conversion-ppfd-to-lux/">conversion PPFD ↔ lux selon la source de lumière</a>.</li>
+  <li>Photone, <a href="https://growlightmeter.com/par-meter-apps-comparison/">comparaison d'applications de mesure</a> (test de l'éditeur) et <a href="https://growlightmeter.com/">présentation de l'application</a>, consultés en septembre 2026.</li>
+</ul>

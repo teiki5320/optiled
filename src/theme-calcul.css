@@ -205,6 +205,8 @@ input[type='text']:focus, select:focus { background: rgb(255 255 255 / 0.1); bor
 .lampe-proposee { background: rgb(255 255 255 / 0.05); border: 1px solid rgb(255 255 255 / 0.1); border-radius: 16px; padding: 0.8rem 1rem; display: grid; gap: 0.35rem; }
 .lampe-proposee p { margin: 0; }
 .lampe-proposee__detail { font-size: 0.86rem; color: var(--attenue); }
+.budget-indicatif { background: rgb(255 255 255 / 0.05); border: 1px solid rgb(255 255 255 / 0.1); border-radius: 16px; padding: 0.8rem 1rem; display: grid; gap: 0.35rem; margin: 0.6rem 0; }
+.budget-indicatif p { margin: 0; }
 .bouton--amazon { justify-self: start; font-size: 0.86rem; padding: 0.45rem 0.9rem; }
 
 /* Titre et phrase d'explication visibles ensemble sur ordinateur : la phrase monte sous le titre. */

@@ -1,0 +1,26 @@
+{
+  "_lisezmoi": [
+    "Fourchettes de prix indicatives par gamme de lampes et par accessoire, affichées dans le calculateur (encart « Budget indicatif »), dans les budgets de départ de debuter.html et tente.html, et sur meilleures-lampes.html.",
+    "Méthode : on relève à la main les prix affichés sur Amazon.fr le jour de `releve_le` (lampes : toutes celles de src/data/lampes.json de la gamme, sauf les indisponibles ; accessoires : 2 à 4 articles courants trouvés par une recherche Amazon.fr, hors annonces sponsorisées et hors modèles haut de gamme), puis on ne garde que le minimum et le maximum.",
+    "Arrondis : borne basse arrondie vers le bas, borne haute vers le haut, à 5 € sous 50 € et à 10 € à partir de 50 €. « Extracteur 100 mm avec gaine » = extracteur seul + gaine alu de 1,5 à 3 m, relevés séparément puis additionnés.",
+    "Jamais de prix par produit (ni ASIN, ni nom de modèle ici) : uniquement des fourchettes par gamme, datées, sans lien d'achat accolé (règles du Programme Partenaires Amazon).",
+    "Gammes de lampes : barres = lots de réglettes ou barres pour étagère ; appoint = ampoules et lampes à pince ; petits = panneaux jusqu'à 100 W ; moyens = panneaux de plus de 100 W et jusqu'à 200 W ; grands = panneaux de plus de 200 W.",
+    "`fourchette: null` = prix en cours de relevé : le site affiche alors « prix en cours de relevé » au lieu d'un montant. À refaire chaque mois avec la vérification des lampes."
+  ],
+  "releve_le": "2026-09-29",
+  "lampes": {
+    "barres": { "libelle": "Réglettes et barres pour étagère (lot)", "fourchette": [45, 130] },
+    "appoint": { "libelle": "Lampe d'appoint (ampoule, lampe à pince)", "fourchette": [25, 40] },
+    "petits": { "libelle": "Petit panneau (jusqu'à 100 W)", "fourchette": [60, 80] },
+    "moyens": { "libelle": "Panneau moyen (plus de 100 W, jusqu'à 200 W)", "fourchette": [100, 160] },
+    "grands": { "libelle": "Grand panneau (plus de 200 W)", "fourchette": [260, 430] }
+  },
+  "accessoires": {
+    "minuterie": { "libelle": "Minuterie mécanique", "fourchette": [5, 10] },
+    "thermo-hygrometre": { "libelle": "Thermo-hygromètre", "fourchette": [5, 15] },
+    "tente-80": { "libelle": "Tente de culture 80 × 80 cm", "fourchette": [45, 80] },
+    "extracteur-100": { "libelle": "Extracteur 100 mm avec gaine", "fourchette": [30, 50] },
+    "ventilateur-pince": { "libelle": "Petit ventilateur à pince", "fourchette": [20, 30] },
+    "ph-metre": { "libelle": "pH-mètre stylo", "fourchette": [5, 20] }
+  }
+}

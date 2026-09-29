@@ -54,7 +54,7 @@ describe('liens internes', () => {
     if (estRedirection(page)) continue;
     it(`${page} : titre, description et marqueurs communs`, () => {
       const html = sourcePage(racine, page);
-      expect(html).toMatch(/<title>[^<]+<\/title>/);
+      expect(html).toMatch(/<title>(?:[^<]|<!--#[a-z-]+-->)+<\/title>/);
       expect(html).toContain('<!--#header-->');
       expect(html).toContain('<!--#footer-->');
       if (page !== '404.html') expect(html).toMatch(/<meta name="description" content="[^"]{30,}"/);

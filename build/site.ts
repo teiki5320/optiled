@@ -21,6 +21,11 @@
  *   <!--#orientation-->     cartes d'orientation de l'accueil (parcours + derniers conseils)
  *   <!--#parcours-->        cartes des pages de parcours (debuter.html, tente.html)
  *   <!--#puissances-surfaces--> etc.  tableaux calculés des guides d'achat (build/guides-achat.ts)
+ *   <!--#budget:etagere-->  budget de départ type (idem budget:tente), depuis src/data/budget.json (build/budget.ts)
+ *   <!--#meilleures-lampes--> choix du mois par besoin (build/meilleures-lampes.ts)
+ *   <!--#mois-lampes-->     « septembre 2026 », d'après verifie_le de lampes.json (utilisable dans <title>)
+ *   <!--#lampes-verifiees-le--> verifie_le au format AAAA-MM-JJ (utilisable dans date-modification)
+ *   <!--#mention-affiliation--> mention obligatoire du Programme Partenaires Amazon
  *
  * Les pages led-*.html, culture-*.html, glossaire.html et mentions-legales.html écrites avec le modèle d'article
  * (fil d'Ariane, <article class="prose"> avec h1, chapo et sommaire) reçoivent
@@ -35,6 +40,9 @@ import type { Plugin } from 'vite';
 import { chargerLegumes, rendreFiches, rendreSources, rendreTableauClimat } from './fiches.ts';
 import { htmlTuiles } from '../src/tuiles.ts';
 import { rendreLampes } from './lampes.ts';
+import { rendreBudget } from './budget.ts';
+import { FICHIER_MEILLEURES_LAMPES, moisLampes, rendreMeilleuresLampes } from './meilleures-lampes.ts';
+import { LAMPES_VERIFIEES_LE, MENTION_AFFILIATION } from '../src/lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
 import { conseilsPublies, dateCourte, dateDuJour, dateLongue, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, tousLesConseils } from './conseils.ts';
 import { echapper } from './fiches.ts';
@@ -55,7 +63,7 @@ export const SITE_URL = (process.env.SITE_URL ?? 'https://www.optiled.fr/').repl
 export const NAVIGATION: { href: string; libelle: string; pages: RegExp }[] = [
   { href: 'index.html', libelle: 'Calculateur', pages: /^(index|calculateur)\.html$/ },
   { href: 'led.html', libelle: 'LED', pages: /^led(-.*)?\.html$/ },
-  { href: 'lampes.html', libelle: 'Lampes', pages: /^lampes\.html$/ },
+  { href: 'lampes.html', libelle: 'Lampes', pages: /^(meilleures-)?lampes\.html$/ },
   // Les pages de parcours (débuter, tente) sont rattachées à la rubrique Culture.
   { href: 'culture.html', libelle: 'Culture', pages: /^(culture(-.*)?|debuter|tente)\.html$/ },
   { href: 'legumes.html', libelle: 'Légumes', pages: /^legumes?(-.*)?\.html$/ },
@@ -204,6 +212,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
   const pageLegume = fichier.startsWith(PREFIXE_PAGE_LEGUME);
   const pageConseil = fichier.startsWith(PREFIXE_PAGE_CONSEIL);
   const parcours = PARCOURS.find((p) => p.fichier === fichier);
+  const pageMeilleuresLampes = fichier === FICHIER_MEILLEURES_LAMPES;
   const modifiee = dateModification(html);
   const miseAJour = modifiee ? { dateModified: modifiee } : {};
 
@@ -304,9 +313,35 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
       },
     );
   }
+  if (pageMeilleuresLampes) {
+    const titreArticle = decoderEntites(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, '').trim() ?? titre);
+    donnees.push(
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: titreArticle,
+        description,
+        image,
+        inLanguage: 'fr',
+        mainEntityOfPage: adresse,
+        ...miseAJour,
+        author: { '@type': 'Organization', name: NOM_SITE },
+        publisher: { '@type': 'Organization', name: NOM_SITE },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: url },
+          { '@type': 'ListItem', position: 2, name: 'Lampes', item: `${url}lampes.html` },
+          { '@type': 'ListItem', position: 3, name: titreArticle, item: adresse },
+        ],
+      },
+    );
+  }
   const json = donnees.map((d) => `<script type="application/ld+json">${JSON.stringify(d).replace(/</g, '\\u003c')}</script>`).join('\n    ');
   return `<link rel="canonical" href="${adresse}" />
-    <meta property="og:type" content="${guide || parcours || pageLegume || pageConseil ? 'article' : 'website'}" />
+    <meta property="og:type" content="${guide || parcours || pageLegume || pageConseil || pageMeilleuresLampes ? 'article' : 'website'}" />
     <meta property="og:site_name" content="${NOM_SITE}" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:title" content="${attribut(titre)}" />
@@ -361,7 +396,7 @@ export function footer(): string {
       <p class="site-pied__note">Certains liens vers Amazon sont sponsorisés : en tant que Partenaire Amazon, l'éditeur réalise un bénéfice sur les achats remplissant les conditions requises.</p>
       <p class="site-pied__note"><a href="a-propos.html">À propos et méthode</a> · <a href="a-propos.html#contact">Contact</a> · <a href="mentions-legales.html">Mentions légales</a></p>
     </div>
-    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li></ul>
+    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes du mois</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li></ul>
       <h2 class="site-pied__sous-titre">Parcours</h2><ul>${PARCOURS.map((p) => `<li><a href="${p.fichier}">${p.titre}</a></li>`).join('')}</ul></div>
     ${colonne('led')}
     ${colonne('culture')}
@@ -571,12 +606,19 @@ export function transformerPage(html: string, fichier: string): string {
   let numeroTableau = 0;
   // Nombre de cultures, tiré des données (avant tout : il peut figurer dans la description).
   html = html.replace(/<!--#nb-cultures-->/g, () => String(chargerLegumes().length));
+  // Mois de la sélection de lampes (titre, h1) et date de vérification (date-modification) : avant le référencement.
+  html = html
+    .replace(/<!--#mois-lampes-->/g, () => moisLampes())
+    .replace(/<!--#lampes-verifiees-le-->/g, () => LAMPES_VERIFIEES_LE)
+    .replace(/<!--#mention-affiliation-->/g, () => MENTION_AFFILIATION);
   const base = fichier === '404.html' ? `<base href="${SITE_URL}" />\n    ` : '';
   const page = mettreEnPageArticle(html, fichier)
     .replace('<!--#climat-->', () => rendreTableauClimat())
     .replace('<!--#tuiles-->', () => htmlTuiles())
     .replace('<!--#sources-->', () => rendreSources())
     .replace('<!--#lampes-->', () => rendreLampes())
+    .replace('<!--#meilleures-lampes-->', () => rendreMeilleuresLampes())
+    .replace(/<!--#budget:([a-z-]+)-->/g, (_m, id: string) => rendreBudget(id))
     .replace('<!--#conseils-->', () => rendreListeConseils())
     .replace('<!--#orientation-->', () => cartesOrientation())
     .replace('<!--#parcours-->', () => `<div class="cartes-guides cartes-orientation">${cartesParcours()}</div>`)
