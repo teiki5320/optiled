@@ -18,9 +18,9 @@
   "accessoires": {
     "minuterie": { "libelle": "Minuterie mécanique", "fourchette": [5, 10] },
     "thermo-hygrometre": { "libelle": "Thermo-hygromètre", "fourchette": [5, 15] },
-    "tente-80": { "libelle": "Tente de culture 80 × 80 cm", "fourchette": [45, 80] },
+    "tente-80": { "libelle": "Tente de culture 80 × 80 cm", "fourchette": [50, 70] },
     "extracteur-100": { "libelle": "Extracteur 100 mm avec gaine", "fourchette": [30, 50] },
-    "ventilateur-pince": { "libelle": "Petit ventilateur à pince", "fourchette": [20, 30] },
-    "ph-metre": { "libelle": "pH-mètre stylo", "fourchette": [5, 20] }
+    "ventilateur-pince": { "libelle": "Petit ventilateur à pince", "fourchette": [20, 40] },
+    "ph-metre": { "libelle": "pH-mètre stylo", "fourchette": [5, 25] }
   }
 }
