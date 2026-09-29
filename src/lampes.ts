@@ -21,6 +21,8 @@ export interface Lampe {
   /** false : « actuellement indisponible » sur Amazon.fr lors de la dernière vérification */
   disponible?: boolean;
   source_ppf: string;
+  /** Illustration générée d'après la description (public/images/lampes/<nom>-400.webp et -800.webp). */
+  illustration?: string;
 }
 
 export const LAMPES: Lampe[] = (brut as unknown as { lampes: Lampe[] }).lampes;
@@ -67,4 +69,12 @@ export function lampesConseillees(ppfNecessaire: number, surfaceM2: number, stad
     .sort((a, b) => a.score - b.score)
     .slice(0, max)
     .map(({ score: _score, ...p }) => p);
+}
+
+/** Illustration d'une lampe (image générée, signalée comme telle), ou chaîne vide. */
+export function imageLampe(l: Lampe, sizes = '(min-width: 760px) 320px, 92vw'): string {
+  if (!l.illustration) return '';
+  const base = `images/lampes/${l.illustration}`;
+  const alt = `Illustration : ${l.dimensions}`.replace(/"/g, '&quot;');
+  return `<figure class="lampe__image"><img src="${base}-400.webp" srcset="${base}-400.webp 400w, ${base}-800.webp 800w" sizes="${sizes}" width="800" height="600" alt="${alt}" loading="lazy" decoding="async" /><figcaption>Illustration</figcaption></figure>`;
 }

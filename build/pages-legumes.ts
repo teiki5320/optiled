@@ -7,7 +7,7 @@
 import { calculer, calculerDli, longueurBarreConseillee, nombrePlants, type ResultatCalcul, type Surface } from '../src/calc.ts';
 import type { Legume, ParametresStade } from '../src/data.ts';
 import { arrondiPuissance } from '../src/liste.ts';
-import { lampesConseillees, lienAmazon, MENTION_AFFILIATION, type Proposition } from '../src/lampes.ts';
+import { imageLampe, lampesConseillees, lienAmazon, MENTION_AFFILIATION, type Proposition } from '../src/lampes.ts';
 import { conseilsDeLaCulture, dateDuJour, THEMES } from './conseils.ts';
 import { badgeDifficulte, chargerLegumes, DEPART_RECOLTE, delaiRecolte, echapper, libellesFloraison, miniature, slug, stadeLePlusExigeant } from './fiches.ts';
 
@@ -151,6 +151,7 @@ function blocExemple(titre: string, r: ResultatCalcul, p: ParametresStade, s: Su
 function carteLampe(p: Proposition, r: ResultatCalcul): string {
   const l = p.lampe;
   return `<li class="lampe">
+  ${imageLampe(l)}
   <h3>${p.nombre} × ${echapper(l.nom)}</h3>
   <p>${nb(p.ppfTotal)} µmol/s${l.ppf_estime ? ' (estimé)' : ''} pour ${nb(r.ppfNecessaire)} nécessaires · ${nb(p.puissanceW)} W au maximum · ${l.variateur ? 'avec variateur' : 'sans variateur'}</p>
   <a class="bouton" href="${lienAmazon(l)}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a>

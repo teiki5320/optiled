@@ -7,7 +7,7 @@ import { depuisParams, PARAMETRES, versParams, type Etat } from './etat.ts';
 import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data.ts';
 import { accord, euros, nombre } from './format.ts';
 import { htmlTuiles, TUILES_PAR_LIGNE } from './tuiles.ts';
-import { lampesConseillees, lienAmazon, MENTION_AFFILIATION } from './lampes.ts';
+import { imageLampe, lampesConseillees, lienAmazon, MENTION_AFFILIATION } from './lampes.ts';
 import { insecables, typographier } from './typo.ts';
 import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste.ts';
 import { jaugeDli, planBarres } from './schema.ts';
@@ -95,6 +95,7 @@ function rendreLampesCommerce(r: ResultatCalcul): string {
   const cartes = propositions
     .map(
       (p) => `<li class="lampe-proposee">
+      ${imageLampe(p.lampe, '(min-width: 760px) 240px, 92vw')}
       <p class="lampe-proposee__nom"><strong>${p.nombre} × ${echapper(p.lampe.nom)}</strong></p>
       <p class="lampe-proposee__detail">${nombre(p.ppfTotal)} µmol/s${p.lampe.ppf_estime ? ' (estimé)' : ''} pour ${nombre(r.ppfNecessaire)} nécessaires · ${nombre(p.puissanceW)} W au maximum · ${p.lampe.variateur ? 'avec variateur' : 'sans variateur'}</p>
       <a class="bouton bouton--amazon" href="${lienAmazon(p.lampe)}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a>

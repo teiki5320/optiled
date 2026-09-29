@@ -560,3 +560,8 @@ img, svg { max-width: 100%; }
   .site-nav a { padding: 0.45rem 0.6rem; font-size: 0.9rem; }
   .site-entete__barre { gap: 0.7rem; }
 }
+
+/* Illustrations des lampes (images générées d'après la description, signalées comme telles) */
+.lampe__image { position: relative; margin: 0 0 0.4rem; border-radius: 12px; overflow: hidden; aspect-ratio: 4 / 3; background: #241a2c; }
+.lampe__image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.lampe__image figcaption { position: absolute; right: 0.5rem; bottom: 0.5rem; padding: 0.1rem 0.5rem; border-radius: 999px; background: rgb(0 0 0 / 0.55); color: #fff; font-size: 0.72rem; letter-spacing: 0.02em; }

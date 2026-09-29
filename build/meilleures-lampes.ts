@@ -6,7 +6,7 @@
  */
 import { moisAnnee } from '../src/budget.ts';
 import type { Legume, Stade } from '../src/data.ts';
-import { LAMPES_VERIFIEES_LE, lampesConseillees, lienAmazon, MENTION_AFFILIATION, type Proposition } from '../src/lampes.ts';
+import { imageLampe, LAMPES_VERIFIEES_LE, lampesConseillees, lienAmazon, MENTION_AFFILIATION, type Proposition } from '../src/lampes.ts';
 import { rendreFourchettesGammes } from './budget.ts';
 import { chargerLegumes, echapper } from './fiches.ts';
 import { COEF_UTILISATION } from './guides-achat.ts';
@@ -70,6 +70,7 @@ function carte(c: ChoixBesoin, p: Proposition, role: string): string {
   const exces = Math.round((p.ppfTotal / c.ppfNecessaire - 1) * 100);
   const nombre = p.nombre > 1 ? `${p.nombre} × ` : '';
   return `<div class="choix-lampe">
+          ${imageLampe(l, '(min-width: 760px) 400px, 92vw')}
           <p class="choix-lampe__role">${role}</p>
           <h3>${nombre}${echapper(l.nom)}</h3>
           <ul>
