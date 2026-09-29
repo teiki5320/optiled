@@ -2,11 +2,11 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { calculerDli } from '../src/calc.ts';
-import type { Legume, ParametresStade, Stade } from '../src/data.ts';
+import type { Difficulte, Legume, ParametresStade, Stade } from '../src/data.ts';
 import { icone, type NomIcone } from './icones.ts';
 
 /** Page détaillée d'une culture (générée par build/pages-legumes.ts). */
-const pageDetaillee = (id: string) => `legume-${id}.html`;
+export const pageDetaillee = (id: string) => `legume-${id}.html`;
 
 const FICHIER = resolve(import.meta.dirname, '../src/data/legumes.json');
 
@@ -88,6 +88,35 @@ export const DEPART_RECOLTE: Record<string, string> = {
   wasabi: 'jusqu\'au rhizome',
 };
 
+/**
+ * Difficulté des cultures (champ `difficulte` de legumes.json). Critères, repris du « _lisezmoi » :
+ * - facile : feuilles, racines ou pousses récoltées sans pollinisation, PPFD de 300 µmol/m²/s au plus,
+ *   première récolte en trois mois au plus, température d'une pièce habitée, pas de montaison rapide,
+ *   plante compacte (étagère) ;
+ * - intermédiaire : un ou deux de ces critères non remplis (croissance lente, montaison en jours longs,
+ *   besoin de fraîcheur, pollinisation à la main sur une plante compacte, PPFD jusqu'à 400) ;
+ * - exigeant : grande plante à fruits ou à fleurs (tente, 450 µmol/m²/s ou plus, pollinisation,
+ *   trois mois ou plus), ou climat très particulier et cycle très long (safran, wasabi).
+ * Les cultures « faciles » sont celles de l'article conseil-legumes-faciles-debutant.
+ */
+export const DIFFICULTES: Record<Difficulte, string> = {
+  facile: 'Facile',
+  intermediaire: 'Intermédiaire',
+  exigeant: 'Exigeant',
+};
+
+/** Badge de difficulté (chaîne vide si la culture n'en a pas). */
+export function badgeDifficulte(l: Legume): string {
+  const d = l.difficulte?.valeur;
+  return d ? `<span class="badge-difficulte badge-difficulte--${d}">${DIFFICULTES[d]}</span>` : '';
+}
+
+/** Délai avant la première récolte, avec son point de départ (« 40 à 60 jours après semis »). */
+export function delaiRecolte(l: Legume, separateur = ' à '): string {
+  const [a, b] = l.culture.jours_recolte.valeur;
+  return `${a === b ? nb(a) : `${nb(a)}${separateur}${nb(b)}`} jours ${DEPART_RECOLTE[l.id] ?? 'après semis'}`;
+}
+
 export function rendreFiche(l: Legume): string {
   const c = l.culture;
   const croissance = l.stades.croissance;
@@ -95,11 +124,12 @@ export function rendreFiche(l: Legume): string {
   const espacement = c.espacement_cm.valeur ? plage(c.espacement_cm.valeur, ' cm') : 'semis dense, à la volée';
   const ppfd = floraison ? `${croissance.ppfd.valeur} → ${floraison.ppfd.valeur}` : `${croissance.ppfd.valeur}`;
   const dli = (p: ParametresStade) => calculerDli(p.ppfd.valeur, p.photoperiode.valeur).toFixed(1).replace('.', ',');
-  return `<article class="fiche fiche--${slug(l.famille)}" id="${l.id}">
+  return `<article class="fiche fiche--${slug(l.famille)}" id="${l.id}"${l.difficulte ? ` data-difficulte="${l.difficulte.valeur}"` : ''}>
   <header class="fiche__tete">
     ${miniature(l) || `<span class="fiche__icone">${iconeFamille(l.famille)}</span>`}
     <div><h3><a class="fiche__lien" href="${pageDetaillee(l.id)}">${echapper(l.nom)}</a></h3><p class="fiche__famille">${echapper(l.famille)}</p></div>
   </header>
+  <p class="fiche__reperes">${badgeDifficulte(l)}<span class="fiche__recolte">${icone('horloge', 'icone icone--petite')} Récolte : <strong>${delaiRecolte(l, '–')}</strong></span></p>
   <div class="fiche__corps">
     ${l.avertissement ? `<p class="encadre attention fiche__avertissement">${echapper(l.avertissement)}</p>` : ''}
     <p class="fiche__conseil">${echapper(c.conseils.valeur)}</p>
@@ -110,7 +140,6 @@ export function rendreFiche(l: Legume): string {
       ${kpi('Température (jour)', plage(c.temperature_c.valeur), '°C')}
       ${kpi('pH', plage(c.ph.valeur))}
       ${kpi('EC', plage(c.ec_ms_cm.valeur), 'mS/cm')}
-      ${kpi('Récolte', plage(c.jours_recolte.valeur), DEPART_RECOLTE[l.id] ? `jours ${DEPART_RECOLTE[l.id]}` : 'jours')}
       ${kpi('Humidité', plage(c.humidite_pct.valeur), '%')}
     </dl>
     <details class="fiche__detail">
@@ -146,9 +175,13 @@ export function rendreFiches(legumes: Legume[] = chargerLegumes()): string {
   const familles = new Map<string, Legume[]>();
   for (const l of legumes) familles.set(l.famille, [...(familles.get(l.famille) ?? []), l]);
 
-  const filtres = [...familles.keys()]
-    .map((f) => `<a class="pastille" href="#famille-${slug(f)}">${iconeFamille(f)} ${echapper(f)}</a>`)
-    .join('');
+  // « Pour débuter » : filtre sans JavaScript. Le lien cible un repère placé avant les sections ;
+  // tant qu'il est ciblé (:target), la feuille src/fiches.css masque les autres cultures.
+  const debutants = legumes.filter((l) => l.difficulte?.valeur === 'facile').length;
+  const filtres = [
+    ...(debutants ? [`<a class="pastille pastille--debuter" href="#pour-debuter">${icone('depart')} Pour débuter</a>`] : []),
+    ...[...familles.keys()].map((f) => `<a class="pastille" href="#famille-${slug(f)}">${iconeFamille(f)} ${echapper(f)}</a>`),
+  ].join('');
   const sections = [...familles]
     .map(
       ([f, ls]) => `<section class="fiches-famille fiches-famille--${slug(f)}" id="famille-${slug(f)}">
@@ -157,7 +190,13 @@ export function rendreFiches(legumes: Legume[] = chargerLegumes()): string {
 </section>`,
     )
     .join('');
-  return `<nav class="filtres" aria-label="Familles de légumes">${filtres}</nav>${sections}`;
+  const repere = debutants
+    ? `<span id="pour-debuter" class="filtre-repere"></span>`
+    : '';
+  const actif = debutants
+    ? `<p class="filtre-actif" role="status">Seules les ${debutants} cultures faciles, conseillées pour débuter, sont affichées. <a href="#filtres">Afficher toutes les cultures</a></p>`
+    : '';
+  return `${repere}<nav class="filtres" id="filtres" aria-label="Familles de légumes">${filtres}</nav>${actif}${sections}`;
 }
 
 /** Tableau des températures jour / nuit du guide climat, généré depuis les fiches. */

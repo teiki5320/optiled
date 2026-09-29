@@ -2,6 +2,7 @@
 // les pages restent complètes et lisibles sans lui.
 import './site.css';
 import './theme.css';
+import './fiches.css';
 
 /** Barre de progression de lecture (en haut de l'écran), sur les articles. */
 function progressionLecture(): void {
@@ -65,7 +66,57 @@ function lienEvitement(): void {
   if (lien && document.querySelector('base')) lien.href = `${location.href.split('#')[0]}#contenu`;
 }
 
+/**
+ * Bouton « Partager » en fin d'article (écrit au build, masqué sans JavaScript) :
+ * partage natif du système quand il existe, sinon copie du lien dans le presse-papiers.
+ * Aucun script tiers ni cookie : seul le lien de la page est transmis, à l'application choisie.
+ */
+function boutonPartage(): void {
+  const bloc = document.querySelector<HTMLElement>('[data-partage]');
+  const bouton = bloc?.querySelector<HTMLButtonElement>('button');
+  const message = bloc?.querySelector<HTMLElement>('.partage__message');
+  if (!bloc || !bouton || !message) return;
+  // Adresse publique (canonique) plutôt que l'adresse courante, qui peut contenir une ancre.
+  const url = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href || location.href.split('#')[0];
+  const titre = document.querySelector('h1')?.textContent?.trim() || document.title;
+  let minuterie = 0;
+  const afficher = (texte: string) => {
+    message.textContent = texte;
+    clearTimeout(minuterie);
+    minuterie = window.setTimeout(() => (message.textContent = ''), 4000);
+  };
+  bouton.addEventListener('click', async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: titre, url });
+        return;
+      } catch (e) {
+        if ((e as Error).name === 'AbortError') return; // partage annulé
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      afficher('Lien copié');
+    } catch {
+      // Repli (http, anciens navigateurs) : copie par une zone de texte temporaire.
+      const zone = document.createElement('textarea');
+      zone.value = url;
+      zone.setAttribute('readonly', '');
+      zone.style.position = 'fixed';
+      zone.style.opacity = '0';
+      document.body.append(zone);
+      zone.select();
+      const ok = document.execCommand('copy');
+      zone.remove();
+      afficher(ok ? 'Lien copié' : `Copiez ce lien : ${url}`);
+      bouton.focus();
+    }
+  });
+  bloc.hidden = false;
+}
+
 progressionLecture();
+boutonPartage();
 sommaireActif();
 menuMobile();
 lienEvitement();

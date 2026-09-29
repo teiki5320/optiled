@@ -6,8 +6,10 @@
  */
 import { calculer, calculerDli, longueurBarreConseillee, nombrePlants, type ResultatCalcul, type Surface } from '../src/calc.ts';
 import type { Legume, ParametresStade } from '../src/data.ts';
+import { arrondiPuissance } from '../src/liste.ts';
 import { lampesConseillees, lienAmazon, MENTION_AFFILIATION, type Proposition } from '../src/lampes.ts';
-import { chargerLegumes, DEPART_RECOLTE, echapper, libellesFloraison, miniature, slug, stadeLePlusExigeant } from './fiches.ts';
+import { conseilsDeLaCulture, dateDuJour, THEMES } from './conseils.ts';
+import { badgeDifficulte, chargerLegumes, DEPART_RECOLTE, delaiRecolte, echapper, libellesFloraison, miniature, slug, stadeLePlusExigeant } from './fiches.ts';
 
 export { libellesFloraison, stadeLePlusExigeant };
 
@@ -22,22 +24,84 @@ const nb = (n: number, decimales = 0) =>
   n.toLocaleString('fr-FR', { minimumFractionDigits: decimales, maximumFractionDigits: decimales }).replace(/ /g, ' ');
 const plage = ([a, b]: [number, number], unite = '') => (a === b ? `${nb(a, a % 1 ? 1 : 0)}${unite}` : `${nb(a, a % 1 ? 1 : 0)} à ${nb(b, b % 1 ? 1 : 0)}${unite}`);
 
-/** Surface de référence des exemples : 1 m² (1 × 1 m), avec les réglages par défaut du calculateur. */
-const SURFACE_EXEMPLE: Surface = { mode: 'rectangle', longueurM: 1, largeurM: 1 };
+/** Réglages par défaut du calculateur, identiques à ceux de build/guides-achat.ts (vérifié par les tests ; pas d'import, qui serait circulaire). */
+export const EFFICACITE = 2.7;
+export const COEF_UTILISATION = 0.8;
 const PRIX_KWH = 0.2;
 
-export function exempleCalcul(p: ParametresStade): ResultatCalcul {
+/** Surface d'exemple d'une fiche : une installation du commerce à l'échelle de la culture. */
+export interface SurfaceExemple {
+  /** « une étagère de 60 × 30 cm » */
+  nom: string;
+  longueurM: number;
+  largeurM: number;
+  /** Pourquoi cette surface, quand ce n'est pas évident (phrase complète, facultative). */
+  raison?: string;
+}
+
+const ETAGERE: SurfaceExemple = { nom: 'une étagère de 60 × 30 cm', longueurM: 0.6, largeurM: 0.3 };
+const TENTE_60: SurfaceExemple = { nom: 'une tente de 60 × 60 cm', longueurM: 0.6, largeurM: 0.6 };
+const TENTE_80: SurfaceExemple = { nom: 'une tente de 80 × 80 cm', longueurM: 0.8, largeurM: 0.8 };
+
+/**
+ * Surfaces d'exemple (mêmes formats que le guide led-puissance.html) :
+ * - étagère de 60 × 30 cm (un niveau, quelques pots ou un plateau) pour les salades, aromatiques,
+ *   micro-pousses, radis, et les plantes à fruits compactes (fraise, tomate naine) ;
+ * - tente de 60 × 60 cm pour le poivron et le piment, dont un plant tient dans 45 cm environ ;
+ * - tente de 80 × 80 cm pour les grands plants (tomate, concombre, aubergine, chanvre), plus hauts
+ *   et plus larges, espacés de 50 cm ou plus ;
+ * - safran et wasabi : plantes basses et peu gourmandes en lumière, cultivées en petite quantité
+ *   (voir `raison`).
+ */
+const SURFACES_EXEMPLE: Record<string, SurfaceExemple> = {
+  poivron: TENTE_60,
+  piment: TENTE_60,
+  tomate: TENTE_80,
+  concombre: TENTE_80,
+  aubergine: TENTE_80,
+  'chanvre-cbd': TENTE_80,
+  safran: {
+    ...ETAGERE,
+    raison: 'Le safran reste bas et ses cormes se plantent serrés : une jardinière posée sur une étagère suffit pour une première culture.',
+  },
+  wasabi: {
+    ...ETAGERE,
+    raison: 'Le wasabi demande peu de lumière et se cultive en petite quantité, dans une pièce fraîche : une étagère suffit pour quelques plants.',
+  },
+};
+
+export function surfaceExemple(l: Legume): SurfaceExemple {
+  return SURFACES_EXEMPLE[l.id] ?? ETAGERE;
+}
+
+function surfaceCalcul(s: SurfaceExemple): Surface {
+  return { mode: 'rectangle', longueurM: s.longueurM, largeurM: s.largeurM };
+}
+
+/** Calcul de l'exemple, avec les réglages par défaut du calculateur (build/guides-achat.ts). */
+export function exempleCalcul(p: ParametresStade, s: SurfaceExemple = ETAGERE): ResultatCalcul {
   return calculer({
     ppfd: p.ppfd.valeur,
     photoperiodeH: p.photoperiode.valeur,
-    surface: SURFACE_EXEMPLE,
-    efficaciteUmolJ: 2.7,
-    coefUtilisation: 0.8,
+    surface: surfaceCalcul(s),
+    efficaciteUmolJ: EFFICACITE,
+    coefUtilisation: COEF_UTILISATION,
     hauteurCm: p.hauteur_cm.valeur,
-    longueurBarreM: longueurBarreConseillee(1),
+    longueurBarreM: longueurBarreConseillee(s.longueurM),
     prixKwh: PRIX_KWH,
     joursParAn: 365,
   });
+}
+
+/** Lien vers le calculateur, culture, stade dimensionnant et dimensions de l'exemple présélectionnés (voir src/etat.ts). */
+export function lienCalculateur(l: Legume): string {
+  const s = surfaceExemple(l);
+  const p = new URLSearchParams({ l: l.id });
+  if (stadeLePlusExigeant(l) === 'floraison') p.set('s', 'floraison');
+  p.set('m', 'rectangle');
+  p.set('L', String(s.longueurM).replace('.', ','));
+  p.set('W', String(s.largeurM).replace('.', ','));
+  return `index.html?${p.toString().replace(/&/g, '&amp;')}#calculateur`;
 }
 
 function ligne(libelle: string, valeur: string): string {
@@ -68,17 +132,17 @@ function tableauLumiere(p: ParametresStade, legende: string): string {
   );
 }
 
-function blocExemple(titre: string, r: ResultatCalcul, p: ParametresStade): string {
+function blocExemple(titre: string, r: ResultatCalcul, p: ParametresStade, s: SurfaceExemple): string {
   const b = r.barres;
   return `<h3>${titre}</h3>
         ${tableau(
           [
             ligne('Flux lumineux à émettre (PPF)', `${nb(r.ppfNecessaire)} µmol/s`),
-            ligne('Puissance électrique', `environ ${nb(r.puissanceW)} W (${nb(r.densitePuissanceWm2)} W/m²)`),
-            ligne('Barres LED', `${b.total} barre${b.total > 1 ? 's' : ''} de ${nb(longueurBarreConseillee(1) * 100)} cm en ${b.lignesParZone} ligne${b.lignesParZone > 1 ? 's' : ''}, d’au moins ${nb(Math.ceil(b.puissanceParBarreNecessaireW))} W chacune`),
+            ligne('Puissance électrique', `environ ${nb(r.puissanceW)} W`),
+            ligne('Barres LED', `${b.total} barre${b.total > 1 ? 's' : ''} de ${nb(longueurBarreConseillee(s.longueurM) * 100)} cm en ${b.lignesParZone} ligne${b.lignesParZone > 1 ? 's' : ''}, d’au moins ${nb(arrondiPuissance(b.puissanceParBarreNecessaireW))} W chacune`),
             ligne('Hauteur de suspension', plage(p.hauteur_cm.valeur, ' cm')),
             ligne('Consommation', `${nb(r.consoJourKwh, 2)} kWh par jour, soit ${nb(r.consoAnKwh)} kWh par an`),
-            ligne('Coût annuel', `environ ${nb(r.coutAnEur ?? 0)} € à ${nb(PRIX_KWH, 2)} € le kWh`),
+            ligne('Coût annuel', `environ ${nb(r.coutAnEur ?? 0, (r.coutAnEur ?? 0) < 10 ? 1 : 0)} € à ${nb(PRIX_KWH, 2)} € le kWh`),
           ],
           titre,
         )}`;
@@ -126,16 +190,37 @@ export function descriptionLegume(l: Legume): string {
   return complete.length <= 158 ? complete : `${l.nom} sous LED : ${valeurs}`;
 }
 
+/** Encadré « En bref » : les repères essentiels, pour le stade qui dimensionne l'installation. */
+function enBref(l: Legume): string {
+  const stade = stadeLePlusExigeant(l);
+  const p = l.stades[stade] ?? l.stades.croissance;
+  const precision = l.stades.floraison ? ` <small>en ${stade === 'floraison' ? libellesFloraison(l).court : 'croissance'}</small>` : '';
+  const heures = nb(p.photoperiode.valeur, p.photoperiode.valeur % 1 ? 1 : 0);
+  const d = l.difficulte;
+  // Titre en paragraphe : un h2 serait numéroté comme les sections, sans figurer au sommaire.
+  return `<section class="en-bref" id="en-bref" aria-label="En bref">
+          <p class="en-bref__titre" aria-hidden="true">En bref</p>
+          <dl>
+            <div><dt>Lumière</dt><dd>${nb(p.ppfd.valeur)} µmol/m²/s${precision}</dd></div>
+            <div><dt>Durée d’éclairage</dt><dd>${heures} h par jour${precision}</dd></div>
+            <div><dt>Température (jour)</dt><dd>${plage(l.culture.temperature_c.valeur, ' °C')}</dd></div>
+            <div><dt>Récolte</dt><dd>${delaiRecolte(l)}</dd></div>
+            ${d ? `<div class="en-bref__difficulte"><dt>Difficulté</dt><dd>${badgeDifficulte(l)} <small>${echapper(d.source.replace(/^Critères OptiLED \(voir _lisezmoi\) : /, ''))}.</small></dd></div>` : ''}
+          </dl>
+        </section>`;
+}
+
 /** Contenu HTML complet (avec marqueurs) de la page détaillée d'une culture. */
-export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()): string {
+export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes(), date = dateDuJour()): string {
   const c = l.culture;
   const croissance = l.stades.croissance;
   const floraison = l.stades.floraison;
   const nom = echapper(l.nom);
   const depart = DEPART_RECOLTE[l.id] ?? 'après semis';
 
-  const exempleCroissance = exempleCalcul(croissance);
-  const exempleFloraison = floraison ? exempleCalcul(floraison) : null;
+  const surface = surfaceExemple(l);
+  const exempleCroissance = exempleCalcul(croissance, surface);
+  const exempleFloraison = floraison ? exempleCalcul(floraison, surface) : null;
   const stadeLampes = stadeLePlusExigeant(l);
   const plus = stadeLampes === 'floraison' && exempleFloraison ? exempleFloraison : exempleCroissance;
   const libFloraison = libellesFloraison(l);
@@ -143,7 +228,10 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
   const lampes = l.avertissement ? [] : lampesConseillees(plus.ppfNecessaire, plus.surfaceM2, stadeLampes);
 
   const espacement = c.espacement_cm.valeur;
-  const plants = espacement ? nombrePlants(SURFACE_EXEMPLE, Math.round((espacement[0] + espacement[1]) / 2 / 5) * 5) : null;
+  // Même espacement que celui pré-rempli par le calculateur (milieu de la plage, arrondi à 5 cm).
+  const ecart = espacement ? Math.round((espacement[0] + espacement[1]) / 2 / 5) * 5 : 0;
+  const plants = espacement ? nombrePlants(surfaceCalcul(surface), ecart) : null;
+  const questions = conseilsDeLaCulture(l.id, date);
 
   const voisines = legumes.filter((v) => v.famille === l.famille && v.id !== l.id);
 
@@ -166,10 +254,13 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
     },
     {
       id: 'exemple',
-      titre: 'Exemple : éclairer 1 m²',
-      html: `<p>Pour une surface de 1 × 1 m, avec des LED d’une efficacité de 2,7 µmol/J et 80 % de la lumière qui atteint réellement la culture (les réglages par défaut du calculateur) :</p>
-        ${blocExemple(floraison ? 'En croissance' : 'Installation conseillée', exempleCroissance, croissance)}
-        ${exempleFloraison && floraison ? blocExemple(`En ${libFloraison.titre.toLowerCase()}`, exempleFloraison, floraison) : ''}
+      titre: `Exemple : ${surface.nom}`,
+      html: `<p>Pour ${surface.nom} (${nb(surface.longueurM * surface.largeurM, 2)} m²)${
+        plants ? `, soit environ <strong>${plants.total} plant${plants.total > 1 ? 's' : ''}</strong> à ${nb(ecart)} cm d’écart` : ''
+      }, avec des LED d’une efficacité de ${nb(EFFICACITE, 1)} µmol/J et ${nb(COEF_UTILISATION * 100)} % de la lumière qui atteint réellement la culture (les réglages par défaut du calculateur) :</p>
+        ${surface.raison ? `<p>${echapper(surface.raison)}</p>` : ''}
+        ${blocExemple(floraison ? 'En croissance' : 'Installation conseillée', exempleCroissance, croissance, surface)}
+        ${exempleFloraison && floraison ? blocExemple(`En ${libFloraison.titre.toLowerCase()}`, exempleFloraison, floraison, surface) : ''}
         ${
           floraison
             ? stadeLampes === 'floraison'
@@ -177,15 +268,15 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
               : `<p>On dimensionne l’installation pour la croissance, le stade le plus exigeant, puis on baisse l’intensité avec un variateur pendant ${libFloraison.la}.</p>`
             : ''
         }
-        ${plants ? `<p>Sur 1 m², à ${nb(Math.round((espacement![0] + espacement![1]) / 2 / 5) * 5)} cm d’écart, on place environ <strong>${plants.total} plant${plants.total > 1 ? 's' : ''}</strong>.</p>` : ''}
-        <p><a class="bouton bouton--plein" href="index.html?legume=${l.id}#calculateur">Calculer pour mes dimensions</a></p>`,
+        <p>Pour une autre surface, le guide <a href="led-puissance.html">Quelle puissance pour ma surface ?</a> donne les watts à prévoir pour les étagères et tentes courantes.</p>
+        <p><a class="bouton bouton--plein" href="${lienCalculateur(l)}">Calculer pour mes dimensions</a></p>`,
     },
     ...(lampes.length
       ? [
           {
             id: 'lampes',
             titre: 'Lampes du commerce qui conviennent',
-            html: `<p>Quelques modèles de la <a href="lampes.html">sélection de lampes</a> qui fournissent assez de lumière pour 1 m²${floraison ? ` en ${stadeLampes === 'floraison' ? libFloraison.titre.toLowerCase() : 'croissance'}` : ''}. D’autres lampes conviennent aussi : l’important est le PPF (en µmol/s) et la surface couverte.</p>
+            html: `<p>Quelques modèles de la <a href="lampes.html">sélection de lampes</a> qui fournissent assez de lumière pour ${surface.nom}${floraison ? ` en ${stadeLampes === 'floraison' ? libFloraison.titre.toLowerCase() : 'croissance'}` : ''}. D’autres lampes conviennent aussi : l’important est le PPF (en µmol/s) et la surface couverte.</p>
         <ul class="lampes">${lampes.map((p) => carteLampe(p, plus)).join('\n')}</ul>
         <p class="aide">Liens sponsorisés. ${MENTION_AFFILIATION}</p>`,
           },
@@ -226,6 +317,19 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
       )}
         <p>Pour démarrer les semis ou les boutures, voir le guide <a href="culture-semis.html">Semis, repiquage et bouturage</a>. En cas de souci, voir <a href="culture-problemes.html">Problèmes, carences et ravageurs</a>.</p>`,
     },
+    // Articles de conseil publiés qui citent la culture (champ « cultures » de leur en-tête) :
+    // un article programmé apparaît ici à sa date, lors de la reconstruction hebdomadaire.
+    ...(questions.length
+      ? [
+          {
+            id: 'questions',
+            titre: 'Questions fréquentes',
+            html: `<ul class="questions-culture">${questions
+              .map((q) => `<li><a href="${q.fichier}">${echapper(q.titre)}</a> <small>${THEMES[q.theme]}</small></li>`)
+              .join('\n          ')}</ul>`,
+          },
+        ]
+      : []),
   ];
 
   const sommaire = sections.map((s) => `<li><a href="#${s.id}">${s.titre}</a></li>`).join('');
@@ -247,6 +351,7 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
       <article class="prose">
         <h1>${nom} en intérieur : lumière LED et conditions de culture</h1>
         <p class="chapo">${echapper(l.famille)}. Tout ce qu’il faut pour cultiver sous LED : lumière, climat, solution nutritive, espacement et délai de récolte. Ce sont des ordres de grandeur, à ajuster selon la variété.</p>
+        ${enBref(l)}
         <nav class="sommaire" aria-label="Sommaire">
           <strong>Dans cette fiche</strong>
           <ol>${sommaire}</ol>
@@ -276,7 +381,7 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
 }
 
 /** Toutes les pages détaillées : nom de fichier → contenu HTML (avec marqueurs). */
-export function pagesLegumes(): Map<string, string> {
+export function pagesLegumes(date = dateDuJour()): Map<string, string> {
   const legumes = chargerLegumes();
-  return new Map(legumes.map((l) => [fichierLegume(l.id), sourcePageLegume(l, legumes)]));
+  return new Map(legumes.map((l) => [fichierLegume(l.id), sourcePageLegume(l, legumes, date)]));
 }

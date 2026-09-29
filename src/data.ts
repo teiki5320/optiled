@@ -44,12 +44,17 @@ export interface ParametresCulture {
   conseils: ValeurSourcee<string>;
 }
 
+/** Niveau de difficulté d'une culture (critères dans le « _lisezmoi » de legumes.json). */
+export type Difficulte = 'facile' | 'intermediaire' | 'exigeant';
+
 export interface Legume {
   id: string;
   nom: string;
   famille: string;
   /** Mise en garde affichée dans le calculateur et la fiche (réglementation…) ; texte simple, qui cite lui-même sa source */
   avertissement?: string;
+  /** Difficulté de la culture ; la source résume les critères qui ont décidé du classement */
+  difficulte?: ValeurSourcee<Difficulte>;
   stades: {
     croissance: ParametresStade;
     floraison: ParametresStade | null;

@@ -12,6 +12,7 @@ import { insecables, typographier } from './typo.ts';
 import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste.ts';
 import { jaugeDli, planBarres } from './schema.ts';
 import { erreursParChamp } from './champs-erreur.ts';
+import { resumeCalculPartage } from './partage.ts';
 
 /** DLI qui remplit entièrement l'anneau de synthèse (mol/m²/j). */
 const DLI_ANNEAU_MAX = 40;
@@ -27,6 +28,8 @@ const zoneErreurs = $<HTMLParagraphElement>('erreurs');
 const boutonCopier = $<HTMLButtonElement>('copier');
 
 let dernierResume = '';
+/** Dernier résultat affiché et sa surface (bandeau « Calcul partagé »). */
+let dernierCalcul: { r: ResultatCalcul; surface: Surface } | null = null;
 /** Au-delà, le plan deviendrait illisible et lent à dessiner. */
 const PLAN_BARRES_MAX = 400;
 
@@ -359,6 +362,7 @@ function mettreAJour(): void {
     contenu.classList.add('perime');
     majBarreResume(null);
     dernierResume = '';
+    dernierCalcul = null;
     return;
   }
   zoneErreurs.hidden = true;
@@ -397,6 +401,7 @@ function mettreAJour(): void {
   });
   contenu.innerHTML = insecables(rendre(r, ctx, entrees.surface));
   dernierResume = resumeTexte(r, ctx);
+  dernierCalcul = { r, surface: entrees.surface };
   majBarreResume(r);
   annoncer(r);
   enregistrerEtat();
@@ -580,6 +585,28 @@ async function partager(): Promise<void> {
   setTimeout(() => (bouton.textContent = libelle), 2000);
 }
 
+/**
+ * Lien reçu avec des réglages dans l'adresse (?l=…&L=…) : bandeau en haut de page qui résume
+ * le calcul et mène aux résultats. Il disparaît dès que le visiteur modifie un réglage.
+ */
+function bandeauCalculPartage(): void {
+  if (Object.keys(etatAdresse).length === 0 || !dernierCalcul) return;
+  const { r, surface } = dernierCalcul;
+  const cadre = document.createElement('div');
+  cadre.className = 'conteneur';
+  cadre.innerHTML = `<div class="calcul-partage" role="region" aria-label="Calcul partagé">
+    <p><strong>Calcul partagé :</strong> ${echapper(typographier(resumeCalculPartage(legumeCourant().nom, surface, r.puissanceW, r.barres.total)))}.</p>
+    <a href="#resultats">Voir le résultat <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+  </div>`;
+  $('calculateur').before(cadre);
+  const retirer = () => cadre.remove();
+  form.addEventListener('input', retirer, { once: true });
+  form.addEventListener('change', retirer, { once: true });
+  tuilesLegumes.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('[data-legume]')) retirer();
+  });
+}
+
 remplirLegumes();
 remplirTuiles();
 navigationTuiles();
@@ -605,6 +632,7 @@ $('imprimer').addEventListener('click', () => window.print());
 $('partager').addEventListener('click', partager);
 
 mettreAJour();
+bandeauCalculPartage();
 // Arrivée directe sur les résultats (#resultats, position restaurée) : la barre ne doit pas les recouvrir.
 suivreResultats();
 window.addEventListener('load', suivreResultats);

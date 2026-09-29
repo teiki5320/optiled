@@ -512,3 +512,35 @@ img, svg { max-width: 100%; }
 .carte-guide:has(.carte-guide__photo img) .carte-guide__date {
   color: #fff; background: rgb(0 0 0 / 0.45); padding: 0.2rem 0.55rem; border-radius: 999px; backdrop-filter: blur(4px);
 }
+
+/* ---------- Parcours, derniers conseils (accueil, pages de parcours) ---------- */
+.cartes-orientation .carte-guide { --r: var(--accent-vif); }
+.liste-conseils { margin: 0.2rem 0 0; padding: 0; }
+.carte-orientation--conseils .liste-conseils { list-style: none; display: grid; gap: 0.2rem; }
+.carte-orientation--conseils .liste-conseils a {
+  display: block; padding: 0.55rem 0; border-bottom: 1px solid var(--bordure);
+  color: var(--texte); text-decoration: none; font-weight: 600; line-height: 1.35;
+}
+.carte-orientation--conseils .liste-conseils li:last-child a { border-bottom: 0; }
+.carte-orientation--conseils .liste-conseils a:hover { color: var(--accent); }
+.liste-conseils time { display: block; font-size: 0.78rem; font-weight: 700; color: var(--attenue); letter-spacing: 0.02em; }
+.carte-orientation--conseils .carte-guide__lire { text-decoration: none; }
+.carte-orientation--conseils .carte-guide__lire:hover { text-decoration: underline; }
+.site-pied__sous-titre { margin-top: 1.4rem !important; }
+
+/* ---------- Bouton « Partager » en fin d'article ---------- */
+.partage {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem;
+  margin: 2.5rem 0 0; padding-top: 1.4rem; border-top: 1px solid var(--bordure);
+}
+.partage__bouton { cursor: pointer; font: inherit; font-weight: 700; font-size: 0.95rem; }
+.partage__bouton .icone { width: 1.1em; height: 1.1em; }
+.partage__message { font-size: 0.9rem; font-weight: 600; color: var(--accent); }
+.partage__message:empty { display: none; }
+@media print { .partage { display: none !important; } }
+
+/* Menu à 7 entrées : plus serré entre 860 et 1100 px de large */
+@media (min-width: 860px) and (max-width: 1099px) {
+  .site-nav a { padding: 0.45rem 0.6rem; font-size: 0.9rem; }
+  .site-entete__barre { gap: 0.7rem; }
+}

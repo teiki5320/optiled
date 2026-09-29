@@ -1,5 +1,30 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { cartesGuides, decoderEntites, fichiersImagesNonPubliees, header, insecables, mesureAudience, mettreEnPageArticle, NAVIGATION, referencement, RUBRIQUES, sitemap, tempsLecture } from './site.ts';
+import { dateDuJour, tousLesConseils } from './conseils.ts';
+import {
+  cartesGuides,
+  cartesOrientation,
+  dateModification,
+  decoderEntites,
+  fichiersImagesNonPubliees,
+  footer,
+  header,
+  insecables,
+  mesureAudience,
+  mettreEnPageArticle,
+  NAVIGATION,
+  PARCOURS,
+  referencement,
+  rendreConseilsLies,
+  rendreDerniersConseils,
+  RUBRIQUES,
+  sitemap,
+  tempsLecture,
+  transformerPage,
+} from './site.ts';
+
+const racine = resolve(import.meta.dirname, '..');
 
 describe('en-tête', () => {
   it('met en évidence la rubrique de la page courante', () => {
@@ -15,6 +40,74 @@ describe('en-tête', () => {
       expect(new Set(actifs).size, page).toBe(1);
     }
     expect(NAVIGATION.length).toBeGreaterThan(4);
+  });
+
+  it('« Lampes » a sa propre entrée ; les parcours sont rattachés à la rubrique Culture', () => {
+    expect(header('lampes.html')).toContain('<a href="lampes.html" aria-current="page">Lampes</a>');
+    expect(header('lampes.html')).not.toContain('<a href="led.html" aria-current');
+    expect(header('led-bases.html')).not.toContain('<a href="lampes.html" aria-current');
+    for (const p of PARCOURS) expect(header(p.fichier), p.fichier).toContain('<a href="culture.html" aria-current="page">');
+  });
+});
+
+describe('pied de page', () => {
+  it('mène à la page À propos, au contact et aux parcours', () => {
+    const pied = footer();
+    expect(pied).toContain('href="a-propos.html"');
+    expect(pied).toContain('href="a-propos.html#contact"');
+    for (const p of PARCOURS) expect(pied).toContain(`href="${p.fichier}"`);
+  });
+});
+
+describe('date de mise à jour', () => {
+  const pagesDatees = [...Object.values(RUBRIQUES).flatMap((r) => r.guides.map((g) => g.fichier)), ...PARCOURS.map((p) => p.fichier)];
+
+  for (const fichier of pagesDatees) {
+    it(`${fichier} : date de modification présente, valide et pas dans le futur`, () => {
+      const source = readFileSync(resolve(racine, fichier), 'utf8');
+      const date = dateModification(source);
+      expect(date, 'ajoutez <meta name="date-modification" content="AAAA-MM-JJ" />').toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(Number.isNaN(Date.parse(date!))).toBe(false);
+      expect(date! <= dateDuJour()).toBe(true);
+      const html = transformerPage(source, fichier);
+      expect(html).toMatch(new RegExp(`<p class="bandeau__etiquettes">[\\s\\S]*<time datetime="${date}">Mis à jour le `));
+      expect(html).toContain(`"dateModified":"${date}"`);
+    });
+  }
+});
+
+describe('bouton « Partager »', () => {
+  const article = (f: string) => mettreEnPageArticle(readFileSync(resolve(racine, f), 'utf8'), f);
+  it('en fin de guide et de parcours, masqué sans JavaScript', () => {
+    for (const f of ['led-bases.html', 'culture-climat.html', 'debuter.html', 'tente.html']) {
+      expect(article(f), f).toMatch(/<div class="partage" data-partage hidden>[\s\S]*<button type="button"[^>]*>[\s\S]*Partager[\s\S]*<\/article>/);
+    }
+  });
+  it('pas sur les pages de référence', () => {
+    for (const f of ['glossaire.html', 'mentions-legales.html', 'a-propos.html']) expect(article(f), f).not.toContain('data-partage');
+  });
+});
+
+describe('conseils cités par les pages', () => {
+  const tous = tousLesConseils();
+  const passe = tous.at(-1)!;
+  const futur = tous[0];
+
+  it("ne lie jamais un article qui n'est pas encore publié", () => {
+    const date = passe.publieLe;
+    const html = rendreConseilsLies([passe.slug, futur.slug, 'inconnu'], date);
+    expect(html).toContain(`href="${passe.fichier}"`);
+    if (futur.publieLe > date) expect(html).not.toContain(futur.fichier);
+    expect(rendreConseilsLies([futur.slug], '2000-01-01')).not.toContain('conseil-');
+  });
+
+  it('accueil : les 3 derniers articles publiés, du plus récent au plus ancien', () => {
+    const date = '2026-09-29';
+    const liens = [...rendreDerniersConseils(3, date).matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
+    const attendus = tous.filter((c) => c.publieLe <= date).slice(0, 3).map((c) => c.fichier);
+    expect(liens).toEqual(attendus);
+    expect(cartesOrientation(date)).toContain('href="debuter.html"');
+    expect(cartesOrientation(date)).toContain('href="tente.html"');
   });
 });
 

@@ -16,11 +16,18 @@
  *   <!--#cartes:led-->      cartes des guides LED (idem avec culture)
  *   <!--#icone:nom-->       une icône de build/icones.ts
  *   <!--#conseils-->        liste des articles de conseil publiés (build/conseils.ts)
+ *   <!--#derniers-conseils--> les 3 derniers articles publiés (liste courte, accueil)
+ *   <!--#conseils-lies:a,b--> liens vers les articles cités, seulement s'ils sont déjà publiés
+ *   <!--#orientation-->     cartes d'orientation de l'accueil (parcours + derniers conseils)
+ *   <!--#parcours-->        cartes des pages de parcours (debuter.html, tente.html)
  *   <!--#puissances-surfaces--> etc.  tableaux calculés des guides d'achat (build/guides-achat.ts)
  *
  * Les pages led-*.html, culture-*.html, glossaire.html et mentions-legales.html écrites avec le modèle d'article
  * (fil d'Ariane, <article class="prose"> avec h1, chapo et sommaire) reçoivent
  * automatiquement un bandeau de titre, un sommaire latéral et un temps de lecture.
+ * Une page qui porte <meta name="date-modification" content="AAAA-MM-JJ" /> affiche
+ * « Mis à jour le … » dans son bandeau (et dateModified dans ses données structurées).
+ * Les guides, les pages de parcours, les conseils et les fiches reçoivent un bouton « Partager ».
  */
 import { existsSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
@@ -29,7 +36,8 @@ import { chargerLegumes, rendreFiches, rendreSources, rendreTableauClimat } from
 import { htmlTuiles } from '../src/tuiles.ts';
 import { rendreLampes } from './lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
-import { conseilsPublies, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, tousLesConseils } from './conseils.ts';
+import { conseilsPublies, dateCourte, dateDuJour, dateLongue, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, tousLesConseils } from './conseils.ts';
+import { echapper } from './fiches.ts';
 import { rendreComparaisonLampes, rendreDliSemis, rendreEffetEfficacite, rendreEtageresSemis, rendrePuissancesCultures, rendrePuissancesSurfaces } from './guides-achat.ts';
 import { insecables } from '../src/typo.ts';
 
@@ -46,8 +54,10 @@ export const SITE_URL = (process.env.SITE_URL ?? 'https://www.optiled.fr/').repl
 /** Rubriques de la navigation principale ; `pages` = fichiers rattachés à la rubrique. */
 export const NAVIGATION: { href: string; libelle: string; pages: RegExp }[] = [
   { href: 'index.html', libelle: 'Calculateur', pages: /^(index|calculateur)\.html$/ },
-  { href: 'led.html', libelle: 'LED', pages: /^(led(-.*)?|lampes)\.html$/ },
-  { href: 'culture.html', libelle: 'Culture', pages: /^culture(-.*)?\.html$/ },
+  { href: 'led.html', libelle: 'LED', pages: /^led(-.*)?\.html$/ },
+  { href: 'lampes.html', libelle: 'Lampes', pages: /^lampes\.html$/ },
+  // Les pages de parcours (débuter, tente) sont rattachées à la rubrique Culture.
+  { href: 'culture.html', libelle: 'Culture', pages: /^(culture(-.*)?|debuter|tente)\.html$/ },
   { href: 'legumes.html', libelle: 'Légumes', pages: /^legumes?(-.*)?\.html$/ },
   { href: 'conseils.html', libelle: 'Conseils', pages: /^conseils?(-.*)?\.html$/ },
   { href: 'glossaire.html', libelle: 'Glossaire', pages: /^glossaire\.html$/ },
@@ -90,6 +100,53 @@ export const RUBRIQUES: Record<Rubrique, { nom: string; hub: string; guides: Gui
     ],
   },
 };
+
+/**
+ * Pages de parcours : courtes, orientées action, elles renvoient vers les guides, les fiches
+ * et le calculateur. Elles ne sont pas numérotées dans une rubrique.
+ */
+export interface Parcours {
+  fichier: string;
+  titre: string;
+  resume: string;
+  icone: NomIcone;
+}
+
+export const PARCOURS: Parcours[] = [
+  { fichier: 'debuter.html', titre: 'Je débute : salades et aromatiques', resume: 'Quoi cultiver, le matériel minimal et les premières semaines, sur une étagère.', icone: 'pousse' },
+  { fichier: 'tente.html', titre: "J'ai une tente de culture", resume: 'Tomates, poivrons, piments : puissance, ventilation, lampe et pollinisation.', icone: 'fruit' },
+];
+
+export function estParcours(fichier: string): boolean {
+  return PARCOURS.some((p) => p.fichier === fichier);
+}
+
+/** Date de dernière modification déclarée dans la page (<meta name="date-modification">), ou undefined. */
+export function dateModification(html: string): string | undefined {
+  return html.match(/<meta name="date-modification" content="(\d{4}-\d{2}-\d{2})"/)?.[1];
+}
+
+/** Étiquette « Mis à jour le … » du bandeau (réutilisable par les pages générées). */
+export function etiquetteMiseAJour(iso: string): string {
+  // Texte entier dans <time> : l'étiquette est en flex, une espace avant la balise serait doublée.
+  return `${icone('coche')} <time datetime="${iso}">Mis à jour le ${dateLongue(iso)}</time>`;
+}
+
+/** Pages qui reçoivent le bouton « Partager » en fin d'article. */
+export function estPartageable(fichier: string): boolean {
+  return rubriqueDe(fichier) !== null || estParcours(fichier) || fichier.startsWith(PREFIXE_PAGE_CONSEIL) || fichier.startsWith(PREFIXE_PAGE_LEGUME);
+}
+
+/**
+ * Bouton « Partager » : masqué sans JavaScript (src/site.ts l'active). Partage natif si le
+ * navigateur le propose, sinon copie du lien ; aucun script tiers.
+ */
+export function boutonPartage(): string {
+  return `<div class="partage" data-partage hidden>
+          <button type="button" class="bouton partage__bouton">${icone('partage')} Partager cette page</button>
+          <span class="partage__message" role="status"></span>
+        </div>`;
+}
 
 export function rubriqueDe(fichier: string): Rubrique | null {
   if (/^led-/.test(fichier)) return 'led';
@@ -146,6 +203,9 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
   const guide = r ? RUBRIQUES[r].guides.find((g) => g.fichier === fichier) : undefined;
   const pageLegume = fichier.startsWith(PREFIXE_PAGE_LEGUME);
   const pageConseil = fichier.startsWith(PREFIXE_PAGE_CONSEIL);
+  const parcours = PARCOURS.find((p) => p.fichier === fichier);
+  const modifiee = dateModification(html);
+  const miseAJour = modifiee ? { dateModified: modifiee } : {};
 
   const donnees: object[] = [];
   if (fichier === 'index.html') {
@@ -172,6 +232,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
         image,
         inLanguage: 'fr',
         mainEntityOfPage: adresse,
+        ...miseAJour,
         author: { '@type': 'Organization', name: NOM_SITE },
         publisher: { '@type': 'Organization', name: NOM_SITE },
       },
@@ -201,6 +262,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
         inLanguage: 'fr',
         mainEntityOfPage: adresse,
         ...(datePublication ? { datePublished: datePublication } : {}),
+        ...miseAJour,
         author: { '@type': 'Organization', name: NOM_SITE },
         publisher: { '@type': 'Organization', name: NOM_SITE },
       },
@@ -217,9 +279,34 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
       },
     );
   }
+  if (parcours) {
+    donnees.push(
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: decoderEntites(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, '').trim() ?? parcours.titre),
+        description,
+        image,
+        inLanguage: 'fr',
+        mainEntityOfPage: adresse,
+        ...miseAJour,
+        author: { '@type': 'Organization', name: NOM_SITE },
+        publisher: { '@type': 'Organization', name: NOM_SITE },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: url },
+          { '@type': 'ListItem', position: 2, name: RUBRIQUES.culture.nom, item: `${url}${RUBRIQUES.culture.hub}` },
+          { '@type': 'ListItem', position: 3, name: parcours.titre, item: adresse },
+        ],
+      },
+    );
+  }
   const json = donnees.map((d) => `<script type="application/ld+json">${JSON.stringify(d).replace(/</g, '\\u003c')}</script>`).join('\n    ');
   return `<link rel="canonical" href="${adresse}" />
-    <meta property="og:type" content="${guide || pageLegume || pageConseil ? 'article' : 'website'}" />
+    <meta property="og:type" content="${guide || parcours || pageLegume || pageConseil ? 'article' : 'website'}" />
     <meta property="og:site_name" content="${NOM_SITE}" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:title" content="${attribut(titre)}" />
@@ -272,9 +359,10 @@ export function footer(): string {
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la <a href="glossaire.html#sources">littérature horticole</a> : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
       <p class="site-pied__note">Photos (guides, conseils, cultures) et certains schémas des guides Culture générés par intelligence artificielle ; les autres schémas sont réalisés pour le site.</p>
       <p class="site-pied__note">Certains liens vers Amazon sont sponsorisés : en tant que Partenaire Amazon, l'éditeur réalise un bénéfice sur les achats remplissant les conditions requises.</p>
-      <p class="site-pied__note"><a href="mentions-legales.html">Mentions légales</a></p>
+      <p class="site-pied__note"><a href="a-propos.html">À propos et méthode</a> · <a href="a-propos.html#contact">Contact</a> · <a href="mentions-legales.html">Mentions légales</a></p>
     </div>
-    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="glossaire.html">Glossaire</a></li></ul></div>
+    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li></ul>
+      <h2 class="site-pied__sous-titre">Parcours</h2><ul>${PARCOURS.map((p) => `<li><a href="${p.fichier}">${p.titre}</a></li>`).join('')}</ul></div>
     ${colonne('led')}
     ${colonne('culture')}
   </div>
@@ -295,6 +383,54 @@ export function cartesGuides(r: Rubrique): string {
     </a>`,
     )
     .join('')}</div>`;
+}
+
+/** Liste courte des derniers articles publiés (carte « Derniers conseils » de l'accueil). */
+export function rendreDerniersConseils(nombre = 3, date = dateDuJour()): string {
+  const derniers = conseilsPublies(date).slice(0, nombre);
+  if (derniers.length === 0) return '<p>Les premiers articles arrivent bientôt.</p>';
+  return `<ul class="liste-conseils">${derniers
+    .map((c) => `<li><a href="${c.fichier}"><time datetime="${c.publieLe}">${dateCourte(c.publieLe)}</time>${echapper(c.titre)}</a></li>`)
+    .join('')}</ul>`;
+}
+
+/**
+ * Liens vers des articles de conseil choisis (marqueur <!--#conseils-lies:slug1,slug2-->),
+ * limités à ceux déjà publiés : un article programmé apparaît seul le jour de sa publication.
+ */
+export function rendreConseilsLies(slugs: string[], date = dateDuJour()): string {
+  const publies = new Map(conseilsPublies(date).map((c) => [c.slug, c]));
+  const liste = slugs.map((s) => publies.get(s.trim())).filter((c) => c !== undefined);
+  if (liste.length === 0) return '<p>Les articles de conseil sur ce sujet arrivent bientôt : voir la page <a href="conseils.html">Conseils</a>.</p>';
+  return `<ul class="liste-conseils">${liste.map((c) => `<li><a href="${c.fichier}">${echapper(c.titre)}</a></li>`).join('')}</ul>`;
+}
+
+/** Photos (déjà publiées) reprises sur les cartes des parcours : celles des guides les plus proches. */
+const PHOTOS_PARCOURS: Record<string, string> = { 'debuter.html': 'culture-demarrer.html', 'tente.html': 'culture-climat.html' };
+
+/** Cartes des pages de parcours (marqueur <!--#parcours-->, et accueil). */
+function cartesParcours(): string {
+  return PARCOURS.map(
+    (p) => `<a class="carte-guide" href="${p.fichier}">
+      <span class="carte-guide__photo">${photoGuide(PHOTOS_PARCOURS[p.fichier] ?? p.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw')}</span>
+      <span class="carte-guide__icone">${icone(p.icone)}</span>
+      <strong>${p.titre}</strong>
+      <span>${p.resume}</span>
+      <span class="carte-guide__lire">Suivre le parcours ${icone('fleche', 'icone icone--petite')}</span>
+    </a>`,
+  ).join('');
+}
+
+/** Cartes d'orientation de l'accueil : les deux parcours et les derniers conseils. */
+export function cartesOrientation(date = dateDuJour()): string {
+  return `<div class="cartes-guides cartes-orientation">${cartesParcours()}
+    <div class="carte-guide carte-orientation--conseils">
+      <span class="carte-guide__icone">${icone('ampoule')}</span>
+      <strong>Derniers conseils</strong>
+      ${rendreDerniersConseils(3, date)}
+      <a class="carte-guide__lire" href="conseils.html">Tous les conseils ${icone('fleche', 'icone icone--petite')}</a>
+    </div>
+  </div>`;
 }
 
 /** Photo de couverture d'un guide, qui chevauche le bas du bandeau. */
@@ -341,25 +477,32 @@ export function mettreEnPageArticle(html: string, fichier: string): string {
   const apres = interieur.slice(interieur.indexOf('</article>') + '</article>'.length);
 
   const r = rubriqueDe(fichier);
+  const parcours = PARCOURS.find((p) => p.fichier === fichier);
   const guides = r ? RUBRIQUES[r].guides : [];
   const rang = guides.findIndex((g) => g.fichier === fichier);
+  const modifiee = dateModification(html);
+  // Couleur du bandeau : celle de la rubrique ; les parcours prennent celle de la culture.
+  const teinte = r ?? (parcours ? 'culture' : 'reference');
   const etiquette = [
     r
       ? `${icone(guides[rang]?.icone ?? 'livre')} ${RUBRIQUES[r].nom}`
-      : fichier.startsWith(PREFIXE_PAGE_CONSEIL)
-        ? `${icone('ampoule')} Conseils`
-        : fichier.startsWith(PREFIXE_PAGE_LEGUME)
-          ? `${icone('feuille')} Fiche culture`
-          : `${icone('livre')} Référence`,
+      : parcours
+        ? `${icone(parcours.icone)} Parcours`
+        : fichier.startsWith(PREFIXE_PAGE_CONSEIL)
+          ? `${icone('ampoule')} Conseils`
+          : fichier.startsWith(PREFIXE_PAGE_LEGUME)
+            ? `${icone('feuille')} Fiche culture`
+            : `${icone('livre')} Référence`,
     rang >= 0 ? `Guide ${rang + 1} sur ${guides.length}` : '',
     `${icone('horloge')} ${tempsLecture(corps)} min de lecture`,
+    modifiee ? etiquetteMiseAJour(modifiee) : '',
   ]
     .filter(Boolean)
     .map((e) => `<span>${e}</span>`)
     .join('');
 
-  const nouveau = `<main id="contenu" class="article article--${r ?? 'reference'}">
-  <header class="bandeau bandeau--${r ?? 'reference'}">
+  const nouveau = `<main id="contenu" class="article article--${teinte}">
+  <header class="bandeau bandeau--${teinte}">
     <div class="conteneur">
       ${fil}
       <p class="bandeau__etiquettes">${etiquette}</p>
@@ -370,7 +513,7 @@ export function mettreEnPageArticle(html: string, fichier: string): string {
   ${guides[rang] ? couverture(guides[rang]) : couvertureConseil(fichier)}
   <div class="conteneur article__grille${sommaire ? '' : ' article__grille--seule'}">
     ${sommaire ? `<aside class="article__cote">${sommaire}</aside>` : ''}
-    <article class="prose">${corps}</article>
+    <article class="prose">${corps}${estPartageable(fichier) ? boutonPartage() : ''}</article>
   </div>
   <div class="conteneur article__apres">${apres}</div>
 </main>`;
@@ -435,6 +578,9 @@ export function transformerPage(html: string, fichier: string): string {
     .replace('<!--#sources-->', () => rendreSources())
     .replace('<!--#lampes-->', () => rendreLampes())
     .replace('<!--#conseils-->', () => rendreListeConseils())
+    .replace('<!--#orientation-->', () => cartesOrientation())
+    .replace('<!--#parcours-->', () => `<div class="cartes-guides cartes-orientation">${cartesParcours()}</div>`)
+    .replace(/<!--#conseils-lies:([a-z0-9,\s-]+)-->/g, (_m, liste: string) => rendreConseilsLies(liste.split(',')))
     .replace('<!--#puissances-surfaces-->', () => rendrePuissancesSurfaces())
     .replace('<!--#puissances-cultures-->', () => rendrePuissancesCultures())
     .replace('<!--#effet-efficacite-->', () => rendreEffetEfficacite())

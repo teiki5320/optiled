@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { aLireAussi, type Conseil, conseilsPublies, dateDuJour, lireConseil, pagesConseils, rendreListeConseils, sourcePageConseil, THEMES, tousLesConseils } from './conseils.ts';
+import { chargerLegumes } from './fiches.ts';
 import { sourcePage, toutesLesPages, transformerPage } from './site.ts';
 
 const racine = resolve(import.meta.dirname, '..');
@@ -69,7 +70,7 @@ describe('articles de conseil', () => {
 
   it('« À lire aussi » : même thème, les plus proches en date, avant comme après', () => {
     const faux = (slug: string, publieLe: string, theme: Conseil['theme']): Conseil => ({
-      slug, fichier: `conseil-${slug}.html`, titre: slug, titrePage: slug, description: '', publieLe, theme, photo: '', corps: '',
+      slug, fichier: `conseil-${slug}.html`, titre: slug, titrePage: slug, description: '', publieLe, theme, photo: '', cultures: [], corps: '',
     });
     const liste = [
       faux('a', '2026-01-05', 'lumiere'),
@@ -122,6 +123,21 @@ describe('articles de conseil', () => {
     expect(images.slice(3).every((img) => img.includes('loading="lazy"'))).toBe(true);
     expect(images.filter((img) => img.includes('fetchpriority="high"'))).toHaveLength(1);
     expect(images[0]).toContain('fetchpriority="high"');
+  });
+
+  it('champ « cultures » : identifiants de legumes.json, liens vers les fiches sous l’article', () => {
+    const ids = new Set(chargerLegumes().map((l) => l.id));
+    for (const c of tous) for (const id of c.cultures) expect(ids.has(id), `${c.slug} → ${id}`).toBe(true);
+    const tomates = tous.find((c) => c.slug === 'tomates-en-appartement')!;
+    expect(tomates.cultures).toEqual(['tomate', 'tomate-naine']);
+    const html = sourcePageConseil(tomates, tous);
+    expect(html).toContain('<a class="bouton-lien" href="legume-tomate.html">Fiche : Tomate</a>');
+    expect(html).toContain('href="legume-tomate-naine.html">Fiche : Tomate naine (micro-tomate)</a>');
+    expect(html.indexOf('class="fiches-liees"')).toBeLessThan(html.indexOf('</article>'));
+    // Sans champ : pas de bloc.
+    const sans = lireConseil('x', '<!--\ntitre: T\ndescription: D\npublie_le: 2026-01-05\ntheme: lumiere\n-->\n<p class="chapo">x</p>');
+    expect(sans.cultures).toEqual([]);
+    expect(sourcePageConseil(sans, [sans])).not.toContain('fiches-liees');
   });
 
   it("l'en-tête incomplet est refusé", () => {

@@ -17,6 +17,7 @@ const TRACES = {
   menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
   fruit: '<circle cx="12" cy="14" r="7"/><path d="M12 7c0-2 1-4 3-5M12 7c-1.5-1.5-4-2-6-1 1 2 3.5 2.5 6 1Z"/>',
   herbe: '<path d="M12 22V8"/><path d="M12 14c-3 0-6-2-7-6 3 0 6 2 7 6ZM12 11c3 0 6-2 7-6-3 0-6 2-7 6Z"/>',
+  partage: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
   graines: '<circle cx="7" cy="16" r="2.5"/><circle cx="16" cy="17" r="2.5"/><circle cx="12" cy="9" r="2.5"/><path d="M12 6.5V3M7 13.5V11M16 14.5V12"/>',
 } as const;
 

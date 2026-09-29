@@ -11,9 +11,13 @@
  *   publie_le: 2026-09-25
  *   theme: lumiere
  *   photo: Texte alternatif de la photo (facultatif ; photo dans public/images/guides/conseil-<slug>-800.webp et -1600.webp)
+ *   cultures: basilic, tomate (facultatif ; identifiants de src/data/legumes.json, séparés par des virgules)
  *   -->
  *   <p class="chapo">Réponse courte…</p>
  *   <h2 id="…">…</h2> …
+ *
+ * Le champ `cultures` relie l'article aux fiches : liens « Fiche : … » sous l'article, et section
+ * « Questions fréquentes » de chaque fiche citée (build/pages-legumes.ts), dès la publication.
  *
  * Seuls les articles dont la date est passée sont construits (page conseil-<slug>.html,
  * liste, sitemap). La date de référence est celle du jour à Paris, ou DATE_PUBLICATION
@@ -22,7 +26,7 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { echapper } from './fiches.ts';
+import { chargerLegumes, echapper, pageDetaillee } from './fiches.ts';
 import { icone, type NomIcone } from './icones.ts';
 import { CARTES_PREMIERE_RANGEE, photoGuide } from './photos.ts';
 
@@ -49,6 +53,8 @@ export interface Conseil {
   theme: Theme;
   /** Texte alternatif de la photo, ou chaîne vide. */
   photo: string;
+  /** Identifiants des cultures dont parle l'article (legumes.json), éventuellement vide. */
+  cultures: string[];
   corps: string;
 }
 
@@ -83,6 +89,7 @@ export function lireConseil(slug: string, source: string): Conseil {
     publieLe: champs.publie_le,
     theme: champs.theme as Theme,
     photo: champs.photo ?? '',
+    cultures: (champs.cultures ?? '').split(',').map((id) => id.trim()).filter(Boolean),
     corps: source.slice(entete[0].length).trim(),
   };
 }
@@ -136,6 +143,8 @@ export function sourcePageConseil(c: Conseil, publies: Conseil[]): string {
   const chapo = c.corps.match(/^<p class="chapo">[\s\S]*?<\/p>/)?.[0] ?? '';
   const suite = chapo ? c.corps.slice(chapo.length).trim() : c.corps;
   const lire = aLireAussi(c, publies);
+  const legumes = chargerLegumes();
+  const fiches = c.cultures.flatMap((id) => legumes.filter((l) => l.id === id));
   return `<!doctype html>
 <html lang="fr">
   <head>
@@ -155,6 +164,13 @@ export function sourcePageConseil(c: Conseil, publies: Conseil[]): string {
         ${chapo}
         ${sommaire}
         ${suite}
+        ${
+          fiches.length
+            ? `<nav class="fiches-liees" aria-label="Fiches des cultures citées">${fiches
+                .map((l) => `<a class="bouton-lien" href="${pageDetaillee(l.id)}">Fiche : ${echapper(l.nom)}</a>`)
+                .join(' ')}</nav>`
+            : ''
+        }
         <p class="aide">Publié le ${dateLongue(c.publieLe)} dans « ${THEMES[c.theme]} ». Valeurs indicatives tirées de la littérature horticole (voir les <a href="glossaire.html#sources">sources</a>).</p>
       </article>
       ${
@@ -171,6 +187,13 @@ export function sourcePageConseil(c: Conseil, publies: Conseil[]): string {
   </body>
 </html>
 `;
+}
+
+/** Articles publiés qui citent une culture (champ `cultures`), du plus ancien au plus récent. */
+export function conseilsDeLaCulture(id: string, date = dateDuJour(), tous = tousLesConseils()): Conseil[] {
+  return conseilsPublies(date, tous)
+    .filter((c) => c.cultures.includes(id))
+    .sort((a, b) => a.publieLe.localeCompare(b.publieLe) || a.titre.localeCompare(b.titre, 'fr'));
 }
 
 /** Pages des articles publiés : nom de fichier → contenu HTML (avec marqueurs). */

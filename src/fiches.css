@@ -1,0 +1,62 @@
+/* =====================================================================
+   OptiLED — compléments des fiches légumes (legumes.html, legume-<id>.html)
+   et des liens entre conseils et fiches. Chargé après theme.css : n'utilise
+   que ses jetons (couleurs, rayons, polices).
+   ===================================================================== */
+
+/* ---------- Badge de difficulté ---------- */
+.badge-difficulte {
+  --teinte: #8fd694;
+  display: inline-block; padding: 0.15rem 0.65rem; border-radius: 999px;
+  font-size: 0.8rem; font-weight: 700; line-height: 1.5; white-space: nowrap;
+  color: var(--teinte);
+  background: color-mix(in srgb, var(--teinte) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--teinte) 45%, transparent);
+}
+.badge-difficulte--intermediaire { --teinte: var(--accent); }
+.badge-difficulte--exigeant { --teinte: #ff9c8a; }
+
+/* ---------- Cartes de legumes.html : difficulté et délai de récolte ---------- */
+.fiche__reperes {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem;
+  margin: 0; padding: 0.7rem 1.1rem; border-bottom: 1px solid var(--bordure); font-size: 0.9rem;
+}
+.fiche__recolte { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--attenue); }
+.fiche__recolte strong { color: var(--texte); }
+.fiche__recolte .icone { color: var(--famille, var(--accent)); flex: none; }
+
+/* ---------- Filtre « Pour débuter » (sans JavaScript, par :target) ---------- */
+.filtre-repere { display: block; height: 0; }
+.pastille--debuter { border-color: color-mix(in srgb, #8fd694 55%, transparent); }
+.pastille--debuter .icone { color: #8fd694; }
+.filtre-actif { display: none; margin: 0.8rem 0 0; font-size: 0.95rem; color: var(--attenue); }
+#pour-debuter:target ~ .filtre-actif { display: block; }
+#pour-debuter:target ~ .filtres .pastille--debuter { background: color-mix(in srgb, #8fd694 16%, var(--carte)); border-color: #8fd694; }
+#pour-debuter:target ~ .fiches-famille .fiche:not([data-difficulte="facile"]) { display: none; }
+#pour-debuter:target ~ .fiches-famille:not(:has(.fiche[data-difficulte="facile"])) { display: none; }
+
+/* ---------- Page d'une culture : encadré « En bref » ---------- */
+.en-bref {
+  margin: 0 0 1.5rem; padding: 1rem 1.1rem 1.1rem;
+  background: var(--carte); border: 1px solid var(--bordure); border-radius: var(--rayon-petit, 16px);
+}
+.prose .en-bref .en-bref__titre {
+  margin: 0 0 0.7rem; font-weight: 700; font-size: 0.78rem; font-family: var(--police);
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--attenue);
+}
+.en-bref dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 0.6rem; margin: 0; }
+.en-bref dl > div { background: rgb(255 255 255 / 0.05); border-radius: 12px; padding: 0.55rem 0.75rem; }
+.en-bref dt { font-size: 0.72rem; color: var(--attenue); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+.en-bref dd { margin: 0.1rem 0 0; font-family: var(--police-titre); font-weight: 750; font-size: 1.05rem; line-height: 1.3; }
+.en-bref dd small { font-family: var(--police); font-weight: 500; font-size: 0.8rem; color: var(--attenue); }
+.en-bref .en-bref__difficulte { grid-column: 1 / -1; }
+.en-bref__difficulte dd { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.6rem; }
+.en-bref__difficulte .badge-difficulte { font-family: var(--police); }
+
+/* ---------- Page d'une culture : questions fréquentes ---------- */
+.questions-culture { padding-left: 1.2rem; }
+.questions-culture li { margin: 0.35rem 0; }
+.questions-culture small { color: var(--attenue); font-size: 0.8rem; margin-left: 0.3rem; white-space: nowrap; }
+
+/* ---------- Page d'un conseil : liens vers les fiches citées ---------- */
+.fiches-liees { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 2rem 0 1rem; }

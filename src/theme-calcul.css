@@ -206,3 +206,24 @@ input[type='text']:focus, select:focus { background: rgb(255 255 255 / 0.1); bor
 .lampe-proposee p { margin: 0; }
 .lampe-proposee__detail { font-size: 0.86rem; color: var(--attenue); }
 .bouton--amazon { justify-self: start; font-size: 0.86rem; padding: 0.45rem 0.9rem; }
+
+/* Titre et phrase d'explication visibles ensemble sur ordinateur : la phrase monte sous le titre. */
+@media (min-width: 960px) {
+  .accueil__chapo { margin-top: 1.4rem; max-width: 34rem; }
+}
+
+/* Bandeau « Calcul partagé » (lien avec des réglages dans l'adresse) */
+.calcul-partage {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem 1rem;
+  margin: 0.8rem auto 0.4rem; padding: 0.8rem 1rem 0.8rem 1.2rem; border-radius: 24px;
+  background: rgb(40 24 48 / 0.85); border: 1px solid rgb(255 255 255 / 0.16); color: var(--nuit-texte);
+}
+.calcul-partage p { margin: 0; font-size: 0.95rem; line-height: 1.45; }
+.calcul-partage strong { font-weight: 700; }
+.calcul-partage a {
+  flex: none; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.95rem; border-radius: 999px;
+  background: var(--degrade); color: #2a1422; font-weight: 700; font-size: 0.9rem; text-decoration: none;
+}
+.calcul-partage a .icone { width: 1em; height: 1em; }
+.orientation { padding-top: 2.5rem; }
+@media print { .calcul-partage, .orientation { display: none !important; } }

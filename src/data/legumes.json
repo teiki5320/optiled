@@ -5,7 +5,8 @@
     "ppfd en µmol/m²/s, photoperiode en heures/jour, hauteur_cm = [min, max] de suspension au-dessus de la canopée.",
     "stades.floraison = null pour les cultures récoltées avant floraison (feuilles, aromatiques, micro-pousses, racines, wasabi).",
     "Les valeurs sont des ordres de grandeur indicatifs : ajustez-les selon la variété et vos mesures (PAR-mètre).",
-    "culture : plages [min, max] de température de jour (temperature_c, °C) et de nuit (temperature_nuit_c, °C), texte court des températures à éviter (temperature_a_eviter), humidité relative (%), pH et EC (mS/cm) de la solution, jours_recolte = délai indicatif jusqu'à la première récolte, compté depuis le semis sauf mention contraire dans la source (fraise : depuis la plantation du plant ; romarin : depuis la bouture enracinée ; safran : depuis la plantation des cormes ; chanvre : jusqu'à la récolte des fleurs ; wasabi : jusqu'à la récolte du rhizome), espacement entre plants (cm, null pour un semis à la volée)."
+    "culture : plages [min, max] de température de jour (temperature_c, °C) et de nuit (temperature_nuit_c, °C), texte court des températures à éviter (temperature_a_eviter), humidité relative (%), pH et EC (mS/cm) de la solution, jours_recolte = délai indicatif jusqu'à la première récolte, compté depuis le semis sauf mention contraire dans la source (fraise : depuis la plantation du plant ; romarin : depuis la bouture enracinée ; safran : depuis la plantation des cormes ; chanvre : jusqu'à la récolte des fleurs ; wasabi : jusqu'à la récolte du rhizome), espacement entre plants (cm, null pour un semis à la volée).",
+    "difficulte : « facile », « intermediaire » ou « exigeant », selon cinq critères. Facile = feuilles, racines ou pousses récoltées sans pollinisation, PPFD de 300 µmol/m²/s au plus, première récolte en trois mois au plus, température d'une pièce habitée (18 à 22 °C dans la plage conseillée), sans montaison rapide, plante compacte (étagère). Intermédiaire = un ou deux de ces critères non remplis (croissance lente, montaison en jours longs, besoin de fraîcheur, pollinisation à la main sur une plante compacte, PPFD jusqu'à 400). Exigeant = grande plante à fruits ou à fleurs (tente, PPFD de 450 µmol/m²/s ou plus, pollinisation, trois mois ou plus), ou climat très particulier et cycle très long (safran, wasabi). La source résume les critères qui ont décidé du classement. Les cultures faciles sont celles de l'article « Quels légumes cultiver facilement en intérieur quand on débute ? »."
   ],
   "references": {
     "kozai": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press",
@@ -48,6 +49,10 @@
       "id": "laitue",
       "nom": "Laitue",
       "famille": "Légumes feuilles",
+      "difficulte": {
+        "valeur": "facile",
+        "source": "Critères OptiLED (voir _lisezmoi) : Feuilles récoltées sans pollinisation, 250 µmol/m²/s, première récolte en 30 à 60 jours, compacte : tient sur une étagère"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -136,6 +141,10 @@
       "id": "epinard",
       "nom": "Épinard",
       "famille": "Légumes feuilles",
+      "difficulte": {
+        "valeur": "intermediaire",
+        "source": "Critères OptiLED (voir _lisezmoi) : Monte vite en graines en jours longs : 12 h de lumière et de la fraîcheur (15 à 20 °C) à tenir"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -224,6 +233,10 @@
       "id": "roquette",
       "nom": "Roquette",
       "famille": "Légumes feuilles",
+      "difficulte": {
+        "valeur": "facile",
+        "source": "Critères OptiLED (voir _lisezmoi) : Feuilles récoltées sans pollinisation, 250 µmol/m²/s, première récolte en 30 à 40 jours, supporte la fraîcheur"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -312,6 +325,10 @@
       "id": "mache",
       "nom": "Mâche",
       "famille": "Légumes feuilles",
+      "difficulte": {
+        "valeur": "intermediaire",
+        "source": "Critères OptiLED (voir _lisezmoi) : Peu de lumière, mais demande une pièce fraîche (15 à 18 °C) : pousse mal à la température d’un logement chauffé"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -400,6 +417,10 @@
       "id": "mesclun",
       "nom": "Mesclun (jeunes pousses)",
       "famille": "Légumes feuilles",
+      "difficulte": {
+        "valeur": "facile",
+        "source": "Critères OptiLED (voir _lisezmoi) : Semis à la volée, 250 µmol/m²/s, coupes dès 21 à 30 jours, sans pollinisation"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -485,6 +506,10 @@
       "id": "basilic",
       "nom": "Basilic",
       "famille": "Aromatiques",
+      "difficulte": {
+        "valeur": "facile",
+        "source": "Critères OptiLED (voir _lisezmoi) : Feuilles récoltées sans pollinisation, 300 µmol/m²/s, première récolte en 40 à 60 jours, repousse après pinçage ; aime la chaleur (20 à 27 °C)"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -573,6 +598,10 @@
       "id": "persil",
       "nom": "Persil",
       "famille": "Aromatiques",
+      "difficulte": {
+        "valeur": "intermediaire",
+        "source": "Critères OptiLED (voir _lisezmoi) : Germination lente : première récolte en 70 à 90 jours"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -661,6 +690,10 @@
       "id": "coriandre",
       "nom": "Coriandre",
       "famille": "Aromatiques",
+      "difficulte": {
+        "valeur": "intermediaire",
+        "source": "Critères OptiLED (voir _lisezmoi) : Monte vite en graines en jours longs ou au chaud : 12 h de lumière et des semis échelonnés"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -749,6 +782,10 @@
       "id": "ciboulette",
       "nom": "Ciboulette",
       "famille": "Aromatiques",
+      "difficulte": {
+        "valeur": "facile",
+        "source": "Critères OptiLED (voir _lisezmoi) : Peu exigeante (250 µmol/m²/s), sans pollinisation, repousse après chaque coupe pendant des mois"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -837,6 +874,10 @@
       "id": "thym",
       "nom": "Thym",
       "famille": "Aromatiques",
+      "difficulte": {
+        "valeur": "intermediaire",
+        "source": "Critères OptiLED (voir _lisezmoi) : Croissance lente (8 à 12 semaines avant la première coupe) et sensible à l’excès d’eau"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -925,6 +966,10 @@
       "id": "origan",
       "nom": "Origan",
       "famille": "Aromatiques",
+      "difficulte": {
+        "valeur": "intermediaire",
+        "source": "Critères OptiLED (voir _lisezmoi) : Croissance lente (8 à 12 semaines avant la première coupe) et sensible à l’excès d’eau"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1013,6 +1058,10 @@
       "id": "romarin",
       "nom": "Romarin",
       "famille": "Aromatiques",
+      "difficulte": {
+        "valeur": "intermediaire",
+        "source": "Critères OptiLED (voir _lisezmoi) : Se démarre par bouture, croissance lente et sensible à l’excès d’eau"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1101,6 +1150,10 @@
       "id": "sauge",
       "nom": "Sauge",
       "famille": "Aromatiques",
+      "difficulte": {
+        "valeur": "intermediaire",
+        "source": "Critères OptiLED (voir _lisezmoi) : Croissance lente (8 à 12 semaines), aime la chaleur (21 à 25 °C) et craint l’excès d’eau"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1189,6 +1242,10 @@
       "id": "aneth",
       "nom": "Aneth",
       "famille": "Aromatiques",
+      "difficulte": {
+        "valeur": "intermediaire",
+        "source": "Critères OptiLED (voir _lisezmoi) : Plante haute qui monte vite en graines : 14 h de lumière au plus et semis échelonnés"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1277,6 +1334,10 @@
       "id": "micro-pousses",
       "nom": "Micro-pousses",
       "famille": "Micro-pousses",
+      "difficulte": {
+        "valeur": "facile",
+        "source": "Critères OptiLED (voir _lisezmoi) : Récolte en 7 à 21 jours, 150 µmol/m²/s, pas d’engrais ni de pollinisation"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1362,6 +1423,10 @@
       "id": "radis",
       "nom": "Radis",
       "famille": "Légumes racines",
+      "difficulte": {
+        "valeur": "intermediaire",
+        "source": "Critères OptiLED (voir _lisezmoi) : Récolte rapide, mais 350 µmol/m²/s et de la fraîcheur (16 à 20 °C) pour former une racine charnue"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1450,6 +1515,10 @@
       "id": "fraise",
       "nom": "Fraise (remontante)",
       "famille": "Légumes fruits",
+      "difficulte": {
+        "valeur": "intermediaire",
+        "source": "Critères OptiLED (voir _lisezmoi) : Fleurs à polliniser à la main, 400 µmol/m²/s en fructification, variété remontante indispensable"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1558,6 +1627,10 @@
       "id": "tomate",
       "nom": "Tomate",
       "famille": "Légumes fruits",
+      "difficulte": {
+        "valeur": "exigeant",
+        "source": "Critères OptiLED (voir _lisezmoi) : Grande plante à tuteurer, 500 µmol/m²/s en fructification, pollinisation à la main, 90 à 120 jours avant la récolte"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1666,6 +1739,10 @@
       "id": "tomate-naine",
       "nom": "Tomate naine (micro-tomate)",
       "famille": "Légumes fruits",
+      "difficulte": {
+        "valeur": "intermediaire",
+        "source": "Critères OptiLED (voir _lisezmoi) : Compacte, mais pollinisation à la main, 350 µmol/m²/s et 70 à 100 jours avant la récolte"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1774,6 +1851,10 @@
       "id": "poivron",
       "nom": "Poivron",
       "famille": "Légumes fruits",
+      "difficulte": {
+        "valeur": "exigeant",
+        "source": "Critères OptiLED (voir _lisezmoi) : 500 µmol/m²/s en fructification, chaleur (21 à 27 °C), 100 à 150 jours avant la récolte"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1882,6 +1963,10 @@
       "id": "piment",
       "nom": "Piment",
       "famille": "Légumes fruits",
+      "difficulte": {
+        "valeur": "exigeant",
+        "source": "Critères OptiLED (voir _lisezmoi) : 500 µmol/m²/s en fructification, chaleur (21 à 29 °C), 100 à 150 jours avant la récolte"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -1990,6 +2075,10 @@
       "id": "concombre",
       "nom": "Concombre",
       "famille": "Légumes fruits",
+      "difficulte": {
+        "valeur": "exigeant",
+        "source": "Critères OptiLED (voir _lisezmoi) : Plante grimpante volumineuse, 450 µmol/m²/s en fructification, chaleur (22 à 28 °C)"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -2098,6 +2187,10 @@
       "id": "aubergine",
       "nom": "Aubergine",
       "famille": "Légumes fruits",
+      "difficulte": {
+        "valeur": "exigeant",
+        "source": "Critères OptiLED (voir _lisezmoi) : 500 µmol/m²/s en fructification, chaleur (22 à 28 °C), 110 à 140 jours avant la récolte"
+      },
       "stades": {
         "croissance": {
           "ppfd": {
@@ -2206,6 +2299,10 @@
       "id": "chanvre-cbd",
       "nom": "Chanvre CBD",
       "famille": "Chanvre",
+      "difficulte": {
+        "valeur": "exigeant",
+        "source": "Critères OptiLED (voir _lisezmoi) : Jusqu’à 800 µmol/m²/s en floraison, grande plante, climat et odeurs à maîtriser"
+      },
       "avertissement": "En France, la culture du chanvre (Cannabis sativa L.) est réservée aux agriculteurs actifs, avec des semences certifiées de variétés inscrites au catalogue européen (THC ≤ 0,30 %). Un particulier ne peut pas en cultiver, même pour du CBD : c'est une infraction à la législation sur les stupéfiants. Ces données sont fournies à titre documentaire.",
       "stades": {
         "croissance": {
@@ -2315,6 +2412,10 @@
       "id": "safran",
       "nom": "Safran",
       "famille": "Épices et curiosités",
+      "difficulte": {
+        "valeur": "exigeant",
+        "source": "Critères OptiLED (voir _lisezmoi) : Cycle annuel des cormes, fraîcheur (15 à 20 °C), une seule floraison par an et un rendement très faible"
+      },
       "avertissement": "Culture difficile au rendement très faible : une seule floraison par an et environ 150 fleurs pour 1 g de safran sec. Les valeurs données sont des ordres de grandeur.",
       "stades": {
         "croissance": {
@@ -2424,6 +2525,10 @@
       "id": "wasabi",
       "nom": "Wasabi",
       "famille": "Épices et curiosités",
+      "difficulte": {
+        "valeur": "exigeant",
+        "source": "Critères OptiLED (voir _lisezmoi) : 12 à 18 mois de culture au frais (12 à 18 °C) avec une eau fraîche et courante"
+      },
       "avertissement": "Culture expérimentale : le rhizome demande 12 à 18 mois de culture au frais (8–20 °C) avec une eau fraîche et courante. Les valeurs données sont des ordres de grandeur.",
       "stades": {
         "croissance": {

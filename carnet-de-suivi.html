@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Carnet de suivi de culture gratuit à imprimer : un tableau hebdomadaire pour noter lumière, température, humidité, pH, EC et arrosage de vos cultures sous LED." />
+    <title>Carnet de suivi de culture à imprimer — OptiLED</title>
+    <!--#head-->
+    <style>
+      /* Carnet de suivi : lignes à remplir, bouton d'impression, mise en page A4 paysage. */
+      .carnet-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; margin: 1.2rem 0; }
+      .carnet-actions p { margin: 0; font-size: 0.9rem; color: var(--attenue); }
+      .carnet-entete { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.4rem 1.2rem; margin: 0 0 0.8rem; padding: 0; list-style: none; font-size: 0.95rem; }
+      .prose .carnet-entete { padding-left: 0; }
+      .carnet-entete li { border-bottom: 1px solid var(--bordure); padding: 0.3rem 0; margin: 0; }
+      .prose .carnet-entete > li::marker { content: none; }
+      .carnet-titre-impression { display: none; }
+      .carnet-legende { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+      .tableau.carnet-tableau { font-size: 0.85rem; min-width: 60rem; }
+      .carnet-tableau th { vertical-align: bottom; }
+      .carnet-tableau td { height: 2.2rem; }
+      .carnet-tableau .carnet-obs { width: 18%; }
+      .carnet-ligne-impression { display: none; }
+
+      @media print {
+        @page { size: A4 landscape; margin: 10mm; }
+        html, body { background: #fff !important; color: #000 !important; }
+        .site-entete, .site-pied, .bandeau, .article__cote, .article__apres, .evitement, .progression, .menu-mobile,
+        .carnet-ecran, .carnet-actions, .bouton-partage, .partage, [data-partage] { display: none !important; }
+        main, .article, .conteneur, .article__grille, .prose { display: block !important; max-width: none !important; width: auto !important; margin: 0 !important; padding: 0 !important; background: #fff !important; box-shadow: none !important; }
+        .prose { font-size: 10pt; line-height: 1.3; color: #000; }
+        .carnet-titre-impression { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 3mm; font-size: 14pt; font-weight: 700; }
+        .carnet-titre-impression small { font-size: 8pt; font-weight: 400; }
+        .carnet-entete { grid-template-columns: repeat(4, 1fr); gap: 0 6mm; margin: 0 0 3mm; font-size: 9pt; }
+        .carnet-entete li { border-bottom: 0.3mm solid #000; }
+        .tableau-defile { overflow: visible !important; }
+        .tableau.carnet-tableau { width: 100%; min-width: 0; border-collapse: collapse; font-size: 8pt; table-layout: fixed; }
+        .carnet-tableau th, .carnet-tableau td { border: 0.3mm solid #000 !important; padding: 1mm 1.5mm; background: #fff !important; color: #000 !important; }
+        .carnet-tableau thead th { background: #eee !important; }
+        .carnet-tableau td { height: 10.5mm; }
+        .carnet-tableau tr { break-inside: avoid; }
+        .carnet-ligne-impression { display: table-row; }
+        .carnet-reperes { break-before: page; border: 0.3mm solid #000; padding: 4mm; background: #fff !important; color: #000 !important; }
+        .carnet-reperes a { color: #000; text-decoration: none; }
+        .carnet-reperes .tableau { font-size: 8.5pt; }
+        .carnet-reperes th, .carnet-reperes td { border: 0.3mm solid #999; padding: 1mm 1.5mm; }
+      }
+    </style>
+  </head>
+  <body>
+    <!--#header-->
+    <main id="contenu" class="page">
+      <p class="fil"><a href="index.html">Accueil</a> › Carnet de suivi</p>
+      <article class="prose">
+        <h1>Carnet de suivi de culture à imprimer</h1>
+        <p class="chapo">Une feuille par culture, une ligne par semaine : notez la lumière, le climat et l'eau, et vous saurez pourquoi une récolte réussit ou pourquoi une plante souffre. Gratuit, sans inscription, au format A4 paysage.</p>
+
+        <nav class="sommaire" aria-label="Sommaire">
+          <strong>Dans cette page</strong>
+          <ol>
+            <li><a href="#utiliser">Comment l'utiliser</a></li>
+            <li><a href="#carnet">Le carnet à imprimer</a></li>
+            <li><a href="#reperes">Plages de référence</a></li>
+          </ol>
+        </nav>
+
+        <section class="carnet-ecran">
+          <h2 id="utiliser">Comment l'utiliser</h2>
+          <ul>
+            <li><strong>Une feuille par culture</strong> (ou par bac) : inscrivez en haut la variété, la date de semis et la lampe utilisée.</li>
+            <li><strong>Une ligne par semaine</strong>, toujours le même jour, de préférence au moment où la lampe est allumée depuis quelques heures.</li>
+            <li><strong>Hauteur de la lampe</strong> : distance entre la lampe et le haut du feuillage, en cm (voir <a href="led-installation.html#hauteur">Installer, régler et mesurer</a>).</li>
+            <li><strong>Températures</strong> : relevez le minimum et le maximum d'un thermo-hygromètre min/max, puis remettez-le à zéro (voir <a href="culture-climat.html#instruments">les instruments du guide climat</a>).</li>
+            <li><strong>pH et EC</strong> : mesurés dans la solution nutritive ou l'eau d'arrosage (voir <a href="culture-nutriments.html#ec">EC</a> et <a href="culture-nutriments.html#ph">pH</a>). En terreau sans mesure, laissez vide.</li>
+            <li><strong>Observations</strong> : couleur des feuilles, nouvelles pousses, ravageurs, première récolte. En cas de doute, comparez avec <a href="culture-problemes.html#symptomes">les symptômes du guide des problèmes</a>.</li>
+          </ul>
+        </section>
+
+        <h2 id="carnet" class="carnet-ecran">Le carnet à imprimer</h2>
+        <div class="carnet-actions">
+          <button type="button" class="bouton bouton--plein" onclick="window.print()">Imprimer le carnet</button>
+          <p>Ou Ctrl + P (Cmd + P sur Mac). Choisissez l'orientation paysage si votre navigateur ne la prend pas d'office.</p>
+        </div>
+
+        <div class="carnet-feuille">
+          <p class="carnet-titre-impression">Carnet de suivi de culture <small>optiled.fr — plages de référence au verso</small></p>
+          <ul class="carnet-entete">
+            <li>Culture / variété :</li>
+            <li>Semis ou plantation le :</li>
+            <li>Emplacement :</li>
+            <li>Lampe (modèle, W) :</li>
+          </ul>
+          <div class="tableau-defile">
+            <table class="tableau carnet-tableau">
+              <caption class="carnet-legende">Relevé hebdomadaire d'une culture sous LED, lignes à remplir</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Culture</th>
+                  <th scope="col">Stade</th>
+                  <th scope="col">Hauteur lampe (cm)</th>
+                  <th scope="col">Éclairage (h/jour)</th>
+                  <th scope="col">T° jour / nuit (°C)</th>
+                  <th scope="col">Humidité (%)</th>
+                  <th scope="col">pH</th>
+                  <th scope="col">EC (mS/cm)</th>
+                  <th scope="col">Arrosage / solution changée</th>
+                  <th scope="col" class="carnet-obs">Observations</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr class="carnet-ligne-impression"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr class="carnet-ligne-impression"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr class="carnet-ligne-impression"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr class="carnet-ligne-impression"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr class="carnet-ligne-impression"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr class="carnet-ligne-impression"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr class="carnet-ligne-impression"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr class="carnet-ligne-impression"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr class="carnet-ligne-impression"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="aide carnet-ecran">Aperçu : la version imprimée compte 12 lignes, soit environ trois mois de suivi.</p>
+        </div>
+
+        <div class="encadre carnet-reperes">
+          <h2 id="reperes">Plages de référence</h2>
+          <p>Ordres de grandeur pour quelques cultures courantes ; la <a href="legumes.html">fiche de chaque culture</a> donne le détail et les autres cultures. Pour les plantes à fleurs et fruits, la seconde valeur concerne la floraison.</p>
+          <div class="tableau-defile">
+            <table class="tableau">
+              <thead>
+                <tr><th scope="col">Culture</th><th scope="col">PPFD (µmol/m²/s)</th><th scope="col">Éclairage (h/j)</th><th scope="col">Hauteur lampe (cm)</th><th scope="col">T° jour / nuit (°C)</th><th scope="col">Humidité (%)</th><th scope="col">pH</th><th scope="col">EC (mS/cm)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><a href="legume-micro-pousses.html">Micro-pousses</a></td><td>150</td><td>16</td><td>15–25</td><td>18–24 / 16–20</td><td>40–60</td><td>5,5–6,5</td><td>0,5–1</td></tr>
+                <tr><td><a href="legume-laitue.html">Laitue</a></td><td>250</td><td>16</td><td>20–30</td><td>16–22 / 14–18</td><td>50–70</td><td>5,6–6,2</td><td>0,8–1,2</td></tr>
+                <tr><td><a href="legume-basilic.html">Basilic</a></td><td>300</td><td>16</td><td>20–30</td><td>20–27 / 18–20</td><td>50–70</td><td>5,5–6,5</td><td>1–1,6</td></tr>
+                <tr><td><a href="legume-persil.html">Persil</a></td><td>250</td><td>14</td><td>20–30</td><td>16–24 / 14–18</td><td>50–70</td><td>5,5–6,5</td><td>0,8–1,8</td></tr>
+                <tr><td><a href="legume-fraise.html">Fraise</a></td><td>250 puis 400</td><td>16</td><td>30–45 puis 35–50</td><td>18–24 / 12–16</td><td>50–65</td><td>5,5–6,2</td><td>1–2</td></tr>
+                <tr><td><a href="legume-tomate-naine.html">Tomate naine</a></td><td>250 puis 350</td><td>16 puis 18</td><td>25–40 puis 30–45</td><td>20–26 / 17–19</td><td>50–65</td><td>5,5–6,5</td><td>2–3</td></tr>
+                <tr><td><a href="legume-poivron.html">Poivron</a></td><td>350 puis 500</td><td>16</td><td>30–45 puis 35–50</td><td>21–27 / 18–20</td><td>50–65</td><td>5,8–6,5</td><td>1,8–2,5</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="carnet-ecran">Pour régler la lampe sur ces valeurs, utilisez le <a href="index.html#calculateur">calculateur</a> ; les termes sont expliqués dans le <a href="glossaire.html">glossaire</a> (<a href="glossaire.html#ppfd">PPFD</a>, <a href="glossaire.html#ec">EC</a>, <a href="glossaire.html#ph">pH</a>).</p>
+        </div>
+      </article>
+    </main>
+    <!--#footer-->
+    <script type="module" src="/src/site.ts"></script>
+  </body>
+</html>
