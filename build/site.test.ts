@@ -12,6 +12,9 @@ import {
   header,
   insecables,
   mesureAudience,
+  texteMesureAudience,
+  fluxRss,
+  head,
   mettreEnPageArticle,
   NAVIGATION,
   PARCOURS,
@@ -176,9 +179,31 @@ describe('référencement', () => {
     expect(referencement(page('Le "calcul"'), 'legumes.html')).toContain('content="Le &quot;calcul&quot;"');
   });
 
-  it("mesure d'audience seulement si un domaine est configuré", () => {
+  it("mesure d'audience seulement si un jeton valide est configuré", () => {
     expect(mesureAudience('')).toBe('');
-    expect(mesureAudience('optiled.fr')).toContain('data-domain="optiled.fr"');
+    expect(mesureAudience('pas-un-jeton"><script>')).toBe('');
+    const jeton = '0123456789abcdef0123456789abcdef';
+    expect(mesureAudience(jeton)).toContain(`"token": "${jeton}"`);
+    expect(mesureAudience(jeton)).toContain('static.cloudflareinsights.com/beacon.min.js');
+    expect(texteMesureAudience('')).toContain("Aucune mesure d'audience");
+    expect(texteMesureAudience(jeton)).toContain('sans cookie');
+  });
+
+  it('flux RSS des conseils publiés, échappé', () => {
+    const flux = fluxRss('2026-09-30', 'https://exemple.fr/');
+    expect(flux).toContain('<rss version="2.0"');
+    expect(flux).toContain('<link>https://exemple.fr/conseils.html</link>');
+    const items = flux.match(/<item>/g) ?? [];
+    expect(items.length).toBeGreaterThan(0);
+    expect(items.length).toBeLessThanOrEqual(20);
+    // Aucun article programmé (date future) dans le flux.
+    expect(flux).not.toContain('partir-en-vacances');
+    expect(flux).not.toMatch(/&(?!amp;|lt;|gt;|quot;)/);
+  });
+
+  it('head : flux RSS et grandes images autorisées', () => {
+    expect(head()).toContain('type="application/rss+xml"');
+    expect(head()).toContain('max-image-preview:large');
   });
 });
 

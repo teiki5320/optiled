@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { sourcePage, toutesLesPages, transformerPage } from './site.ts';
+import { FICHIER_FLUX, sourcePage, toutesLesPages, transformerPage } from './site.ts';
 
 const racine = resolve(import.meta.dirname, '..');
 const pages = Object.keys(toutesLesPages(racine)).map((n) => `${n}.html`);
@@ -40,6 +40,8 @@ describe('liens internes', () => {
         if (/^(https?:|mailto:|data:|\/src\/)/.test(href)) continue;
         const [chemin, ancre] = href.split('#');
         const cible = (chemin.split('?')[0] || page);
+        // Fichiers générés au build (flux RSS).
+        if (cible === FICHIER_FLUX) continue;
         // Fichier statique (manifeste, icônes…) : il doit exister dans public/.
         if (!cible.endsWith('.html') && existsSync(resolve(racine, 'public', cible))) continue;
         if (!pages.includes(cible)) {

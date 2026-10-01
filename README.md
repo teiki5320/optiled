@@ -202,8 +202,10 @@ La consommation est calculée sur la puissance nécessaire (barres gradées à l
 
 - Chaque page reçoit une adresse canonique, des balises de partage (Open Graph : image `public/images/partage/<page>.jpg`, 1200 × 630) et, pour l'accueil et les guides, des données structurées schema.org (`build/site.ts`, fonction `referencement`).
 - Le site est installable et consultable hors ligne (`public/manifest.webmanifest`, `public/sw.js`) ; changez `VERSION` dans `sw.js` pour forcer le renouvellement du cache.
-- Mesure d'audience facultative et sans cookie (Plausible) : `PLAUSIBLE_DOMAIN=mon-domaine.fr npm run build`. Sans cette variable, aucun script de mesure n'est ajouté.
-- Mentions légales : `mentions-legales.html`. Éditeur : ALOHASH (SAS, nom commercial TOA CORP), avec siège, RCS, TVA, directeur de la publication (désigné par sa fonction) et e-mail de contact. Si le site change d'hébergeur (IONOS par exemple), mettez à jour la rubrique Hébergeur. Si la mesure d'audience est activée, mettez à jour la rubrique « Données personnelles et cookies » de cette page.
+- Mesure d'audience gratuite et sans cookie (Cloudflare Web Analytics) : `CF_BEACON_TOKEN=<jeton> npm run build` (en ligne : variable de dépôt `CF_BEACON_TOKEN`, lue par le workflow). Sans jeton, aucun script de mesure n'est ajouté et les mentions légales l'indiquent.
+- Flux RSS des 20 derniers conseils publiés : `conseils.xml`, généré au build (`fluxRss`), annoncé dans le `<head>` de chaque page.
+- Calculateur intégrable sur d'autres sites : `index.html?integre=1` (sans en-tête, pied de page ni liens Amazon, liens en nouvel onglet ; `src/integre.ts`). Code à copier sur `integrer.html`.
+- Mentions légales : `mentions-legales.html`. Éditeur : ALOHASH (SAS, nom commercial TOA CORP), avec siège, RCS, TVA, directeur de la publication (désigné par sa fonction) et e-mail de contact. Si le site change d'hébergeur (IONOS par exemple), mettez à jour la rubrique Hébergeur.
 
 ## Domaine personnalisé (IONOS + GitHub Pages)
 

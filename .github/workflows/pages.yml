@@ -29,6 +29,9 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+        env:
+          # Jeton public de Cloudflare Web Analytics (variable du dépôt) ; vide = pas de mesure.
+          CF_BEACON_TOKEN: ${{ vars.CF_BEACON_TOKEN }}
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0

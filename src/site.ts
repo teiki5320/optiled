@@ -115,8 +115,30 @@ function boutonPartage(): void {
   bloc.hidden = false;
 }
 
+/** Boutons « Copier » d'une zone de texte (data-copier="id"), par exemple le code d'intégration. */
+function boutonsCopier(): void {
+  document.querySelectorAll<HTMLElement>('[data-copier]').forEach((bloc) => {
+    const zone = document.getElementById(bloc.dataset.copier ?? '') as HTMLTextAreaElement | null;
+    const bouton = bloc.querySelector<HTMLButtonElement>('button');
+    const message = bloc.querySelector<HTMLElement>('.partage__message');
+    if (!zone || !bouton || !message) return;
+    bouton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(zone.value);
+      } catch {
+        zone.select();
+        document.execCommand('copy');
+      }
+      message.textContent = 'Code copié';
+      setTimeout(() => (message.textContent = ''), 4000);
+    });
+    bloc.hidden = false;
+  });
+}
+
 progressionLecture();
 boutonPartage();
+boutonsCopier();
 sommaireActif();
 menuMobile();
 lienEvitement();

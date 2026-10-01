@@ -8,6 +8,11 @@ import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade 
 import { accord, euros, nombre } from './format.ts';
 import { htmlTuiles, TUILES_PAR_LIGNE } from './tuiles.ts';
 import { imageLampe, lampesConseillees, lienAmazon, MENTION_AFFILIATION } from './lampes.ts';
+import { activerModeIntegre, avecIntegre, estIntegre, sansIntegre } from './integre.ts';
+
+/** Calculateur affiché dans un cadre sur un autre site (voir integrer.html). */
+const integre = estIntegre(location.search);
+if (integre) activerModeIntegre();
 import { insecables, typographier } from './typo.ts';
 import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from './liste.ts';
 import { jaugeDli, planBarres } from './schema.ts';
@@ -90,6 +95,8 @@ function rendreLampe(r: ResultatCalcul): string {
 
 /** Lampes du commerce (sélection Amazon.fr) qui fournissent assez de lumière pour la surface. */
 function rendreLampesCommerce(r: ResultatCalcul): string {
+  // Pas de liens sponsorisés hors du site déclaré au Programme Partenaires Amazon.
+  if (integre) return '';
   const propositions = lampesConseillees(r.ppfNecessaire, r.surfaceM2, radio('stade') as Stade);
   if (propositions.length === 0) return '';
   const cartes = propositions
@@ -578,8 +585,9 @@ function lireMemoire(): Etat {
 /** Met à jour l'adresse (lien partageable) et mémorise les réglages sur l'appareil. */
 function enregistrerEtat(): void {
   const params = versParams(lireEtat());
+  const adresse = integre ? avecIntegre(params) : params;
   try {
-    history.replaceState(null, '', `${location.pathname}${params ? `?${params}` : ''}${location.hash}`);
+    history.replaceState(null, '', `${location.pathname}${adresse ? `?${adresse}` : ''}${location.hash}`);
   } catch {
     /* adresse non modifiable (aperçu, iframe) : sans importance */
   }
@@ -592,7 +600,7 @@ function enregistrerEtat(): void {
 
 async function partager(): Promise<void> {
   const bouton = $<HTMLButtonElement>('partager');
-  const url = location.href;
+  const url = sansIntegre(location.href);
   const libelle = bouton.textContent;
   try {
     if (navigator.share) {

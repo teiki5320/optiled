@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { aLireAussi, type Conseil, conseilsPublies, dateDuJour, lireConseil, pagesConseils, rendreListeConseils, sourcePageConseil, THEMES, tousLesConseils } from './conseils.ts';
 import { chargerLegumes } from './fiches.ts';
-import { sourcePage, toutesLesPages, transformerPage } from './site.ts';
+import { FICHIER_FLUX, sourcePage, toutesLesPages, transformerPage } from './site.ts';
 
 const racine = resolve(import.meta.dirname, '..');
 const tous = tousLesConseils();
@@ -45,7 +45,7 @@ describe('articles de conseil', () => {
         const [chemin, ancre] = href.split('#');
         const cible = chemin.split('?')[0];
         if (!cible.endsWith('.html')) {
-          if (!existsSync(resolve(racine, 'public', cible))) casses.push(href);
+          if (cible !== FICHIER_FLUX && !existsSync(resolve(racine, 'public', cible))) casses.push(href);
           continue;
         }
         if (!pagesAlors.has(cible)) casses.push(href);

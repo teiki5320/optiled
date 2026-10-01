@@ -26,6 +26,7 @@
  *   <!--#mois-lampes-->     « septembre 2026 », d'après verifie_le de lampes.json (utilisable dans <title>)
  *   <!--#lampes-verifiees-le--> verifie_le au format AAAA-MM-JJ (utilisable dans date-modification)
  *   <!--#mention-affiliation--> mention obligatoire du Programme Partenaires Amazon
+ *   <!--#mesure-audience--> phrase des mentions légales sur la mesure d'audience (active ou non)
  *
  * Les pages led-*.html, culture-*.html, glossaire.html et mentions-legales.html écrites avec le modèle d'article
  * (fil d'Ariane, <article class="prose"> avec h1, chapo et sommaire) reçoivent
@@ -44,7 +45,7 @@ import { rendreBudget } from './budget.ts';
 import { FICHIER_MEILLEURES_LAMPES, moisLampes, rendreMeilleuresLampes } from './meilleures-lampes.ts';
 import { LAMPES_VERIFIEES_LE, MENTION_AFFILIATION } from '../src/lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
-import { conseilsPublies, dateCourte, dateDuJour, dateLongue, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, tousLesConseils } from './conseils.ts';
+import { conseilsPublies, dateCourte, dateDuJour, dateLongue, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, THEMES, tousLesConseils } from './conseils.ts';
 import { echapper } from './fiches.ts';
 import { rendreComparaisonLampes, rendreDliSemis, rendreEffetEfficacite, rendreEtageresSemis, rendrePuissancesCultures, rendrePuissancesSurfaces } from './guides-achat.ts';
 import { insecables } from '../src/typo.ts';
@@ -168,6 +169,8 @@ export function head(): string {
     <link rel="icon" href="icones/favicon-96.png" sizes="96x96" type="image/png" />
     <link rel="apple-touch-icon" href="icones/apple-touch-icon.png" />
     <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="alternate" type="application/rss+xml" title="Conseils OptiLED" href="${FICHIER_FLUX}" />
+    <meta name="robots" content="max-image-preview:large" />
     <meta name="theme-color" content="#1b1322" />`;
 }
 
@@ -354,9 +357,21 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
     ${json}`;
 }
 
-/** Mesure d'audience facultative et sans cookie : PLAUSIBLE_DOMAIN=mon-domaine.fr npm run build */
-export function mesureAudience(domaine = process.env.PLAUSIBLE_DOMAIN): string {
-  return domaine ? `<script defer data-domain="${attribut(domaine)}" src="https://plausible.io/js/script.js"></script>` : '';
+/**
+ * Mesure d'audience gratuite et sans cookie (Cloudflare Web Analytics) : le jeton public du site
+ * est lu dans CF_BEACON_TOKEN au build (variable du dépôt GitHub, voir le workflow).
+ * Sans jeton, aucun script de mesure n'est ajouté.
+ */
+export function mesureAudience(jeton = process.env.CF_BEACON_TOKEN ?? ''): string {
+  if (!/^[0-9a-f]{32}$/i.test(jeton)) return '';
+  return `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${jeton}"}'></script>`;
+}
+
+/** Phrase des mentions légales sur la mesure d'audience (marqueur <!--#mesure-audience-->). */
+export function texteMesureAudience(jeton = process.env.CF_BEACON_TOKEN ?? ''): string {
+  return mesureAudience(jeton)
+    ? "La <strong>mesure d'audience</strong> utilise Cloudflare Web Analytics : sans cookie ni stockage sur votre appareil, elle compte les pages vues de façon agrégée (page, pays, type d'appareil) et ne conserve pas votre adresse IP."
+    : "Aucune mesure d'audience n'est active.";
 }
 
 function liensNavigation(fichier: string): string {
@@ -396,7 +411,7 @@ export function footer(): string {
       <p class="site-pied__note">Certains liens vers Amazon sont sponsorisés : en tant que Partenaire Amazon, l'éditeur réalise un bénéfice sur les achats remplissant les conditions requises.</p>
       <p class="site-pied__note"><a href="a-propos.html">À propos et méthode</a> · <a href="a-propos.html#contact">Contact</a> · <a href="mentions-legales.html">Mentions légales</a></p>
     </div>
-    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes du mois</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li></ul>
+    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes du mois</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li><li><a href="integrer.html">Intégrer le calculateur</a></li></ul>
       <h2 class="site-pied__sous-titre">Parcours</h2><ul>${PARCOURS.map((p) => `<li><a href="${p.fichier}">${p.titre}</a></li>`).join('')}</ul></div>
     ${colonne('led')}
     ${colonne('culture')}
@@ -601,6 +616,44 @@ export function sitemap(pages: string[], url = SITE_URL): string {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
+/** Flux RSS des articles de conseil publiés (abonnement dans un lecteur de flux). */
+export const FICHIER_FLUX = 'conseils.xml';
+
+function xml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/** Les 20 derniers articles publiés, au format RSS 2.0 (date : le matin de la publication, heure de Paris). */
+export function fluxRss(date = dateDuJour(), url = SITE_URL, nombre = 20): string {
+  const articles = conseilsPublies(date).slice(0, nombre);
+  const jour = (iso: string) => new Date(`${iso}T05:00:00Z`).toUTCString();
+  const items = articles
+    .map((c) => {
+      const adresse = `${url}${c.fichier}`;
+      return `    <item>
+      <title>${xml(decoderEntites(c.titre))}</title>
+      <link>${adresse}</link>
+      <guid isPermaLink="true">${adresse}</guid>
+      <pubDate>${jour(c.publieLe)}</pubDate>
+      <category>${xml(THEMES[c.theme])}</category>
+      <description>${xml(decoderEntites(c.description))}</description>
+    </item>`;
+    })
+    .join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Conseils OptiLED — LED et culture indoor</title>
+    <link>${url}conseils.html</link>
+    <atom:link href="${url}${FICHIER_FLUX}" rel="self" type="application/rss+xml" />
+    <description>Un article par semaine pour cultiver des légumes sous LED, en intérieur.</description>
+    <language>fr-FR</language>
+${articles.length ? `    <lastBuildDate>${jour(articles[0].publieLe)}</lastBuildDate>\n` : ''}${items}
+  </channel>
+</rss>
+`;
+}
+
 /** Applique toutes les transformations à une page. */
 export function transformerPage(html: string, fichier: string): string {
   let numeroTableau = 0;
@@ -610,7 +663,8 @@ export function transformerPage(html: string, fichier: string): string {
   html = html
     .replace(/<!--#mois-lampes-->/g, () => moisLampes())
     .replace(/<!--#lampes-verifiees-le-->/g, () => LAMPES_VERIFIEES_LE)
-    .replace(/<!--#mention-affiliation-->/g, () => MENTION_AFFILIATION);
+    .replace(/<!--#mention-affiliation-->/g, () => MENTION_AFFILIATION)
+    .replace(/<!--#mesure-audience-->/g, () => texteMesureAudience());
   const base = fichier === '404.html' ? `<base href="${SITE_URL}" />\n    ` : '';
   const page = mettreEnPageArticle(html, fichier)
     .replace('<!--#climat-->', () => rendreTableauClimat())
@@ -685,6 +739,7 @@ export function pluginSite(): Plugin {
         .map((nom) => `${nom}.html`)
         .filter((f) => !sourcePage(racine, f).includes('content="noindex"'));
       this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap(pages) });
+      this.emitFile({ type: 'asset', fileName: FICHIER_FLUX, source: fluxRss() });
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}sitemap.xml\n` });
     },
     closeBundle() {

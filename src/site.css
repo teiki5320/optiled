@@ -565,3 +565,7 @@ img, svg { max-width: 100%; }
 .lampe__image { position: relative; margin: 0 0 0.4rem; border-radius: 12px; overflow: hidden; aspect-ratio: 4 / 3; background: #241a2c; }
 .lampe__image img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .lampe__image figcaption { position: absolute; right: 0.4rem; bottom: 0.35rem; padding: 0 0.35rem; border-radius: 999px; background: rgb(0 0 0 / 0.3); color: rgb(255 255 255 / 0.7); font-size: 0.62rem; letter-spacing: 0.02em; }
+
+/* Page « Intégrer le calculateur » : code à copier et aperçu. */
+.code-integration { width: 100%; font: 0.85rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; padding: 0.8rem; border-radius: 12px; border: 1px solid rgb(255 255 255 / 0.15); background: rgb(0 0 0 / 0.25); color: inherit; resize: vertical; }
+.apercu-integration { display: block; border: 1px solid rgb(255 255 255 / 0.15); border-radius: 16px; background: #1b1322; }
