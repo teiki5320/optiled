@@ -8,7 +8,7 @@
     "Pas de prix : ils changent trop souvent (fourchettes par gamme seulement, dans src/data/budget.json). Vérification mensuelle : note, disponibilité, chiffres.",
     "disponible: false = « actuellement indisponible » sur Amazon.fr lors de la vérification : la lampe reste listée mais n'est ni proposée par le calculateur ni recommandée sur meilleures-lampes.html. Retirer le champ quand elle revient en stock."
   ],
-  "verifie_le": "2026-09-29",
+  "verifie_le": "2026-10-01",
   "lampes": [
     { "id": "barrina-t5-29", "illustration": "reglettes-29", "nom": "Barrina T5 29 cm (lot de 4 barres)", "marque": "Barrina", "type": "barre", "asin": "B0D92X3YX3", "puissance_w": 20, "ppf": 37, "ppf_estime": true, "couverture_m2": { "croissance": 0.12, "floraison": 0.12 }, "dimensions": "4 barres de 29 cm", "variateur": false, "source_ppf": "20 W × 1,867 µmol/J (efficacité annoncée sur Amazon) ; couverture estimée" },
     { "id": "barrina-t5-60", "illustration": "reglettes-60", "nom": "Barrina T5 60 cm (lot de 4 barres)", "marque": "Barrina", "type": "barre", "asin": "B0814LNBHH", "puissance_w": 40, "ppf": null, "ppf_estime": false, "couverture_m2": null, "dimensions": "4 barres de 59 cm", "variateur": false, "source_ppf": "Ni PPF ni efficacité publiés (PPFD : 77 µmol/m²/s à 30 cm)" },

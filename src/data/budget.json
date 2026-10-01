@@ -7,18 +7,18 @@
     "Gammes de lampes : barres = lots de réglettes ou barres pour étagère ; appoint = ampoules et lampes à pince ; petits = panneaux jusqu'à 100 W ; moyens = panneaux de plus de 100 W et jusqu'à 200 W ; grands = panneaux de plus de 200 W.",
     "`fourchette: null` = prix en cours de relevé : le site affiche alors « prix en cours de relevé » au lieu d'un montant. À refaire chaque mois avec la vérification des lampes."
   ],
-  "releve_le": "2026-09-29",
+  "releve_le": "2026-10-01",
   "lampes": {
     "barres": { "libelle": "Réglettes et barres pour étagère (lot)", "fourchette": [45, 130] },
     "appoint": { "libelle": "Lampe d'appoint (ampoule, lampe à pince)", "fourchette": [25, 40] },
-    "petits": { "libelle": "Petit panneau (jusqu'à 100 W)", "fourchette": [60, 80] },
+    "petits": { "libelle": "Petit panneau (jusqu'à 100 W)", "fourchette": [60, 90] },
     "moyens": { "libelle": "Panneau moyen (plus de 100 W, jusqu'à 200 W)", "fourchette": [100, 160] },
     "grands": { "libelle": "Grand panneau (plus de 200 W)", "fourchette": [260, 430] }
   },
   "accessoires": {
     "minuterie": { "libelle": "Minuterie mécanique", "fourchette": [5, 10] },
     "thermo-hygrometre": { "libelle": "Thermo-hygromètre", "fourchette": [5, 15] },
-    "tente-80": { "libelle": "Tente de culture 80 × 80 cm", "fourchette": [50, 70] },
+    "tente-80": { "libelle": "Tente de culture 80 × 80 cm", "fourchette": [45, 70] },
     "extracteur-100": { "libelle": "Extracteur 100 mm avec gaine", "fourchette": [30, 50] },
     "ventilateur-pince": { "libelle": "Petit ventilateur à pince", "fourchette": [20, 40] },
     "ph-metre": { "libelle": "pH-mètre stylo", "fourchette": [5, 25] }
