@@ -21,7 +21,7 @@ describe('articles de conseil', () => {
       expect(Number.isNaN(Date.parse(c.publieLe))).toBe(false);
       expect(c.theme in THEMES).toBe(true);
       expect(c.titre.length).toBeLessThanOrEqual(90);
-      expect(`${c.titrePage} — OptiLED`.length, 'balise <title>').toBeLessThanOrEqual(70);
+      expect(`${c.titrePage} — OptiLED`.length, 'balise <title>').toBeLessThanOrEqual(60);
       expect(c.description.length, 'description').toBeGreaterThanOrEqual(70);
       expect(c.description.length, 'description').toBeLessThanOrEqual(160);
       expect(c.corps).toMatch(/^<p class="chapo">/);

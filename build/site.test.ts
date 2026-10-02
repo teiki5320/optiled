@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { dateDuJour, tousLesConseils } from './conseils.ts';
+import { conseilsPublies, dateDuJour, tousLesConseils } from './conseils.ts';
 import {
   cartesGuides,
   cartesOrientation,
@@ -23,6 +23,7 @@ import {
   rendreDerniersConseils,
   RUBRIQUES,
   sitemap,
+  dateDerniereModification,
   tempsLecture,
   transformerPage,
 } from './site.ts';
@@ -120,6 +121,19 @@ describe('sitemap', () => {
     expect(xml).toContain('<loc>https://exemple.fr/</loc>');
     expect(xml).toContain('<loc>https://exemple.fr/led.html</loc>');
     expect(xml).not.toContain('404');
+  });
+
+  it('date de dernière modification réelle, jamais dans le futur', () => {
+    const xml = sitemap(['led.html', 'glossaire.html'], 'https://exemple.fr/', (p) => (p === 'led.html' ? '2026-09-29' : undefined));
+    expect(xml).toContain('<loc>https://exemple.fr/led.html</loc><lastmod>2026-09-29</lastmod>');
+    expect(xml).toContain('<loc>https://exemple.fr/glossaire.html</loc></url>');
+    const c = conseilsPublies('2026-10-03').at(-1)!;
+    const d = dateDerniereModification(c.fichier, '', '2026-10-03');
+    expect(d).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(d! >= c.publieLe).toBe(true);
+    expect(d! <= '2026-10-03').toBe(true);
+    // Une page qui liste les articles change le jour de la dernière publication.
+    expect(dateDerniereModification('conseils.html', '<!--#conseils-->', '2026-10-03')! >= conseilsPublies('2026-10-03')[0].publieLe).toBe(true);
   });
 });
 

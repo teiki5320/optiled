@@ -63,3 +63,20 @@ describe('liens internes', () => {
     });
   }
 });
+
+/** Texte d'un attribut ou d'une balise tel que l'affiche un moteur de recherche (entités décodées). */
+const texte = (s: string) => s.replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+
+describe('référencement des pages publiées', () => {
+  for (const page of pages.filter((p) => p !== '404.html' && !estRedirection(p))) {
+    it(`${page} : titre de 60 caractères au plus, description de 70 à 160, données structurées`, () => {
+      const html = contenu(page);
+      const titre = texte(html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '');
+      expect(titre.length, titre).toBeLessThanOrEqual(60);
+      const description = texte(html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '');
+      expect(description.length, description).toBeGreaterThanOrEqual(70);
+      expect(description.length, description).toBeLessThanOrEqual(160);
+      expect(html, 'données structurées schema.org').toContain('application/ld+json');
+    });
+  }
+});

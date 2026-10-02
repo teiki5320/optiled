@@ -35,17 +35,18 @@
  * « Mis à jour le … » dans son bandeau (et dateModified dans ses données structurées).
  * Les guides, les pages de parcours, les conseils et les fiches reçoivent un bouton « Partager ».
  */
+import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import type { Plugin } from 'vite';
-import { chargerLegumes, rendreFiches, rendreSources, rendreTableauClimat } from './fiches.ts';
+import { chargerLegumes, pageDetaillee, rendreFiches, rendreSources, rendreTableauClimat } from './fiches.ts';
 import { htmlTuiles } from '../src/tuiles.ts';
 import { rendreLampes } from './lampes.ts';
 import { rendreBudget } from './budget.ts';
 import { FICHIER_MEILLEURES_LAMPES, moisLampes, rendreMeilleuresLampes } from './meilleures-lampes.ts';
 import { LAMPES_VERIFIEES_LE, MENTION_AFFILIATION } from '../src/lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
-import { conseilsPublies, dateCourte, dateDuJour, dateLongue, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, THEMES, tousLesConseils } from './conseils.ts';
+import { conseilsDeLaCulture, conseilsPublies, dateCourte, dateDuJour, dateLongue, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, THEMES, tousLesConseils } from './conseils.ts';
 import { echapper } from './fiches.ts';
 import { rendreComparaisonLampes, rendreDliSemis, rendreEffetEfficacite, rendreEtageresSemis, rendrePuissancesCultures, rendrePuissancesSurfaces } from './guides-achat.ts';
 import { insecables } from '../src/typo.ts';
@@ -342,6 +343,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
       },
     );
   }
+  if (donnees.length === 0 && fichier !== 'index.html') donnees.push(...donneesPageSimple(html, fichier, url, adresse, description));
   const json = donnees.map((d) => `<script type="application/ld+json">${JSON.stringify(d).replace(/</g, '\\u003c')}</script>`).join('\n    ');
   return `<link rel="canonical" href="${adresse}" />
     <meta property="og:type" content="${guide || parcours || pageLegume || pageConseil || pageMeilleuresLampes ? 'article' : 'website'}" />
@@ -355,6 +357,64 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     ${json}`;
+}
+
+/** Pages de liste : CollectionPage avec la liste des pages qu'elles présentent. */
+function elementsCollection(fichier: string, url: string): { nom: string; adresse: string }[] | null {
+  switch (fichier) {
+    case 'led.html':
+    case 'culture.html':
+      return RUBRIQUES[fichier === 'led.html' ? 'led' : 'culture'].guides.map((g) => ({ nom: g.titre, adresse: `${url}${g.fichier}` }));
+    case 'conseils.html':
+      return conseilsPublies().map((c) => ({ nom: decoderEntites(c.titre), adresse: `${url}${c.fichier}` }));
+    case 'legumes.html':
+      return chargerLegumes().map((l) => ({ nom: l.nom, adresse: `${url}${pageDetaillee(l.id)}` }));
+    case 'lampes.html':
+      return [];
+    default:
+      return null;
+  }
+}
+
+/**
+ * Données structurées des pages qui n'ont pas de modèle propre (rubriques, listes, glossaire,
+ * pages d'information) : type de page adapté au contenu réel et fil d'Ariane.
+ */
+function donneesPageSimple(html: string, fichier: string, url: string, adresse: string, description: string): object[] {
+  const nom = decoderEntites(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, '').trim() ?? NOM_SITE);
+  const base = { '@context': 'https://schema.org', name: nom, description, url: adresse, inLanguage: 'fr', isPartOf: { '@type': 'WebSite', name: NOM_SITE, url } };
+  let page: object;
+  const elements = elementsCollection(fichier, url);
+  if (fichier === 'glossaire.html') {
+    const termes = [...html.matchAll(/<dt id="([^"]+)">([\s\S]*?)<\/dt>\s*<dd>([\s\S]*?)<\/dd>/g)].map(([, id, terme, definition]) => ({
+      '@type': 'DefinedTerm',
+      name: decoderEntites(terme.replace(/<[^>]+>/g, '').trim()),
+      description: decoderEntites(definition.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()),
+      url: `${adresse}#${id}`,
+    }));
+    page = { ...base, '@type': 'DefinedTermSet', hasDefinedTerm: termes };
+  } else if (elements) {
+    page = {
+      ...base,
+      '@type': 'CollectionPage',
+      ...(elements.length
+        ? { mainEntity: { '@type': 'ItemList', itemListElement: elements.map((e, i) => ({ '@type': 'ListItem', position: i + 1, name: e.nom, url: e.adresse })) } }
+        : {}),
+    };
+  } else {
+    page = { ...base, '@type': fichier === 'a-propos.html' ? 'AboutPage' : 'WebPage' };
+  }
+  // Fil d'Ariane : la page Lampes est rangée sous « Éclairage LED ».
+  const parents = fichier === 'lampes.html' ? [{ nom: RUBRIQUES.led.nom, adresse: `${url}${RUBRIQUES.led.hub}` }] : [];
+  const fil = [{ nom: 'Accueil', adresse: url }, ...parents, { nom, adresse }];
+  return [
+    page,
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: fil.map((e, i) => ({ '@type': 'ListItem', position: i + 1, name: e.nom, item: e.adresse })),
+    },
+  ];
 }
 
 /**
@@ -607,11 +667,67 @@ function pageGeneree(id: string): string | null {
   return pagesGenerees().has(f) ? f : null;
 }
 
-export function sitemap(pages: string[], url = SITE_URL): string {
+/**
+ * Date de dernière modification d'une page (AAAA-MM-JJ) pour le sitemap. Elle vient du contenu
+ * réel, pas de la date de génération : date du dernier commit des fichiers dont dépend la page
+ * (source, données), date de publication des articles de conseil qu'elle affiche et éventuelle
+ * <meta name="date-modification">. Undefined si rien n'est connu (hors dépôt git).
+ */
+export function dateDerniereModification(fichier: string, source: string, date = dateDuJour()): string | undefined {
+  const publies = conseilsPublies(date);
+  const candidates: (string | undefined)[] = [dateModification(source)];
+  if (fichier.startsWith(PREFIXE_PAGE_CONSEIL)) {
+    const c = publies.find((x) => x.fichier === fichier);
+    candidates.push(c?.publieLe, dateGit([`contenu/conseils/${c?.slug}.html`]));
+  } else if (fichier.startsWith(PREFIXE_PAGE_LEGUME)) {
+    const id = fichier.slice(PREFIXE_PAGE_LEGUME.length, -'.html'.length);
+    candidates.push(dateGit(['src/data/legumes.json', 'src/data/lampes.json', 'build/pages-legumes.ts']), conseilsDeLaCulture(id, date).at(-1)?.publieLe);
+  } else {
+    candidates.push(dateGit([fichier, ...(DONNEES_DES_PAGES[fichier] ?? [])]));
+    // Listes d'articles : la page change quand un article est publié.
+    if (/<!--#(conseils|derniers-conseils|orientation)-->/.test(source)) candidates.push(publies[0]?.publieLe);
+    for (const [, liste] of source.matchAll(/<!--#conseils-lies:([a-z0-9,\s-]+)-->/g)) {
+      for (const slug of liste.split(',')) candidates.push(publies.find((c) => c.slug === slug.trim())?.publieLe);
+    }
+  }
+  const dates = candidates.filter((d): d is string => !!d && d <= date).sort();
+  return dates.at(-1);
+}
+
+/** Fichiers de données dont dépend le contenu d'une page écrite (en plus de la page elle-même). */
+const DONNEES_DES_PAGES: Record<string, string[]> = {
+  'index.html': ['src/data/legumes.json'],
+  'legumes.html': ['src/data/legumes.json'],
+  'glossaire.html': ['src/data/legumes.json'],
+  'lampes.html': ['src/data/lampes.json'],
+  'meilleures-lampes.html': ['src/data/lampes.json', 'src/data/budget.json'],
+  'led-comparer.html': ['src/data/lampes.json'],
+  'led-puissance.html': ['src/data/legumes.json'],
+  'led-semis.html': ['src/data/legumes.json'],
+  'debuter.html': ['src/data/budget.json'],
+  'tente.html': ['src/data/budget.json'],
+  'mentions-legales.html': ['src/lampes.ts'],
+};
+
+const RACINE_PROJET = resolve(import.meta.dirname, '..');
+
+/** Date (AAAA-MM-JJ) du dernier commit qui touche ces fichiers, ou undefined (pas de dépôt, historique absent). */
+function dateGit(fichiers: string[]): string | undefined {
+  try {
+    return execFileSync('git', ['log', '-1', '--format=%cs', '--', ...fichiers], { cwd: RACINE_PROJET, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() || undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export function sitemap(pages: string[], url = SITE_URL, lastmod: (page: string) => string | undefined = () => undefined): string {
   const urls = pages
     .filter((p) => p !== '404.html')
     .sort()
-    .map((p) => `  <url><loc>${url}${p === 'index.html' ? '' : p}</loc></url>`)
+    .map((p) => {
+      const d = lastmod(p);
+      return `  <url><loc>${url}${p === 'index.html' ? '' : p}</loc>${d ? `<lastmod>${d}</lastmod>` : ''}</url>`;
+    })
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
@@ -738,7 +854,7 @@ export function pluginSite(): Plugin {
       const pages = Object.keys(toutesLesPages(racine))
         .map((nom) => `${nom}.html`)
         .filter((f) => !sourcePage(racine, f).includes('content="noindex"'));
-      this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap(pages) });
+      this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap(pages, SITE_URL, (f) => dateDerniereModification(f, sourcePage(racine, f))) });
       this.emitFile({ type: 'asset', fileName: FICHIER_FLUX, source: fluxRss() });
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}sitemap.xml\n` });
     },

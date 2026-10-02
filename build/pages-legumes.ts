@@ -334,7 +334,12 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
   ];
 
   const sommaire = sections.map((s) => `<li><a href="#${s.id}">${s.titre}</a></li>`).join('');
-  const image = miniature(l).replace('class="fiche__miniature"', 'class="fiche-page__miniature"').replace('loading="lazy"', 'loading="eager"');
+  // Sur la page de la culture, la photo est le sujet de la page : elle reçoit un texte alternatif
+  // (les miniatures des listes, à côté du nom, restent décoratives avec alt="").
+  const image = miniature(l)
+    .replace('class="fiche__miniature"', 'class="fiche-page__miniature"')
+    .replace('loading="lazy"', 'loading="eager"')
+    .replace('alt=""', `alt="${echapper(`${l.nom} en culture d'intérieur`)}"`);
 
   return `<!doctype html>
 <html lang="fr">
