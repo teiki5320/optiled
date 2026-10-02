@@ -99,7 +99,7 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 
 - Un article = un fichier `contenu/conseils/<slug>.html` : un commentaire d'en-tête (`titre`, `description` de 70 à 180 caractères, `publie_le` au format AAAA-MM-JJ, `theme` parmi `lumiere`, `cultures`, `eau`, `installation`), puis le corps en HTML qui commence par `<p class="chapo">` (la réponse courte) et contient des `<h2 id="…">` (le sommaire est construit automatiquement).
 - `build/conseils.ts` ne construit que les articles dont la date est passée (date du jour à Paris) : page `conseil-<slug>.html`, liste de `conseils.html` (marqueur `<!--#conseils-->`), sitemap, suggestions « À lire aussi ». Les articles programmés restent dans le dépôt sans être publiés.
-- Publication automatique : le workflow GitHub Pages se relance chaque lundi et chaque jeudi à 5 h UTC ; il suffit donc de dater les articles d’un lundi ou d’un jeudi.
+- Publication automatique : le workflow GitHub Pages se relance chaque lundi, mercredi et vendredi à 5 h UTC ; il suffit donc de dater les articles d’un de ces jours.
 - Prévisualiser le site à une date future : `DATE_PUBLICATION=2027-01-04 npm run build`.
 - Les tests vérifient l'en-tête de chaque article et ses liens internes tels qu'ils seront à sa date de publication (un article ne peut renvoyer qu'à un article publié avant lui).
 
