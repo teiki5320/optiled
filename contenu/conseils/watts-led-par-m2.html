@@ -1,0 +1,56 @@
+<!--
+titre: Combien de watts LED pour 1 m² de culture ?
+description: Combien de watts LED réels prévoir pour 1 m² selon la culture : de 70 W pour les micro-pousses à 230 W pour les tomates, et comment ajuster à votre lampe.
+publie_le: 2026-10-02
+theme: lumiere
+photo: Tente de culture d'un mètre carré éclairée par un cadre de barres LED blanches au-dessus de bacs de salades et de basilic
+cultures: micro-pousses, laitue, basilic, fraise, concombre, tomate
+-->
+<p class="chapo">Avec une bonne LED horticole, comptez environ <strong>70 W réels par m² pour des micro-pousses</strong>, <strong>115 à 140 W pour des salades et des aromatiques</strong>, et <strong>autour de 230 W pour des tomates ou des poivrons en fructification</strong>. Il s'agit de la puissance mesurée à la prise, pas du chiffre « équivalent » des annonces.</p>
+
+<h2 id="principe">D'où viennent ces chiffres</h2>
+<p>Une lampe ne se choisit pas en watts mais en lumière utile. On part du <a href="glossaire.html#ppfd">PPFD</a> visé, c'est-à-dire la quantité de lumière que doivent recevoir les feuilles, puis on calcule la puissance qui permet de l'obtenir :</p>
+<p class="formule">Puissance (W/m²) = PPFD visé / (efficacité × coefficient d'utilisation)</p>
+<ul>
+  <li><strong>L'<a href="glossaire.html#efficacite">efficacité</a></strong> de la lampe, en µmol/J : environ 2,7 pour une bonne LED actuelle.</li>
+  <li><strong>Le <a href="glossaire.html#coefficient-utilisation">coefficient d'utilisation</a></strong> : la part de la lumière qui atteint vraiment les plantes, d'environ 0,8 dans une tente à parois réfléchissantes.</li>
+</ul>
+<p>Avec ces deux valeurs, chaque watt par m² apporte environ 2,2 µmol/m²/s. Le reste n'est qu'une division.</p>
+
+<h2 id="tableau">Les watts par m² selon la culture</h2>
+<p>Valeurs pour une LED de 2,7 µmol/J dans une tente à parois réfléchissantes, au stade le plus exigeant de chaque culture. Ce sont les réglages par défaut du <a href="index.html#calculateur">calculateur</a>.</p>
+<div class="tableau-defile">
+  <table class="tableau">
+    <thead><tr><th>Culture</th><th>PPFD visé (µmol/m²/s)</th><th>Puissance réelle par m²</th></tr></thead>
+    <tbody>
+      <tr><td><a href="legume-micro-pousses.html">Micro-pousses</a>, semis</td><td>environ 150</td><td>environ 70 W</td></tr>
+      <tr><td><a href="legume-laitue.html">Laitue</a>, épinard, roquette</td><td>250 à 280</td><td>environ 115 à 130 W</td></tr>
+      <tr><td><a href="legume-basilic.html">Basilic</a> et aromatiques</td><td>environ 300</td><td>environ 140 W</td></tr>
+      <tr><td><a href="legume-fraise.html">Fraisier</a> en fructification</td><td>environ 400</td><td>environ 185 W</td></tr>
+      <tr><td><a href="legume-concombre.html">Concombre</a> en production</td><td>environ 450</td><td>environ 210 W</td></tr>
+      <tr><td><a href="legume-tomate.html">Tomate</a>, poivron, piment, aubergine en fructification</td><td>environ 500</td><td>environ 230 W</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Pour une surface plus petite, faites une règle de trois : une tente de 60 × 60 cm fait 0,36 m², il lui faut donc environ un tiers de ces valeurs (par exemple 80 à 85 W pour des tomates en fructification). Les tailles courantes d'étagères et de tentes sont détaillées dans <a href="led-puissance.html#surfaces">Puissance selon la taille de l'espace</a>.</p>
+
+<h2 id="ajuster">Ajuster à votre lampe et à votre espace</h2>
+<p>Le tableau suppose une lampe efficace dans un espace fermé. Deux corrections sont fréquentes :</p>
+<ul>
+  <li><strong>Lampe moins efficace :</strong> à 2,0 µmol/J, il faut environ un tiers de watts en plus que pour une lampe à 2,7 µmol/J. Une salade demande alors plutôt 155 à 175 W par m². Pour connaître l'efficacité réelle, divisez le <a href="glossaire.html#ppf">PPF</a> annoncé par la puissance à la prise.</li>
+  <li><strong>Espace ouvert :</strong> sur une étagère sans parois, une partie de la lumière part sur les côtés. Le coefficient tombe vers 0,6 et il faut là aussi environ un tiers de puissance en plus.</li>
+</ul>
+<p>Les deux effets s'additionnent : une lampe peu efficace sur une étagère ouverte peut demander près de deux fois plus de watts que le tableau. Voir <a href="led-puissance.html#efficacite">Même lumière, puissance différente</a>.</p>
+
+<h2 id="pieges">Les erreurs à éviter</h2>
+<ul>
+  <li><strong>Compter en watts « équivalents » :</strong> une lampe vendue « 1 000 W » qui consomme 100 W à la prise fournit la lumière de 100 W. Seule la puissance réelle entre dans le calcul. Voir <a href="led-choisir.html#marketing">Se méfier des chiffres marketing</a>.</li>
+  <li><strong>Dimensionner pour la croissance seulement :</strong> une tomate demande environ 350 µmol/m²/s en croissance, mais 500 en fructification. Prévoyez la puissance du stade le plus exigeant.</li>
+  <li><strong>Oublier la répartition :</strong> 200 W concentrés au centre d'une tente laissent les bords dans l'ombre. Le format de la lampe doit couvrir la surface, voir <a href="led-installation.html#uniformite">Obtenir une lumière uniforme</a>.</li>
+  <li><strong>Surdimensionner sans variateur :</strong> trop de lumière pour des semis ou des salades abîme les feuilles et gaspille de l'électricité.</li>
+</ul>
+
+<h2 id="marge">Prévoir une marge, avec un variateur</h2>
+<p>Une lampe un peu plus puissante que nécessaire et gradable est plus confortable qu'une lampe tout juste suffisante : vous montez l'intensité pour les légumes fruits et la baissez pour les jeunes plants ou les salades. La consommation suit le réglage, pas la puissance maximale. Pour chiffrer la facture, voir <a href="conseil-consommation-lampe-led.html">Combien consomme une lampe de culture LED par mois ?</a>, et pour vérifier qu'une installation existante éclaire assez, <a href="conseil-manque-de-lumiere-signes.html">Comment savoir si mes plantes manquent de lumière ?</a></p>
+<p>Gardez aussi en tête la chaleur : toute la puissance consommée finit en chaleur dans l'espace de culture. Au-delà d'une centaine de watts dans une petite tente, une extraction d'air devient nécessaire (voir <a href="culture-climat.html#chaleur-led">La chaleur dégagée par les LED</a>).</p>
+<div class="encadre"><p><strong>À retenir :</strong> pour 1 m² sous une bonne LED, environ 70 W réels suffisent aux micro-pousses, 115 à 140 W aux salades et aromatiques, 230 W aux légumes fruits en fructification. Ajoutez environ un tiers si la lampe est peu efficace ou si l'espace est ouvert, et laissez le <a href="index.html#calculateur">calculateur</a> faire le compte exact pour votre surface.</p></div>
