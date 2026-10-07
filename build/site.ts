@@ -820,6 +820,10 @@ export function fichiersImagesNonPubliees(date?: string): string[] {
     .flatMap((c) => [800, 1600].map((l) => `images/guides/${PREFIXE_PAGE_CONSEIL}${c.slug}-${l}.webp`).concat(`images/partage/${PREFIXE_PAGE_CONSEIL}${c.slug}.jpg`));
 }
 
+// Cloudflare Web Analytics : visites, pages et provenance, sans cookie ni bandeau.
+const MESURE_AUDIENCE =
+  `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc705dd734324f6cae561f7e7da0d3be"}'></script>`;
+
 export function pluginSite(): Plugin {
   let racine = process.cwd();
   let sortie = resolve(racine, 'dist');
@@ -847,7 +851,9 @@ export function pluginSite(): Plugin {
       });
     },
     transformIndexHtml(html, ctx) {
-      return transformerPage(html, basename(ctx.filename));
+      const page = transformerPage(html, basename(ctx.filename));
+      // Mesure d'audience Cloudflare Web Analytics (sans cookie), seulement sur le site publié.
+      return ctx.server ? page : page.replace('</body>', `${MESURE_AUDIENCE}\n</body>`);
     },
     generateBundle() {
       // Les pages marquées noindex (404, redirections) ne vont pas dans le sitemap.
