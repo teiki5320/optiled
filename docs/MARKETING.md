@@ -61,14 +61,15 @@ Mis à jour le 12 octobre 2026. Compagnon de INFRA.md.
 | 1er octobre 2026 | Première vérification automatique des lampes Amazon (la seule à ce jour) |
 | 7 octobre 2026 | Contact `optiled@toakeur.com` et mesure d'audience Cloudflare ajoutés au code |
 | 7 au 12 octobre 2026 | Publications bloquées par le test de bout en bout ; débloquées le 12 octobre |
+| 12 octobre 2026 | Mentions légales accordées à la mesure d'audience Cloudflare (une seule source, le jeton du site) |
 | 16 novembre 2026 | Rappel : préparer la série suivante d'articles de conseil |
 | 15 janvier 2027 | Dernier article programmé de la série actuelle (hors un article en juin 2027) |
 
 ## Les 3 priorités
 
-- Corriger les mentions légales : elles affirment « Aucune mesure d'audience n'est active » alors que Cloudflare Web Analytics tourne sur le site depuis le 12 octobre 2026 (faire suivre la phrase à la constante `MESURE_AUDIENCE` de `build/site.ts`).
 - Faire indexer par Google les pages encore absentes : 62 pages sur 83 y figurent (suivi dans l'onglet Indexation du Studio, plan du site à renvoyer après chaque série de pages).
 - Ouvrir un premier canal d'audience : créer et brancher un compte Pinterest OptiLED, puis importer les 12 épingles déjà prêtes (`docs/pinterest.csv`).
+- Obtenir de premiers liens entrants : proposer le calculateur intégrable (`integrer.html`) à quelques blogs et forums de jardinage en intérieur, aucun n'ayant encore été contacté.
 
 ## Pinterest
 

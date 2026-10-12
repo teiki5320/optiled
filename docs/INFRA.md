@@ -23,7 +23,7 @@ Généré le 12 octobre 2026 par un scan du dépôt. Pour mettre à jour : relan
 - **Rôle** : hébergement du code (`teiki5320/optiled`, branche unique `main`) et chaîne de publication GitHub Actions : `npm ci` → `npm test` → `npm run build` → installation de Chromium → `npm run test:e2e` → envoi de `dist/` vers GitHub Pages. Second workflow : IndexNow.
 - **Console** : https://github.com/teiki5320/optiled (onglet *Actions* pour le suivi des publications).
 - **Identifiants publics** : nom du dépôt `teiki5320/optiled`.
-- **Secrets** : aucun secret configuré. Le workflow lit une variable de dépôt facultative, `CF_BEACON_TOKEN` (voir Analytics), et n'utilise que les autorisations fournies par GitHub (`pages: write`, `id-token: write`).
+- **Secrets** : aucun secret ni variable de dépôt. Le workflow n'utilise que les autorisations fournies par GitHub (`pages: write`, `id-token: write`).
 - **Coût** : gratuit (dépôt public) — à vérifier dans la console en cas de changement de visibilité.
 
 ## Hébergement web (GitHub Pages / Cloudflare Pages)
@@ -52,10 +52,9 @@ Généré le 12 octobre 2026 par un scan du dépôt. Pour mettre à jour : relan
 
 ## Analytics (mesure d'usage)
 
-- **Rôle** : Cloudflare Web Analytics, mesure d'audience gratuite et sans cookie, **active sur le site en ligne** depuis la publication du 12 octobre 2026 (script `static.cloudflareinsights.com/beacon.min.js` présent sur les pages). Le jeton du site est écrit dans le code (constante `MESURE_AUDIENCE`, `build/site.ts`, ajoutée le 7 octobre 2026) et le script n'est ajouté qu'au build de production. Le seul script externe autorisé par le test de bout en bout (`scripts/e2e.mjs`).
-- **Incohérence à corriger** : l'ancien mécanisme `mesureAudience()` / `texteMesureAudience()` dépend toujours de la variable de dépôt `CF_BEACON_TOKEN`, qui n'est pas définie. Résultat : les mentions légales en ligne affirment « Aucune mesure d'audience n'est active » alors que la mesure tourne. Il faut faire suivre la phrase des mentions légales à la constante (ou définir la variable et retirer la constante).
+- **Rôle** : Cloudflare Web Analytics, mesure d'audience gratuite et sans cookie, **active sur le site en ligne** depuis la publication du 12 octobre 2026 (script `static.cloudflareinsights.com/beacon.min.js` présent sur les pages). Une seule source depuis le 12 octobre 2026 : le jeton du site, écrit dans le code (constante `JETON_MESURE_AUDIENCE`, `build/site.ts`), commande à la fois le script, ajouté au seul build de production, et la phrase des mentions légales, qui décrit la mesure (sans cookie, pages vues agrégées, adresse IP non conservée). L'ancienne variable de dépôt `CF_BEACON_TOKEN` a été retirée du code et du workflow. Le seul script externe autorisé par le test de bout en bout (`scripts/e2e.mjs`).
 - **Console** : https://dash.cloudflare.com → Analytics & Logs → Web Analytics (site `www.optiled.fr`, sans changer les DNS).
-- **Identifiants publics** : jeton du site (32 caractères, visible dans les pages, non secret), dans `MESURE_AUDIENCE` ; variable `CF_BEACON_TOKEN` prévue mais vide.
+- **Identifiants publics** : jeton du site (32 caractères, visible dans les pages, non secret), dans `JETON_MESURE_AUDIENCE`.
 - **Secrets** : aucun.
 - **Coût** : gratuit.
 

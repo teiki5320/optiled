@@ -25,11 +25,11 @@
 - **Google Search Console** : propriété de type Domaine `optiled.fr` vérifiée ; sitemap `https://www.optiled.fr/sitemap.xml` envoyé le 25 septembre 2026 ; il compte 86 adresses le 12 octobre 2026.
 - **IndexNow** : pages signalées chaque lundi à Bing et aux autres moteurs (dernier passage réussi le 5 octobre 2026).
 - **Pages indexées** : à vérifier dans la console.
-- **Analytics** : Cloudflare Web Analytics actif sur le site en ligne depuis le 12 octobre 2026 (sans cookie). Les mentions légales disent encore le contraire : à corriger.
+- **Analytics** : Cloudflare Web Analytics actif sur le site en ligne depuis le 12 octobre 2026 (sans cookie), décrit comme tel dans les mentions légales.
 - **PWA** : installable sur mobile, consultable hors ligne.
 
 ## Ce qui reste, dans l'ordre
 
-1. Mettre la phrase des mentions légales sur la mesure d'audience en accord avec le site (Cloudflare Web Analytics est actif).
-2. Relancer la vérification automatique des lampes Amazon (aucun passage depuis le 1er octobre 2026).
-3. Suivre l'indexation des 86 adresses du sitemap dans Search Console (rubrique Pages) et l'échéance du domaine dans la console IONOS.
+1. Relancer la vérification automatique des lampes Amazon (aucun passage depuis le 1er octobre 2026).
+2. Suivre l'indexation des 86 adresses du sitemap dans Search Console (rubrique Pages) et l'échéance du domaine dans la console IONOS.
+3. Proposer le calculateur intégrable (`integrer.html`) à des blogs de jardinage : aucun n'a encore été contacté.
