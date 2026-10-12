@@ -54,6 +54,7 @@ import { insecables } from '../src/typo.ts';
 export { insecables };
 import { icone, logo, type NomIcone } from './icones.ts';
 import { CARTES_PREMIERE_RANGEE, photoGuide } from './photos.ts';
+import { placerAnnonces, scriptAdsense } from './annonces.ts';
 export { photoGuide };
 
 export const NOM_SITE = 'OptiLED';
@@ -471,7 +472,7 @@ export function footer(): string {
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la <a href="glossaire.html#sources">littérature horticole</a> : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
       <p class="site-pied__note">Photos (guides, conseils, cultures) et certains schémas des guides Culture générés par intelligence artificielle ; les autres schémas sont réalisés pour le site.</p>
       <p class="site-pied__note">Certains liens vers Amazon sont sponsorisés : en tant que Partenaire Amazon, l'éditeur réalise un bénéfice sur les achats remplissant les conditions requises.</p>
-      <p class="site-pied__note"><a href="a-propos.html">À propos et méthode</a> · <a href="a-propos.html#contact">Contact</a> · <a href="mentions-legales.html">Mentions légales</a></p>
+      <p class="site-pied__note"><a href="a-propos.html">À propos et méthode</a> · <a href="a-propos.html#contact">Contact</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="mentions-legales.html#donnees" data-gerer-cookies>Gérer les cookies</a></p>
     </div>
     <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes du mois</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li><li><a href="integrer.html">Intégrer le calculateur</a></li></ul>
       <h2 class="site-pied__sous-titre">Parcours</h2><ul>${PARCOURS.map((p) => `<li><a href="${p.fichier}">${p.titre}</a></li>`).join('')}</ul></div>
@@ -811,7 +812,7 @@ export function transformerPage(html: string, fichier: string): string {
     .replace('<!--#fiches-->', () => rendreFiches())
     .replace(/<!--#cartes:(led|culture)-->/g, (_m, r: Rubrique) => cartesGuides(r))
     .replace(/<!--#icone:([a-z]+)-->/g, (_m, nom: NomIcone) => icone(nom));
-  return insecables(page);
+  return insecables(placerAnnonces(page, fichier));
 }
 
 /** Images (photo et partage) des articles de conseil pas encore publiés, chemins relatifs au dossier de sortie. */
@@ -851,7 +852,8 @@ export function pluginSite(): Plugin {
     transformIndexHtml(html, ctx) {
       const page = transformerPage(html, basename(ctx.filename));
       // Mesure d'audience Cloudflare Web Analytics (sans cookie), seulement sur le site publié.
-      return ctx.server ? page : page.replace('</body>', `${mesureAudience()}\n</body>`);
+      // Publicité Google AdSense (et son bandeau de consentement), seulement sur le site publié.
+      return ctx.server ? page : page.replace('</head>', `  ${scriptAdsense()}\n  </head>`).replace('</body>', `${mesureAudience()}\n</body>`);
     },
     generateBundle() {
       // Les pages marquées noindex (404, redirections) ne vont pas dans le sitemap.

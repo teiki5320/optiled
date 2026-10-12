@@ -136,7 +136,35 @@ function boutonsCopier(): void {
   });
 }
 
+type FenetreGoogle = Window & {
+  adsbygoogle?: object[];
+  googlefc?: { callbackQueue?: (() => void)[]; showRevocationMessage?: () => void };
+};
+
+/** Annonces AdSense placées au build (build/annonces.ts) : une demande par emplacement. */
+function annonces(): void {
+  const w = window as FenetreGoogle;
+  document.querySelectorAll('ins.adsbygoogle:not([data-adsbygoogle-status])').forEach(() => (w.adsbygoogle = w.adsbygoogle || []).push({}));
+}
+
+/** Lien « Gérer les cookies » du pied de page : rouvre le bandeau de consentement de Google. */
+function lienCookies(): void {
+  document.querySelectorAll<HTMLAnchorElement>('[data-gerer-cookies]').forEach((lien) => {
+    lien.addEventListener('click', (e) => {
+      const w = window as FenetreGoogle;
+      // Sans le script Google (bloqueur de publicité), le lien mène aux explications des mentions légales.
+      if (!document.querySelector('script[src*="adsbygoogle"]')) return;
+      e.preventDefault();
+      w.googlefc = w.googlefc || {};
+      w.googlefc.callbackQueue = w.googlefc.callbackQueue || [];
+      w.googlefc.callbackQueue.push(() => w.googlefc?.showRevocationMessage?.());
+    });
+  });
+}
+
 progressionLecture();
+annonces();
+lienCookies();
 boutonPartage();
 boutonsCopier();
 sommaireActif();
