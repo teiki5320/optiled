@@ -74,9 +74,11 @@ try {
   verifier((await page.locator('[data-omelette-injected]').count()) === 0, "aucun code d'outil de maquette dans la page");
 
   const scripts = await page.$$eval('script[src]', (els) => els.map((e) => e.src));
-  // Seule exception : la mesure d'audience Cloudflare Web Analytics (sans cookie).
+  // Exceptions : la mesure d'audience Cloudflare Web Analytics (sans cookie) et la publicité
+  // Google AdSense avec son bandeau de consentement (build/annonces.ts).
   const BEACON = 'https://static.cloudflareinsights.com/beacon.min.js';
-  verifier(scripts.every((s) => s.startsWith(BASE) || s === BEACON), 'aucun script externe chargé (hors mesure d’audience Cloudflare)');
+  const GOOGLE = /^https:\/\/([a-z0-9-]+\.)*(googlesyndication\.com|google\.com|googletagservices\.com|doubleclick\.net|gstatic\.com|adtrafficquality\.google)\//;
+  verifier(scripts.every((s) => s.startsWith(BASE) || s === BEACON || GOOGLE.test(s)), 'aucun script externe chargé (hors mesure d’audience Cloudflare et publicité Google)');
   verifier(erreurs.length === 0, `aucune erreur JavaScript${erreurs.length ? ' : ' + erreurs.join(' | ') : ''}`);
   await navigateur.close();
 } catch (e) {
