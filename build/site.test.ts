@@ -193,7 +193,7 @@ describe('référencement', () => {
     expect(referencement(page('Le "calcul"'), 'legumes.html')).toContain('content="Le &quot;calcul&quot;"');
   });
 
-  it("mesure d'audience seulement si un jeton valide est configuré", () => {
+  it("mesure d'audience seulement si un jeton valide est configuré, mentions légales accordées", () => {
     expect(mesureAudience('')).toBe('');
     expect(mesureAudience('pas-un-jeton"><script>')).toBe('');
     const jeton = '0123456789abcdef0123456789abcdef';
@@ -201,6 +201,9 @@ describe('référencement', () => {
     expect(mesureAudience(jeton)).toContain('static.cloudflareinsights.com/beacon.min.js');
     expect(texteMesureAudience('')).toContain("Aucune mesure d'audience");
     expect(texteMesureAudience(jeton)).toContain('sans cookie');
+    // Le jeton du site est configuré : script et mentions légales disent la même chose.
+    expect(mesureAudience()).toContain('static.cloudflareinsights.com/beacon.min.js');
+    expect(texteMesureAudience()).toContain('Cloudflare Web Analytics');
   });
 
   it('flux RSS des conseils publiés, échappé', () => {

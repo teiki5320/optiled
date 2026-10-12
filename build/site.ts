@@ -418,17 +418,19 @@ function donneesPageSimple(html: string, fichier: string, url: string, adresse: 
 }
 
 /**
- * Mesure d'audience gratuite et sans cookie (Cloudflare Web Analytics) : le jeton public du site
- * est lu dans CF_BEACON_TOKEN au build (variable du dépôt GitHub, voir le workflow).
- * Sans jeton, aucun script de mesure n'est ajouté.
+ * Mesure d'audience gratuite et sans cookie (Cloudflare Web Analytics). Seule source : ce jeton
+ * public du site (visible dans les pages, non secret). Il commande à la fois le script ajouté
+ * au site publié et la phrase des mentions légales ; sans jeton valide, ni l'un ni l'autre.
  */
-export function mesureAudience(jeton = process.env.CF_BEACON_TOKEN ?? ''): string {
+const JETON_MESURE_AUDIENCE = 'bc705dd734324f6cae561f7e7da0d3be';
+
+export function mesureAudience(jeton = JETON_MESURE_AUDIENCE): string {
   if (!/^[0-9a-f]{32}$/i.test(jeton)) return '';
   return `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${jeton}"}'></script>`;
 }
 
 /** Phrase des mentions légales sur la mesure d'audience (marqueur <!--#mesure-audience-->). */
-export function texteMesureAudience(jeton = process.env.CF_BEACON_TOKEN ?? ''): string {
+export function texteMesureAudience(jeton = JETON_MESURE_AUDIENCE): string {
   return mesureAudience(jeton)
     ? "La <strong>mesure d'audience</strong> utilise Cloudflare Web Analytics : sans cookie ni stockage sur votre appareil, elle compte les pages vues de façon agrégée (page, pays, type d'appareil) et ne conserve pas votre adresse IP."
     : "Aucune mesure d'audience n'est active.";
@@ -802,7 +804,7 @@ export function transformerPage(html: string, fichier: string): string {
     // Tableaux qui défilent horizontalement : atteignables et nommés au clavier.
     .replace(/<div class="tableau-defile">/g, () => `<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau ${++numeroTableau} (faire défiler horizontalement)">`)
     // La 404 peut être servie sous n'importe quel chemin : liens résolus depuis la racine du site.
-    .replace('<!--#head-->', `${base}<!--#head-->\n    ${referencement(html, fichier)}\n    ${mesureAudience()}`)
+    .replace('<!--#head-->', `${base}<!--#head-->\n    ${referencement(html, fichier)}`)
     .replace('<!--#head-->', head())
     .replace('<!--#header-->', header(fichier))
     .replace('<!--#footer-->', footer())
@@ -819,10 +821,6 @@ export function fichiersImagesNonPubliees(date?: string): string[] {
     .filter((c) => !publies.has(c.slug))
     .flatMap((c) => [800, 1600].map((l) => `images/guides/${PREFIXE_PAGE_CONSEIL}${c.slug}-${l}.webp`).concat(`images/partage/${PREFIXE_PAGE_CONSEIL}${c.slug}.jpg`));
 }
-
-// Cloudflare Web Analytics : visites, pages et provenance, sans cookie ni bandeau.
-const MESURE_AUDIENCE =
-  `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc705dd734324f6cae561f7e7da0d3be"}'></script>`;
 
 export function pluginSite(): Plugin {
   let racine = process.cwd();
@@ -853,7 +851,7 @@ export function pluginSite(): Plugin {
     transformIndexHtml(html, ctx) {
       const page = transformerPage(html, basename(ctx.filename));
       // Mesure d'audience Cloudflare Web Analytics (sans cookie), seulement sur le site publié.
-      return ctx.server ? page : page.replace('</body>', `${MESURE_AUDIENCE}\n</body>`);
+      return ctx.server ? page : page.replace('</body>', `${mesureAudience()}\n</body>`);
     },
     generateBundle() {
       // Les pages marquées noindex (404, redirections) ne vont pas dans le sitemap.
