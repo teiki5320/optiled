@@ -74,7 +74,9 @@ try {
   verifier((await page.locator('[data-omelette-injected]').count()) === 0, "aucun code d'outil de maquette dans la page");
 
   const scripts = await page.$$eval('script[src]', (els) => els.map((e) => e.src));
-  verifier(scripts.every((s) => s.startsWith(BASE)), 'aucun script externe chargé');
+  // Seule exception : la mesure d'audience Cloudflare Web Analytics (sans cookie).
+  const BEACON = 'https://static.cloudflareinsights.com/beacon.min.js';
+  verifier(scripts.every((s) => s.startsWith(BASE) || s === BEACON), 'aucun script externe chargé (hors mesure d’audience Cloudflare)');
   verifier(erreurs.length === 0, `aucune erreur JavaScript${erreurs.length ? ' : ' + erreurs.join(' | ') : ''}`);
   await navigateur.close();
 } catch (e) {
