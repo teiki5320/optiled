@@ -67,7 +67,7 @@ Mis à jour le 12 octobre 2026. Compagnon de INFRA.md.
 ## Les 3 priorités
 
 - Corriger les mentions légales : elles affirment « Aucune mesure d'audience n'est active » alors que Cloudflare Web Analytics tourne sur le site depuis le 12 octobre 2026 (faire suivre la phrase à la constante `MESURE_AUDIENCE` de `build/site.ts`).
-- Remettre en marche la vérification automatique des lampes Amazon : la routine `optiled-verification-lampes`, prévue chaque jour, n'a plus tourné depuis le 1er octobre 2026, alors que les liens d'affiliation sont la seule source de revenus.
+- Faire indexer par Google les pages encore absentes : 62 pages sur 83 y figurent (suivi dans l'onglet Indexation du Studio, plan du site à renvoyer après chaque série de pages).
 - Ouvrir un premier canal d'audience : créer et brancher un compte Pinterest OptiLED, puis importer les 12 épingles déjà prêtes (`docs/pinterest.csv`).
 
 ## Pinterest
