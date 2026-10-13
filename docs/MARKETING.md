@@ -17,7 +17,7 @@ Mis à jour le 13 octobre 2026. Compagnon de INFRA.md.
 
 ## Rémunération par phases
 
-- [fait] **Aujourd'hui** : site gratuit sans compte ; affiliation Amazon (17 lampes, identifiant `optiled-21`, liens `rel="sponsored"`, mentions obligatoires) et publicité AdSense dans les pages de lecture.
+- [fait] **Aujourd'hui** : site gratuit sans compte ; affiliation Amazon (16 lampes, identifiant `optiled-21`, liens `rel="sponsored"`, mentions obligatoires) et publicité AdSense dans les pages de lecture.
 - [en cours] **Validation AdSense** : validation du site et diffusion des annonces, à vérifier dans la console AdSense.
 - **Sélection fiable** : relancer la vérification automatique des lampes (`optiled-verification-lampes`), arrêtée depuis le 1er octobre 2026.
 - **Affiliation élargie** : proposer aussi les autres achats de la liste (alimentation, programmateur, variateur…).
