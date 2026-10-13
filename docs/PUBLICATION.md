@@ -2,13 +2,37 @@
 
 > Généré le 13 octobre 2026. Aucun secret ici.
 
+## En bref
+
+- **Production** : en ligne sur https://www.optiled.fr/ (GitHub Pages)
+- **Domaine & SSL** : optiled.fr chez IONOS, HTTPS par GitHub Pages
+- **Visibilité** : 62 pages indexées sur 86, AdSense et mesure actives
+- **Contact** : optiled@toakeur.com
+
+## Boutiques
+
+| | 🌐 Site |
+|---|---|
+| Hébergement | [ok] GitHub Pages, publication automatique par GitHub Actions |
+| Domaine | [ok] www.optiled.fr (IONOS), optiled.fr redirige |
+| SSL | [ok] certificat GitHub Pages, HTTPS forcé |
+| Indexation | [à faire] 62 pages sur 86 dans Google, IndexNow chaque lundi |
+| Mesure d'audience | [ok] Cloudflare Web Analytics, sans cookie |
+
+## Ce qui reste, dans l'ordre
+
+1. ✅ **Site en ligne** : www.optiled.fr publié par GitHub Pages, HTTPS forcé, ancienne adresse redirigée.
+2. ✅ **Revenus branchés** : affiliation Amazon et publicité AdSense en ligne, mentions légales à jour.
+3. **Validation AdSense** : confirmer dans la console que le site est validé et que les annonces sont diffusées.
+4. **Indexation complète** : faire entrer dans Google les 24 adresses du plan du site encore absentes.
+
 ## Vue d'ensemble
 
 - **Web · Production** : ✅ en ligne (réponse 200 constatée le 13 octobre 2026)
 - **URL** : https://www.optiled.fr/
 - **Hébergeur** : GitHub Pages, publication automatique à chaque envoi sur `main` et chaque lundi, mercredi et vendredi pour les articles programmés (`.github/workflows/pages.yml` : tests unitaires, build, test de bout en bout, puis mise en ligne). Aucune action manuelle.
 - **Ancienne adresse** : https://teiki5320.github.io/optiled/ redirige vers le domaine (301).
-- **Dernière mise en production** : 12 octobre 2026 en fin de journée (publicité Google AdSense ; une publication a d'abord échoué, le test de bout en bout refusant les scripts de Google, puis a réussi une fois ce test corrigé).
+- **Dernière mise en production** : 13 octobre 2026 au matin, publication réussie (dernière modification du site le 12 octobre au soir : publicité Google AdSense ; une publication avait d'abord échoué, le test de bout en bout refusant les scripts de Google, puis a réussi une fois ce test corrigé).
 - **Articles de conseil** : 34 en ligne, 40 programmés (le prochain le 14 octobre 2026).
 - **Contact affiché** : `optiled@toakeur.com` (mentions légales et « À propos »).
 

@@ -15,16 +15,18 @@ Mis à jour le 13 octobre 2026. Compagnon de INFRA.md.
   - lien de partage des réglages et liste d'achat à copier ou imprimer ;
   - sélection de lampes du commerce reliée aux besoins calculés.
 
-## Modèle de rémunération
+## Rémunération par phases
 
-| Phase | Levier | Statut |
-|---|---|---|
-| 0 | Site gratuit, sans compte | ✅ en place |
-| 1 | Affiliation Amazon : 16 lampes (`src/data/lampes.json`), liens `rel="sponsored"` avec l'identifiant `optiled-21`, propositions dans le calculateur et page `lampes.html` | ✅ en place |
-| 1 | Mentions obligatoires de l'affiliation (près des liens, pied de page, mentions légales) | ✅ en place |
-| 1 | Vérification automatique de la sélection de lampes et des fourchettes de prix (routine `optiled-verification-lampes`, prévue chaque jour) | ⬜ en panne : dernier passage le 1er octobre 2026 |
-| 2 | Élargir l'affiliation aux autres achats de la liste d'achat (alimentation, programmateur, variateur…) | ⬜ |
-| 3 | Publicité Google AdSense : au plus deux annonces par page de lecture (guides, conseils, fiches des cultures, parcours, glossaire), jamais dans les outils ni près des liens Amazon, bandeau de consentement de Google, `ads.txt` | ✅ en place depuis le 12 octobre 2026 ; validation du site et diffusion à vérifier dans la console AdSense |
+- [fait] **Aujourd'hui** : site gratuit sans compte ; affiliation Amazon (17 lampes, identifiant `optiled-21`, liens `rel="sponsored"`, mentions obligatoires) et publicité AdSense dans les pages de lecture.
+- [en cours] **Validation AdSense** : validation du site et diffusion des annonces, à vérifier dans la console AdSense.
+- **Sélection fiable** : relancer la vérification automatique des lampes (`optiled-verification-lampes`), arrêtée depuis le 1er octobre 2026.
+- **Affiliation élargie** : proposer aussi les autres achats de la liste (alimentation, programmateur, variateur…).
+
+## Points forts
+
+- 🧮 **Calcul complet et sourcé** : PPFD, DLI, puissance, barres et plan de pose pour 26 cultures, chaque valeur avec sa source.
+- 📴 **Sans compte, hors ligne** : tout tourne dans le navigateur, installable sur mobile, aucun cookie posé par le site lui-même.
+- 📚 **Contenu de fond** : 12 guides, 26 pages de cultures, glossaire et trois articles de conseil par semaine.
 
 ## Canaux
 
@@ -44,15 +46,14 @@ Mis à jour le 13 octobre 2026. Compagnon de INFRA.md.
 | TikTok « Afrotok » et YouTube « toa.afrotok » | Comptes communs branchés au Studio, mais aucune publication OptiLED planifiée | ⬜ |
 | Forums et communautés de jardinage | Aucune trace | ⬜ |
 
-## KPIs
+## Mesures
 
-| Métrique | Valeur | Objectif |
-|---|---|---|
-| Visiteurs | à vérifier dans la console Cloudflare Web Analytics (mesure active depuis le 12 octobre 2026) | à définir après un mois de mesure |
-| Pages indexées par Google | 62 sur 86 (contrôle du Studio, 12 octobre 2026) | toutes les pages du sitemap |
-| Clics vers Amazon | à vérifier dans la console Partenaires Amazon | à définir |
-| Commissions Amazon | à vérifier dans la console Partenaires Amazon | premier seuil de paiement (25 € d'après la console) |
-| Revenus publicitaires | à vérifier dans la console AdSense | à définir |
+- **Visiteurs** : à vérifier dans la console Cloudflare Web Analytics (mesure active depuis le 12 octobre 2026)
+- **Pages indexées par Google** : 62 sur 86 (contrôle du Studio, 12 octobre 2026)
+- **Clics vers Amazon** : à vérifier dans la console Partenaires Amazon
+- **Commissions Amazon** : à vérifier dans la console Partenaires Amazon
+- **Revenus publicitaires** : à vérifier dans la console AdSense
+- **Articles de conseil** : 34 en ligne, 40 programmés jusqu'au 15 janvier 2027
 
 ## Calendrier
 

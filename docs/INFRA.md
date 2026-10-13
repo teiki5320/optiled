@@ -4,6 +4,22 @@ Généré le 13 octobre 2026 par un scan du dépôt. Pour mettre à jour : relan
 
 > Aucun secret dans cette fiche — uniquement des références (noms de variables, consoles).
 
+## En bref
+
+- **Plateforme** : site web statique en français, installable (PWA)
+- **Stack** : Vite 8 · TypeScript 6 · Vitest · Playwright
+- **Backend** : aucun, tout le calcul se fait dans le navigateur
+- **Distribution** : GitHub Pages par GitHub Actions, sur www.optiled.fr
+- **Site** : https://www.optiled.fr/ — contact optiled@toakeur.com
+- **IA et outils** : images faites par IA hors du site (OpenArt)
+
+## Parcours
+
+- 🌐 **Web** : 🐙 GitHub — main, dernière publication au vert [ok] → ⚙️ GitHub Actions — tests, build et test de bout en bout [ok] → 🏠 GitHub Pages — hébergement du site [ok] → 🔗 Nom de domaine — www.optiled.fr, HTTPS forcé [ok] → 🔎 Google — 62 pages indexées sur 86 [à faire]
+- 📝 **Contenu** : ✍️ Articles de conseil — 74 rédigés [ok] → ⏰ GitHub Actions — publication lundi, mercredi, vendredi [ok] → 📰 Rubrique Conseils — 34 en ligne, 40 programmés [ok] → 📌 Pinterest — 12 épingles prêtes, aucun compte [pas encore]
+- 🛒 **Affiliation** : 💡 Sélection de lampes — 17 lampes, une indisponible [ok] → 🔁 Routine de vérification — dernier passage le 1er octobre [à faire] → 🛍️ Affiliation — liens Amazon.fr optiled-21 [ok]
+- 📢 **Publicité** : 📰 Pages de lecture — deux emplacements au plus [ok] → 🍪 Consentement — bandeau de Google en ligne [ok] → 💰 AdSense (publicité web) — validation à vérifier [à faire]
+
 ## Vue d'ensemble
 
 - **Plateforme** : site web statique, en français, pensé d'abord pour le mobile, installable (PWA : `public/manifest.webmanifest`, `public/sw.js`, consultation hors ligne).
@@ -59,7 +75,7 @@ Généré le 13 octobre 2026 par un scan du dépôt. Pour mettre à jour : relan
 - **Secrets** : aucun.
 - **Coût** : gratuit.
 
-## Google AdSense (publicité intégrée)
+## AdSense (publicité web)
 
 - **Rôle** : annonces display de Google dans les pages de lecture, ajoutées le 12 octobre 2026 (`build/annonces.ts`). Au plus deux par page (milieu et fin de l'article), signalées « Publicité », jamais dans le calculateur, le carnet de suivi ni les pages de lampes, jamais à côté d'un lien Amazon ; l'emplacement reste replié tant que Google ne fournit pas d'annonce. Le bandeau de consentement est celui de Google (Autoriser, Refuser, Gérer les options), rouvert par le lien « Gérer les cookies » du pied de page ; les mentions légales et la page « À propos » décrivent la publicité et ses cookies. Le calculateur intégré sur d'autres sites ne charge pas le code de Google. Script et `ads.txt` constatés en ligne le 13 octobre 2026.
 - **Console** : https://adsense.google.com (validation du site et diffusion des annonces : à vérifier dans la console).
