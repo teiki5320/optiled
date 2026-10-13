@@ -1,6 +1,6 @@
 # MARKETING — plan marketing & rémunération
 
-Mis à jour le 12 octobre 2026. Compagnon de INFRA.md.
+Mis à jour le 13 octobre 2026. Compagnon de INFRA.md.
 
 > Aucun chiffre inventé : les valeurs non mesurées sont marquées comme telles.
 
@@ -10,7 +10,7 @@ Mis à jour le 12 octobre 2026. Compagnon de INFRA.md.
 - **Public** : particuliers qui cultivent en intérieur (légumes feuilles, aromatiques, légumes fruits, micro-pousses), débutants comme confirmés.
 - **Différenciation** (d'après le code) :
   - 26 cultures avec des valeurs sourcées (références listées dans le glossaire) ;
-  - calcul complet dans le navigateur, sans compte ni cookie, utilisable hors ligne (PWA) ;
+  - calcul complet dans le navigateur, sans compte, utilisable hors ligne (PWA) ; le site ne dépose lui-même aucun cookie (seuls ceux de la publicité Google, avec accord) ;
   - 12 guides (6 sur les LED, dont 3 guides d'achat, et 6 sur la culture), 26 pages de cultures, une rubrique Conseils, un glossaire ;
   - lien de partage des réglages et liste d'achat à copier ou imprimer ;
   - sélection de lampes du commerce reliée aux besoins calculés.
@@ -19,12 +19,12 @@ Mis à jour le 12 octobre 2026. Compagnon de INFRA.md.
 
 | Phase | Levier | Statut |
 |---|---|---|
-| 0 | Site gratuit, sans publicité ni compte | ✅ en place |
+| 0 | Site gratuit, sans compte | ✅ en place |
 | 1 | Affiliation Amazon : 16 lampes (`src/data/lampes.json`), liens `rel="sponsored"` avec l'identifiant `optiled-21`, propositions dans le calculateur et page `lampes.html` | ✅ en place |
 | 1 | Mentions obligatoires de l'affiliation (près des liens, pied de page, mentions légales) | ✅ en place |
 | 1 | Vérification automatique de la sélection de lampes et des fourchettes de prix (routine `optiled-verification-lampes`, prévue chaque jour) | ⬜ en panne : dernier passage le 1er octobre 2026 |
 | 2 | Élargir l'affiliation aux autres achats de la liste d'achat (alimentation, programmateur, variateur…) | ⬜ |
-| 3 | Publicité display | ⬜ non prévue dans le code |
+| 3 | Publicité Google AdSense : au plus deux annonces par page de lecture (guides, conseils, fiches des cultures, parcours, glossaire), jamais dans les outils ni près des liens Amazon, bandeau de consentement de Google, `ads.txt` | ✅ en place depuis le 12 octobre 2026 ; validation du site et diffusion à vérifier dans la console AdSense |
 
 ## Canaux
 
@@ -34,7 +34,7 @@ Mis à jour le 12 octobre 2026. Compagnon de INFRA.md.
 | IndexNow (Bing et autres moteurs) | Signalement automatique des pages chaque lundi (`.github/workflows/indexnow.yml`) | ✅ |
 | Flux RSS et Google Discover | `conseils.xml`, grandes images autorisées (`max-image-preview:large`) | ✅ |
 | Calculateur intégrable | `integrer.html` : code à coller pour les blogs, avec lien vers le site | ✅ prêt, aucun blog contacté |
-| Google Search Console | Propriété `optiled.fr` vérifiée, sitemap envoyé le 25 septembre 2026 (16 pages découvertes) | ✅ |
+| Google Search Console | Propriété `optiled.fr` vérifiée, sitemap envoyé le 25 septembre 2026 puis renvoyé le 12 octobre 2026 (86 adresses) | ✅ |
 | Guides d'achat | 3 guides (`led-puissance`, `led-comparer`, `led-semis`) avec tableaux calculés depuis les données du site, sans prix ni liens Amazon dans le texte | ✅ |
 | Articles de conseil | Rubrique « Conseils » : 34 articles en ligne et 40 programmés jusqu'au 15 janvier 2027, trois par semaine (lundi, mercredi, vendredi, publication automatique) ; rappel le 16 novembre 2026 pour préparer la série suivante | ✅ |
 | Pages détaillées par culture | 26 pages `legume-<id>.html` (lumière, exemple pour 1 m², lampes, climat, solution nutritive, récolte) | ✅ |
@@ -49,9 +49,10 @@ Mis à jour le 12 octobre 2026. Compagnon de INFRA.md.
 | Métrique | Valeur | Objectif |
 |---|---|---|
 | Visiteurs | à vérifier dans la console Cloudflare Web Analytics (mesure active depuis le 12 octobre 2026) | à définir après un mois de mesure |
-| Pages indexées par Google | à vérifier dans la console Search Console | toutes les pages du sitemap |
+| Pages indexées par Google | 62 sur 86 (contrôle du Studio, 12 octobre 2026) | toutes les pages du sitemap |
 | Clics vers Amazon | à vérifier dans la console Partenaires Amazon | à définir |
 | Commissions Amazon | à vérifier dans la console Partenaires Amazon | premier seuil de paiement (25 € d'après la console) |
+| Revenus publicitaires | à vérifier dans la console AdSense | à définir |
 
 ## Calendrier
 
@@ -61,13 +62,13 @@ Mis à jour le 12 octobre 2026. Compagnon de INFRA.md.
 | 1er octobre 2026 | Première vérification automatique des lampes Amazon (la seule à ce jour) |
 | 7 octobre 2026 | Contact `optiled@toakeur.com` et mesure d'audience Cloudflare ajoutés au code |
 | 7 au 12 octobre 2026 | Publications bloquées par le test de bout en bout ; débloquées le 12 octobre |
-| 12 octobre 2026 | Mentions légales accordées à la mesure d'audience Cloudflare (une seule source, le jeton du site) |
+| 12 octobre 2026 | Mentions légales accordées à la mesure d'audience Cloudflare (une seule source, le jeton du site) ; publicité Google AdSense en ligne (script, emplacements, consentement, `ads.txt`), mentions légales et « À propos » mises à jour |
 | 16 novembre 2026 | Rappel : préparer la série suivante d'articles de conseil |
 | 15 janvier 2027 | Dernier article programmé de la série actuelle (hors un article en juin 2027) |
 
 ## Les 3 priorités
 
-- Faire indexer par Google les pages encore absentes : 62 pages sur 83 y figurent (suivi dans l'onglet Indexation du Studio, plan du site à renvoyer après chaque série de pages).
+- Faire indexer par Google les pages encore absentes : 62 des 86 adresses du plan du site y figurent (contrôle du Studio du 12 octobre 2026) ; plan du site renvoyé le 12 octobre, à renvoyer après chaque série de pages.
 - Ouvrir un premier canal d'audience : créer et brancher un compte Pinterest OptiLED, puis importer les 12 épingles déjà prêtes (`docs/pinterest.csv`).
 - Obtenir de premiers liens entrants : proposer le calculateur intégrable (`integrer.html`) à quelques blogs et forums de jardinage en intérieur, aucun n'ayant encore été contacté.
 
