@@ -70,12 +70,7 @@ a { color: var(--accent); }
 /* ---------- En-tête ---------- */
 .site-entete { background: rgb(27 19 34 / 0.82); border-bottom-color: var(--nuit-bordure); }
 .site-entete__barre { min-height: 4.5rem; }
-.logo-marque { display: none; }
-.logo::before {
-  content: ''; width: 1.7rem; height: 1.7rem; border-radius: 50%; flex: none;
-  background: radial-gradient(circle at 40% 40%, #ffe2a8, #f59b58 60%, #d9604f);
-  box-shadow: 0 0 22px #f59b58;
-}
+.logo-marque { width: auto; height: 2.6rem; filter: drop-shadow(0 0 10px rgb(126 226 160 / 0.35)); }
 .logo strong { font-size: 1.35rem; font-weight: 800; }
 .site-nav ul { background: rgb(255 255 255 / 0.08); border: 1px solid var(--nuit-bordure); padding: 0.3rem; border-radius: 999px; }
 .site-nav a, .menu-mobile a { color: var(--nuit-texte); font-weight: 600; }

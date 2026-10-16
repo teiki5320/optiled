@@ -165,10 +165,10 @@ export function rubriqueDe(fichier: string): Rubrique | null {
   return null;
 }
 
-/** Icônes publiées dans public/ (générées par scripts/favicon.mjs) : adresses réelles, utilisables par les moteurs de recherche. */
+/** Icônes publiées dans public/ (générées par scripts/icones-marque.mjs) : adresses réelles, utilisables par les moteurs de recherche. */
 export function head(): string {
-  return `<link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="icones/favicon-96.png" sizes="96x96" type="image/png" />
+  return `<link rel="icon" href="icones/favicon-96.png" sizes="96x96" type="image/png" />
+    <link rel="icon" href="favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="icones/apple-touch-icon.png" />
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title="Conseils Kultiled" href="${FICHIER_FLUX}" />
@@ -248,7 +248,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
         mainEntityOfPage: adresse,
         ...miseAJour,
         author: { '@type': 'Organization', name: NOM_SITE },
-        publisher: { '@type': 'Organization', name: NOM_SITE },
+        publisher: { '@type': 'Organization', name: NOM_SITE, logo: { '@type': 'ImageObject', url: `${SITE_URL}marque/kultiled-logo-512.png` } },
       },
       {
         '@context': 'https://schema.org',
@@ -278,7 +278,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
         ...(datePublication ? { datePublished: datePublication } : {}),
         ...miseAJour,
         author: { '@type': 'Organization', name: NOM_SITE },
-        publisher: { '@type': 'Organization', name: NOM_SITE },
+        publisher: { '@type': 'Organization', name: NOM_SITE, logo: { '@type': 'ImageObject', url: `${SITE_URL}marque/kultiled-logo-512.png` } },
       },
       {
         '@context': 'https://schema.org',
@@ -305,7 +305,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
         mainEntityOfPage: adresse,
         ...miseAJour,
         author: { '@type': 'Organization', name: NOM_SITE },
-        publisher: { '@type': 'Organization', name: NOM_SITE },
+        publisher: { '@type': 'Organization', name: NOM_SITE, logo: { '@type': 'ImageObject', url: `${SITE_URL}marque/kultiled-logo-512.png` } },
       },
       {
         '@context': 'https://schema.org',
@@ -331,7 +331,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
         mainEntityOfPage: adresse,
         ...miseAJour,
         author: { '@type': 'Organization', name: NOM_SITE },
-        publisher: { '@type': 'Organization', name: NOM_SITE },
+        publisher: { '@type': 'Organization', name: NOM_SITE, logo: { '@type': 'ImageObject', url: `${SITE_URL}marque/kultiled-logo-512.png` } },
       },
       {
         '@context': 'https://schema.org',

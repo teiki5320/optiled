@@ -27,17 +27,7 @@ export function icone(nom: NomIcone, classe = 'icone'): string {
   return `<svg class="${classe}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TRACES[nom]}</svg>`;
 }
 
-/** Logo : une barre LED qui éclaire une pousse. `suffixe` rend ses identifiants uniques dans la page (en-tête et pied). */
-export function logo(suffixe = ''): string {
-  return `<svg class="logo-marque" viewBox="0 0 40 40" aria-hidden="true">
-  <defs>
-    <linearGradient id="logo-lum${suffixe}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe7b0" stop-opacity=".9"/><stop offset="1" stop-color="#ff5fa2" stop-opacity="0"/></linearGradient>
-    <linearGradient id="logo-barre${suffixe}" x1="0" x2="1"><stop offset="0" stop-color="#5b7cff"/><stop offset=".5" stop-color="#c26bff"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient>
-  </defs>
-  <rect width="40" height="40" rx="10" fill="#0f1f16"/>
-  <path d="M9 11h22l6 24H3z" fill="url(#logo-lum${suffixe})" opacity=".55"/>
-  <rect x="7" y="7" width="26" height="5" rx="2.5" fill="url(#logo-barre${suffixe})"/>
-  <path d="M20 34V24" stroke="#7ee2a0" stroke-width="2.2" stroke-linecap="round"/>
-  <path d="M20 26c-4.5 0-7-2.5-7.5-6.5 4.5 0 7 2.5 7.5 6.5ZM20 24c4.5 0 7-2.5 7.5-6.5-4.5 0-7 2.5-7.5 6.5Z" fill="#7ee2a0"/>
-</svg>`;
+/** Logo Kultiled (goutte, pousse et lampe LED), image générée par scripts/icones-marque.mjs. `suffixe` est gardé pour compatibilité. */
+export function logo(_suffixe = ''): string {
+  return '<img class="logo-marque" src="marque/kultiled-logo.webp" width="133" height="160" alt="" />';
 }
