@@ -60,7 +60,7 @@ export { photoGuide };
 export const NOM_SITE = 'Kultiled';
 
 /** Adresse publique du site (sitemap). Surchargeable : SITE_URL=https://mon-domaine.fr/ npm run build */
-export const SITE_URL = (process.env.SITE_URL ?? 'https://www.optiled.fr/').replace(/\/?$/, '/');
+export const SITE_URL = (process.env.SITE_URL ?? 'https://www.kultiled.com/').replace(/\/?$/, '/');
 
 /** Rubriques de la navigation principale ; `pages` = fichiers rattachés à la rubrique. */
 export const NAVIGATION: { href: string; libelle: string; pages: RegExp }[] = [

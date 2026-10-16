@@ -1,11 +1,11 @@
 // Signale toutes les pages du site aux moteurs qui utilisent IndexNow (Bing, Yandex, Seznam…).
 // Usage : node scripts/indexnow.mjs (ou npm run indexnow)
 // Lit le sitemap PUBLIÉ (pas la copie locale), puis envoie toutes ses adresses en une requête.
-// La clé est publique par conception : elle est servie à https://www.optiled.fr/<clé>.txt
+// La clé est publique par conception : elle est servie à https://www.kultiled.com/<clé>.txt
 // (fichier public/<clé>.txt), ce qui prouve aux moteurs que le site nous appartient.
 
 export const CLE = 'c0e2eea796f0b728ac889de874db3cbe';
-export const HOTE = 'www.optiled.fr';
+export const HOTE = 'www.kultiled.com';
 const SITEMAP = `https://${HOTE}/sitemap.xml`;
 const API = 'https://api.indexnow.org/indexnow';
 

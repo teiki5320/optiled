@@ -26,7 +26,7 @@ for (const l of legumes) {
   <text x="580" y="345" font-family="Helvetica, Arial, sans-serif" font-size="36" fill="#f39a5b">en intérieur sous LED</text>
   <text x="580" y="410" font-family="Helvetica, Arial, sans-serif" font-size="28" fill="#c9b8d4">Lumière, climat et conseils de culture</text>
   <text x="580" y="520" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#f5ecf8">Kultiled</text>
-  <text x="712" y="520" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#c9b8d4">· optiled.fr</text>
+  <text x="712" y="520" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#c9b8d4">· kultiled.com</text>
 </svg>`);
   const masque = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${D}" height="${D}"><circle cx="${D / 2}" cy="${D / 2}" r="${D / 2}"/></svg>`);
   const rond = await sharp(miniature).resize(D, D, { fit: 'cover' }).composite([{ input: masque, blend: 'dest-in' }]).png().toBuffer();

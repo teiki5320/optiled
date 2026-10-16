@@ -4,7 +4,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import sharp from 'sharp';
 
-const SITE = 'https://www.optiled.fr/';
+const SITE = 'https://www.kultiled.com/';
 const TABLEAU = 'Culture indoor sous LED';
 // [nom, titre, image source, adresse, description, schéma (true = image entière, sans recadrage)]
 const EPINGLES = [
@@ -52,7 +52,7 @@ for (const [nom, titre, source, lien, description, schema] of EPINGLES) {
     <rect x="70" y="${yTitre - 95}" width="130" height="10" rx="5" fill="url(#b)"/>
     ${texte}
     <text x="70" y="1400" font-family="Helvetica, Arial, sans-serif" font-size="36" font-weight="700" fill="#f5ecf8">Kultiled</text>
-    <text x="235" y="1400" font-family="Helvetica, Arial, sans-serif" font-size="32" fill="#f39a5b">· guide gratuit sur optiled.fr</text>
+    <text x="235" y="1400" font-family="Helvetica, Arial, sans-serif" font-size="32" fill="#f39a5b">· guide gratuit sur kultiled.com</text>
   </svg>`);
   await sharp(fond).composite([{ input: image, left: 0, top: yImage }]).jpeg({ quality: 84, mozjpeg: true }).toFile(`public/images/pinterest/${nom}.jpg`);
   const c = (s) => `"${s.replace(/"/g, '""')}"`;

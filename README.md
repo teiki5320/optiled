@@ -19,7 +19,7 @@ Le calculateur accepte un légume présélectionné dans l'adresse : `index.html
 
 ## Voir le site en ligne
 
-Le site est publié automatiquement sur GitHub Pages à chaque envoi sur `main` : **https://www.optiled.fr/** (l'ancienne adresse https://teiki5320.github.io/optiled/ redirige vers le domaine). L'adresse publique utilisée pour le sitemap, les adresses canoniques et les balises de partage est définie dans `build/site.ts` (`SITE_URL`).
+Le site est publié automatiquement sur GitHub Pages à chaque envoi sur `main` : **https://www.kultiled.com/** (l'ancienne adresse https://teiki5320.github.io/optiled/ redirige vers le domaine). L'adresse publique utilisée pour le sitemap, les adresses canoniques et les balises de partage est définie dans `build/site.ts` (`SITE_URL`).
 
 (À activer une fois : *Settings* → *Pages* → *Source* : **GitHub Actions**. Le suivi des publications est dans l'onglet *Actions*.)
 
@@ -210,11 +210,11 @@ La consommation est calculée sur la puissance nécessaire (barres gradées à l
 
 ## Domaine personnalisé (IONOS + GitHub Pages)
 
-Le domaine `www.optiled.fr` est acheté chez IONOS et pointe vers GitHub Pages (en place depuis le 24 septembre 2026) :
+Le domaine `www.kultiled.com` est acheté chez IONOS et pointe vers GitHub Pages (en place depuis le 24 septembre 2026) :
 
 - **DNS IONOS** : 4 enregistrements **A** sur `@` vers 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153, et un **CNAME** `www` → `teiki5320.github.io`. Les enregistrements Mail (MX, SPF, DKIM, DMARC, autodiscover) et `google-site-verification` sont à conserver. Attention : en ajoutant un enregistrement A sur `@`, IONOS propose d'en créer aussi un pour `www` ; choisir « Ne pas ajouter l'enregistrement DNS pour www ».
-- **GitHub** : *Settings* → *Pages* → *Custom domain* = `www.optiled.fr`, *Enforce HTTPS* coché. Le fichier `public/CNAME` contient le domaine.
-- **Code** : `SITE_URL` vaut `https://www.optiled.fr/` par défaut (`build/site.ts`).
+- **GitHub** : *Settings* → *Pages* → *Custom domain* = `www.kultiled.com`, *Enforce HTTPS* coché. Le fichier `public/CNAME` contient le domaine.
+- **Code** : `SITE_URL` vaut `https://www.kultiled.com/` par défaut (`build/site.ts`).
 - Le renouvellement du domaine se fait dans IONOS (*Transfert et renouvellement*).
 
 ## Déploiement sur IONOS (SFTP)

@@ -13,7 +13,7 @@ describe('mode intégré du calculateur', () => {
     expect(avecIntegre('l=tomate')).toBe('l=tomate&integre=1');
   });
   it("le retire de l'adresse publique", () => {
-    expect(sansIntegre('https://www.optiled.fr/?l=tomate&integre=1#resultats')).toBe('https://www.optiled.fr/?l=tomate#resultats');
-    expect(sansIntegre('https://www.optiled.fr/?integre=1')).toBe('https://www.optiled.fr/');
+    expect(sansIntegre('https://www.kultiled.com/?l=tomate&integre=1#resultats')).toBe('https://www.kultiled.com/?l=tomate#resultats');
+    expect(sansIntegre('https://www.kultiled.com/?integre=1')).toBe('https://www.kultiled.com/');
   });
 });
