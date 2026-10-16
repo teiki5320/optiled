@@ -51,7 +51,7 @@
       "famille": "Légumes feuilles",
       "difficulte": {
         "valeur": "facile",
-        "source": "Critères OptiLED (voir _lisezmoi) : Feuilles récoltées sans pollinisation, 250 µmol/m²/s, première récolte en 30 à 60 jours, compacte : tient sur une étagère"
+        "source": "Critères Kultiled (voir _lisezmoi) : Feuilles récoltées sans pollinisation, 250 µmol/m²/s, première récolte en 30 à 60 jours, compacte : tient sur une étagère"
       },
       "stades": {
         "croissance": {
@@ -143,7 +143,7 @@
       "famille": "Légumes feuilles",
       "difficulte": {
         "valeur": "intermediaire",
-        "source": "Critères OptiLED (voir _lisezmoi) : Monte vite en graines en jours longs : 12 h de lumière et de la fraîcheur (15 à 20 °C) à tenir"
+        "source": "Critères Kultiled (voir _lisezmoi) : Monte vite en graines en jours longs : 12 h de lumière et de la fraîcheur (15 à 20 °C) à tenir"
       },
       "stades": {
         "croissance": {
@@ -235,7 +235,7 @@
       "famille": "Légumes feuilles",
       "difficulte": {
         "valeur": "facile",
-        "source": "Critères OptiLED (voir _lisezmoi) : Feuilles récoltées sans pollinisation, 250 µmol/m²/s, première récolte en 30 à 40 jours, supporte la fraîcheur"
+        "source": "Critères Kultiled (voir _lisezmoi) : Feuilles récoltées sans pollinisation, 250 µmol/m²/s, première récolte en 30 à 40 jours, supporte la fraîcheur"
       },
       "stades": {
         "croissance": {
@@ -327,7 +327,7 @@
       "famille": "Légumes feuilles",
       "difficulte": {
         "valeur": "intermediaire",
-        "source": "Critères OptiLED (voir _lisezmoi) : Peu de lumière, mais demande une pièce fraîche (15 à 18 °C) : pousse mal à la température d’un logement chauffé"
+        "source": "Critères Kultiled (voir _lisezmoi) : Peu de lumière, mais demande une pièce fraîche (15 à 18 °C) : pousse mal à la température d’un logement chauffé"
       },
       "stades": {
         "croissance": {
@@ -419,7 +419,7 @@
       "famille": "Légumes feuilles",
       "difficulte": {
         "valeur": "facile",
-        "source": "Critères OptiLED (voir _lisezmoi) : Semis à la volée, 250 µmol/m²/s, coupes dès 21 à 30 jours, sans pollinisation"
+        "source": "Critères Kultiled (voir _lisezmoi) : Semis à la volée, 250 µmol/m²/s, coupes dès 21 à 30 jours, sans pollinisation"
       },
       "stades": {
         "croissance": {
@@ -508,7 +508,7 @@
       "famille": "Aromatiques",
       "difficulte": {
         "valeur": "facile",
-        "source": "Critères OptiLED (voir _lisezmoi) : Feuilles récoltées sans pollinisation, 300 µmol/m²/s, première récolte en 40 à 60 jours, repousse après pinçage ; aime la chaleur (20 à 27 °C)"
+        "source": "Critères Kultiled (voir _lisezmoi) : Feuilles récoltées sans pollinisation, 300 µmol/m²/s, première récolte en 40 à 60 jours, repousse après pinçage ; aime la chaleur (20 à 27 °C)"
       },
       "stades": {
         "croissance": {
@@ -600,7 +600,7 @@
       "famille": "Aromatiques",
       "difficulte": {
         "valeur": "intermediaire",
-        "source": "Critères OptiLED (voir _lisezmoi) : Germination lente : première récolte en 70 à 90 jours"
+        "source": "Critères Kultiled (voir _lisezmoi) : Germination lente : première récolte en 70 à 90 jours"
       },
       "stades": {
         "croissance": {
@@ -692,7 +692,7 @@
       "famille": "Aromatiques",
       "difficulte": {
         "valeur": "intermediaire",
-        "source": "Critères OptiLED (voir _lisezmoi) : Monte vite en graines en jours longs ou au chaud : 12 h de lumière et des semis échelonnés"
+        "source": "Critères Kultiled (voir _lisezmoi) : Monte vite en graines en jours longs ou au chaud : 12 h de lumière et des semis échelonnés"
       },
       "stades": {
         "croissance": {
@@ -784,7 +784,7 @@
       "famille": "Aromatiques",
       "difficulte": {
         "valeur": "facile",
-        "source": "Critères OptiLED (voir _lisezmoi) : Peu exigeante (250 µmol/m²/s), sans pollinisation, repousse après chaque coupe pendant des mois"
+        "source": "Critères Kultiled (voir _lisezmoi) : Peu exigeante (250 µmol/m²/s), sans pollinisation, repousse après chaque coupe pendant des mois"
       },
       "stades": {
         "croissance": {
@@ -876,7 +876,7 @@
       "famille": "Aromatiques",
       "difficulte": {
         "valeur": "intermediaire",
-        "source": "Critères OptiLED (voir _lisezmoi) : Croissance lente (8 à 12 semaines avant la première coupe) et sensible à l’excès d’eau"
+        "source": "Critères Kultiled (voir _lisezmoi) : Croissance lente (8 à 12 semaines avant la première coupe) et sensible à l’excès d’eau"
       },
       "stades": {
         "croissance": {
@@ -968,7 +968,7 @@
       "famille": "Aromatiques",
       "difficulte": {
         "valeur": "intermediaire",
-        "source": "Critères OptiLED (voir _lisezmoi) : Croissance lente (8 à 12 semaines avant la première coupe) et sensible à l’excès d’eau"
+        "source": "Critères Kultiled (voir _lisezmoi) : Croissance lente (8 à 12 semaines avant la première coupe) et sensible à l’excès d’eau"
       },
       "stades": {
         "croissance": {
@@ -1060,7 +1060,7 @@
       "famille": "Aromatiques",
       "difficulte": {
         "valeur": "intermediaire",
-        "source": "Critères OptiLED (voir _lisezmoi) : Se démarre par bouture, croissance lente et sensible à l’excès d’eau"
+        "source": "Critères Kultiled (voir _lisezmoi) : Se démarre par bouture, croissance lente et sensible à l’excès d’eau"
       },
       "stades": {
         "croissance": {
@@ -1152,7 +1152,7 @@
       "famille": "Aromatiques",
       "difficulte": {
         "valeur": "intermediaire",
-        "source": "Critères OptiLED (voir _lisezmoi) : Croissance lente (8 à 12 semaines), aime la chaleur (21 à 25 °C) et craint l’excès d’eau"
+        "source": "Critères Kultiled (voir _lisezmoi) : Croissance lente (8 à 12 semaines), aime la chaleur (21 à 25 °C) et craint l’excès d’eau"
       },
       "stades": {
         "croissance": {
@@ -1244,7 +1244,7 @@
       "famille": "Aromatiques",
       "difficulte": {
         "valeur": "intermediaire",
-        "source": "Critères OptiLED (voir _lisezmoi) : Plante haute qui monte vite en graines : 14 h de lumière au plus et semis échelonnés"
+        "source": "Critères Kultiled (voir _lisezmoi) : Plante haute qui monte vite en graines : 14 h de lumière au plus et semis échelonnés"
       },
       "stades": {
         "croissance": {
@@ -1336,7 +1336,7 @@
       "famille": "Micro-pousses",
       "difficulte": {
         "valeur": "facile",
-        "source": "Critères OptiLED (voir _lisezmoi) : Récolte en 7 à 21 jours, 150 µmol/m²/s, pas d’engrais ni de pollinisation"
+        "source": "Critères Kultiled (voir _lisezmoi) : Récolte en 7 à 21 jours, 150 µmol/m²/s, pas d’engrais ni de pollinisation"
       },
       "stades": {
         "croissance": {
@@ -1425,7 +1425,7 @@
       "famille": "Légumes racines",
       "difficulte": {
         "valeur": "intermediaire",
-        "source": "Critères OptiLED (voir _lisezmoi) : Récolte rapide, mais 350 µmol/m²/s et de la fraîcheur (16 à 20 °C) pour former une racine charnue"
+        "source": "Critères Kultiled (voir _lisezmoi) : Récolte rapide, mais 350 µmol/m²/s et de la fraîcheur (16 à 20 °C) pour former une racine charnue"
       },
       "stades": {
         "croissance": {
@@ -1517,7 +1517,7 @@
       "famille": "Légumes fruits",
       "difficulte": {
         "valeur": "intermediaire",
-        "source": "Critères OptiLED (voir _lisezmoi) : Fleurs à polliniser à la main, 400 µmol/m²/s en fructification, variété remontante indispensable"
+        "source": "Critères Kultiled (voir _lisezmoi) : Fleurs à polliniser à la main, 400 µmol/m²/s en fructification, variété remontante indispensable"
       },
       "stades": {
         "croissance": {
@@ -1629,7 +1629,7 @@
       "famille": "Légumes fruits",
       "difficulte": {
         "valeur": "exigeant",
-        "source": "Critères OptiLED (voir _lisezmoi) : Grande plante à tuteurer, 500 µmol/m²/s en fructification, pollinisation à la main, 90 à 120 jours avant la récolte"
+        "source": "Critères Kultiled (voir _lisezmoi) : Grande plante à tuteurer, 500 µmol/m²/s en fructification, pollinisation à la main, 90 à 120 jours avant la récolte"
       },
       "stades": {
         "croissance": {
@@ -1741,7 +1741,7 @@
       "famille": "Légumes fruits",
       "difficulte": {
         "valeur": "intermediaire",
-        "source": "Critères OptiLED (voir _lisezmoi) : Compacte, mais pollinisation à la main, 350 µmol/m²/s et 70 à 100 jours avant la récolte"
+        "source": "Critères Kultiled (voir _lisezmoi) : Compacte, mais pollinisation à la main, 350 µmol/m²/s et 70 à 100 jours avant la récolte"
       },
       "stades": {
         "croissance": {
@@ -1853,7 +1853,7 @@
       "famille": "Légumes fruits",
       "difficulte": {
         "valeur": "exigeant",
-        "source": "Critères OptiLED (voir _lisezmoi) : 500 µmol/m²/s en fructification, chaleur (21 à 27 °C), 100 à 150 jours avant la récolte"
+        "source": "Critères Kultiled (voir _lisezmoi) : 500 µmol/m²/s en fructification, chaleur (21 à 27 °C), 100 à 150 jours avant la récolte"
       },
       "stades": {
         "croissance": {
@@ -1965,7 +1965,7 @@
       "famille": "Légumes fruits",
       "difficulte": {
         "valeur": "exigeant",
-        "source": "Critères OptiLED (voir _lisezmoi) : 500 µmol/m²/s en fructification, chaleur (21 à 29 °C), 100 à 150 jours avant la récolte"
+        "source": "Critères Kultiled (voir _lisezmoi) : 500 µmol/m²/s en fructification, chaleur (21 à 29 °C), 100 à 150 jours avant la récolte"
       },
       "stades": {
         "croissance": {
@@ -2077,7 +2077,7 @@
       "famille": "Légumes fruits",
       "difficulte": {
         "valeur": "exigeant",
-        "source": "Critères OptiLED (voir _lisezmoi) : Plante grimpante volumineuse, 450 µmol/m²/s en fructification, chaleur (22 à 28 °C)"
+        "source": "Critères Kultiled (voir _lisezmoi) : Plante grimpante volumineuse, 450 µmol/m²/s en fructification, chaleur (22 à 28 °C)"
       },
       "stades": {
         "croissance": {
@@ -2189,7 +2189,7 @@
       "famille": "Légumes fruits",
       "difficulte": {
         "valeur": "exigeant",
-        "source": "Critères OptiLED (voir _lisezmoi) : 500 µmol/m²/s en fructification, chaleur (22 à 28 °C), 110 à 140 jours avant la récolte"
+        "source": "Critères Kultiled (voir _lisezmoi) : 500 µmol/m²/s en fructification, chaleur (22 à 28 °C), 110 à 140 jours avant la récolte"
       },
       "stades": {
         "croissance": {
@@ -2301,7 +2301,7 @@
       "famille": "Chanvre",
       "difficulte": {
         "valeur": "exigeant",
-        "source": "Critères OptiLED (voir _lisezmoi) : Jusqu’à 800 µmol/m²/s en floraison, grande plante, climat et odeurs à maîtriser"
+        "source": "Critères Kultiled (voir _lisezmoi) : Jusqu’à 800 µmol/m²/s en floraison, grande plante, climat et odeurs à maîtriser"
       },
       "avertissement": "En France, la culture du chanvre (Cannabis sativa L.) est réservée aux agriculteurs actifs, avec des semences certifiées de variétés inscrites au catalogue européen (THC ≤ 0,30 %). Un particulier ne peut pas en cultiver, même pour du CBD : c'est une infraction à la législation sur les stupéfiants. Ces données sont fournies à titre documentaire.",
       "stades": {
@@ -2414,7 +2414,7 @@
       "famille": "Épices et curiosités",
       "difficulte": {
         "valeur": "exigeant",
-        "source": "Critères OptiLED (voir _lisezmoi) : Cycle annuel des cormes, fraîcheur (15 à 20 °C), une seule floraison par an et un rendement très faible"
+        "source": "Critères Kultiled (voir _lisezmoi) : Cycle annuel des cormes, fraîcheur (15 à 20 °C), une seule floraison par an et un rendement très faible"
       },
       "avertissement": "Culture difficile au rendement très faible : une seule floraison par an et environ 150 fleurs pour 1 g de safran sec. Les valeurs données sont des ordres de grandeur.",
       "stades": {
@@ -2527,7 +2527,7 @@
       "famille": "Épices et curiosités",
       "difficulte": {
         "valeur": "exigeant",
-        "source": "Critères OptiLED (voir _lisezmoi) : 12 à 18 mois de culture au frais (12 à 18 °C) avec une eau fraîche et courante"
+        "source": "Critères Kultiled (voir _lisezmoi) : 12 à 18 mois de culture au frais (12 à 18 °C) avec une eau fraîche et courante"
       },
       "avertissement": "Culture expérimentale : le rhizome demande 12 à 18 mois de culture au frais (8–20 °C) avec une eau fraîche et courante. Les valeurs données sont des ordres de grandeur.",
       "stades": {

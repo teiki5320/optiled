@@ -46,7 +46,7 @@ export interface Conseil {
   slug: string;
   fichier: string;
   titre: string;
-  /** Titre de la balise <title> (sans « — OptiLED ») : titre_court s'il existe, sinon le titre. */
+  /** Titre de la balise <title> (sans « — Kultiled ») : titre_court s'il existe, sinon le titre. */
   titrePage: string;
   description: string;
   publieLe: string;
@@ -152,7 +152,7 @@ export function sourcePageConseil(c: Conseil, publies: Conseil[]): string {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="${echapper(c.description)}" />
     <meta name="date-publication" content="${c.publieLe}" />
-    <title>${echapper(c.titrePage)} — OptiLED</title>
+    <title>${echapper(c.titrePage)} — Kultiled</title>
     <!--#head-->
   </head>
   <body>

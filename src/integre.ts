@@ -28,7 +28,7 @@ export function activerModeIntegre(): void {
   document.documentElement.classList.add('integre');
   const bandeau = document.createElement('p');
   bandeau.className = 'integre__bandeau';
-  bandeau.innerHTML = `<strong>Calculateur LED OptiLED</strong><span>gratuit, sans compte</span><a href="${sansIntegre(location.href)}" target="_blank" rel="noopener">Ouvrir sur optiled.fr ↗</a>`;
+  bandeau.innerHTML = `<strong>Calculateur LED Kultiled</strong><span>gratuit, sans compte</span><a href="${sansIntegre(location.href)}" target="_blank" rel="noopener">Ouvrir sur optiled.fr ↗</a>`;
   document.getElementById('calculateur')?.prepend(bandeau);
   // Les liens internes (guides, fiches) ne doivent pas naviguer à l'intérieur du cadre.
   document.addEventListener('click', (e) => {

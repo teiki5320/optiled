@@ -1,4 +1,4 @@
-# Consignes du projet OptiLED
+# Consignes du projet Kultiled
 
 - Site en français : textes, commentaires et messages en français.
 - Travailler uniquement sur la branche `main` (pas d'autre branche, pas de pull request sauf demande).

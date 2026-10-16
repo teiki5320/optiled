@@ -1,4 +1,4 @@
-# OptiLED — éclairage LED et culture indoor de légumes
+# Kultiled — éclairage LED et culture indoor de légumes
 
 Site web statique (Vite + TypeScript, sans backend), en français et pensé d'abord pour le mobile, construit autour d'un **calculateur d'éclairage LED** (page d'accueil), complété par des guides sur l'éclairage LED horticole et la culture de légumes en intérieur, des fiches légumes et un glossaire.
 

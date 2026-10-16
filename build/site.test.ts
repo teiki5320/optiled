@@ -174,16 +174,16 @@ describe('référencement', () => {
     `<html><head><title>${titre}</title><meta name="description" content="Une description assez longue." />${extra}</head><body><h1>Titre de l'article</h1></body></html>`;
 
   it('balises de partage et adresse canonique', () => {
-    const h = referencement(page('Les bases — OptiLED'), 'led-bases.html', 'https://exemple.fr/');
+    const h = referencement(page('Les bases — Kultiled'), 'led-bases.html', 'https://exemple.fr/');
     expect(h).toContain('<link rel="canonical" href="https://exemple.fr/led-bases.html" />');
-    expect(h).toContain('<meta property="og:title" content="Les bases — OptiLED" />');
+    expect(h).toContain('<meta property="og:title" content="Les bases — Kultiled" />');
     expect(h).toContain('<meta property="og:image" content="https://exemple.fr/images/partage/led-bases.jpg" />');
     expect(h).toContain('"@type":"Article"');
     expect(h).toContain('"@type":"BreadcrumbList"');
   });
 
   it("l'accueil est une application web servie à la racine", () => {
-    const h = referencement(page('OptiLED'), 'index.html', 'https://exemple.fr/');
+    const h = referencement(page('Kultiled'), 'index.html', 'https://exemple.fr/');
     expect(h).toContain('href="https://exemple.fr/"');
     expect(h).toContain('"@type":"WebApplication"');
   });

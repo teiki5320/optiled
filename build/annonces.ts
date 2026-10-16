@@ -12,7 +12,7 @@
 
 export const CLIENT_ADSENSE = 'ca-pub-2680784147246798';
 
-/** Bloc d'annonces display responsive « OptiLED - articles » (AdSense › Annonces › Par bloc d'annonces). Vide : aucune annonce placée. */
+/** Bloc d'annonces display responsive « Kultiled - articles » (AdSense › Annonces › Par bloc d'annonces). Vide : aucune annonce placée. */
 export const BLOC_ARTICLES = '3648517188';
 
 /** Pages qui reçoivent des annonces : guides, parcours, glossaire, articles de conseil et fiches des cultures. */

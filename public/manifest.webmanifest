@@ -1,6 +1,6 @@
 {
-  "name": "OptiLED — Calculateur LED culture indoor",
-  "short_name": "OptiLED",
+  "name": "Kultiled — Calculateur LED culture indoor",
+  "short_name": "Kultiled",
   "description": "Calculez l'éclairage LED de vos cultures d'intérieur et consultez les guides, même hors ligne.",
   "lang": "fr",
   "start_url": "./",

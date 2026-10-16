@@ -604,7 +604,7 @@ async function partager(): Promise<void> {
   const libelle = bouton.textContent;
   try {
     if (navigator.share) {
-      await navigator.share({ title: 'Mon calcul d’éclairage LED — OptiLED', url });
+      await navigator.share({ title: 'Mon calcul d’éclairage LED — Kultiled', url });
       return;
     }
     await navigator.clipboard.writeText(url);

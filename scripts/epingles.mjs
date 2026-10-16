@@ -51,7 +51,7 @@ for (const [nom, titre, source, lien, description, schema] of EPINGLES) {
     ${schema ? `<text x="70" y="200" font-family="Helvetica, Arial, sans-serif" font-size="40" font-weight="700" fill="#f39a5b">Schéma</text>` : ''}
     <rect x="70" y="${yTitre - 95}" width="130" height="10" rx="5" fill="url(#b)"/>
     ${texte}
-    <text x="70" y="1400" font-family="Helvetica, Arial, sans-serif" font-size="36" font-weight="700" fill="#f5ecf8">OptiLED</text>
+    <text x="70" y="1400" font-family="Helvetica, Arial, sans-serif" font-size="36" font-weight="700" fill="#f5ecf8">Kultiled</text>
     <text x="235" y="1400" font-family="Helvetica, Arial, sans-serif" font-size="32" fill="#f39a5b">· guide gratuit sur optiled.fr</text>
   </svg>`);
   await sharp(fond).composite([{ input: image, left: 0, top: yImage }]).jpeg({ quality: 84, mozjpeg: true }).toFile(`public/images/pinterest/${nom}.jpg`);

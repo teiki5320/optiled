@@ -57,7 +57,7 @@ import { CARTES_PREMIERE_RANGEE, photoGuide } from './photos.ts';
 import { placerAnnonces, scriptAdsense } from './annonces.ts';
 export { photoGuide };
 
-export const NOM_SITE = 'OptiLED';
+export const NOM_SITE = 'Kultiled';
 
 /** Adresse publique du site (sitemap). Surchargeable : SITE_URL=https://mon-domaine.fr/ npm run build */
 export const SITE_URL = (process.env.SITE_URL ?? 'https://www.optiled.fr/').replace(/\/?$/, '/');
@@ -171,7 +171,7 @@ export function head(): string {
     <link rel="icon" href="icones/favicon-96.png" sizes="96x96" type="image/png" />
     <link rel="apple-touch-icon" href="icones/apple-touch-icon.png" />
     <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="alternate" type="application/rss+xml" title="Conseils OptiLED" href="${FICHIER_FLUX}" />
+    <link rel="alternate" type="application/rss+xml" title="Conseils Kultiled" href="${FICHIER_FLUX}" />
     <meta name="robots" content="max-image-preview:large" />
     <meta name="theme-color" content="#1b1322" />`;
 }
@@ -226,7 +226,7 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
     donnees.push({
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
-      name: 'Calculateur LED culture indoor — OptiLED',
+      name: 'Calculateur LED culture indoor — Kultiled',
       url: adresse,
       description,
       applicationCategory: 'UtilitiesApplication',
@@ -762,7 +762,7 @@ export function fluxRss(date = dateDuJour(), url = SITE_URL, nombre = 20): strin
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Conseils OptiLED — LED et culture indoor</title>
+    <title>Conseils Kultiled — LED et culture indoor</title>
     <link>${url}conseils.html</link>
     <atom:link href="${url}${FICHIER_FLUX}" rel="self" type="application/rss+xml" />
     <description>Un article par semaine pour cultiver des légumes sous LED, en intérieur.</description>

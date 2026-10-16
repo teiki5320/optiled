@@ -13,7 +13,7 @@ const mois = moisAnnee(LAMPES_VERIFIEES_LE);
 
 describe('page « Meilleures lampes »', () => {
   it('mois et année tirés de verifie_le : titre, h1, dateModified', () => {
-    expect(page).toContain(`<title>Meilleures lampes LED horticoles (${mois}) — OptiLED</title>`);
+    expect(page).toContain(`<title>Meilleures lampes LED horticoles (${mois}) — Kultiled</title>`);
     expect(page).toMatch(new RegExp(`<h1>Meilleures lampes LED horticoles \\(${mois}\\)</h1>`));
     expect(page).toContain(`"dateModified":"${LAMPES_VERIFIEES_LE}"`);
     expect(page).toContain(`<time datetime="${LAMPES_VERIFIEES_LE}">`);

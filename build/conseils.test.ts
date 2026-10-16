@@ -21,7 +21,7 @@ describe('articles de conseil', () => {
       expect(Number.isNaN(Date.parse(c.publieLe))).toBe(false);
       expect(c.theme in THEMES).toBe(true);
       expect(c.titre.length).toBeLessThanOrEqual(90);
-      expect(`${c.titrePage} — OptiLED`.length, 'balise <title>').toBeLessThanOrEqual(60);
+      expect(`${c.titrePage} — Kultiled`.length, 'balise <title>').toBeLessThanOrEqual(60);
       expect(c.description.length, 'description').toBeGreaterThanOrEqual(70);
       expect(c.description.length, 'description').toBeLessThanOrEqual(160);
       expect(c.corps).toMatch(/^<p class="chapo">/);
@@ -64,7 +64,7 @@ describe('articles de conseil', () => {
   it('titre court dans la balise <title>, titre complet dans le h1', () => {
     const c = lireConseil('x', '<!--\ntitre: Un titre complet et long\ntitre_court: Titre court\ndescription: D\npublie_le: 2026-01-05\ntheme: lumiere\n-->\n<p class="chapo">x</p>');
     const html = sourcePageConseil(c, [c]);
-    expect(html).toContain('<title>Titre court — OptiLED</title>');
+    expect(html).toContain('<title>Titre court — Kultiled</title>');
     expect(html).toContain('<h1>Un titre complet et long</h1>');
   });
 
@@ -109,7 +109,7 @@ describe('articles de conseil', () => {
       expect(bloc).not.toContain('&amp;#');
       expect(bloc).not.toContain('&#39;');
     }
-    expect(partage).toContain(`<meta property="og:title" content="${c.titrePage} — OptiLED" />`);
+    expect(partage).toContain(`<meta property="og:title" content="${c.titrePage} — Kultiled" />`);
     const donnees = jsonLd.split('\n').map((j) => JSON.parse(j));
     expect(donnees.find((d) => d['@type'] === 'Article').headline).toBe(c.titre);
     expect(donnees.find((d) => d['@type'] === 'Article').description).toBe(c.description);

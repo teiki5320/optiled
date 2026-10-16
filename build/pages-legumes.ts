@@ -206,7 +206,7 @@ function enBref(l: Legume): string {
             <div><dt>Durée d’éclairage</dt><dd>${heures} h par jour${precision}</dd></div>
             <div><dt>Température (jour)</dt><dd>${plage(l.culture.temperature_c.valeur, ' °C')}</dd></div>
             <div><dt>Récolte</dt><dd>${delaiRecolte(l)}</dd></div>
-            ${d ? `<div class="en-bref__difficulte"><dt>Difficulté</dt><dd>${badgeDifficulte(l)} <small>${echapper(d.source.replace(/^Critères OptiLED \(voir _lisezmoi\) : /, ''))}.</small></dd></div>` : ''}
+            ${d ? `<div class="en-bref__difficulte"><dt>Difficulté</dt><dd>${badgeDifficulte(l)} <small>${echapper(d.source.replace(/^Critères Kultiled \(voir _lisezmoi\) : /, ''))}.</small></dd></div>` : ''}
           </dl>
         </section>`;
 }
@@ -347,7 +347,7 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="${echapper(descriptionLegume(l))}" />
-    <title>${nom} en intérieur sous LED — OptiLED</title>
+    <title>${nom} en intérieur sous LED — Kultiled</title>
     <!--#head-->
   </head>
   <body>
