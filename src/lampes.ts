@@ -29,7 +29,7 @@ export const LAMPES: Lampe[] = (brut as unknown as { lampes: Lampe[] }).lampes;
 export const LAMPES_VERIFIEES_LE: string = (brut as unknown as { verifie_le: string }).verifie_le;
 
 /** Identifiant Partenaires Amazon (un seul endroit à changer). */
-export const TAG_AMAZON = 'optiled-21';
+export const TAG_AMAZON = 'kultiledfr-21';
 export const MENTION_AFFILIATION = 'En tant que Partenaire Amazon, je réalise un bénéfice sur les achats remplissant les conditions requises.';
 
 export function lienAmazon(l: Lampe): string {
