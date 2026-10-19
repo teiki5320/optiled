@@ -10,6 +10,7 @@ import { imageLampe, LAMPES, LAMPES_VERIFIEES_LE, lampesConseillees, lienAmazon,
 import brutTentes from '../src/data/tentes.json' with { type: 'json' };
 import brutKits from '../src/data/top-10/kits-complets.json' with { type: 'json' };
 import brutHydro from '../src/data/top-10/kits-hydroponiques.json' with { type: 'json' };
+import brutExtracteurs from '../src/data/top-10/extracteurs-ventilateurs.json' with { type: 'json' };
 import { echapper } from './fiches.ts';
 import { COEF_UTILISATION } from './guides-achat.ts';
 
@@ -278,6 +279,7 @@ export function produitsDuFichier(slug: string, f: FichierProduits, type: string
 
 const KITS = brutKits as unknown as FichierProduits;
 const HYDRO = brutHydro as unknown as FichierProduits;
+const EXTRACTEURS = brutExtracteurs as unknown as FichierProduits;
 
 /** Intro commune des sujets classés selon la note des acheteurs. */
 const introNote = (quoi: string, f: FichierProduits) =>
@@ -403,6 +405,36 @@ export const SUJETS: Sujet[] = [
       {
         q: 'Faut-il changer l’eau ?',
         r: 'Oui : on complète le réservoir au fil des jours, et on le vide et le nettoie toutes les deux à trois semaines pour repartir avec une solution neuve. Suivez la notice et la dose d’engrais du fabricant.',
+      },
+    ],
+  },
+  {
+    slug: 'extracteurs-ventilateurs',
+    onglet: 'Extracteurs et ventilateurs',
+    titre: 'Top 10 des extracteurs d’air et ventilateurs',
+    titrePage: 'Top 10 des extracteurs d’air et ventilateurs',
+    description: 'Notre sélection de 10 extracteurs d’air, kits de ventilation et ventilateurs à pince pour tente de culture, avec leurs vrais chiffres : diamètre, débit, moteur.',
+    intro: introNote('extracteurs d’air, kits de ventilation et ventilateurs', EXTRACTEURS),
+    verifieLe: EXTRACTEURS.verifie_le,
+    produits: () => produitsDuFichier('extracteurs-ventilateurs', EXTRACTEURS, 'extracteur d’air ou ventilateur pour tente de culture'),
+    choisir: `<ol class="top10__etapes">
+          <li><strong>Un extracteur et un ventilateur ne font pas le même travail</strong> : l'extracteur renouvelle l'air de la tente (il sort l'air chaud et humide), le ventilateur à pince brasse l'air entre les plants. Une tente de légumes fruits a besoin des deux.</li>
+          <li><strong>Choisissez le diamètre selon la tente</strong> : 100 mm pour une tente de 60 × 60 à 80 × 80 cm, 150 mm pour 100 × 100 à 120 × 120 cm. Le diamètre doit correspondre au filtre et à la gaine.</li>
+          <li><strong>Préférez un régulateur de vitesse</strong> : un extracteur réglé à mi-vitesse fait moins de bruit et suffit souvent. Un moteur EC consomme moins et se règle plus finement.</li>
+        </ol>
+        <p>Pour la température et l'humidité à viser, voir le guide <a href="culture-climat.html">Température, humidité et ventilation</a>.</p>`,
+    questions: [
+      {
+        q: 'Quel débit d’extracteur faut-il pour ma tente ?',
+        r: 'Repère courant : de quoi renouveler tout l’air de la tente au moins une fois par minute. Une tente de 120 × 120 × 200 cm contient environ 2,9 m³, soit au moins 175 m³/h ; on prend de la marge pour le filtre et la gaine, qui freinent l’air.',
+      },
+      {
+        q: 'Le filtre à charbon se met-il avant ou après l’extracteur ?',
+        r: 'En général à l’intérieur de la tente, en haut, avant l’extracteur : l’air traverse le filtre, puis l’extracteur le rejette par la gaine. Le diamètre du filtre doit être le même que celui de l’extracteur.',
+      },
+      {
+        q: 'Un ventilateur à pince suffit-il sans extracteur ?',
+        r: 'Pour une petite tente de salades qu’on ouvre souvent, parfois. Mais il ne fait que brasser l’air : il ne sort ni la chaleur ni l’humidité. Dès que la lampe chauffe ou que les plants sont nombreux, il faut un extracteur.',
       },
     ],
   },
