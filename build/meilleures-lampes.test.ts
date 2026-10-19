@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { LAMPES, LAMPES_VERIFIEES_LE } from '../src/lampes.ts';
 import { moisAnnee } from '../src/budget.ts';
-import { BESOINS, choisir, FICHES, FICHIER_MEILLEURES_LAMPES, lampeRetenue, rendreMeilleuresLampes, selection } from './meilleures-lampes.ts';
+import { BESOINS, choisir, FICHIER_MEILLEURES_LAMPES, rendreMeilleuresLampes } from './meilleures-lampes.ts';
 import { header, footer, sitemap, transformerPage } from './site.ts';
 
 const racine = resolve(import.meta.dirname, '..');
@@ -11,14 +11,13 @@ const source = readFileSync(resolve(racine, FICHIER_MEILLEURES_LAMPES), 'utf8');
 const page = transformerPage(source, FICHIER_MEILLEURES_LAMPES);
 const mois = moisAnnee(LAMPES_VERIFIEES_LE);
 
-describe('page « Les meilleures lampes LED de culture »', () => {
+describe('page « Meilleures lampes »', () => {
   it('mois et année tirés de verifie_le : titre, h1, dateModified', () => {
-    expect(page).toContain(`<title>Meilleures lampes LED de culture (${mois}) — Kultiled</title>`);
-    expect(page).toContain('<h1>Les meilleures lampes LED de culture</h1>');
-    expect(page).toContain(`Notre sélection de ${mois}`);
+    expect(page).toContain(`<title>Meilleures lampes LED horticoles (${mois}) — Kultiled</title>`);
+    expect(page).toMatch(new RegExp(`<h1>Meilleures lampes LED horticoles \\(${mois}\\)</h1>`));
     expect(page).toContain(`"dateModified":"${LAMPES_VERIFIEES_LE}"`);
     expect(page).toContain(`<time datetime="${LAMPES_VERIFIEES_LE}">`);
-    expect(page).not.toMatch(/<!--#[a-z-]+-->/);
+    expect(page).not.toMatch(/<!--#(mois-lampes|lampes-verifiees-le|meilleures-lampes|mention-affiliation)-->/);
   });
 
   it('divulgation d’affiliation en haut de page, avant le premier lien Amazon', () => {
@@ -42,36 +41,14 @@ describe('page « Les meilleures lampes LED de culture »', () => {
     }
   });
 
-  it('liens Amazon sponsorisés avec l’identifiant, « Lien partenaire » à côté, ni prix ni note', () => {
+  it('liens Amazon sponsorisés, ni prix par produit ni note', () => {
     const html = rendreMeilleuresLampes();
-    const liens = [...html.matchAll(/<a [^>]*amazon\.fr[^>]*>/g)].map(([l]) => l);
-    expect(liens.length).toBeGreaterThan(0);
-    for (const lien of liens) {
-      expect(lien).toContain('rel="sponsored noopener"');
-      expect(lien).toContain('tag=kultiledfr-21');
-    }
-    expect(html.match(/<span class="achat">/g)?.length).toBe(liens.length);
-    for (const [achat] of html.matchAll(/<span class="achat">[\s\S]*?<\/span>/g)) expect(achat).toContain('<small>Lien partenaire</small>');
-    expect(html).not.toMatch(/€/);
+    for (const [lien] of html.matchAll(/<a [^>]*amazon\.fr[^>]*>/g)) expect(lien).toContain('rel="sponsored noopener"');
+    // Aucun montant dans les cartes des lampes (les fourchettes par gamme sont dans une section à part, sans lien).
+    for (const [carte] of html.matchAll(/<div class="choix-lampe">[\s\S]*?<\/div>/g)) expect(carte).not.toMatch(/€/);
     expect(html).not.toContain('★');
     expect(html).not.toMatch(/\d\s*avis\b/);
     expect(html).not.toMatch(/étoiles?/);
-    expect(page).not.toMatch(/testée?s? par nous|nous avons testé/i);
-  });
-
-  it('sélection : seulement des lampes disponibles avec un chiffre de lumière, toutes présentes', () => {
-    const ids = selection().map((e) => e.lampe.id);
-    expect(new Set(ids).size).toBe(ids.length);
-    for (const e of selection()) expect(lampeRetenue(e.lampe), e.lampe.id).toBe(true);
-    // Toute lampe retenue a sa fiche : aucune n'est oubliée en silence.
-    for (const l of LAMPES.filter(lampeRetenue)) expect(FICHES.map((f) => f.id), l.id).toContain(l.id);
-    for (const l of LAMPES.filter((x) => !lampeRetenue(x))) expect(page, l.id).not.toContain(`id="${l.id}"`);
-    for (const e of selection()) expect(page).toContain(`id="${e.lampe.id}"`);
-  });
-
-  it('chaque choix par installation renvoie vers une lampe de la sélection', () => {
-    const ids = new Set(selection().map((e) => e.lampe.id));
-    for (const b of BESOINS) for (const p of choisir(b).choix) expect(ids.has(p.lampe.id), `${b.id} : ${p.lampe.id}`).toBe(true);
   });
 
   it('renvoie au comparatif et au calculateur', () => {

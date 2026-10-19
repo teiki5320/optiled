@@ -41,11 +41,12 @@ import { basename, resolve } from 'node:path';
 import type { Plugin } from 'vite';
 import { chargerLegumes, pageDetaillee, rendreFiches, rendreSources, rendreTableauClimat } from './fiches.ts';
 import { htmlTuiles } from '../src/tuiles.ts';
-import { dateVerification, rendreLampes } from './lampes.ts';
+import { rendreLampes } from './lampes.ts';
 import { rendreBudget } from './budget.ts';
-import { FICHIER_MEILLEURES_LAMPES, moisLampes, nombreSelection, noteMeilleuresLampes, rendreMeilleuresLampes } from './meilleures-lampes.ts';
+import { FICHIER_MEILLEURES_LAMPES, moisLampes, rendreMeilleuresLampes } from './meilleures-lampes.ts';
 import { LAMPES_VERIFIEES_LE, MENTION_AFFILIATION } from '../src/lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
+import { canoniquesTop10, pagesTop10, PREFIXE_TOP_10 } from './top-10.ts';
 import { conseilsDeLaCulture, conseilsPublies, dateCourte, dateDuJour, dateLongue, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, THEMES, tousLesConseils } from './conseils.ts';
 import { echapper } from './fiches.ts';
 import { rendreComparaisonLampes, rendreDliSemis, rendreEffetEfficacite, rendreEtageresSemis, rendrePuissancesCultures, rendrePuissancesSurfaces } from './guides-achat.ts';
@@ -67,6 +68,7 @@ export const NAVIGATION: { href: string; libelle: string; pages: RegExp }[] = [
   { href: 'index.html', libelle: 'Calculateur', pages: /^(index|calculateur)\.html$/ },
   { href: 'led.html', libelle: 'LED', pages: /^led(-.*)?\.html$/ },
   { href: 'lampes.html', libelle: 'Lampes', pages: /^(meilleures-)?lampes\.html$/ },
+  { href: 'top-10.html', libelle: 'Top 10', pages: /^top-10(-.*)?\.html$/ },
   // Les pages de parcours (débuter, tente) sont rattachées à la rubrique Culture.
   { href: 'culture.html', libelle: 'Culture', pages: /^(culture(-.*)?|debuter|tente)\.html$/ },
   { href: 'legumes.html', libelle: 'Légumes', pages: /^legumes?(-.*)?\.html$/ },
@@ -211,7 +213,8 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
   const description = decoderEntites(html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '');
   const nom = fichier.replace(/\.html$/, '');
   const image = `${url}images/partage/${existsSync(resolve(DOSSIER_PARTAGE, `${nom}.jpg`)) ? nom : 'accueil'}.jpg`;
-  const adresse = urlPage(fichier, url);
+  // Une page qui reprend une autre (top-10.html) désigne celle-ci comme adresse canonique.
+  const adresse = urlPage(canoniquesTop10()[fichier] ?? fichier, url);
   const r = rubriqueDe(fichier);
   const guide = r ? RUBRIQUES[r].guides.find((g) => g.fichier === fichier) : undefined;
   const pageLegume = fichier.startsWith(PREFIXE_PAGE_LEGUME);
@@ -474,7 +477,7 @@ export function footer(): string {
       <p class="site-pied__note">Certains liens vers Amazon sont sponsorisés : en tant que Partenaire Amazon, l'éditeur réalise un bénéfice sur les achats remplissant les conditions requises.</p>
       <p class="site-pied__note"><a href="a-propos.html">À propos et méthode</a> · <a href="a-propos.html#contact">Contact</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="mentions-legales.html#donnees" data-gerer-cookies>Gérer les cookies</a></p>
     </div>
-    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes LED</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li><li><a href="integrer.html">Intégrer le calculateur</a></li></ul>
+    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes du mois</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li><li><a href="integrer.html">Intégrer le calculateur</a></li></ul>
       <h2 class="site-pied__sous-titre">Parcours</h2><ul>${PARCOURS.map((p) => `<li><a href="${p.fichier}">${p.titre}</a></li>`).join('')}</ul></div>
     ${colonne('led')}
     ${colonne('culture')}
@@ -644,7 +647,7 @@ export function pagesHtml(racine: string): Record<string, string> {
 
 /** Pages générées au build (elles n'existent pas sur le disque) : cultures et articles de conseil publiés. */
 export function pagesGenerees(): Map<string, string> {
-  return new Map([...pagesLegumes(), ...pagesConseils()]);
+  return new Map([...pagesLegumes(), ...pagesConseils(), ...pagesTop10()]);
 }
 
 /** Toutes les entrées du build multi-pages : pages écrites + pages générées. */
@@ -666,7 +669,7 @@ export function sourcePage(racine: string, fichier: string): string {
 /** Nom de fichier d'une page générée (legume-<id>.html, conseil-<slug>.html) à partir d'un chemin ou d'une adresse, ou null. */
 function pageGeneree(id: string): string | null {
   const f = basename(id.split('?')[0]);
-  if (!f.startsWith(PREFIXE_PAGE_LEGUME) && !f.startsWith(PREFIXE_PAGE_CONSEIL)) return null;
+  if (!f.startsWith(PREFIXE_PAGE_LEGUME) && !f.startsWith(PREFIXE_PAGE_CONSEIL) && !f.startsWith(PREFIXE_TOP_10)) return null;
   return pagesGenerees().has(f) ? f : null;
 }
 
@@ -782,8 +785,6 @@ export function transformerPage(html: string, fichier: string): string {
   html = html
     .replace(/<!--#mois-lampes-->/g, () => moisLampes())
     .replace(/<!--#lampes-verifiees-le-->/g, () => LAMPES_VERIFIEES_LE)
-    .replace(/<!--#nombre-selection-->/g, () => String(nombreSelection()))
-    .replace(/<!--#date-verification-->/g, () => dateVerification())
     .replace(/<!--#mention-affiliation-->/g, () => MENTION_AFFILIATION)
     .replace(/<!--#mesure-audience-->/g, () => texteMesureAudience());
   const base = fichier === '404.html' ? `<base href="${SITE_URL}" />\n    ` : '';
@@ -793,7 +794,6 @@ export function transformerPage(html: string, fichier: string): string {
     .replace('<!--#sources-->', () => rendreSources())
     .replace('<!--#lampes-->', () => rendreLampes())
     .replace('<!--#meilleures-lampes-->', () => rendreMeilleuresLampes())
-    .replace('<!--#note-meilleures-lampes-->', () => noteMeilleuresLampes())
     .replace(/<!--#budget:([a-z-]+)-->/g, (_m, id: string) => rendreBudget(id))
     .replace('<!--#conseils-->', () => rendreListeConseils())
     .replace('<!--#orientation-->', () => cartesOrientation())
@@ -862,7 +862,7 @@ export function pluginSite(): Plugin {
       // Les pages marquées noindex (404, redirections) ne vont pas dans le sitemap.
       const pages = Object.keys(toutesLesPages(racine))
         .map((nom) => `${nom}.html`)
-        .filter((f) => !sourcePage(racine, f).includes('content="noindex"'));
+        .filter((f) => !sourcePage(racine, f).includes('content="noindex"') && !(f in canoniquesTop10()));
       this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap(pages, SITE_URL, (f) => dateDerniereModification(f, sourcePage(racine, f))) });
       this.emitFile({ type: 'asset', fileName: FICHIER_FLUX, source: fluxRss() });
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}sitemap.xml\n` });

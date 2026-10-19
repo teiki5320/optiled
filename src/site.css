@@ -582,3 +582,61 @@ img, svg { max-width: 100%; }
 /* Page « Intégrer le calculateur » : code à copier et aperçu. */
 .code-integration { width: 100%; font: 0.85rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; padding: 0.8rem; border-radius: 12px; border: 1px solid rgb(255 255 255 / 0.15); background: rgb(0 0 0 / 0.25); color: inherit; resize: vertical; }
 .apercu-integration { display: block; border: 1px solid rgb(255 255 255 / 0.15); border-radius: 16px; background: #1b1322; }
+
+/* Pages « Top 10 » à onglets (build/top-10.ts). Mobile d'abord ; aucune fonction en plus. */
+.top10 { padding: 1.5rem 0 3rem; }
+.top10 .fil { margin: 0 0 1rem; font-size: 0.85rem; color: var(--attenue); }
+.top10 .visuellement-cache { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.top10__onglets { margin: 0 -1rem; padding: 0 1rem 0.2rem; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--bordure); }
+.top10__onglets::-webkit-scrollbar { display: none; }
+.top10__onglets ul { display: flex; gap: 0.4rem; margin: 0; padding: 0 0 0.6rem; list-style: none; }
+.top10__onglets li { flex: none; }
+.top10__onglets a {
+  display: block; padding: 0.5rem 1rem; border-radius: 999px; font-weight: 700; font-size: 0.92rem; white-space: nowrap;
+  text-decoration: none; color: var(--texte); background: var(--carte); border: 1px solid var(--bordure);
+}
+.top10__onglets a:hover { background: rgb(255 255 255 / 0.08); }
+.top10__onglets a[aria-current='page'] { background: var(--degrade); color: #2a1422; border-color: transparent; }
+.top10__tete { padding: 1.6rem 0 0.4rem; max-width: 48rem; }
+.top10__tete h1 { font-size: clamp(1.9rem, 5.5vw, 3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin: 0 0 0.8rem; }
+.top10__intro { font-size: 1.05rem; line-height: 1.6; margin: 0 0 0.8rem; }
+.top10__mention { font-size: 0.85rem; line-height: 1.5; color: var(--attenue); margin: 0; }
+.top10__liste { list-style: none; margin: 1.6rem 0 0; padding: 0; display: grid; gap: 1.1rem; }
+.top10__produit {
+  position: relative; display: grid; gap: 1rem; padding: 1.1rem; scroll-margin-top: 5rem;
+  background: var(--carte); border: 1px solid var(--bordure); border-radius: var(--rayon-petit);
+}
+@media (min-width: 760px) {
+  .top10__produit { grid-template-columns: 4rem minmax(0, 340px) minmax(0, 1fr); align-items: start; padding: 1.4rem; gap: 1.4rem; }
+}
+.top10__rang {
+  font-family: var(--police-titre); font-size: 3rem; font-weight: 800; line-height: 1; letter-spacing: -0.04em;
+  background: var(--degrade); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.top10__produit .lampe__image { margin: 0; }
+.top10__produit .lampe__image img { width: 100%; height: auto; border-radius: 12px; display: block; }
+.top10__texte { min-width: 0; }
+.top10__texte h2 { font-size: clamp(1.2rem, 3.5vw, 1.5rem); margin: 0 0 0.8rem; }
+.top10__texte p { margin: 0.7rem 0 0; line-height: 1.6; }
+.top10__chiffres {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem 1rem; margin: 0; padding: 0.8rem 0;
+  border-block: 1px solid var(--bordure);
+}
+.top10__chiffres div { min-width: 0; display: flex; flex-direction: column; }
+.top10__chiffres dt { font-size: 0.75rem; color: var(--attenue); }
+.top10__chiffres dd { margin: 0; order: -1; font-family: var(--police-mono); font-weight: 700; font-size: 0.98rem; }
+.top10__chiffres div:first-child dd { color: var(--accent); }
+@media (min-width: 1000px) { .top10__chiffres { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.top10__achat { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.8rem; }
+.top10__achat small { font-size: 0.78rem; color: var(--attenue); }
+.top10__bloc { margin-top: 2.6rem; max-width: 48rem; }
+.top10__bloc h2 { font-size: clamp(1.4rem, 4vw, 1.8rem); font-weight: 800; margin: 0 0 0.8rem; }
+.top10__etapes { margin: 0 0 0.8rem; padding-left: 1.3rem; line-height: 1.6; }
+.top10__etapes li { margin: 0.4rem 0; }
+.top10__questions details { border-top: 1px solid var(--bordure); padding: 0.9rem 0; }
+.top10__questions summary { display: flex; justify-content: space-between; gap: 1rem; font-weight: 700; cursor: pointer; list-style: none; }
+.top10__questions summary::-webkit-details-marker { display: none; }
+.top10__questions summary::after { content: '+'; color: var(--accent); font-size: 1.3rem; line-height: 1; }
+.top10__questions details[open] summary::after { content: '−'; }
+.top10__questions details p { margin: 0.6rem 0 0; line-height: 1.6; }
+.top10__note { margin-top: 2rem; font-size: 0.85rem; color: var(--attenue); }
