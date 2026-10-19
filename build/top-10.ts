@@ -13,6 +13,8 @@ import brutHydro from '../src/data/top-10/kits-hydroponiques.json' with { type: 
 import brutExtracteurs from '../src/data/top-10/extracteurs-ventilateurs.json' with { type: 'json' };
 import brutMesure from '../src/data/top-10/minuteurs-thermometres.json' with { type: 'json' };
 import brutSubstrats from '../src/data/top-10/terreaux-substrats.json' with { type: 'json' };
+import brutSemis from '../src/data/top-10/lampes-semis.json' with { type: 'json' };
+import brutPetitEspace from '../src/data/top-10/lampes-petit-espace.json' with { type: 'json' };
 import { echapper } from './fiches.ts';
 import { COEF_UTILISATION } from './guides-achat.ts';
 
@@ -284,6 +286,8 @@ const HYDRO = brutHydro as unknown as FichierProduits;
 const EXTRACTEURS = brutExtracteurs as unknown as FichierProduits;
 const MESURE = brutMesure as unknown as FichierProduits;
 const SUBSTRATS = brutSubstrats as unknown as FichierProduits;
+const SEMIS = brutSemis as unknown as FichierProduits;
+const PETIT_ESPACE = brutPetitEspace as unknown as FichierProduits;
 
 /** Intro commune des sujets classés selon la note des acheteurs. */
 const introNote = (quoi: string, f: FichierProduits) =>
@@ -499,6 +503,66 @@ export const SUJETS: Sujet[] = [
       {
         q: 'Faut-il changer le terreau à chaque culture ?',
         r: 'Pour des légumes, c’est préférable : le terreau s’épuise et peut garder des maladies. On peut réutiliser la fibre de coco après l’avoir rincée, en surveillant l’apparition de moisissures.',
+      },
+    ],
+  },
+  {
+    slug: 'lampes-semis',
+    onglet: 'Lampes pour semis',
+    titre: 'Top 10 des lampes pour semis',
+    titrePage: 'Top 10 des lampes LED pour semis',
+    description: 'Notre sélection de 10 lampes LED pour semis et jeunes plants : lampes à pince, barres d’étagère et lampes sur pied, avec leurs vrais chiffres.',
+    intro: introNote('lampes pour semis', SEMIS),
+    verifieLe: SEMIS.verifie_le,
+    produits: () => produitsDuFichier('lampes-semis', SEMIS, 'lampe LED pour semis'),
+    choisir: `<ol class="top10__etapes">
+          <li><strong>Les semis demandent peu de lumière, mais tout près</strong> : environ 150 µmol/m²/s pendant 14 à 16 heures. Une petite lampe placée à 10 à 30 cm suffit ; trop loin, les tiges filent.</li>
+          <li><strong>Couvrez tout le plateau</strong> : une lampe à une tête éclaire quelques godets ; pour un plateau entier, prenez plusieurs têtes ou des barres.</li>
+          <li><strong>Une minuterie intégrée</strong> évite d'oublier d'allumer ou d'éteindre. Méfiez-vous des fiches sans aucun chiffre de lumière : le nombre de LED ne dit pas la lumière émise.</li>
+        </ol>
+        <p>Pour aller plus loin, voir le guide <a href="led-semis.html">LED pour semis et boutures</a> et le parcours <a href="debuter.html">Je débute</a>.</p>`,
+    questions: [
+      {
+        q: 'Pourquoi mes semis s’allongent-ils et tombent-ils ?',
+        r: 'Ils cherchent la lumière : la lampe est trop loin, trop faible ou allumée trop peu d’heures. Rapprochez-la à 10 à 30 cm et allumez-la 14 à 16 heures par jour.',
+      },
+      {
+        q: 'Faut-il une lampe différente pour les semis et pour la suite ?',
+        r: 'Pas forcément : une lampe réglable en hauteur ou en luminosité suit les plants. Mais les légumes fruits adultes demandent bien plus de lumière qu’une petite lampe de semis ; il faut alors un panneau horticole.',
+      },
+      {
+        q: 'Une lampe de bureau ordinaire peut-elle servir ?',
+        r: 'Pour un ou deux godets placés tout près, en appoint, parfois. Une lampe horticole, même petite, apporte plus de lumière utile sur toute la surface du plateau.',
+      },
+    ],
+  },
+  {
+    slug: 'lampes-petit-espace',
+    onglet: 'Lampes pour placard',
+    titre: 'Top 10 des lampes LED pour petit espace ou placard',
+    titrePage: 'Top 10 des lampes LED pour placard',
+    description: 'Notre sélection de 10 lampes LED pour cultiver dans un placard, un meuble ou une petite tente, avec leur puissance réelle et leurs chiffres de lumière publiés.',
+    intro: introNote('lampes pour petit espace', PETIT_ESPACE),
+    verifieLe: PETIT_ESPACE.verifie_le,
+    produits: () => produitsDuFichier('lampes-petit-espace', PETIT_ESPACE, 'lampe LED de culture pour petit espace'),
+    choisir: `<ol class="top10__etapes">
+          <li><strong>Regardez la puissance réelle, pas les « watts équivalents »</strong> : une lampe vendue « 600 W » peut n'en consommer que 65. Seule la puissance réelle dit la chaleur dégagée, ce qui compte dans un espace fermé.</li>
+          <li><strong>Préférez une lampe qui publie sa lumière</strong> (PPF en µmol/s, ou efficacité en µmol/J) : c'est elle qui dit si les plantes auront assez de lumière.</li>
+          <li><strong>Aérez le placard</strong> : même une petite lampe chauffe un espace clos. Laissez la porte entrouverte ou ajoutez un petit ventilateur.</li>
+        </ol>
+        <p>Pour la puissance à prévoir selon la surface, voir <a href="led-puissance.html">Quelle puissance pour ma surface ?</a>, ou le <a href="index.html#calculateur">calculateur</a>.</p>`,
+    questions: [
+      {
+        q: 'Peut-on vraiment cultiver dans un placard ?',
+        r: 'Oui, des aromatiques, des salades ou des micro-pousses. Il faut une lampe adaptée à la surface, une minuterie, et de l’air : sans aération, la chaleur et l’humidité montent vite.',
+      },
+      {
+        q: 'Que veut dire « 100 W équivalent » ?',
+        r: 'C’est une comparaison commerciale avec une ancienne ampoule, pas la consommation de la lampe. La puissance réelle est souvent dix fois plus faible ; c’est elle qu’il faut comparer, avec la lumière émise.',
+      },
+      {
+        q: 'Une petite lampe suffit-elle pour des tomates ?',
+        r: 'Non, sauf variété naine et lampe placée tout près. Les légumes fruits demandent environ 500 µmol/m²/s en floraison : il faut une lampe de 100 à 150 W réels pour 60 × 60 cm.',
       },
     ],
   },
