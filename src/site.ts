@@ -162,7 +162,19 @@ function lienCookies(): void {
   });
 }
 
+/** Top 10 : sur téléphone, la bande d'onglets défile ; l'onglet ouvert est ramené en vue. */
+function ongletActifVisible(): void {
+  const bande = document.querySelector<HTMLElement>('.top10__onglets');
+  const actif = bande?.querySelector<HTMLElement>('[aria-current="page"]');
+  if (!bande || !actif || bande.scrollWidth <= bande.clientWidth) return;
+  const b = bande.getBoundingClientRect();
+  const a = actif.getBoundingClientRect();
+  bande.scrollLeft += a.left - b.left - (b.width - a.width) / 2;
+}
+
 progressionLecture();
+// Après le chargement des polices : la largeur des onglets en dépend.
+void document.fonts.ready.then(ongletActifVisible);
 annonces();
 lienCookies();
 boutonPartage();

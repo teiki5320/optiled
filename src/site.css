@@ -591,6 +591,8 @@ img, svg { max-width: 100%; }
 .top10__onglets::-webkit-scrollbar { display: none; }
 .top10__onglets ul { display: flex; gap: 0.4rem; margin: 0; padding: 0 0 0.6rem; list-style: none; }
 .top10__onglets li { flex: none; }
+.top10__onglets ul::after { content: ''; flex: none; width: 0.6rem; } /* marge de fin de la bande qui défile */
+@media (min-width: 900px) { .top10__onglets { overflow: visible; } .top10__onglets ul { flex-wrap: wrap; } }
 .top10__onglets a {
   display: block; padding: 0.5rem 1rem; border-radius: 999px; font-weight: 700; font-size: 0.92rem; white-space: nowrap;
   text-decoration: none; color: var(--texte); background: var(--carte); border: 1px solid var(--bordure);

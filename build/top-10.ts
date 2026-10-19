@@ -290,8 +290,8 @@ const SEMIS = brutSemis as unknown as FichierProduits;
 const PETIT_ESPACE = brutPetitEspace as unknown as FichierProduits;
 
 /** Intro commune des sujets classés selon la note des acheteurs. */
-const introNote = (quoi: string, f: FichierProduits) =>
-  `Notre sélection de ${quoi} vendus sur Amazon.fr, classés selon la note moyenne des acheteurs relevée le ${dateLongue(f.classement_le)} ; à égalité, le plus évalué passe d’abord, et seuls les produits disponibles avec au moins 10 évaluations sont retenus. Les notes servent à classer mais ne sont pas affichées. Nous n’avons pas testé ces produits nous-mêmes.`;
+const introNote = (quoi: string, f: FichierProduits, feminin = false) =>
+  `Notre sélection de ${quoi} ${feminin ? 'vendues' : 'vendus'} sur Amazon.fr, ${feminin ? 'classées' : 'classés'} selon la note moyenne des acheteurs relevée le ${dateLongue(f.classement_le)} ; à égalité, ${feminin ? 'la plus évaluée' : 'le plus évalué'} passe d’abord, et seuls les produits disponibles avec au moins 10 évaluations sont retenus. Les notes servent à classer mais ne sont pas affichées. Nous n’avons pas testé ces produits nous-mêmes.`;
 
 /** Sujets, dans l'ordre des onglets. On n'ajoute un sujet que s'il a 10 vrais produits. */
 export const SUJETS: Sujet[] = [
@@ -512,7 +512,7 @@ export const SUJETS: Sujet[] = [
     titre: 'Top 10 des lampes pour semis',
     titrePage: 'Top 10 des lampes LED pour semis',
     description: 'Notre sélection de 10 lampes LED pour semis et jeunes plants : lampes à pince, barres d’étagère et lampes sur pied, avec leurs vrais chiffres.',
-    intro: introNote('lampes pour semis', SEMIS),
+    intro: introNote('lampes pour semis', SEMIS, true),
     verifieLe: SEMIS.verifie_le,
     produits: () => produitsDuFichier('lampes-semis', SEMIS, 'lampe LED pour semis'),
     choisir: `<ol class="top10__etapes">
@@ -542,7 +542,7 @@ export const SUJETS: Sujet[] = [
     titre: 'Top 10 des lampes LED pour petit espace ou placard',
     titrePage: 'Top 10 des lampes LED pour placard',
     description: 'Notre sélection de 10 lampes LED pour cultiver dans un placard, un meuble ou une petite tente, avec leur puissance réelle et leurs chiffres de lumière publiés.',
-    intro: introNote('lampes pour petit espace', PETIT_ESPACE),
+    intro: introNote('lampes pour petit espace', PETIT_ESPACE, true),
     verifieLe: PETIT_ESPACE.verifie_le,
     produits: () => produitsDuFichier('lampes-petit-espace', PETIT_ESPACE, 'lampe LED de culture pour petit espace'),
     choisir: `<ol class="top10__etapes">
@@ -596,7 +596,7 @@ function carte(p: Produit): string {
           <div class="top10__texte">
             <h2><span class="visuellement-cache">N° ${p.rang} : </span>${echapper(p.nom)}</h2>
             <dl class="top10__chiffres">${chiffres}</dl>
-            <p><strong>Pourquoi elle est dans le top.</strong> ${p.pourquoi}</p>
+            <p><strong>Pourquoi dans le top.</strong> ${p.pourquoi}</p>
             <p><strong>Idéale pour</strong> ${p.pourQui}.</p>
             <p class="top10__achat"><a class="bouton bouton--plein" href="${p.lien}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a><small>Lien partenaire</small></p>
           </div>
