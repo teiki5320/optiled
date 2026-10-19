@@ -6,10 +6,10 @@
  * Uniquement des produits et des chiffres de src/data/lampes.json ; ni prix, ni note.
  * Pas de filtre, de tri ni de comparateur : une liste numérotée, c'est tout.
  */
-import { imageLampe, LAMPES, lienAmazon, MENTION_AFFILIATION, type Lampe } from '../src/lampes.ts';
+import { imageLampe, LAMPES, LAMPES_VERIFIEES_LE, lampesConseillees, lienAmazon, lienAmazonAsin, MENTION_AFFILIATION, type Lampe } from '../src/lampes.ts';
+import brutTentes from '../src/data/tentes.json' with { type: 'json' };
 import { echapper } from './fiches.ts';
 import { COEF_UTILISATION } from './guides-achat.ts';
-import { dateVerification } from './lampes.ts';
 
 export const FICHIER_TOP_10 = 'top-10.html';
 export const PREFIXE_TOP_10 = 'top-10';
@@ -109,9 +109,20 @@ const FICHES: Fiche[] = [
 
 export interface Produit {
   rang: number;
-  lampe: Lampe;
+  id: string;
+  nom: string;
+  lien: string;
+  /** Illustration générée (figure signalée « Illustration »). */
+  image: string;
+  chiffres: [string, string][];
   pourquoi: string;
   pourQui: string;
+}
+
+/** Date au format « 19 octobre 2026 ». */
+function dateLongue(iso: string): string {
+  const [a, m, j] = iso.split('-').map(Number);
+  return new Date(Date.UTC(a, m - 1, j)).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 }
 
 export interface Sujet {
@@ -124,6 +135,8 @@ export interface Sujet {
   titrePage: string;
   description: string;
   intro: string;
+  /** Date de vérification des produits (AAAA-MM-JJ). */
+  verifieLe: string;
   produits: () => Produit[];
   choisir: string;
   questions: { q: string; r: string }[];
@@ -134,6 +147,17 @@ export function lampeRetenue(l: Lampe): boolean {
   return l.ppf !== null && l.couverture_m2 !== null && l.disponible !== false;
 }
 
+function chiffresLampe(l: Lampe): [string, string][] {
+  const c = l.couverture_m2!;
+  const surface = c.croissance === c.floraison ? `${m2(c.croissance)} m²` : `${m2(c.croissance)} m² (${m2(c.floraison)} en fruits)`;
+  return [
+    ['Efficacité', `${nb(efficacite(l), 2)} µmol/J`],
+    ['Lumière émise', `${nb(l.ppf!)} µmol/s${l.ppf_estime ? ' (estimé)' : ''}`],
+    ['Puissance', `${nb(l.puissance_w)} W`],
+    ['Surface couverte', surface],
+  ];
+}
+
 /** Les 10 lampes les plus efficaces (µmol/J), à égalité la plus lumineuse d'abord. */
 export function classementLampes(): Produit[] {
   return LAMPES.filter((l) => lampeRetenue(l) && FICHES.some((f) => f.id === l.id))
@@ -141,8 +165,80 @@ export function classementLampes(): Produit[] {
     .slice(0, TAILLE)
     .map((lampe, i) => {
       const f = FICHES.find((x) => x.id === lampe.id)!;
-      return { rang: i + 1, lampe, pourquoi: `N° ${i + 1} de la sélection pour l’efficacité. ${f.pourquoi(lampe)}`, pourQui: f.pourQui };
+      return {
+        rang: i + 1,
+        id: lampe.id,
+        nom: lampe.nom,
+        lien: lienAmazon(lampe),
+        image: imageLampe(lampe, '(min-width: 760px) 360px, 92vw'),
+        chiffres: chiffresLampe(lampe),
+        pourquoi: `N° ${i + 1} de la sélection pour l’efficacité. ${f.pourquoi(lampe)}`,
+        pourQui: f.pourQui,
+      };
     });
+}
+
+export interface Tente {
+  id: string;
+  nom: string;
+  marque: string;
+  asin: string;
+  dimensions_cm: [number, number, number];
+  toile_d: number;
+  illustration: string;
+  annonce: string[];
+}
+const TENTES = brutTentes as unknown as { verifie_le: string; classement_le: string; tentes: Tente[] };
+
+const liste = (items: string[]) => (items.length > 1 ? `${items.slice(0, -1).join(', ')} et ${items[items.length - 1]}` : items[0] ?? '');
+
+/** Lampe de notre sélection que le calculateur propose pour des tomates en fruits sur cette surface. */
+function lampePourTente(t: Tente): string {
+  const surface = (t.dimensions_cm[0] * t.dimensions_cm[1]) / 10000;
+  // Tente basse : niveau de lumière des salades (250) ; sinon celui des tomates en fruits (500).
+  const h = t.dimensions_cm[2];
+  const fruits = h >= 150;
+  const culture = h >= 180 ? 'des tomates en fruits' : fruits ? 'des piments en fruits' : 'des salades';
+  const [p] = lampesConseillees(((fruits ? 500 : 250) * surface) / COEF_UTILISATION, surface, fruits ? 'floraison' : 'croissance', 1);
+  return p ? `Pour ${culture} sur cette surface, le calculateur propose par exemple ${p.nombre > 1 ? `${p.nombre} × ` : ''}${echapper(p.lampe.nom)}.` : '';
+}
+
+/** Les tentes dans l'ordre du classement (tentes.json), avec des textes tirés des seules données. */
+export function classementTentes(): Produit[] {
+  return TENTES.tentes.slice(0, TAILLE).map((t, i) => {
+    const [l, p, h] = t.dimensions_cm;
+    const surface = (l * p) / 10000;
+    const toile = t.toile_d >= 1000 ? `toile épaisse de ${t.toile_d}D, parmi les plus solides de la sélection` : `toile de ${t.toile_d}D, plus légère`;
+    const hauteur =
+      h >= 180
+        ? 'Sa hauteur laisse la place à des légumes fruits comme la tomate, avec la lampe suspendue au-dessus.'
+        : h >= 150
+          ? 'Sa hauteur convient aux salades, aux aromatiques et aux légumes fruits compacts, comme les piments.'
+          : 'Sa hauteur convient aux salades, aux aromatiques et aux jeunes plants, moins aux tomates.';
+    const pourQui =
+      l !== p
+        ? 'un espace long et étroit, le long d’un mur, pour des salades ou des légumes fruits compacts'
+        : surface <= 0.36
+          ? 'une première tente de salades, d’aromatiques ou de semis'
+          : surface < 1.2
+            ? 'quelques pieds de tomates, poivrons ou piments, ou une grande culture de salades'
+            : 'une grande culture de légumes fruits, plusieurs pieds de tomates ou de poivrons à la fois';
+    return {
+      rang: i + 1,
+      id: t.id,
+      nom: t.nom,
+      lien: lienAmazonAsin(t.asin),
+      image: `<figure class="lampe__image"><img src="images/tentes/${t.illustration}-400.webp" srcset="images/tentes/${t.illustration}-400.webp 400w, images/tentes/${t.illustration}-800.webp 800w" sizes="(min-width: 760px) 360px, 92vw" width="800" height="600" alt="Illustration : tente de culture de ${l} × ${p} × ${h} cm" loading="lazy" decoding="async" /><figcaption>Illustration</figcaption></figure>`,
+      chiffres: [
+        ['Dimensions', `${l} × ${p} × ${h} cm`],
+        ['Surface au sol', `${m2(surface)} m²`],
+        ['Hauteur', `${h} cm`],
+        ['Toile', `${t.toile_d}D`],
+      ],
+      pourquoi: `N° ${i + 1} de la sélection selon la note des acheteurs sur Amazon.fr. Une tente de ${l} × ${p} cm au sol et ${h} cm de haut, en ${toile}. La fiche du produit annonce : ${liste(t.annonce)}. ${hauteur} ${lampePourTente(t)}`.trim(),
+      pourQui,
+    };
+  });
 }
 
 /** Sujets, dans l'ordre des onglets. On n'ajoute un sujet que s'il a 10 vrais produits. */
@@ -155,6 +251,7 @@ export const SUJETS: Sujet[] = [
     description: 'Notre sélection des 10 lampes LED de culture les plus efficaces, classées en µmol/J d’après les chiffres publiés : lumière émise, puissance et surface couverte.',
     intro:
       'Notre sélection de lampes vendues sur Amazon.fr, classée de la plus efficace à la moins efficace : l’efficacité (en µmol/J) dit combien de lumière utile la lampe produit pour chaque watt consommé. Les chiffres sont ceux publiés par les fabricants ; une lampe en rupture ou sans chiffre de lumière n’entre pas dans le classement. Nous n’avons pas testé ces lampes nous-mêmes.',
+    verifieLe: LAMPES_VERIFIEES_LE,
     produits: classementLampes,
     choisir: `<ol class="top10__etapes">
           <li><strong>Mesurez la surface à éclairer</strong> : étagère, bac ou tente. La lampe doit la couvrir en entier, sinon les bords restent dans l'ombre.</li>
@@ -174,6 +271,36 @@ export const SUJETS: Sujet[] = [
       {
         q: 'À quelle hauteur placer la lampe ?',
         r: 'Suivez d’abord la notice du fabricant. Repères habituels : 10 à 30 cm pour les réglettes, 20 à 30 cm pour une petite barre, 30 à 60 cm pour un panneau de 100 à 300 W. Si les feuilles pâlissent, remontez la lampe ou baissez le variateur.',
+      },
+    ],
+  },
+  {
+    slug: 'tentes-de-culture',
+    onglet: 'Tentes de culture',
+    titre: 'Top 10 des tentes de culture',
+    titrePage: 'Top 10 des tentes de culture',
+    description: 'Notre sélection de 10 tentes de culture d’intérieur, de 60 × 60 à 120 × 120 cm, avec leurs vrais chiffres : dimensions, surface au sol et épaisseur de toile.',
+    intro: `Notre sélection de tentes vendues sur Amazon.fr, classée selon la note moyenne des acheteurs relevée le ${dateLongue(TENTES.classement_le)} ; à égalité, la plus évaluée passe d’abord. Les notes servent à classer mais ne sont pas affichées : elles sont sur la page de chaque produit. Les chiffres sont ceux des fiches ; nous n’avons pas testé ces tentes nous-mêmes.`,
+    verifieLe: TENTES.verifie_le,
+    produits: classementTentes,
+    choisir: `<ol class="top10__etapes">
+          <li><strong>Partez de la surface à cultiver</strong> : 60 × 60 cm pour des salades et des aromatiques, 80 × 80 à 100 × 100 cm pour quelques pieds de tomates, 120 × 120 cm pour une grande culture. La lampe doit couvrir tout le sol de la tente.</li>
+          <li><strong>Vérifiez la hauteur</strong> : il faut la place de la lampe, de ses suspentes, des plantes adultes et d'une trentaine de centimètres entre les feuilles et la lampe. Comptez au moins 160 à 180 cm pour des tomates.</li>
+          <li><strong>Regardez la toile</strong> : le chiffre en D (denier) dit son épaisseur. Une toile de 1680D est plus solide et plus opaque qu'une toile de 600D ; les fermetures éclair doivent bien fermer pour que la lumière ne s'échappe pas.</li>
+        </ol>
+        <p>Pour la lampe qui va dans la tente, voir le <a href="top-10-lampes-led-de-culture.html">Top 10 des lampes LED de culture</a> et le parcours <a href="tente.html">J'ai une tente de culture</a>.</p>`,
+    questions: [
+      {
+        q: 'Quelle taille de tente choisir pour commencer ?',
+        r: 'Pour des salades, des aromatiques ou des semis, une tente de 60 × 60 cm suffit et se place dans un coin de pièce. Pour des tomates, des poivrons ou des piments, visez 80 × 80 cm ou plus, et au moins 160 cm de haut.',
+      },
+      {
+        q: 'Faut-il ajouter une extraction d’air ?',
+        r: 'Oui, dès que la lampe chauffe ou que les plantes sont nombreuses : l’air renouvelé évite la chaleur et l’humidité excessives, et limite les moisissures. Une petite tente de salades peut se contenter d’ouvrir régulièrement ; une tente de légumes fruits a besoin d’un extracteur.',
+      },
+      {
+        q: 'Que veulent dire 600D et 1680D ?',
+        r: 'C’est l’épaisseur des fils de la toile, en deniers. Plus le chiffre est élevé, plus la toile est épaisse, solide et opaque. Une toile de 600D convient pour débuter ; une toile de 1680D résiste mieux aux déchirures et aux manipulations répétées.',
       },
     ],
   },
@@ -199,28 +326,17 @@ function onglets(actif: Sujet): string {
   return `<nav class="top10__onglets" aria-label="Top 10 par sujet"><ul>${liens}</ul></nav>`;
 }
 
-function chiffres(l: Lampe): string {
-  const c = l.couverture_m2!;
-  const surface = c.croissance === c.floraison ? `${m2(c.croissance)} m²` : `${m2(c.croissance)} m² (${m2(c.floraison)} en fruits)`;
-  return `<dl class="top10__chiffres">
-              <div><dt>Efficacité</dt><dd>${nb(efficacite(l), 2)} µmol/J</dd></div>
-              <div><dt>Lumière émise</dt><dd>${nb(l.ppf!)} µmol/s${l.ppf_estime ? ' (estimé)' : ''}</dd></div>
-              <div><dt>Puissance</dt><dd>${nb(l.puissance_w)} W</dd></div>
-              <div><dt>Surface couverte</dt><dd>${surface}</dd></div>
-            </dl>`;
-}
-
 function carte(p: Produit): string {
-  const l = p.lampe;
-  return `<li class="top10__produit" id="${l.id}">
+  const chiffres = p.chiffres.map(([libelle, valeur]) => `<div><dt>${libelle}</dt><dd>${valeur}</dd></div>`).join('');
+  return `<li class="top10__produit" id="${p.id}">
           <span class="top10__rang" aria-hidden="true">${p.rang}</span>
-          ${imageLampe(l, '(min-width: 760px) 360px, 92vw')}
+          ${p.image}
           <div class="top10__texte">
-            <h2><span class="visuellement-cache">N° ${p.rang} : </span>${echapper(l.nom)}</h2>
-            ${chiffres(l)}
+            <h2><span class="visuellement-cache">N° ${p.rang} : </span>${echapper(p.nom)}</h2>
+            <dl class="top10__chiffres">${chiffres}</dl>
             <p><strong>Pourquoi elle est dans le top.</strong> ${p.pourquoi}</p>
             <p><strong>Idéale pour</strong> ${p.pourQui}.</p>
-            <p class="top10__achat"><a class="bouton bouton--plein" href="${lienAmazon(l)}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a><small>Lien partenaire</small></p>
+            <p class="top10__achat"><a class="bouton bouton--plein" href="${p.lien}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a><small>Lien partenaire</small></p>
           </div>
         </li>`;
 }
@@ -235,7 +351,7 @@ export function sourcePageTop10(s: Sujet): string {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="${echapper(s.description)}" />
-    <meta name="date-modification" content="<!--#lampes-verifiees-le-->" />
+    <meta name="date-modification" content="${s.verifieLe}" />
     <title>${s.titrePage} — Kultiled</title>
     <!--#head-->
   </head>
@@ -248,7 +364,7 @@ export function sourcePageTop10(s: Sujet): string {
         <header class="top10__tete">
           <h1>${s.titre}</h1>
           <p class="top10__intro">${s.intro}</p>
-          <p class="top10__mention"><strong>Liens sponsorisés.</strong> ${MENTION_AFFILIATION} Ni prix ni note ne sont affichés : ils sont sur la page de chaque produit. Sélection vérifiée le <time datetime="<!--#lampes-verifiees-le-->">${dateVerification()}</time>.</p>
+          <p class="top10__mention"><strong>Liens sponsorisés.</strong> ${MENTION_AFFILIATION} Ni prix ni note ne sont affichés : ils sont sur la page de chaque produit. Sélection vérifiée le <time datetime="${s.verifieLe}">${dateLongue(s.verifieLe)}</time>.</p>
         </header>
         <ol class="top10__liste">
         ${produits.map(carte).join('\n        ')}
@@ -261,7 +377,7 @@ export function sourcePageTop10(s: Sujet): string {
           <h2>Questions fréquentes</h2>
         ${questions}
         </section>
-        <p class="top10__note">Les illustrations sont générées d'après la description des produits ; ce ne sont pas des photos. Voir aussi <a href="meilleures-lampes.html">les meilleures lampes par installation</a>.</p>
+        <p class="top10__note">Les illustrations sont générées d'après la description des produits ; ce ne sont pas des photos. ${s.slug === 'lampes-led-de-culture' ? 'Voir aussi <a href="meilleures-lampes.html">les meilleures lampes par installation</a>.' : ''}</p>
       </div>
     </main>
     <!--#footer-->

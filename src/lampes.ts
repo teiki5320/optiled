@@ -32,8 +32,12 @@ export const LAMPES_VERIFIEES_LE: string = (brut as unknown as { verifie_le: str
 export const TAG_AMAZON = 'kultiledfr-21';
 export const MENTION_AFFILIATION = 'En tant que Partenaire Amazon, je réalise un bénéfice sur les achats remplissant les conditions requises.';
 
+export function lienAmazonAsin(asin: string): string {
+  return `https://www.amazon.fr/dp/${asin}?tag=${TAG_AMAZON}`;
+}
+
 export function lienAmazon(l: Lampe): string {
-  return `https://www.amazon.fr/dp/${l.asin}?tag=${TAG_AMAZON}`;
+  return lienAmazonAsin(l.asin);
 }
 
 export interface Proposition {

@@ -2,7 +2,9 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { header, sitemap, transformerPage } from './site.ts';
-import { classementLampes, FICHIER_TOP_10, fichierSujet, lampeRetenue, pagesTop10, sujetsPublies } from './top-10.ts';
+import { LAMPES } from '../src/lampes.ts';
+import tentes from '../src/data/tentes.json' with { type: 'json' };
+import { classementLampes, classementTentes, FICHIER_TOP_10, fichierSujet, lampeRetenue, pagesTop10, sujetsPublies } from './top-10.ts';
 
 const racine = resolve(import.meta.dirname, '..');
 const pages = pagesTop10();
@@ -45,11 +47,19 @@ describe('Top 10 à onglets', () => {
   });
 
   it('lampes : vraies lampes retenues, classées de la plus efficace à la moins efficace', () => {
-    const top = classementLampes();
+    const top = classementLampes().map((p) => LAMPES.find((l) => l.id === p.id)!);
     expect(top).toHaveLength(10);
-    for (const p of top) expect(lampeRetenue(p.lampe), p.lampe.id).toBe(true);
-    const eff = top.map((p) => p.lampe.ppf! / p.lampe.puissance_w);
+    for (const l of top) expect(lampeRetenue(l), l.id).toBe(true);
+    const eff = top.map((l) => l.ppf! / l.puissance_w);
     for (let i = 1; i < eff.length; i++) expect(eff[i]).toBeLessThanOrEqual(eff[i - 1]);
+  });
+
+  it('tentes : les 10 de tentes.json, dans l’ordre du classement, sans aucune note enregistrée', () => {
+    const top = classementTentes();
+    expect(top.map((p) => p.id)).toEqual(tentes.tentes.slice(0, 10).map((t) => t.id));
+    expect(new Set(tentes.tentes.map((t) => t.asin)).size).toBe(tentes.tentes.length);
+    expect(JSON.stringify(tentes.tentes)).not.toMatch(/"(note|etoiles|avis|prix)"/);
+    expect(sujetsPublies().map((s) => s.slug)).toContain('tentes-de-culture');
   });
 
   it('ni prix, ni note, ni filtre, ni tri, ni comparateur, ni tableau ; jamais « testé par nous »', () => {

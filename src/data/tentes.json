@@ -1,0 +1,23 @@
+{
+  "_lisezmoi": [
+    "Tentes de culture vendues sur Amazon.fr, pour l'onglet « Tentes de culture » du Top 10 (build/top-10.ts).",
+    "Ordre du tableau = classement : note moyenne des acheteurs sur Amazon.fr relevée le jour de `classement_le`, à égalité la plus évaluée d'abord, à égalité encore la plus petite d'abord. Les notes servent à classer mais ne sont ni enregistrées ni publiées (règle du site).",
+    "Chiffres repris des fiches Amazon.fr le jour de `verifie_le` : dimensions (L × P × H, cm), épaisseur de la toile (D = denier), et seulement les éléments annoncés dans la fiche (`annonce`). Rien d'autre n'est affiché.",
+    "Les trois Spider Farmer partagent la même note sur Amazon (tailles d'un même modèle).",
+    "`illustration` : image générée d'après la description (public/images/tentes/<nom>-400.webp et -800.webp), signalée comme telle sur la page."
+  ],
+  "verifie_le": "2026-10-19",
+  "classement_le": "2026-10-19",
+  "tentes": [
+    { "id": "spider-farmer-60x60x120", "nom": "Spider Farmer, tente 60 × 60 × 120 cm", "marque": "Spider Farmer", "asin": "B0B2JH1QLR", "dimensions_cm": [60, 60, 120], "toile_d": 1680, "illustration": "petite", "annonce": ["film Mylar réfléchissant revêtu de diamant", "fermetures éclair doublées contre les fuites de lumière", "charge jusqu'à 55 kg sur les barres"] },
+    { "id": "spider-farmer-90x90x180", "nom": "Spider Farmer, tente 90 × 90 × 180 cm", "marque": "Spider Farmer", "asin": "B0894V9XNJ", "dimensions_cm": [90, 90, 180], "toile_d": 1680, "illustration": "moyenne", "annonce": ["Mylar réfléchissant", "fenêtre d'observation", "plateau de sol"] },
+    { "id": "spider-farmer-120x120x200", "nom": "Spider Farmer, tente 120 × 120 × 200 cm", "marque": "Spider Farmer", "asin": "B0894V1PYX", "dimensions_cm": [120, 120, 200], "toile_d": 1680, "illustration": "grande", "annonce": ["Mylar réfléchissant", "fenêtre d'observation", "plateau de sol"] },
+    { "id": "mars-hydro-100x100x180", "nom": "Mars Hydro, tente 100 × 100 × 180 cm", "marque": "Mars Hydro", "asin": "B0BX97CCMD", "dimensions_cm": [100, 100, 180], "toile_d": 1680, "illustration": "moyenne", "annonce": ["Mylar réfléchissant", "plateau de base amovible", "fenêtre d'observation"] },
+    { "id": "vivosun-120x60x150", "nom": "VIVOSUN, tente 120 × 60 × 150 cm", "marque": "VIVOSUN", "asin": "B01DXYMQ9M", "dimensions_cm": [120, 60, 150], "toile_d": 600, "illustration": "moyenne", "annonce": ["Mylar très réfléchissant", "fenêtre d'observation", "bac de fond"] },
+    { "id": "mars-hydro-60x60x90", "nom": "Mars Hydro, tente 60 × 60 × 90 cm", "marque": "Mars Hydro", "asin": "B0D6YZ3QW7", "dimensions_cm": [60, 60, 90], "toile_d": 1680, "illustration": "petite", "annonce": ["Mylar réfléchissant", "plateau de fond amovible"] },
+    { "id": "mars-hydro-120x120x200", "nom": "Mars Hydro, tente 120 × 120 × 200 cm", "marque": "Mars Hydro", "asin": "B07XCMVKYL", "dimensions_cm": [120, 120, 200], "toile_d": 1680, "illustration": "grande", "annonce": ["Mylar réfléchissant", "plateau de sol amovible"] },
+    { "id": "relaxdays-60x60x120", "nom": "Relaxdays, tente 60 × 60 × 120 cm", "marque": "Relaxdays", "asin": "B08JYB3L5K", "dimensions_cm": [60, 60, 120], "toile_d": 600, "illustration": "petite", "annonce": ["film intérieur réfléchissant à 95 %"] },
+    { "id": "relaxdays-80x80x180", "nom": "Relaxdays, tente 80 × 80 × 180 cm", "marque": "Relaxdays", "asin": "B08JYVQGWL", "dimensions_cm": [80, 80, 180], "toile_d": 600, "illustration": "moyenne", "annonce": ["film intérieur réfléchissant à 95 %"] },
+    { "id": "melko-100x100x200", "nom": "Melko, tente 100 × 100 × 200 cm", "marque": "Melko", "asin": "B083QJHCVY", "dimensions_cm": [100, 100, 200], "toile_d": 600, "illustration": "grande", "annonce": ["appareil de mesure 3 en 1 fourni", "film intérieur réfléchissant", "charge jusqu'à 65 kg"] }
+  ]
+}
