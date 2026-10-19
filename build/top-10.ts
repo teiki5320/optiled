@@ -445,7 +445,7 @@ export const SUJETS: Sujet[] = [
     onglet: 'Minuteurs et thermomètres',
     titre: 'Top 10 des minuteurs, thermomètres et hygromètres',
     titrePage: 'Top 10 minuteurs et thermo-hygromètres',
-    description: 'Notre sélection de 10 minuteries et thermo-hygromètres pour la culture en intérieur, avec leurs vrais chiffres : plages de mesure, précision, puissance maximale.',
+    description: 'Notre sélection de 10 minuteries et thermo-hygromètres pour cultiver en intérieur, avec leurs vrais chiffres : mesure, précision, puissance maximale.',
     intro: introNote('minuteries et thermo-hygromètres', MESURE),
     verifieLe: MESURE.verifie_le,
     produits: () => produitsDuFichier('minuteurs-thermometres', MESURE, 'minuterie ou thermo-hygromètre'),
