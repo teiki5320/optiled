@@ -145,6 +145,8 @@ export interface Sujet {
   /** Date de vérification des produits (AAAA-MM-JJ). */
   verifieLe: string;
   produits: () => Produit[];
+  /** Critère du classement : efficacité publiée (lampes) ou note des acheteurs. */
+  critere: 'efficacite' | 'note';
   choisir: string;
   questions: { q: string; r: string }[];
 }
@@ -289,9 +291,12 @@ const SUBSTRATS = brutSubstrats as unknown as FichierProduits;
 const SEMIS = brutSemis as unknown as FichierProduits;
 const PETIT_ESPACE = brutPetitEspace as unknown as FichierProduits;
 
+/** « de » élidé devant une voyelle : « d’extracteurs », « de minuteries ». */
+const de = (mot: string) => (/^[aeiouyàâéèêîôû]/i.test(mot) ? `d’${mot}` : `de ${mot}`);
+
 /** Intro commune des sujets classés selon la note des acheteurs. */
 const introNote = (quoi: string, f: FichierProduits, feminin = false) =>
-  `Notre sélection de ${quoi} ${feminin ? 'vendues' : 'vendus'} sur Amazon.fr, ${feminin ? 'classées' : 'classés'} selon la note moyenne des acheteurs relevée le ${dateLongue(f.classement_le)} ; à égalité, ${feminin ? 'la plus évaluée' : 'le plus évalué'} passe d’abord, et seuls les produits disponibles avec au moins 10 évaluations sont retenus. Les notes servent à classer mais ne sont pas affichées. Nous n’avons pas testé ces produits nous-mêmes.`;
+  `Notre sélection ${de(quoi)} ${feminin ? 'vendues' : 'vendus'} sur Amazon.fr, ${feminin ? 'classées' : 'classés'} selon la note moyenne des acheteurs relevée le ${dateLongue(f.classement_le)} ; à égalité, ${feminin ? 'la plus évaluée' : 'le plus évalué'} passe d’abord, et seuls les produits disponibles avec au moins 10 évaluations sont retenus. Les notes servent à classer mais ne sont pas affichées. Nous n’avons pas testé ces produits nous-mêmes.`;
 
 /** Sujets, dans l'ordre des onglets. On n'ajoute un sujet que s'il a 10 vrais produits. */
 export const SUJETS: Sujet[] = [
@@ -305,6 +310,7 @@ export const SUJETS: Sujet[] = [
       'Notre sélection de lampes vendues sur Amazon.fr, classée de la plus efficace à la moins efficace : l’efficacité (en µmol/J) dit combien de lumière utile la lampe produit pour chaque watt consommé. Les chiffres sont ceux publiés par les fabricants ; une lampe en rupture ou sans chiffre de lumière n’entre pas dans le classement. Nous n’avons pas testé ces lampes nous-mêmes.',
     verifieLe: LAMPES_VERIFIEES_LE,
     produits: classementLampes,
+    critere: 'efficacite',
     choisir: `<ol class="top10__etapes">
           <li><strong>Mesurez la surface à éclairer</strong> : étagère, bac ou tente. La lampe doit la couvrir en entier, sinon les bords restent dans l'ombre.</li>
           <li><strong>Visez le bon niveau de lumière</strong> : environ 150 µmol/m²/s pour des semis, 250 pour des salades, 500 pour des tomates en fruits. Une lampe à variateur s'adapte à tous les stades.</li>
@@ -335,6 +341,7 @@ export const SUJETS: Sujet[] = [
     intro: `Notre sélection de tentes vendues sur Amazon.fr, classée selon la note moyenne des acheteurs relevée le ${dateLongue(TENTES.classement_le)} ; à égalité, la plus évaluée passe d’abord. Les notes servent à classer mais ne sont pas affichées : elles sont sur la page de chaque produit. Les chiffres sont ceux des fiches ; nous n’avons pas testé ces tentes nous-mêmes.`,
     verifieLe: TENTES.verifie_le,
     produits: classementTentes,
+    critere: 'note',
     choisir: `<ol class="top10__etapes">
           <li><strong>Partez de la surface à cultiver</strong> : 60 × 60 cm pour des salades et des aromatiques, 80 × 80 à 100 × 100 cm pour quelques pieds de tomates, 120 × 120 cm pour une grande culture. La lampe doit couvrir tout le sol de la tente.</li>
           <li><strong>Vérifiez la hauteur</strong> : il faut la place de la lampe, de ses suspentes, des plantes adultes et d'une trentaine de centimètres entre les feuilles et la lampe. Comptez au moins 160 à 180 cm pour des tomates.</li>
@@ -365,6 +372,7 @@ export const SUJETS: Sujet[] = [
     intro: introNote('kits complets (tente, lampe et ventilation)', KITS),
     verifieLe: KITS.verifie_le,
     produits: () => produitsDuFichier('kits-complets', KITS, 'tente de culture équipée d’une lampe LED et d’une extraction d’air'),
+    critere: 'note',
     choisir: `<ol class="top10__etapes">
           <li><strong>Choisissez d'abord la taille de la tente</strong> : 60 × 60 cm pour des salades et des aromatiques, 80 × 80 à 100 × 100 cm pour quelques pieds de tomates. C'est elle qui fixe la lampe à prévoir.</li>
           <li><strong>Regardez la lampe du kit</strong> : sa puissance réelle en watts, et si possible sa lumière émise (PPF, en µmol/s). Un kit dont la fiche ne publie pas le PPF est plus difficile à juger ; le <a href="index.html#calculateur">calculateur</a> dit combien il en faut pour votre culture.</li>
@@ -395,6 +403,7 @@ export const SUJETS: Sujet[] = [
     intro: introNote('kits hydroponiques', HYDRO),
     verifieLe: HYDRO.verifie_le,
     produits: () => produitsDuFichier('kits-hydroponiques', HYDRO, 'kit de culture hydroponique'),
+    critere: 'note',
     choisir: `<ol class="top10__etapes">
           <li><strong>Potager de table ou système à seaux ?</strong> Un potager de table, avec sa lampe intégrée, convient aux aromatiques et aux salades. Un système à seaux (DWC) accueille de grosses plantes, mais demande une tente ou une lampe à part.</li>
           <li><strong>Regardez le réservoir</strong> : plus il est grand, moins il faut remettre de l'eau et de l'engrais. Un indicateur de niveau évite que la pompe tourne à sec.</li>
@@ -425,6 +434,7 @@ export const SUJETS: Sujet[] = [
     intro: introNote('extracteurs d’air, kits de ventilation et ventilateurs', EXTRACTEURS),
     verifieLe: EXTRACTEURS.verifie_le,
     produits: () => produitsDuFichier('extracteurs-ventilateurs', EXTRACTEURS, 'extracteur d’air ou ventilateur pour tente de culture'),
+    critere: 'note',
     choisir: `<ol class="top10__etapes">
           <li><strong>Un extracteur et un ventilateur ne font pas le même travail</strong> : l'extracteur renouvelle l'air de la tente (il sort l'air chaud et humide), le ventilateur à pince brasse l'air entre les plants. Une tente de légumes fruits a besoin des deux.</li>
           <li><strong>Choisissez le diamètre selon la tente</strong> : 100 mm pour une tente de 60 × 60 à 80 × 80 cm, 150 mm pour 100 × 100 à 120 × 120 cm. Le diamètre doit correspondre au filtre et à la gaine.</li>
@@ -455,6 +465,7 @@ export const SUJETS: Sujet[] = [
     intro: introNote('minuteries et thermo-hygromètres', MESURE),
     verifieLe: MESURE.verifie_le,
     produits: () => produitsDuFichier('minuteurs-thermometres', MESURE, 'minuterie ou thermo-hygromètre'),
+    critere: 'note',
     choisir: `<ol class="top10__etapes">
           <li><strong>Une minuterie pour la lampe</strong> : les plantes ont besoin d'heures de lumière régulières et d'une vraie nuit. Une minuterie mécanique suffit ; une numérique permet des horaires différents selon les jours.</li>
           <li><strong>Vérifiez la puissance maximale</strong> : elle doit dépasser celle de la lampe (et de tout ce qui est branché dessus). Les modèles de cette sélection acceptent 3 600 à 3 680 W.</li>
@@ -485,6 +496,7 @@ export const SUJETS: Sujet[] = [
     intro: introNote('terreaux et substrats', SUBSTRATS),
     verifieLe: SUBSTRATS.verifie_le,
     produits: () => produitsDuFichier('terreaux-substrats', SUBSTRATS, 'terreau ou substrat de culture'),
+    critere: 'note',
     choisir: `<ol class="top10__etapes">
           <li><strong>Terreau ou fibre de coco ?</strong> Un terreau enrichi nourrit les plantes au début et pardonne les oublis. La fibre de coco est très aérée et se travaille avec un engrais adapté, apporté à chaque arrosage.</li>
           <li><strong>Pensez au drainage</strong> : des billes d'argile au fond du pot, ou de la perlite mélangée au terreau, évitent que les racines baignent dans l'eau.</li>
@@ -515,6 +527,7 @@ export const SUJETS: Sujet[] = [
     intro: introNote('lampes pour semis', SEMIS, true),
     verifieLe: SEMIS.verifie_le,
     produits: () => produitsDuFichier('lampes-semis', SEMIS, 'lampe LED pour semis'),
+    critere: 'note',
     choisir: `<ol class="top10__etapes">
           <li><strong>Les semis demandent peu de lumière, mais tout près</strong> : environ 150 µmol/m²/s pendant 14 à 16 heures. Une petite lampe placée à 10 à 30 cm suffit ; trop loin, les tiges filent.</li>
           <li><strong>Couvrez tout le plateau</strong> : une lampe à une tête éclaire quelques godets ; pour un plateau entier, prenez plusieurs têtes ou des barres.</li>
@@ -545,6 +558,7 @@ export const SUJETS: Sujet[] = [
     intro: introNote('lampes pour petit espace', PETIT_ESPACE, true),
     verifieLe: PETIT_ESPACE.verifie_le,
     produits: () => produitsDuFichier('lampes-petit-espace', PETIT_ESPACE, 'lampe LED de culture pour petit espace'),
+    critere: 'note',
     choisir: `<ol class="top10__etapes">
           <li><strong>Regardez la puissance réelle, pas les « watts équivalents »</strong> : une lampe vendue « 600 W » peut n'en consommer que 65. Seule la puissance réelle dit la chaleur dégagée, ce qui compte dans un espace fermé.</li>
           <li><strong>Préférez une lampe qui publie sa lumière</strong> (PPF en µmol/s, ou efficacité en µmol/J) : c'est elle qui dit si les plantes auront assez de lumière.</li>
@@ -574,6 +588,29 @@ export function sujetsPublies(): Sujet[] {
 }
 
 export const fichierSujet = (s: Sujet) => `${PREFIXE_TOP_10}-${s.slug}.html`;
+
+/** Sujet affiché par une page (top-10.html affiche le premier). */
+export function sujetDuFichier(fichier: string): Sujet | undefined {
+  const sujets = sujetsPublies();
+  return fichier === FICHIER_TOP_10 ? sujets[0] : sujets.find((s) => fichierSujet(s) === fichier);
+}
+
+/** Phrase de l'intro qui nomme le n° 1 et dit pourquoi il est en tête (d'après le critère du classement). */
+export function phraseEnTete(s: Sujet, premier: Produit): string {
+  const nom = `<strong>${echapper(premier.nom)}</strong>`;
+  if (s.critere === 'efficacite') {
+    const eff = premier.chiffres.find(([libelle]) => libelle === 'Efficacité')![1];
+    return `En tête : ${nom}, la plus efficace de la sélection : ${eff} d’après les chiffres publiés.`;
+  }
+  return `En tête : ${nom}, le produit le mieux noté par les acheteurs lors de notre relevé.`;
+}
+
+/** Trois autres tops, ceux qui suivent dans l'ordre des onglets (on repart du début après le dernier). */
+export function autresTops(s: Sujet): Sujet[] {
+  const sujets = sujetsPublies();
+  const i = sujets.indexOf(s);
+  return [1, 2, 3].map((k) => sujets[(i + k) % sujets.length]).filter((x) => x !== s);
+}
 
 /** Adresse canonique des pages qui reprennent une autre page (top-10.html → premier onglet). */
 export function canoniquesTop10(): Record<string, string> {
@@ -621,11 +658,12 @@ export function sourcePageTop10(s: Sujet): string {
     <!--#header-->
     <main id="contenu" class="top10">
       <div class="conteneur">
-        <p class="fil"><a href="index.html">Accueil</a> › Top 10</p>
+        <p class="fil"><a href="index.html">Accueil</a> › <a href="${FICHIER_TOP_10}">Top 10</a> › ${s.onglet}</p>
         ${onglets(s)}
         <header class="top10__tete">
           <h1>${s.titre}</h1>
           <p class="top10__intro">${s.intro}</p>
+          <p class="top10__intro">${phraseEnTete(s, produits[0])}</p>
           <p class="top10__mention"><strong>Liens sponsorisés.</strong> ${MENTION_AFFILIATION} Ni prix ni note ne sont affichés : ils sont sur la page de chaque produit. Sélection vérifiée le <time datetime="${s.verifieLe}">${dateLongue(s.verifieLe)}</time>.</p>
         </header>
         <ol class="top10__liste">
@@ -638,6 +676,12 @@ export function sourcePageTop10(s: Sujet): string {
         <section class="top10__bloc top10__questions" id="questions">
           <h2>Questions fréquentes</h2>
         ${questions}
+        </section>
+        <section class="top10__bloc" id="voir-aussi">
+          <h2>Voir aussi</h2>
+          <ul class="top10__voir">
+            ${autresTops(s).map((x) => `<li><a href="${fichierSujet(x)}">${x.titre}</a></li>`).join('\n            ')}
+          </ul>
         </section>
         <p class="top10__note">Les illustrations sont générées d'après la description des produits ; ce ne sont pas des photos. ${s.slug === 'lampes-led-de-culture' ? 'Voir aussi <a href="meilleures-lampes.html">les meilleures lampes par installation</a>.' : ''}</p>
       </div>

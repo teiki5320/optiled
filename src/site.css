@@ -642,3 +642,4 @@ img, svg { max-width: 100%; }
 .top10__questions details[open] summary::after { content: '−'; }
 .top10__questions details p { margin: 0.6rem 0 0; line-height: 1.6; }
 .top10__note { margin-top: 2rem; font-size: 0.85rem; color: var(--attenue); }
+.top10__voir { margin: 0; padding-left: 1.2rem; line-height: 1.9; }

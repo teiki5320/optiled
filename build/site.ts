@@ -46,7 +46,7 @@ import { rendreBudget } from './budget.ts';
 import { FICHIER_MEILLEURES_LAMPES, moisLampes, rendreMeilleuresLampes } from './meilleures-lampes.ts';
 import { LAMPES_VERIFIEES_LE, MENTION_AFFILIATION } from '../src/lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
-import { canoniquesTop10, pagesTop10, PREFIXE_TOP_10 } from './top-10.ts';
+import { canoniquesTop10, FICHIER_TOP_10, pagesTop10, PREFIXE_TOP_10, sujetDuFichier } from './top-10.ts';
 import { conseilsDeLaCulture, conseilsPublies, dateCourte, dateDuJour, dateLongue, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, THEMES, tousLesConseils } from './conseils.ts';
 import { echapper } from './fiches.ts';
 import { rendreComparaisonLampes, rendreDliSemis, rendreEffetEfficacite, rendreEtageresSemis, rendrePuissancesCultures, rendrePuissancesSurfaces } from './guides-achat.ts';
@@ -211,7 +211,8 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
   if (/content="noindex"/.test(html)) return '';
   const titre = decoderEntites(html.match(/<title>([^<]*)<\/title>/)?.[1]?.trim() ?? NOM_SITE);
   const description = decoderEntites(html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '');
-  const nom = fichier.replace(/\.html$/, '');
+  // top-10.html reprend le premier onglet : même image de partage.
+  const nom = (canoniquesTop10()[fichier] ?? fichier).replace(/\.html$/, '');
   const image = `${url}images/partage/${existsSync(resolve(DOSSIER_PARTAGE, `${nom}.jpg`)) ? nom : 'accueil'}.jpg`;
   // Une page qui reprend une autre (top-10.html) désigne celle-ci comme adresse canonique.
   const adresse = urlPage(canoniquesTop10()[fichier] ?? fichier, url);
@@ -343,6 +344,27 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
           { '@type': 'ListItem', position: 1, name: 'Accueil', item: url },
           { '@type': 'ListItem', position: 2, name: 'Lampes', item: `${url}lampes.html` },
           { '@type': 'ListItem', position: 3, name: titreArticle, item: adresse },
+        ],
+      },
+    );
+  }
+  const sujetTop10 = sujetDuFichier(fichier);
+  if (sujetTop10) {
+    donnees.push(
+      {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: sujetTop10.titre,
+        numberOfItems: sujetTop10.produits().length,
+        itemListElement: sujetTop10.produits().map((p) => ({ '@type': 'ListItem', position: p.rang, name: p.nom, url: `${adresse}#${p.id}` })),
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: url },
+          { '@type': 'ListItem', position: 2, name: 'Top 10', item: urlPage(canoniquesTop10()[FICHIER_TOP_10], url) },
+          { '@type': 'ListItem', position: 3, name: sujetTop10.onglet, item: adresse },
         ],
       },
     );

@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { echapper } from './fiches.ts';
 import { header, sitemap, transformerPage } from './site.ts';
 import { LAMPES } from '../src/lampes.ts';
 import tentes from '../src/data/tentes.json' with { type: 'json' };
@@ -101,5 +102,52 @@ describe('Top 10 à onglets', () => {
   it('la page des meilleures lampes renvoie vers l’onglet des lampes', () => {
     expect(readFileSync(resolve(racine, 'meilleures-lampes.html'), 'utf8')).toContain('href="top-10-lampes-led-de-culture.html"');
     expect(sitemap(['top-10-lampes-led-de-culture.html'])).toContain('top-10-lampes-led-de-culture.html');
+  });
+
+  it('image de partage propre à chaque onglet (top-10.html reprend celle du premier)', () => {
+    for (const s of sujetsPublies()) {
+      const nom = fichierSujet(s).replace('.html', '');
+      expect(existsSync(resolve(racine, `public/images/partage/${nom}.jpg`)), nom).toBe(true);
+      expect(publiee(fichierSujet(s))).toContain(`<meta property="og:image" content="https://www.kultiled.com/images/partage/${nom}.jpg" />`);
+    }
+    expect(publiee(FICHIER_TOP_10)).toContain(`images/partage/${fichierSujet(sujetsPublies()[0]).replace('.html', '')}.jpg`);
+  });
+
+  it('données structurées ItemList : les 10 produits dans l’ordre, et fil d’Ariane', () => {
+    for (const s of sujetsPublies()) {
+      const html = publiee(fichierSujet(s));
+      const blocs = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
+      const liste = blocs.find((d) => d['@type'] === 'ItemList');
+      expect(liste, s.slug).toBeDefined();
+      expect(liste.numberOfItems).toBe(10);
+      expect(liste.itemListElement.map((e: { name: string }) => e.name)).toEqual(s.produits().map((p) => p.nom));
+      expect(liste.itemListElement.map((e: { position: number }) => e.position)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+      const fil = blocs.find((d) => d['@type'] === 'BreadcrumbList');
+      expect(fil.itemListElement.at(-1).name).toBe(s.onglet);
+      // Fil d'Ariane visible, comme sur toutes les pages du site.
+      expect(html).toContain(`<p class="fil"><a href="index.html">Accueil</a> › <a href="top-10.html">Top 10</a> › ${s.onglet}</p>`);
+    }
+  });
+
+  it('« Voir aussi » : 3 autres tops publiés, jamais la page elle-même', () => {
+    for (const s of sujetsPublies()) {
+      const html = publiee(fichierSujet(s));
+      const bloc = html.match(/<section class="top10__bloc" id="voir-aussi">([\s\S]*?)<\/section>/)?.[1] ?? '';
+      const liens = [...bloc.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
+      expect(liens.length, s.slug).toBe(3);
+      expect(new Set(liens).size).toBe(3);
+      expect(liens).not.toContain(fichierSujet(s));
+      for (const l of liens) expect(pages.has(l)).toBe(true);
+    }
+  });
+
+  it('l’intro nomme le n° 1 et dit pourquoi il est en tête ; « de » élidé devant une voyelle', () => {
+    for (const s of sujetsPublies()) {
+      const html = publiee(fichierSujet(s));
+      expect(html.replace(/\u00a0|\u202f/g, " "), s.slug).toContain(`En tête : <strong>${echapper(s.produits()[0].nom)}</strong>`);
+      expect(html).not.toMatch(/sélection de [aeiouyé]/i);
+    }
+    expect(publiee('top-10-extracteurs-ventilateurs.html')).toContain('Notre sélection d’extracteurs');
+    expect(publiee('top-10-lampes-led-de-culture.html')).toContain('la plus efficace de la sélection');
   });
 });
