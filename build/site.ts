@@ -41,9 +41,9 @@ import { basename, resolve } from 'node:path';
 import type { Plugin } from 'vite';
 import { chargerLegumes, pageDetaillee, rendreFiches, rendreSources, rendreTableauClimat } from './fiches.ts';
 import { htmlTuiles } from '../src/tuiles.ts';
-import { rendreLampes } from './lampes.ts';
+import { dateVerification, rendreLampes } from './lampes.ts';
 import { rendreBudget } from './budget.ts';
-import { FICHIER_MEILLEURES_LAMPES, moisLampes, rendreMeilleuresLampes } from './meilleures-lampes.ts';
+import { FICHIER_MEILLEURES_LAMPES, moisLampes, nombreSelection, noteMeilleuresLampes, rendreMeilleuresLampes } from './meilleures-lampes.ts';
 import { LAMPES_VERIFIEES_LE, MENTION_AFFILIATION } from '../src/lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
 import { conseilsDeLaCulture, conseilsPublies, dateCourte, dateDuJour, dateLongue, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, THEMES, tousLesConseils } from './conseils.ts';
@@ -474,7 +474,7 @@ export function footer(): string {
       <p class="site-pied__note">Certains liens vers Amazon sont sponsorisés : en tant que Partenaire Amazon, l'éditeur réalise un bénéfice sur les achats remplissant les conditions requises.</p>
       <p class="site-pied__note"><a href="a-propos.html">À propos et méthode</a> · <a href="a-propos.html#contact">Contact</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="mentions-legales.html#donnees" data-gerer-cookies>Gérer les cookies</a></p>
     </div>
-    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes du mois</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li><li><a href="integrer.html">Intégrer le calculateur</a></li></ul>
+    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes LED</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li><li><a href="integrer.html">Intégrer le calculateur</a></li></ul>
       <h2 class="site-pied__sous-titre">Parcours</h2><ul>${PARCOURS.map((p) => `<li><a href="${p.fichier}">${p.titre}</a></li>`).join('')}</ul></div>
     ${colonne('led')}
     ${colonne('culture')}
@@ -782,6 +782,8 @@ export function transformerPage(html: string, fichier: string): string {
   html = html
     .replace(/<!--#mois-lampes-->/g, () => moisLampes())
     .replace(/<!--#lampes-verifiees-le-->/g, () => LAMPES_VERIFIEES_LE)
+    .replace(/<!--#nombre-selection-->/g, () => String(nombreSelection()))
+    .replace(/<!--#date-verification-->/g, () => dateVerification())
     .replace(/<!--#mention-affiliation-->/g, () => MENTION_AFFILIATION)
     .replace(/<!--#mesure-audience-->/g, () => texteMesureAudience());
   const base = fichier === '404.html' ? `<base href="${SITE_URL}" />\n    ` : '';
@@ -791,6 +793,7 @@ export function transformerPage(html: string, fichier: string): string {
     .replace('<!--#sources-->', () => rendreSources())
     .replace('<!--#lampes-->', () => rendreLampes())
     .replace('<!--#meilleures-lampes-->', () => rendreMeilleuresLampes())
+    .replace('<!--#note-meilleures-lampes-->', () => noteMeilleuresLampes())
     .replace(/<!--#budget:([a-z-]+)-->/g, (_m, id: string) => rendreBudget(id))
     .replace('<!--#conseils-->', () => rendreListeConseils())
     .replace('<!--#orientation-->', () => cartesOrientation())
