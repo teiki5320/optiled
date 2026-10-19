@@ -144,7 +144,9 @@ describe('Top 10 à onglets', () => {
   it('l’intro nomme le n° 1 et dit pourquoi il est en tête ; « de » élidé devant une voyelle', () => {
     for (const s of sujetsPublies()) {
       const html = publiee(fichierSujet(s));
-      expect(html.replace(/\u00a0|\u202f/g, " "), s.slug).toContain(`En tête : <strong>${echapper(s.produits()[0].nom)}</strong>`);
+      expect(html.replace(/\u00a0|\u202f/g, " "), s.slug).toContain(`En tête : <strong>${echapper(s.produits()[0].nom)},</strong> `);
+      // Jamais d'espace avant la virgule, même pour un lecteur qui ajoute un espace après le gras.
+      expect(html).not.toMatch(/<\/strong>\s*,/);
       expect(html).not.toMatch(/sélection de [aeiouyé]/i);
     }
     expect(publiee('top-10-extracteurs-ventilateurs.html')).toContain('Notre sélection d’extracteurs');

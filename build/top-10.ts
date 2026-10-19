@@ -597,12 +597,13 @@ export function sujetDuFichier(fichier: string): Sujet | undefined {
 
 /** Phrase de l'intro qui nomme le n° 1 et dit pourquoi il est en tête (d'après le critère du classement). */
 export function phraseEnTete(s: Sujet, premier: Produit): string {
-  const nom = `<strong>${echapper(premier.nom)}</strong>`;
+  // La virgule va dans le <strong> : un lecteur de texte qui ajoute un espace après le gras écrirait sinon « 24 W , le ».
+  const nom = `<strong>${echapper(premier.nom)},</strong>`;
   if (s.critere === 'efficacite') {
     const eff = premier.chiffres.find(([libelle]) => libelle === 'Efficacité')![1];
-    return `En tête : ${nom}, la plus efficace de la sélection : ${eff} d’après les chiffres publiés.`;
+    return `En tête : ${nom} la plus efficace de la sélection : ${eff} d’après les chiffres publiés.`;
   }
-  return `En tête : ${nom}, le produit le mieux noté par les acheteurs lors de notre relevé.`;
+  return `En tête : ${nom} le produit le mieux noté par les acheteurs lors de notre relevé.`;
 }
 
 /** Trois autres tops, ceux qui suivent dans l'ordre des onglets (on repart du début après le dernier). */
