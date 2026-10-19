@@ -96,7 +96,7 @@ describe('articles de conseil', () => {
       if (page.startsWith('conseil-')) continue;
       for (const [, cible] of sourcePage(racine, page).matchAll(/href="(conseil-[^"#?]+\.html)/g)) expect(publies.has(cible), `${page} → ${cible}`).toBe(true);
     }
-  });
+  }, 30_000); // parcourt toutes les pages du site : lent sur le serveur de publication
 
   it('apostrophes échappées une seule fois dans les balises de partage et le JSON-LD', () => {
     const c = tous.find((x) => x.slug === 'heures-de-lumiere-par-jour')!;
