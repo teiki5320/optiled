@@ -17,7 +17,7 @@ Généré le 19 octobre 2026 par un scan du dépôt. Pour mettre à jour : relan
 
 - 🌐 **Web** : 🐙 GitHub — main, dernière publication au vert [ok] → ⚙️ GitHub Actions — tests, build et test de bout en bout [ok] → 🏠 GitHub Pages — hébergement du site [ok] → 🔗 Nom de domaine — www.kultiled.com depuis le 16 octobre [ok] → 🔎 Google — nouveau domaine à faire indexer [à faire]
 - 📝 **Contenu** : ✍️ Articles de conseil — 74 rédigés [ok] → ⏰ GitHub Actions — publication lundi, mercredi, vendredi [ok] → 📰 Rubrique Conseils — 36 en ligne, 38 programmés [ok] → 📌 Pinterest — 12 épingles prêtes, aucun compte [pas encore]
-- 🛒 **Affiliation** : 💡 Sélection de lampes — 16 lampes, une indisponible [ok] → 🔁 Routine de vérification — dernier passage le 14 octobre [ok] → 🛍️ Affiliation — liens Amazon.fr optiled-21 [ok]
+- 🛒 **Affiliation** : 💡 Sélection de lampes — 16 lampes, une indisponible [ok] → 🔁 Routine de vérification — dernier passage le 17 octobre [ok] → 🛍️ Affiliation — liens Amazon.fr kultiledfr-21 [ok]
 - 📢 **Publicité** : 📰 Pages de lecture — deux emplacements au plus [ok] → 🍪 Consentement — bandeau de Google en ligne [ok] → 💰 AdSense (publicité web) — examen de kultiled.com demandé [à faire]
 
 ## Vue d'ensemble
@@ -33,7 +33,7 @@ Généré le 19 octobre 2026 par un scan du dépôt. Pour mettre à jour : relan
   - La chaîne de publication refuse de publier si les tests unitaires, le build ou le test de bout en bout échouent (ce qui a bloqué toute mise en ligne du 7 au 12 octobre 2026).
   - Publicité Google AdSense depuis le 12 octobre 2026 (`build/annonces.ts`, fichier `public/ads.txt`) : script et bandeau de consentement de Google sur toutes les pages publiées, sauf le calculateur intégré sur d'autres sites ; annonces seulement dans les guides, conseils, fiches des cultures, parcours et glossaire.
   - Signalement hebdomadaire des pages à Bing et aux autres moteurs par IndexNow (`.github/workflows/indexnow.yml`, le lundi à 7 h UTC ; clé publique dans `public/`).
-  - Routines Claude Code (console https://claude.ai/code/routines) : `optiled-verification-lampes`, chaque jour (lampes et fourchettes de prix, envoi sur `main`), de nouveau active : passages des 13 et 14 octobre 2026 après une interruption depuis le 1er octobre ; `optiled-nouvelle-serie-conseils`, rappel unique le 16 novembre 2026 pour préparer la série suivante d'articles.
+  - Routines Claude Code (console https://claude.ai/code/routines) : `optiled-verification-lampes`, chaque jour (lampes et fourchettes de prix, envoi sur `main`), de nouveau active depuis le 13 octobre 2026 (dernier envoi le 17 octobre) après une interruption depuis le 1er octobre ; `optiled-nouvelle-serie-conseils`, rappel unique le 16 novembre 2026 pour préparer la série suivante d'articles.
 
 ## GitHub
 
@@ -63,7 +63,7 @@ Généré le 19 octobre 2026 par un scan du dépôt. Pour mettre à jour : relan
 
 - **Rôle** : liens sponsorisés vers les lampes conseillées (`https://www.amazon.fr/dp/<ASIN>?tag=…`, `rel="sponsored"`), générés par `src/lampes.ts` ; page `lampes.html`, page `meilleures-lampes.html` et propositions dans le calculateur. Aucun prix, note ni avis n'est enregistré dans le dépôt (règles du programme, contrôlées par les tests).
 - **Console** : https://partenaires.amazon.fr (site `kultiled.com` déclaré le 16 octobre 2026, à côté d'`optiled.fr`).
-- **Identifiants publics** : identifiant de suivi `optiled-21` (constante `TAG_AMAZON` dans `src/lampes.ts`, à changer à un seul endroit).
+- **Identifiants publics** : identifiant de suivi `kultiledfr-21` (constante `TAG_AMAZON` dans `src/lampes.ts`, à changer à un seul endroit), depuis le 18 octobre 2026 : nouveau compte Amazon Partenaires créé le 18 octobre 2026, l'ancien ayant été fermé par Amazon (l'ancien identifiant était `optiled-21`).
 - **Secrets** : identifiants du compte et informations de paiement, uniquement dans la console Amazon.
 - **Coût** : gratuit.
 

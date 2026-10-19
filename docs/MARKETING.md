@@ -17,7 +17,7 @@ Mis à jour le 19 octobre 2026. Compagnon de INFRA.md.
 
 ## Rémunération par phases
 
-- [fait] **Aujourd'hui** : site gratuit sans compte ; affiliation Amazon (16 lampes, identifiant `optiled-21`, liens `rel="sponsored"`, mentions obligatoires) et publicité AdSense dans les pages de lecture.
+- [fait] **Aujourd'hui** : site gratuit sans compte ; affiliation Amazon (16 lampes, identifiant `kultiledfr-21`, liens `rel="sponsored"`, mentions obligatoires) et publicité AdSense dans les pages de lecture.
 - [en cours] **Validation AdSense** : examen de kultiled.com demandé le 16 octobre 2026, réponse à suivre dans la console AdSense.
 - **Affiliation élargie** : proposer aussi les autres achats de la liste (alimentation, programmateur, variateur…).
 
