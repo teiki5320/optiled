@@ -11,6 +11,7 @@ import brutTentes from '../src/data/tentes.json' with { type: 'json' };
 import brutKits from '../src/data/top-10/kits-complets.json' with { type: 'json' };
 import brutHydro from '../src/data/top-10/kits-hydroponiques.json' with { type: 'json' };
 import brutExtracteurs from '../src/data/top-10/extracteurs-ventilateurs.json' with { type: 'json' };
+import brutMesure from '../src/data/top-10/minuteurs-thermometres.json' with { type: 'json' };
 import { echapper } from './fiches.ts';
 import { COEF_UTILISATION } from './guides-achat.ts';
 
@@ -280,6 +281,7 @@ export function produitsDuFichier(slug: string, f: FichierProduits, type: string
 const KITS = brutKits as unknown as FichierProduits;
 const HYDRO = brutHydro as unknown as FichierProduits;
 const EXTRACTEURS = brutExtracteurs as unknown as FichierProduits;
+const MESURE = brutMesure as unknown as FichierProduits;
 
 /** Intro commune des sujets classés selon la note des acheteurs. */
 const introNote = (quoi: string, f: FichierProduits) =>
@@ -435,6 +437,36 @@ export const SUJETS: Sujet[] = [
       {
         q: 'Un ventilateur à pince suffit-il sans extracteur ?',
         r: 'Pour une petite tente de salades qu’on ouvre souvent, parfois. Mais il ne fait que brasser l’air : il ne sort ni la chaleur ni l’humidité. Dès que la lampe chauffe ou que les plants sont nombreux, il faut un extracteur.',
+      },
+    ],
+  },
+  {
+    slug: 'minuteurs-thermometres',
+    onglet: 'Minuteurs et thermomètres',
+    titre: 'Top 10 des minuteurs, thermomètres et hygromètres',
+    titrePage: 'Top 10 minuteurs et thermo-hygromètres',
+    description: 'Notre sélection de 10 minuteries et thermo-hygromètres pour la culture en intérieur, avec leurs vrais chiffres : plages de mesure, précision, puissance maximale.',
+    intro: introNote('minuteries et thermo-hygromètres', MESURE),
+    verifieLe: MESURE.verifie_le,
+    produits: () => produitsDuFichier('minuteurs-thermometres', MESURE, 'minuterie ou thermo-hygromètre'),
+    choisir: `<ol class="top10__etapes">
+          <li><strong>Une minuterie pour la lampe</strong> : les plantes ont besoin d'heures de lumière régulières et d'une vraie nuit. Une minuterie mécanique suffit ; une numérique permet des horaires différents selon les jours.</li>
+          <li><strong>Vérifiez la puissance maximale</strong> : elle doit dépasser celle de la lampe (et de tout ce qui est branché dessus). Les modèles de cette sélection acceptent 3 600 à 3 680 W.</li>
+          <li><strong>Un thermo-hygromètre dans la tente</strong> : placé à hauteur des feuilles, il dit si l'air est trop chaud ou trop humide. La mémoire des maximums et minimums montre ce qui se passe la nuit.</li>
+        </ol>
+        <p>Pour les heures de lumière par culture, voir <a href="conseil-heures-de-lumiere-par-jour.html">Combien d'heures de lumière par jour ?</a> et les <a href="legumes.html">fiches légumes</a>.</p>`,
+    questions: [
+      {
+        q: 'Combien d’heures programmer pour la lampe ?',
+        r: 'Pour la plupart des légumes cultivés en intérieur, 14 à 16 heures par jour, avec une vraie période de nuit. Les fiches légumes donnent la durée conseillée pour chaque culture.',
+      },
+      {
+        q: 'Quelle température et quelle humidité viser ?',
+        r: 'Le jour, environ 15 à 22 °C pour les légumes feuilles et 20 à 29 °C pour les légumes fruits ; 50 à 70 % d’humidité pendant la croissance. Le guide Température, humidité et ventilation détaille ces repères stade par stade.',
+      },
+      {
+        q: 'Où placer le thermo-hygromètre ?',
+        r: 'À hauteur des feuilles, à l’ombre de la lampe et loin de l’extracteur : c’est là que l’air compte pour les plantes. Évitez de le poser au sol ou collé à la paroi.',
       },
     ],
   },
