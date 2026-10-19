@@ -8,6 +8,8 @@
  */
 import { imageLampe, LAMPES, LAMPES_VERIFIEES_LE, lampesConseillees, lienAmazon, lienAmazonAsin, MENTION_AFFILIATION, type Lampe } from '../src/lampes.ts';
 import brutTentes from '../src/data/tentes.json' with { type: 'json' };
+import brutKits from '../src/data/top-10/kits-complets.json' with { type: 'json' };
+import brutHydro from '../src/data/top-10/kits-hydroponiques.json' with { type: 'json' };
 import { echapper } from './fiches.ts';
 import { COEF_UTILISATION } from './guides-achat.ts';
 
@@ -172,7 +174,7 @@ export function classementLampes(): Produit[] {
         lien: lienAmazon(lampe),
         image: imageLampe(lampe, '(min-width: 760px) 360px, 92vw'),
         chiffres: chiffresLampe(lampe),
-        pourquoi: `N° ${i + 1} de la sélection pour l’efficacité. ${f.pourquoi(lampe)}`,
+        pourquoi: f.pourquoi(lampe),
         pourQui: f.pourQui,
       };
     });
@@ -235,11 +237,51 @@ export function classementTentes(): Produit[] {
         ['Hauteur', `${h} cm`],
         ['Toile', `${t.toile_d}D`],
       ],
-      pourquoi: `N° ${i + 1} de la sélection selon la note des acheteurs sur Amazon.fr. Une tente de ${l} × ${p} cm au sol et ${h} cm de haut, en ${toile}. La fiche du produit annonce : ${liste(t.annonce)}. ${hauteur} ${lampePourTente(t)}`.trim(),
+      pourquoi: `Une tente de ${l} × ${p} cm au sol et ${h} cm de haut, en ${toile}. La fiche du produit annonce : ${liste(t.annonce)}. ${hauteur} ${lampePourTente(t)}`.trim(),
       pourQui,
     };
   });
 }
+
+/** Fichier de produits d'un sujet (src/data/top-10/<slug>.json), déjà dans l'ordre du classement. */
+export interface FichierProduits {
+  verifie_le: string;
+  classement_le: string;
+  produits: {
+    id: string;
+    nom: string;
+    asin: string;
+    /** Illustration générée : public/images/top-10/<slug>/<illustration>-400.webp et -800.webp */
+    illustration: string;
+    chiffres: [string, string][];
+    /** Une phrase factuelle tirée de la fiche du produit ou de nos données. */
+    description: string;
+    /** Éléments annoncés dans la fiche du produit. */
+    annonce: string[];
+    pour_qui: string;
+  }[];
+}
+
+/** Produits d'un sujet décrit par un fichier de données (textes tirés des seules fiches). */
+export function produitsDuFichier(slug: string, f: FichierProduits, type: string): Produit[] {
+  return f.produits.slice(0, TAILLE).map((x, i) => ({
+    rang: i + 1,
+    id: x.id,
+    nom: x.nom,
+    lien: lienAmazonAsin(x.asin),
+    image: `<figure class="lampe__image"><img src="images/top-10/${slug}/${x.illustration}-400.webp" srcset="images/top-10/${slug}/${x.illustration}-400.webp 400w, images/top-10/${slug}/${x.illustration}-800.webp 800w" sizes="(min-width: 760px) 360px, 92vw" width="800" height="600" alt="Illustration : ${echapper(type)}" loading="lazy" decoding="async" /><figcaption>Illustration</figcaption></figure>`,
+    chiffres: x.chiffres,
+    pourquoi: `${x.description} La fiche du produit annonce : ${liste(x.annonce)}.`,
+    pourQui: x.pour_qui,
+  }));
+}
+
+const KITS = brutKits as unknown as FichierProduits;
+const HYDRO = brutHydro as unknown as FichierProduits;
+
+/** Intro commune des sujets classés selon la note des acheteurs. */
+const introNote = (quoi: string, f: FichierProduits) =>
+  `Notre sélection de ${quoi} vendus sur Amazon.fr, classés selon la note moyenne des acheteurs relevée le ${dateLongue(f.classement_le)} ; à égalité, le plus évalué passe d’abord, et seuls les produits disponibles avec au moins 10 évaluations sont retenus. Les notes servent à classer mais ne sont pas affichées. Nous n’avons pas testé ces produits nous-mêmes.`;
 
 /** Sujets, dans l'ordre des onglets. On n'ajoute un sujet que s'il a 10 vrais produits. */
 export const SUJETS: Sujet[] = [
@@ -301,6 +343,66 @@ export const SUJETS: Sujet[] = [
       {
         q: 'Que veulent dire 600D et 1680D ?',
         r: 'C’est l’épaisseur des fils de la toile, en deniers. Plus le chiffre est élevé, plus la toile est épaisse, solide et opaque. Une toile de 600D convient pour débuter ; une toile de 1680D résiste mieux aux déchirures et aux manipulations répétées.',
+      },
+    ],
+  },
+  {
+    slug: 'kits-complets',
+    onglet: 'Kits complets',
+    titre: 'Top 10 des kits complets pour débuter',
+    titrePage: 'Top 10 des kits de culture complets',
+    description: 'Notre sélection de 10 kits de culture d’intérieur tout compris (tente, lampe LED, extraction d’air), avec leurs vrais chiffres : taille, puissance et contenu.',
+    intro: introNote('kits complets (tente, lampe et ventilation)', KITS),
+    verifieLe: KITS.verifie_le,
+    produits: () => produitsDuFichier('kits-complets', KITS, 'tente de culture équipée d’une lampe LED et d’une extraction d’air'),
+    choisir: `<ol class="top10__etapes">
+          <li><strong>Choisissez d'abord la taille de la tente</strong> : 60 × 60 cm pour des salades et des aromatiques, 80 × 80 à 100 × 100 cm pour quelques pieds de tomates. C'est elle qui fixe la lampe à prévoir.</li>
+          <li><strong>Regardez la lampe du kit</strong> : sa puissance réelle en watts, et si possible sa lumière émise (PPF, en µmol/s). Un kit dont la fiche ne publie pas le PPF est plus difficile à juger ; le <a href="index.html#calculateur">calculateur</a> dit combien il en faut pour votre culture.</li>
+          <li><strong>Vérifiez la ventilation</strong> : un extracteur avec filtre à charbon renouvelle l'air et limite les odeurs ; un ventilateur à pince brasse l'air entre les plants.</li>
+        </ol>
+        <p>Pour composer votre kit vous-même, voir le <a href="top-10-tentes-de-culture.html">Top 10 des tentes</a> et le <a href="top-10-lampes-led-de-culture.html">Top 10 des lampes</a>.</p>`,
+    questions: [
+      {
+        q: 'Un kit complet vaut-il mieux que des éléments achetés séparément ?',
+        r: 'Un kit évite d’oublier une pièce et garantit que tout s’assemble. Acheter séparément permet de choisir une lampe dont les chiffres sont publiés et bien adaptée à la surface. Les deux se valent si la lampe du kit couvre bien la tente.',
+      },
+      {
+        q: 'Le filtre à charbon est-il indispensable ?',
+        r: 'Il retient les odeurs de l’air extrait, utile dans un logement. Pour des salades ou des aromatiques, l’extracteur seul suffit souvent ; le filtre se branche sur l’extracteur, à l’intérieur de la tente.',
+      },
+      {
+        q: 'Quelle consommation d’électricité prévoir ?',
+        r: 'Surtout celle de la lampe : une lampe de 150 W allumée 16 heures par jour consomme environ 880 kWh par an. L’extracteur ajoute peu. Le calculateur donne le coût avec votre prix du kWh.',
+      },
+    ],
+  },
+  {
+    slug: 'kits-hydroponiques',
+    onglet: 'Hydroponie',
+    titre: 'Top 10 des kits hydroponiques',
+    titrePage: 'Top 10 des kits hydroponiques d’intérieur',
+    description: 'Notre sélection de 10 kits hydroponiques pour l’intérieur, du potager de table aux systèmes à seaux, avec leurs vrais chiffres : emplacements, lampe, réservoir.',
+    intro: introNote('kits hydroponiques', HYDRO),
+    verifieLe: HYDRO.verifie_le,
+    produits: () => produitsDuFichier('kits-hydroponiques', HYDRO, 'kit de culture hydroponique'),
+    choisir: `<ol class="top10__etapes">
+          <li><strong>Potager de table ou système à seaux ?</strong> Un potager de table, avec sa lampe intégrée, convient aux aromatiques et aux salades. Un système à seaux (DWC) accueille de grosses plantes, mais demande une tente ou une lampe à part.</li>
+          <li><strong>Regardez le réservoir</strong> : plus il est grand, moins il faut remettre de l'eau et de l'engrais. Un indicateur de niveau évite que la pompe tourne à sec.</li>
+          <li><strong>Vérifiez la lampe</strong> : une lampe réglable en hauteur suit la pousse des plantes, et une minuterie l'allume chaque jour à la même heure.</li>
+        </ol>
+        <p>Pour le pH et la conductivité de la solution, voir le guide <a href="culture-nutriments.html">Arrosage, nutriments, pH et EC</a>.</p>`,
+    questions: [
+      {
+        q: 'Qu’est-ce que la culture hydroponique ?',
+        r: 'Les racines poussent dans de l’eau enrichie en engrais au lieu de la terre. La plante trouve tout ce qu’il lui faut dans la solution ; il faut seulement surveiller le niveau d’eau, l’engrais et l’éclairage.',
+      },
+      {
+        q: 'Quelles plantes cultiver dans un potager de table ?',
+        r: 'Surtout des aromatiques (basilic, persil, ciboulette, menthe) et des salades à couper. Les tomates naines sont possibles dans les modèles hauts, mais les grandes plantes demandent un système à seaux.',
+      },
+      {
+        q: 'Faut-il changer l’eau ?',
+        r: 'Oui : on complète le réservoir au fil des jours, et on le vide et le nettoie toutes les deux à trois semaines pour repartir avec une solution neuve. Suivez la notice et la dose d’engrais du fabricant.',
       },
     ],
   },

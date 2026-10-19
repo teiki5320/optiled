@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { header, sitemap, transformerPage } from './site.ts';
@@ -60,6 +60,23 @@ describe('Top 10 à onglets', () => {
     expect(new Set(tentes.tentes.map((t) => t.asin)).size).toBe(tentes.tentes.length);
     expect(JSON.stringify(tentes.tentes)).not.toMatch(/"(note|etoiles|avis|prix)"/);
     expect(sujetsPublies().map((s) => s.slug)).toContain('tentes-de-culture');
+  });
+
+  it('fichiers de produits : 10 produits par onglet, un même produit dans un seul onglet, aucune note enregistrée', () => {
+    const dossier = resolve(racine, 'src/data/top-10');
+    const asins: string[] = [];
+    for (const f of readdirSync(dossier)) {
+      const texte = readFileSync(resolve(dossier, f), 'utf8');
+      expect(texte, f).not.toMatch(/"(note|etoiles|avis|prix)"/);
+      const produits = (JSON.parse(texte) as { produits: { asin: string; illustration: string }[] }).produits;
+      expect(produits.length, f).toBeGreaterThanOrEqual(10);
+      for (const p of produits) {
+        asins.push(p.asin);
+        expect(existsSync(resolve(racine, 'public/images/top-10', f.replace('.json', ''), `${p.illustration}-800.webp`)), `${f} : ${p.illustration}`).toBe(true);
+      }
+    }
+    asins.push(...tentes.tentes.map((t) => t.asin), ...LAMPES.map((l) => l.asin));
+    expect(new Set(asins).size).toBe(asins.length);
   });
 
   it('ni prix, ni note, ni filtre, ni tri, ni comparateur, ni tableau ; jamais « testé par nous »', () => {
