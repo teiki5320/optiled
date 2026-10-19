@@ -12,6 +12,7 @@ import brutKits from '../src/data/top-10/kits-complets.json' with { type: 'json'
 import brutHydro from '../src/data/top-10/kits-hydroponiques.json' with { type: 'json' };
 import brutExtracteurs from '../src/data/top-10/extracteurs-ventilateurs.json' with { type: 'json' };
 import brutMesure from '../src/data/top-10/minuteurs-thermometres.json' with { type: 'json' };
+import brutSubstrats from '../src/data/top-10/terreaux-substrats.json' with { type: 'json' };
 import { echapper } from './fiches.ts';
 import { COEF_UTILISATION } from './guides-achat.ts';
 
@@ -282,6 +283,7 @@ const KITS = brutKits as unknown as FichierProduits;
 const HYDRO = brutHydro as unknown as FichierProduits;
 const EXTRACTEURS = brutExtracteurs as unknown as FichierProduits;
 const MESURE = brutMesure as unknown as FichierProduits;
+const SUBSTRATS = brutSubstrats as unknown as FichierProduits;
 
 /** Intro commune des sujets classés selon la note des acheteurs. */
 const introNote = (quoi: string, f: FichierProduits) =>
@@ -467,6 +469,36 @@ export const SUJETS: Sujet[] = [
       {
         q: 'Où placer le thermo-hygromètre ?',
         r: 'À hauteur des feuilles, à l’ombre de la lampe et loin de l’extracteur : c’est là que l’air compte pour les plantes. Évitez de le poser au sol ou collé à la paroi.',
+      },
+    ],
+  },
+  {
+    slug: 'terreaux-substrats',
+    onglet: 'Terreaux et substrats',
+    titre: 'Top 10 des terreaux et substrats',
+    titrePage: 'Top 10 des terreaux et substrats d’intérieur',
+    description: 'Notre sélection de 10 terreaux et substrats pour cultiver en intérieur : terreaux, fibre de coco, billes d’argile et perlite, avec volume et composition.',
+    intro: introNote('terreaux et substrats', SUBSTRATS),
+    verifieLe: SUBSTRATS.verifie_le,
+    produits: () => produitsDuFichier('terreaux-substrats', SUBSTRATS, 'terreau ou substrat de culture'),
+    choisir: `<ol class="top10__etapes">
+          <li><strong>Terreau ou fibre de coco ?</strong> Un terreau enrichi nourrit les plantes au début et pardonne les oublis. La fibre de coco est très aérée et se travaille avec un engrais adapté, apporté à chaque arrosage.</li>
+          <li><strong>Pensez au drainage</strong> : des billes d'argile au fond du pot, ou de la perlite mélangée au terreau, évitent que les racines baignent dans l'eau.</li>
+          <li><strong>Prévoyez le bon volume</strong> : additionnez le volume de chaque pot et gardez un peu de marge ; les légumes fruits demandent des pots bien plus grands que les aromatiques.</li>
+        </ol>
+        <p>Pour aller plus loin, voir le guide <a href="culture-substrats.html">Substrats et hydroponie</a>.</p>`,
+    questions: [
+      {
+        q: 'Peut-on utiliser un terreau de jardin en intérieur ?',
+        r: 'Mieux vaut un terreau pour pots, plus léger et plus aéré. Un terreau de jardin se tasse en pot, sèche mal et peut apporter des moucherons.',
+      },
+      {
+        q: 'Quelle différence entre billes d’argile et perlite ?',
+        r: 'Les billes d’argile sont grosses et lourdes : on les met au fond du pot ou on les utilise seules en hydroponie. La perlite est fine et légère : on la mélange au terreau pour l’aérer.',
+      },
+      {
+        q: 'Faut-il changer le terreau à chaque culture ?',
+        r: 'Pour des légumes, c’est préférable : le terreau s’épuise et peut garder des maladies. On peut réutiliser la fibre de coco après l’avoir rincée, en surveillant l’apparition de moisissures.',
       },
     ],
   },
