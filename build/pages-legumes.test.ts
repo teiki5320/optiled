@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { chargerLegumes } from './fiches.ts';
 import { tousLesConseils } from './conseils.ts';
 import { COEF_UTILISATION as COEF_GUIDES, EFFICACITE as EFFICACITE_GUIDES } from './guides-achat.ts';
-import { COEF_UTILISATION, descriptionLegume, EFFICACITE, exempleCalcul, fichierLegume, lienCalculateur, pagesLegumes, stadeLePlusExigeant, surfaceExemple } from './pages-legumes.ts';
+import { COEF_UTILISATION, descriptionLegume, EFFICACITE, exempleCalcul, fichierLegume, lienCalculateur, pagesLegumes, sourcesDeLaFiche, stadeLePlusExigeant, surfaceExemple } from './pages-legumes.ts';
 import { transformerPage } from './site.ts';
 
 const legumes = chargerLegumes();
@@ -122,5 +122,15 @@ describe('pages détaillées des cultures', () => {
     // Aucune question publiée : pas de section vide.
     const aucune = pagesLegumes('2000-01-01').get(fichierLegume('basilic'))!;
     expect(aucune).not.toContain('id="questions"');
+  });
+
+  it('liste les sources de chaque fiche, sans doublon ni mention interne', () => {
+    const wasabi = chargerLegumes().find((l) => l.id === 'wasabi')!;
+    const sources = sourcesDeLaFiche(wasabi);
+    expect(sources).toContain('Agritecture');
+    expect(sources).toContain('Ruamrungsri, Utrapen, Tateing, Panjama & Inkham (2025), Horticulturae 11(1)');
+    expect(sources.some((s) => /^(Critères Kultiled|Ordre de grandeur)/.test(s))).toBe(false);
+    expect(new Set(sources).size).toBe(sources.length);
+    expect(pagesLegumes().get(fichierLegume('wasabi'))).toContain('<h2 id="sources">Sources de cette fiche</h2>');
   });
 });

@@ -211,6 +211,51 @@ function enBref(l: Legume): string {
         </section>`;
 }
 
+/** Découpe un texte sur un séparateur, en ignorant ceux qui sont entre parenthèses. */
+function decouperHorsParentheses(texte: string, separateur: RegExp): string[] {
+  const parties: string[] = [];
+  let profondeur = 0;
+  let debut = 0;
+  for (let i = 0; i < texte.length; i++) {
+    if (texte[i] === '(') profondeur++;
+    else if (texte[i] === ')') profondeur = Math.max(0, profondeur - 1);
+    else if (profondeur === 0) {
+      const m = separateur.exec(texte.slice(i));
+      if (m && m.index === 0) {
+        parties.push(texte.slice(debut, i));
+        i += m[0].length - 1;
+        debut = i + 1;
+      }
+    }
+  }
+  parties.push(texte.slice(debut));
+  return parties.map((p) => p.trim()).filter(Boolean);
+}
+
+/**
+ * Références de la fiche : les sources de ses valeurs (legumes.json), sans doublon. On garde le nom
+ * de la référence (avant « : » ou « – »), sans la précision finale entre parenthèses, et on écarte
+ * les mentions internes (critères Kultiled, estimations, calculs).
+ */
+export function sourcesDeLaFiche(l: Legume): string[] {
+  const valeurs: { source: string }[] = [
+    ...Object.values(l.stades).flatMap((p) => (p ? Object.values(p) : [])),
+    ...Object.values(l.culture),
+  ];
+  const noms = new Map<string, string>();
+  for (const v of valeurs) {
+    for (const partie of decouperHorsParentheses(v.source, /^ ; /)) {
+      let nom = decouperHorsParentheses(partie, /^ (:|–) /)[0];
+      // « tableau 3.3 (températures…) (laitue…) » → « tableau 3.3 » ; « Horticulturae 11(1) » reste entier.
+      while (/\s\((?![^()]*\d{4})[^()]*\)$/.test(nom)) nom = nom.replace(/\s\((?![^()]*\d{4})[^()]*\)$/, '');
+      nom = nom.trim();
+      if (!/^[A-Z]/.test(nom) || /^(critères kultiled|ordre de grandeur|délai|pratique culturale)/i.test(nom)) continue;
+      if (!noms.has(nom.toLowerCase())) noms.set(nom.toLowerCase(), nom);
+    }
+  }
+  return [...noms.values()];
+}
+
 /** Contenu HTML complet (avec marqueurs) de la page détaillée d'une culture. */
 export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes(), date = dateDuJour()): string {
   const c = l.culture;
@@ -332,6 +377,16 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
         ]
       : []),
   ];
+
+  const sources = sourcesDeLaFiche(l);
+  if (sources.length) {
+    sections.push({
+      id: 'sources',
+      titre: 'Sources de cette fiche',
+      html: `<p>Les valeurs de cette fiche (${nom.toLowerCase()}) s’appuient sur ces références :</p>
+        <ul class="sources-fiche">${sources.map((s) => `<li>${echapper(s)}</li>`).join('')}</ul>`,
+    });
+  }
 
   const sommaire = sections.map((s) => `<li><a href="#${s.id}">${s.titre}</a></li>`).join('');
   // Sur la page de la culture, la photo est le sujet de la page : elle reçoit un texte alternatif
