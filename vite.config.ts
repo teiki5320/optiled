@@ -3,7 +3,7 @@ import { pluginSite, toutesLesPages } from './build/site.ts';
 
 export default defineConfig({
   // Chemins relatifs : le site fonctionne aussi bien à la racine
-  // d'un domaine (IONOS) que dans un sous-dossier (GitHub Pages).
+  // d'un domaine (www.kultiled.com) que dans un sous-dossier (GitHub Pages).
   base: './',
   plugins: [pluginSite()],
   build: {

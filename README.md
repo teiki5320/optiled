@@ -206,50 +206,18 @@ La consommation est calculée sur la puissance nécessaire (barres gradées à l
 - IndexNow (Bing, Yandex, Seznam…) : `scripts/indexnow.mjs` lit le sitemap publié et signale toutes ses adresses à https://api.indexnow.org. La clé (publique) est dans le script et dans `public/<clé>.txt`. Le workflow `indexnow.yml` le lance chaque lundi à 7 h UTC, après la publication, et à la demande (onglet Actions → « Signaler les pages (IndexNow) » → Run workflow) ; en local : `npm run indexnow`.
 - Flux RSS des 20 derniers conseils publiés : `conseils.xml`, généré au build (`fluxRss`), annoncé dans le `<head>` de chaque page.
 - Calculateur intégrable sur d'autres sites : `index.html?integre=1` (sans en-tête, pied de page ni liens Amazon, liens en nouvel onglet ; `src/integre.ts`). Code à copier sur `integrer.html`.
-- Mentions légales : `mentions-legales.html`. Éditeur : ALOHASH (SAS, nom commercial TOA CORP), avec siège, RCS, TVA, directeur de la publication (désigné par sa fonction) et e-mail de contact. Si le site change d'hébergeur (IONOS par exemple), mettez à jour la rubrique Hébergeur.
+- Mentions légales : `mentions-legales.html`. Éditeur : ALOHASH (SAS, nom commercial TOA CORP), avec siège, RCS, TVA, directeur de la publication (désigné par sa fonction) et e-mail de contact. Si le site change d'hébergeur, mettez à jour la rubrique Hébergeur.
 
-## Domaine personnalisé (IONOS + GitHub Pages)
+## Domaine (Cloudflare + GitHub Pages)
 
-Le domaine `www.kultiled.com` est acheté chez IONOS et pointe vers GitHub Pages (en place depuis le 24 septembre 2026) :
+Le domaine `kultiled.com` est acheté chez Cloudflare depuis le 16 octobre 2026 ; le site est hébergé sur GitHub Pages :
 
-- **DNS IONOS** : 4 enregistrements **A** sur `@` vers 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153, et un **CNAME** `www` → `teiki5320.github.io`. Les enregistrements Mail (MX, SPF, DKIM, DMARC, autodiscover) et `google-site-verification` sont à conserver. Attention : en ajoutant un enregistrement A sur `@`, IONOS propose d'en créer aussi un pour `www` ; choisir « Ne pas ajouter l'enregistrement DNS pour www ».
-- **GitHub** : *Settings* → *Pages* → *Custom domain* = `www.kultiled.com`, *Enforce HTTPS* coché. Le fichier `public/CNAME` contient le domaine.
+- **DNS Cloudflare** : deux enregistrements **CNAME**, `@` et `www` → `teiki5320.github.io`, proxy désactivé (nuage gris). `kultiled.com` redirige vers `www.kultiled.com` (301).
+- **GitHub** : *Settings* → *Pages* → *Custom domain* = `www.kultiled.com`, *Enforce HTTPS* coché. Le fichier `public/CNAME` contient le domaine. Le certificat HTTPS est fourni et renouvelé par GitHub Pages.
 - **Code** : `SITE_URL` vaut `https://www.kultiled.com/` par défaut (`build/site.ts`).
-- Le renouvellement du domaine se fait dans IONOS (*Transfert et renouvellement*).
+- Le renouvellement du domaine se fait dans la console Cloudflare (Domaines → kultiled.com).
+- **Ancien domaine `optiled.fr`** (IONOS) : abandonné. Il n'affiche plus qu'une page « Kultiled a déménagé » qui renvoie vers `www.kultiled.com` (dépôt `teiki5320/optiled-redirection`), jusqu'à la fin du contrat IONOS en novembre 2026. Rien à y envoyer.
 
-## Déploiement sur IONOS (SFTP)
+## Mise en ligne
 
-Le site est entièrement statique : il suffit d'envoyer le contenu du dossier `dist/`. **Important : construisez-le avec l'adresse de votre domaine** (`SITE_URL=https://mon-domaine.fr/ npm run build`), sinon la page 404, le sitemap et les balises de partage pointeront vers l'adresse GitHub Pages. Comme `vite.config.ts` utilise `base: './'`, les chemins sont relatifs et le site fonctionne à la racine d'un domaine comme dans un sous-dossier.
-
-1. **Construire le site**
-   ```bash
-   npm install
-   SITE_URL=https://mon-domaine.fr/ npm run build
-   ```
-   Le dossier `dist/` contient toutes les pages (`*.html`), les dossiers `assets/`, `images/`, `icones/` et les fichiers `sw.js`, `manifest.webmanifest`, `sitemap.xml`, `robots.txt` : **tout** doit être envoyé.
-
-2. **Récupérer les accès SFTP** dans l'espace client IONOS : *Hébergement* → votre contrat → *SFTP & SSH*. Notez l'hôte (du type `accessXXXXXXXX.webspace-data.io`), le port (22), l'utilisateur et le mot de passe (créez un utilisateur SFTP si besoin).
-
-3. **Repérer le dossier cible** : *Domaines & SSL* → votre domaine → le « répertoire » vers lequel il pointe (par exemple `/calculateur-led`). Créez-le si nécessaire.
-
-4. **Envoyer les fichiers**
-
-   *Avec FileZilla* : Fichier → Gestionnaire de sites → protocole **SFTP**, hôte, port 22, utilisateur, mot de passe. Ouvrez le dossier cible à droite, puis glissez-y **le contenu** de `dist/` (et non le dossier `dist` lui-même).
-
-   *En ligne de commande* :
-   ```bash
-   sftp -P 22 utilisateur@accessXXXXXXXX.webspace-data.io
-   sftp> cd /calculateur-led
-   sftp> lcd dist
-   sftp> put -r *
-   sftp> bye
-   ```
-
-   *Ou avec rsync* (si l'accès SSH est inclus dans votre offre) :
-   ```bash
-   rsync -avz --delete -e "ssh -p 22" dist/ utilisateur@accessXXXXXXXX.webspace-data.io:/calculateur-led/
-   ```
-
-5. **Vérifier** en ouvrant le domaine dans un navigateur (videz le cache au besoin). Activez le certificat SSL dans IONOS : le bouton « Copier » utilise l'API presse-papiers, disponible uniquement en HTTPS (un repli existe pour les autres cas).
-
-À chaque mise à jour : `npm run build`, puis renvoyez le contenu de `dist/`. Les fichiers de `assets/` ont un nom qui change à chaque build ; avec FileZilla, supprimez les anciens pour ne pas encombrer l'hébergement (rsync `--delete` le fait automatiquement).
+Il n'y a rien à envoyer à la main : le workflow `.github/workflows/pages.yml` publie le site sur GitHub Pages à chaque envoi sur `main`, et chaque lundi, mercredi et vendredi à 5 h UTC pour les articles de conseil programmés. Il lance d'abord les tests unitaires, le build et le test de bout en bout ; si l'un d'eux échoue, rien n'est mis en ligne. Le suivi se fait dans l'onglet *Actions* du dépôt.

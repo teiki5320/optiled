@@ -1,6 +1,6 @@
 # PUBLICATION — état de la mise en ligne
 
-> Généré le 20 octobre 2026. Aucun secret ici.
+> Généré le 21 octobre 2026. Aucun secret ici.
 
 ## En bref
 
@@ -33,7 +33,7 @@
 - **Hébergeur** : GitHub Pages, publication automatique à chaque envoi sur `main` et chaque lundi, mercredi et vendredi pour les articles programmés (`.github/workflows/pages.yml` : tests unitaires, build, test de bout en bout, puis mise en ligne). Aucune action manuelle.
 - **Anciennes adresses** : https://teiki5320.github.io/optiled/ et `kultiled.com` redirigent vers `www.kultiled.com` (301) ; `www.optiled.fr` affiche une page « Kultiled a déménagé » qui renvoie aussitôt vers le nouveau domaine (dépôt `teiki5320/optiled-redirection`).
 - **Dernière mise en production** : 19 octobre 2026, publication réussie (pages « Top 10 ») ; le 16 octobre, le site est devenu Kultiled (nom, logo, contact) et a changé de domaine.
-- **Articles de conseil** : 37 en ligne, 37 programmés (le prochain le 21 octobre 2026).
+- **Articles de conseil** : 38 en ligne, 36 programmés jusqu'au 7 juin 2027 (le prochain le 23 octobre 2026).
 - **Contact affiché** : `kultiled@toakeur.com` (mentions légales et « À propos »).
 
 ## Domaine & SSL
