@@ -237,6 +237,13 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
       operatingSystem: 'Tous (navigateur web)',
       inLanguage: 'fr',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    }, {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: NOM_SITE,
+      url: adresse,
+      inLanguage: 'fr',
+      publisher: { '@type': 'Organization', name: NOM_SITE, url: adresse, logo: `${SITE_URL}marque/kultiled-logo-512.png` },
     });
   }
   if (r && guide) {
@@ -368,6 +375,18 @@ export function referencement(html: string, fichier: string, url = SITE_URL): st
         ],
       },
     );
+    // Les questions sont visibles sur la page (section « Questions fréquentes »).
+    if (sujetTop10.questions.length) {
+      donnees.push({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: sujetTop10.questions.map((x) => ({
+          '@type': 'Question',
+          name: decoderEntites(x.q.replace(/<[^>]+>/g, '')),
+          acceptedAnswer: { '@type': 'Answer', text: decoderEntites(x.r.replace(/<[^>]+>/g, '')) },
+        })),
+      });
+    }
   }
   if (donnees.length === 0 && fichier !== 'index.html') donnees.push(...donneesPageSimple(html, fichier, url, adresse, description));
   const json = donnees.map((d) => `<script type="application/ld+json">${JSON.stringify(d).replace(/</g, '\\u003c')}</script>`).join('\n    ');
