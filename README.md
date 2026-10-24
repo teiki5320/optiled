@@ -216,7 +216,7 @@ Le domaine `kultiled.com` est acheté chez Cloudflare depuis le 16 octobre 2026 
 - **GitHub** : *Settings* → *Pages* → *Custom domain* = `www.kultiled.com`, *Enforce HTTPS* coché. Le fichier `public/CNAME` contient le domaine. Le certificat HTTPS est fourni et renouvelé par GitHub Pages.
 - **Code** : `SITE_URL` vaut `https://www.kultiled.com/` par défaut (`build/site.ts`).
 - Le renouvellement du domaine se fait dans la console Cloudflare (Domaines → kultiled.com).
-- **Ancien domaine `optiled.fr`** (IONOS) : abandonné. Il n'affiche plus qu'une page « Kultiled a déménagé » qui renvoie vers `www.kultiled.com` (dépôt `teiki5320/optiled-redirection`), jusqu'à la fin du contrat IONOS en novembre 2026. Rien à y envoyer.
+- **Ancien domaine `optiled.fr`** (IONOS) : abandonné le 16 octobre 2026, supprimé d'AdSense le 22 octobre 2026. Il n'affiche plus qu'une page « Kultiled a déménagé » qui renvoie vers `www.kultiled.com` (dépôt `teiki5320/optiled-redirection`), jusqu'à la fin du contrat IONOS en novembre 2026. Rien à y envoyer.
 
 ## Mise en ligne
 
