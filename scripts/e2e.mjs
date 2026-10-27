@@ -80,6 +80,58 @@ try {
   const GOOGLE = /^https:\/\/([a-z0-9-]+\.)*(googlesyndication\.com|google\.com|googletagservices\.com|doubleclick\.net|gstatic\.com|adtrafficquality\.google)\//;
   verifier(scripts.every((s) => s.startsWith(BASE) || s === BEACON || GOOGLE.test(s)), 'aucun script externe chargé (hors mesure d’audience Cloudflare et publicité Google)');
   verifier(erreurs.length === 0, `aucune erreur JavaScript${erreurs.length ? ' : ' + erreurs.join(' | ') : ''}`);
+
+  // Actus de la veille, lues en direct : fichier d'essai (contenu maîtrisé), puis fichier injoignable.
+  const VEILLE = 'https://teiki5320.github.io/veille/actus/kultiled.json';
+  const image = (id, carte = false) => ({
+    url: `https://teiki5320.github.io/veille/${carte ? 'cartes' : 'images'}/kultiled/${id}.${carte ? 'svg' : 'webp'}`,
+    source: carte ? 'carte' : 'wikimedia', credit: carte ? 'Illustration : Kultiled' : 'Jane Doe', licence: carte ? null : 'CC BY-SA 4.0',
+    page: carte ? null : 'https://commons.wikimedia.org/wiki/File:X.jpg', alt: 'Des laitues sous LED', largeur: 1600, hauteur: 900,
+  });
+  const actu = (n, x = {}) => ({ id: String(n).repeat(40).slice(0, 40), titre: `Actu d'essai numéro ${n}`, resume: 'Un résumé réécrit, en deux phrases. Avec sa source.', source_nom: 'Phys.org', source_url: `https://phys.org/news/${n}.html`, publie_le: `2026-10-2${n}T08:00:00Z`, image: image(n), ...x });
+  const essai = { version: 3, site: 'kultiled', genere_le: '2026-10-27T08:00:00Z', actus: [actu(1), actu(2, { tags: ['legume:tomate'], image: image(2, true) }), actu(3), actu(4), actu(5), actu(6)] };
+  const contexte = async (reponse) => {
+    const c = await navigateur.newContext({ viewport: { width: 375, height: 812 } });
+    await c.route(VEILLE, (r) => (reponse ? r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(reponse) }) : r.abort()));
+    await c.route('https://teiki5320.github.io/veille/{images,cartes}/**', (r) => r.fulfill({ status: 200, contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="9"/>' }));
+    const p = await c.newPage();
+    p.on('pageerror', (e) => erreurs.push(e.message));
+    return p;
+  };
+  const visibles = (p) => p.$$eval('[data-actus]', (s) => s.map((x) => (x.hidden ? -1 : x.querySelectorAll('.actu').length)));
+  const attendreActus = (p) => p.waitForFunction(() => [...document.querySelectorAll('[data-actus]')].every((s) => !s.hidden) || performance.now() > 6000, null, { timeout: 15000 }).catch(() => {});
+  const sansDefilement = (p) => p.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth);
+
+  let p = await contexte(essai);
+  await p.goto(BASE, { waitUntil: 'networkidle' });
+  await attendreActus(p);
+  verifier((await visibles(p)).join() === '4', 'accueil : 4 actus sous le calculateur');
+  verifier(/PPFD cible/.test(await p.textContent('#contenu-resultats')), 'accueil : le calculateur marche toujours');
+  verifier((await p.getAttribute('.actu__source a', 'rel')) === 'noopener nofollow' && (await p.getAttribute('.actu__source a', 'target')) === '_blank', 'lien Source : nouvel onglet, noopener nofollow');
+  verifier(await sansDefilement(p), 'accueil : pas de défilement horizontal en 375 px');
+  await p.goto(`${BASE}actus.html`, { waitUntil: 'networkidle' });
+  await attendreActus(p);
+  verifier((await visibles(p)).join() === '6' && (await p.isVisible('[data-actus-maj]')), 'page Actus : toutes les actus (20 au plus) et la date de mise à jour');
+  verifier((await p.textContent('.actus')).includes('Illustration : Kultiled') && (await p.textContent('.actus')).includes('Photo : Jane Doe · CC BY-SA 4.0'), 'crédits : photo et illustration');
+  await p.goto(`${BASE}legume-tomate.html`, { waitUntil: 'networkidle' });
+  await attendreActus(p);
+  verifier((await visibles(p)).join() === '1', 'fiche tomate : son actu');
+  await p.goto(`${BASE}legume-basilic.html`, { waitUntil: 'networkidle' });
+  await p.waitForTimeout(1500);
+  verifier((await visibles(p)).join() === '-1', 'fiche sans actu : bloc absent');
+  await p.goto(`${BASE}legume-chanvre-cbd.html`, { waitUntil: 'networkidle' });
+  verifier((await p.locator('[data-actus]').count()) === 0, 'fiche Chanvre CBD : jamais de bloc');
+  await p.context().close();
+
+  p = await contexte(null);
+  await p.goto(BASE, { waitUntil: 'networkidle' });
+  await p.waitForTimeout(1500);
+  verifier((await visibles(p)).join() === '-1' && (await p.isHidden('[data-actus-cadre]')) && /PPFD cible/.test(await p.textContent('#contenu-resultats')), 'veille injoignable : aucun bloc vide, calculateur intact');
+  await p.goto(`${BASE}actus.html`, { waitUntil: 'networkidle' });
+  await p.waitForTimeout(1500);
+  verifier(await p.isVisible('[data-actus-vide]'), 'veille injoignable : la page Actus le dit simplement');
+  await p.context().close();
+  verifier(erreurs.length === 0, `aucune erreur JavaScript avec les actus${erreurs.length ? ' : ' + erreurs.join(' | ') : ''}`);
   await navigateur.close();
 } catch (e) {
   console.error(e);

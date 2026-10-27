@@ -4,7 +4,7 @@ Site web statique (Vite + TypeScript, sans backend), en français et pensé d'ab
 
 | Page | Contenu |
 | --- | --- |
-| `index.html` | **Accueil = calculateur** : PPFD, DLI, PPF, puissance, barres LED et plan de pose, coût annuel, liste d'achat (copie / impression) ; les guides sont accessibles par le menu et le pied de page |
+| `index.html` | **Accueil = calculateur** : PPFD, DLI, PPF, puissance, barres LED et plan de pose, coût annuel, liste d'achat (copie / impression) ; les guides sont accessibles par le menu et le pied de page ; sous le calculateur, les 4 dernières actus de la veille |
 | `calculateur.html` | Ancienne adresse du calculateur : redirige vers l'accueil en gardant le légume choisi (sans JavaScript, la redirection de secours mène à l'accueil sans le légume) |
 | `led.html` + `led-*.html` | Guides LED : bases (PAR, PPFD, DLI, spectre), choisir ses LED, installer et mesurer ; guides d'achat : puissance selon la surface, comparer des lampes, LED pour semis et boutures (tableaux calculés par `build/guides-achat.ts`) |
 | `culture.html` + `culture-*.html` | Guides culture : démarrer, substrats et hydroponie, nutriments/pH/EC, climat, semis, problèmes et ravageurs |
@@ -14,6 +14,7 @@ Site web statique (Vite + TypeScript, sans backend), en français et pensé d'ab
 | `lampes.html` | Sélection de lampes Amazon.fr, groupée par format |
 | `meilleures-lampes.html` | **Meilleures lampes LED horticoles (mois année)** : choix recommandé et alternative par besoin, mis à jour chaque mois (voir « Budget et page mensuelle » ci-dessous) |
 | `glossaire.html` | Glossaire des termes techniques |
+| `actus.html` | **Actus de la culture en intérieur et des LED** (20), lues en direct dans le navigateur depuis la veille du Studio (`https://teiki5320.github.io/veille/actus/kultiled.json`) ; aussi 4 actus sur l'accueil (sous le calculateur) et 3 sur chaque page culture concernée, jamais sur la fiche Chanvre CBD (voir « Actus » ci-dessous) |
 
 Le calculateur accepte un légume présélectionné dans l'adresse : `index.html?legume=tomate#calculateur`. Tous les réglages différents des valeurs par défaut sont reflétés dans l'adresse (`?l=tomate&s=floraison&n=3…`, voir `src/etat.ts`) : le bouton **Partager** envoie ce lien, et les derniers réglages sont mémorisés sur l'appareil du visiteur. Chaque bloc de résultat renvoie vers le guide qui l'explique ; sur mobile, une barre fixe rappelle la puissance et le nombre de barres pendant la saisie.
 
@@ -58,6 +59,8 @@ Node.js 22.12 ou plus récent est requis (Vite 8 et Vitest 5).
 | `src/format.ts` | Mise en forme des nombres à la française |
 | `src/main.ts`, `src/style.css`, `src/theme-calcul.css` | Interface du calculateur |
 | `src/*.test.ts`, `build/*.test.ts` | Tests Vitest (calculs, alertes, lien de partage, intégrité du JSON, liste d'achat, pages générées, liens internes) |
+| `build/veille.ts`, `src/veille.ts` | Actus : marqueurs `<!--#actus:4-->` / `<!--#actus:3:legume:tomate-->` (sections cachées écrites au build), fichier `veille/entites.json` des cultures (sans le chanvre), lecture et affichage en direct dans le navigateur |
+| `build/photos.ts`, `src/data/photos-libres.json` | Photos des guides ; crédits des photos libres de droits (auteur, licence, page d'origine, texte alternatif) |
 | `scripts/e2e.mjs` | Test de bout en bout dans Chromium (`npm run test:e2e`) |
 
 ## Ajouter une page
@@ -112,7 +115,15 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 - `public/images/culture/<nom>-800.webp` et `-1600.webp` : photos et schémas insérés dans les guides Culture (`<figure class="schema">` avec `srcset`). Pour en ajouter : `npm run images -- <dossier> culture`. Pour un schéma avec du texte, GPT Image 2 (format 16:9) écrit le français sans faute ; ne jamais mettre de code couleur dans le prompt (il s'affiche dans l'image).
 - `public/images/schemas/*.svg` : schémas explicatifs insérés dans les guides avec `<figure class="schema">`.
 - Les photos actuelles ont été générées par IA (ElevenLabs, modèle Seedream) ; le pied de page le signale.
+- Photos libres de droits (depuis le 27 octobre 2026, pour les guides et parcours qui n'avaient pas de photo : `led-puissance`, `led-comparer`, `led-semis`, `debuter`, `tente`) : déclarées dans `src/data/photos-libres.json` (source, auteur, licence, page d'origine, texte alternatif), puis `npm run images-libres` les télécharge et les convertit en WebP dans `public/images/guides/`. Ordre de recherche : Wikimedia Commons, puis Openverse en usage commercial (CC0, domaine public, CC BY, CC BY-SA ; auteur connu), sinon une carte aux couleurs du site (`"source": "carte"`, « Illustration : Kultiled »). Jamais de cannabis ni de chanvre, jamais deux fois la même image (vérifié par les tests). Le crédit « Photo : auteur · licence » s'affiche sous la couverture, avec le lien vers la page d'origine, et sur la photo des cartes.
 - Un test vérifie que chaque image référencée existe et possède un texte alternatif.
+
+## Actus (veille)
+
+- La tâche de veille du Studio écrit, deux fois par jour, `https://teiki5320.github.io/veille/actus/kultiled.json` (schéma v3). Le site ne fait que le lire, dans le navigateur, après l'affichage de la page (module chargé à part : le calculateur ne s'en trouve pas alourdi). Délai de 8 s, cache de 15 min ; en cas d'erreur, rien n'est affiché et la page reste intacte.
+- Marqueurs : `<!--#actus:4-->` (accueil, avec le lien « Toutes les actus »), `<!--#actus:20-->` (page `actus.html`, avec la date de mise à jour), `<!--#actus:3:legume:<id>-->` (ajouté automatiquement à chaque page culture, sauf le chanvre CBD).
+- La 1re actu s'affiche en bandeau (image 16:9), les suivantes en vignettes (image carrée) ; source cliquable (`target="_blank" rel="noopener nofollow"`), âge de l'actu, crédit de l'image. Texte inséré avec `textContent` uniquement ; actus sans image de la veille, avec un lien Amazon ou parlant de cannabis écartées par sécurité.
+- Le build publie `veille/entites.json` : les cultures (tag `legume:<id>`, nom, autres noms dont l'anglais), sans le chanvre CBD.
 
 ## Modifier ou ajouter un légume
 

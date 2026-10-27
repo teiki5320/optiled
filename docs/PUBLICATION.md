@@ -25,7 +25,7 @@
 1. ✅ **Site en ligne** : www.kultiled.com publié par GitHub Pages, HTTPS forcé, anciennes adresses redirigées.
 2. ✅ **Revenus branchés** : affiliation Amazon et publicité AdSense en ligne, mentions légales à jour.
 3. **Validation AdSense** : obtenir l'accord de Google pour kultiled.com, examen demandé le 16 octobre.
-4. **Indexation complète** : faire entrer dans Google les 101 adresses du plan du site sous le nouveau domaine.
+4. **Indexation complète** : faire entrer dans Google les 102 adresses du plan du site sous le nouveau domaine.
 
 ## Web · Production
 
@@ -48,7 +48,7 @@
 
 ## Visibilité
 
-- **Référencement** : sitemap (`sitemap.xml`, 101 adresses le 27 octobre 2026) et `robots.txt` générés au build, adresses canoniques, balises Open Graph et Twitter Card avec une image de partage par page, données structurées schema.org sur toutes les pages.
+- **Référencement** : sitemap (`sitemap.xml`, 102 adresses le 27 octobre 2026 avec la nouvelle page Actus) et `robots.txt` générés au build, adresses canoniques, balises Open Graph et Twitter Card avec une image de partage par page, données structurées schema.org sur toutes les pages.
 - **Google Search Console** : `kultiled.com` ajouté le 16 octobre 2026, comme dans Bing Webmaster Tools ; l'ancienne propriété `optiled.fr` y avait été vérifiée avant le changement de domaine (état actuel à vérifier dans la console).
 - **Pages indexées** : à vérifier dans la console pour le nouveau domaine (62 des 86 adresses sous `optiled.fr` au 12 octobre 2026).
 - **IndexNow** : pages signalées chaque lundi à Bing et aux autres moteurs (dernier passage réussi le 26 octobre 2026).

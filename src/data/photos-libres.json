@@ -1,0 +1,60 @@
+{
+  "_lisezmoi": "Photos libres de droits des guides et des parcours qui n'avaient pas d'image (choix de Jean du 27/10/2026 : « compléter seulement »). Ordre de recherche : Wikimedia Commons, puis Openverse en usage commercial (CC0, domaine public, CC BY, CC BY-SA ; auteur connu), puis une carte aux couleurs du site (« Illustration : Kultiled »). Jamais de cannabis ni de chanvre, jamais deux fois la même image. Fichiers : public/images/guides/<page>-800.webp et -1600.webp, produits par « npm run images-libres ». Le crédit est affiché sous l'image (couverture et cartes).",
+  "photos": {
+    "led-puissance": {
+      "source": "wikimedia",
+      "credit": "Simon Fraser University - Communications Marketing",
+      "licence": "CC BY 2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Terramera_scientists_working_in_a_climate-controlled_growth_chamber_located_in_Vancouver,_BC._The_space_uses_LED_lighting,_which_supports_plant_growth._(50188965171).jpg",
+      "telechargement": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Terramera_scientists_working_in_a_climate-controlled_growth_chamber_located_in_Vancouver%2C_BC._The_space_uses_LED_lighting%2C_which_supports_plant_growth._%2850188965171%29.jpg/1920px-Terramera_scientists_working_in_a_climate-controlled_growth_chamber_located_in_Vancouver%2C_BC._The_space_uses_LED_lighting%2C_which_supports_plant_growth._%2850188965171%29.jpg",
+      "alt": "Deux chercheuses s'occupent de jeunes plants de tomates sous trois panneaux LED, dans une chambre de culture",
+      "mots_cles": [
+        "LED grow light"
+      ]
+    },
+    "led-comparer": {
+      "source": "wikimedia",
+      "credit": "Alla Varta",
+      "licence": "CC BY 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Plant_under_a_phytolamp.jpg",
+      "telechargement": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Plant_under_a_phytolamp.jpg/1920px-Plant_under_a_phytolamp.jpg",
+      "alt": "Cyclamens en fleurs baignés de la lumière rose d'une lampe de culture",
+      "mots_cles": [
+        "grow lights"
+      ]
+    },
+    "led-semis": {
+      "source": "openverse",
+      "credit": "nickjohnson",
+      "licence": "CC BY 2.0",
+      "page": "https://www.flickr.com/photos/81102241@N00/5422935295",
+      "telechargement": "https://live.staticflickr.com/5256/5422935295_a499507163_b.jpg",
+      "alt": "Plateau de pastilles de semis étiquetées, posé sous des barres LED fixées sous une étagère",
+      "mots_cles": [
+        "led grow light plants"
+      ]
+    },
+    "debuter": {
+      "source": "wikimedia",
+      "credit": "Janar Raidla",
+      "licence": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Click_%26_Grow_Smart_Garden_27.jpg",
+      "telechargement": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Click_%26_Grow_Smart_Garden_27.jpg/1920px-Click_%26_Grow_Smart_Garden_27.jpg",
+      "alt": "Étagère à trois niveaux de salades et d'aromatiques sous LED, dans un salon près d'une fenêtre",
+      "mots_cles": [
+        "herbs grow light"
+      ]
+    },
+    "tente": {
+      "source": "openverse",
+      "credit": "AtomicPunk23",
+      "licence": "CC BY 2.0",
+      "page": "https://www.flickr.com/photos/126763824@N06/15295962272",
+      "telechargement": "https://live.staticflickr.com/3851/15295962272_5c1fcaf394_b.jpg",
+      "alt": "Plants de tomates hauts et touffus sous un tube lumineux, sur une étagère métallique en intérieur",
+      "mots_cles": [
+        "tomato plants grow lights"
+      ]
+    }
+  }
+}

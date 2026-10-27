@@ -183,6 +183,24 @@ sommaireActif();
 menuMobile();
 lienEvitement();
 
+/**
+ * Actus de la veille (sections [data-actus] écrites au build) : module chargé à part, après
+ * l'affichage de la page, pour ne pas alourdir le calculateur. Rien en mode intégré.
+ */
+function actusDifferees(): void {
+  if (!document.querySelector('[data-actus]')) return;
+  const lancer = () => {
+    if (document.documentElement.classList.contains('integre')) return;
+    import('./veille.ts').then((m) => m.afficherActus()).catch(() => {
+      /* sans les actus, la page reste complète */
+    });
+  };
+  const apresChargement = () => ('requestIdleCallback' in window ? requestIdleCallback(lancer, { timeout: 2000 }) : setTimeout(lancer, 200));
+  if (document.readyState === 'complete') apresChargement();
+  else window.addEventListener('load', apresChargement, { once: true });
+}
+actusDifferees();
+
 /** Mode hors ligne : enregistre le service worker (site publié en HTTPS uniquement). */
 if (import.meta.env.PROD && 'serviceWorker' in navigator && location.protocol === 'https:') {
   window.addEventListener('load', () => {

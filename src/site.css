@@ -643,3 +643,64 @@ img, svg { max-width: 100%; }
 .top10__questions details p { margin: 0.6rem 0 0; line-height: 1.6; }
 .top10__note { margin-top: 2rem; font-size: 0.85rem; color: var(--attenue); }
 .top10__voir { margin: 0; padding-left: 1.2rem; line-height: 1.9; }
+
+/* ---------- Actus de la veille (src/veille.ts) ---------- */
+.actus[hidden], [data-actus-cadre][hidden], .actus__vide[hidden], .actus__maj[hidden] { display: none; }
+.integre .actus, .integre .actus-accueil { display: none !important; }
+.actus { min-width: 0; }
+.actus--fiche { margin-top: 2.5rem; }
+.actus--fiche .section__tete h2 { font-size: 1.3rem; }
+.actus-accueil { padding-top: 0; }
+.actus-page { padding-block: 2rem 3rem; }
+.actus__toutes { font-weight: 700; white-space: nowrap; }
+.actus__maj, .actus__vide { color: var(--attenue); font-size: 0.92rem; margin: 0 0 1.2rem; }
+.actus__liste { display: grid; gap: 1rem; min-width: 0; }
+.actus__vignettes { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; min-width: 0; }
+.actus__vignettes > li { display: flex; min-width: 0; }
+
+.actu {
+  display: flex; flex-direction: column; min-width: 0; width: 100%; overflow: hidden;
+  background: var(--carte); border: 1px solid var(--bordure); border-radius: var(--rayon-petit);
+}
+.actu__cadre { background: var(--nuit-2); }
+.actu__image { display: block; width: 100%; height: 100%; object-fit: cover; }
+.actu--une .actu__cadre { aspect-ratio: 16 / 9; }
+.actu__corps { display: flex; flex-direction: column; gap: 0.45rem; padding: 1rem 1.1rem 1.05rem; min-width: 0; flex: 1; }
+.actu__titre { margin: 0; font-size: clamp(1.15rem, 3.6vw, 1.45rem); line-height: 1.2; overflow-wrap: anywhere; }
+.actu--vignette .actu__titre { font-size: 1.05rem; }
+.actu__resume { margin: 0; color: var(--attenue); font-size: 0.95rem; line-height: 1.55; }
+.actu--vignette .actu__resume { font-size: 0.88rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.actu__source { margin: auto 0 0; padding-top: 0.2rem; font-size: 0.88rem; font-weight: 700; overflow-wrap: anywhere; }
+.actu__age { font-weight: 500; color: var(--attenue); }
+.actu__credit { margin: 0; font-size: 0.75rem; color: var(--attenue); overflow-wrap: anywhere; }
+.actu__credit a { color: inherit; }
+
+/* Vignette : image carrée à gauche, texte à droite. */
+.actu--vignette { flex-direction: row; gap: 0.9rem; padding: 0.75rem; }
+.actu--vignette .actu__cadre { flex: none; width: 5.5rem; aspect-ratio: 1; border-radius: 12px; overflow: hidden; align-self: flex-start; }
+.actu--vignette .actu__corps { padding: 0; gap: 0.35rem; }
+@media (min-width: 520px) { .actu--vignette .actu__cadre { width: 7rem; } }
+
+/* Accueil et fiches, grand écran : la une à gauche, les vignettes en colonne à droite. */
+@media (min-width: 900px) {
+  .actus:not(.actus--page) .actus__liste:not(.actus__liste--seule) { grid-template-columns: minmax(0, 11fr) minmax(0, 9fr); align-items: stretch; }
+  .actus:not(.actus--page) .actus__vignettes { grid-auto-rows: 1fr; }
+  .actus:not(.actus--page) .actus__liste--seule .actu--une { flex-direction: row; }
+  .actus:not(.actus--page) .actus__liste--seule .actu--une .actu__cadre { width: 55%; flex: none; }
+  /* Page Actus : la une en grand, image à gauche ; les vignettes sur deux colonnes. */
+  .actus--page .actu--une { flex-direction: row; }
+  .actus--page .actu--une .actu__cadre { width: 58%; flex: none; }
+  .actus--page .actu--une .actu__corps { padding: 1.5rem; justify-content: center; }
+  .actus--page .actus__vignettes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---------- Crédit des photos libres de droits (src/data/photos-libres.json) ---------- */
+.couverture-creditee { margin: 0; }
+.credit-photo { margin: 0.5rem 0.25rem 0; font-size: 0.78rem; color: var(--attenue); text-align: right; overflow-wrap: anywhere; }
+.credit-photo a { color: inherit; }
+.carte-guide__photo { position: relative; }
+/* Crédit d'une carte : en bas à droite de la photo (l'icône de la carte chevauche le bas à gauche). */
+.carte-guide__credit {
+  position: absolute; right: 0; bottom: 0; max-width: 70%; padding: 0.2rem 0.55rem; border-top-left-radius: 10px;
+  font-size: 0.7rem; line-height: 1.3; color: #f6ecf0; background: rgb(27 19 34 / 0.78); overflow-wrap: anywhere;
+}

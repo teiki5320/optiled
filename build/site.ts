@@ -27,6 +27,8 @@
  *   <!--#lampes-verifiees-le--> verifie_le au format AAAA-MM-JJ (utilisable dans date-modification)
  *   <!--#mention-affiliation--> mention obligatoire du Programme Partenaires Amazon
  *   <!--#mesure-audience--> phrase des mentions légales sur la mesure d'audience (active ou non)
+ *   <!--#actus:4-->         bloc d'actus de la veille, rempli dans le navigateur (build/veille.ts, src/veille.ts) ;
+ *                           <!--#actus:3:legume:tomate--> pour les actus d'une culture
  *
  * Les pages led-*.html, culture-*.html, glossaire.html et mentions-legales.html écrites avec le modèle d'article
  * (fil d'Ariane, <article class="prose"> avec h1, chapo et sommaire) reçoivent
@@ -54,8 +56,9 @@ import { insecables } from '../src/typo.ts';
 
 export { insecables };
 import { icone, logo, type NomIcone } from './icones.ts';
-import { CARTES_PREMIERE_RANGEE, photoGuide } from './photos.ts';
+import { CARTES_PREMIERE_RANGEE, creditCarte, legendePhoto, photoGuide, photoLibre } from './photos.ts';
 import { placerAnnonces, scriptAdsense } from './annonces.ts';
+import { entitesVeille, FICHIER_ACTUS, FICHIER_ENTITES, remplacerMarqueursActus } from './veille.ts';
 export { photoGuide };
 
 export const NOM_SITE = 'Kultiled';
@@ -73,6 +76,7 @@ export const NAVIGATION: { href: string; libelle: string; pages: RegExp }[] = [
   { href: 'culture.html', libelle: 'Culture', pages: /^(culture(-.*)?|debuter|tente)\.html$/ },
   { href: 'legumes.html', libelle: 'Légumes', pages: /^legumes?(-.*)?\.html$/ },
   { href: 'conseils.html', libelle: 'Conseils', pages: /^conseils?(-.*)?\.html$/ },
+  { href: FICHIER_ACTUS, libelle: 'Actus', pages: /^actus\.html$/ },
   { href: 'glossaire.html', libelle: 'Glossaire', pages: /^glossaire\.html$/ },
 ];
 
@@ -514,11 +518,11 @@ export function footer(): string {
       <a class="logo" href="index.html">${logo('-pied')}<span><strong>${NOM_SITE}</strong><small>LED &amp; culture indoor</small></span></a>
       <p>Guides et outils gratuits pour cultiver des légumes sous LED, en intérieur.</p>
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la <a href="glossaire.html#sources">littérature horticole</a> : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
-      <p class="site-pied__note">Photos (guides, conseils, cultures) et certains schémas des guides Culture générés par intelligence artificielle ; les autres schémas sont réalisés pour le site.</p>
+      <p class="site-pied__note">La plupart des photos (guides, conseils, cultures) et certains schémas des guides Culture sont générés par intelligence artificielle ; les autres photos sont libres de droits, avec leur auteur et leur licence sous l'image, et les autres schémas sont réalisés pour le site.</p>
       <p class="site-pied__note">Certains liens vers Amazon sont sponsorisés : en tant que Partenaire Amazon, l'éditeur réalise un bénéfice sur les achats remplissant les conditions requises.</p>
       <p class="site-pied__note"><a href="a-propos.html">À propos et méthode</a> · <a href="a-propos.html#contact">Contact</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="mentions-legales.html#donnees" data-gerer-cookies>Gérer les cookies</a></p>
     </div>
-    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes du mois</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li><li><a href="integrer.html">Intégrer le calculateur</a></li></ul>
+    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes du mois</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="${FICHIER_ACTUS}">Actus de la culture en intérieur</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li><li><a href="integrer.html">Intégrer le calculateur</a></li></ul>
       <h2 class="site-pied__sous-titre">Parcours</h2><ul>${PARCOURS.map((p) => `<li><a href="${p.fichier}">${p.titre}</a></li>`).join('')}</ul></div>
     ${colonne('led')}
     ${colonne('culture')}
@@ -531,7 +535,7 @@ export function cartesGuides(r: Rubrique): string {
   return `<div class="cartes-guides cartes-guides--${r}">${RUBRIQUES[r].guides
     .map(
       (g, i) => `<a class="carte-guide" href="${g.fichier}">
-      <span class="carte-guide__photo">${photoGuide(g.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw', i < CARTES_PREMIERE_RANGEE ? 'eager' : 'lazy', i === 0)}</span>
+      <span class="carte-guide__photo">${photoGuide(g.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw', i < CARTES_PREMIERE_RANGEE ? 'eager' : 'lazy', i === 0)}${creditCarte(g.fichier)}</span>
       <span class="carte-guide__icone">${icone(g.icone)}</span>
       <span class="carte-guide__num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
       <strong>${g.titre}</strong>
@@ -562,14 +566,12 @@ export function rendreConseilsLies(slugs: string[], date = dateDuJour()): string
   return `<ul class="liste-conseils">${liste.map((c) => `<li><a href="${c.fichier}">${echapper(c.titre)}</a></li>`).join('')}</ul>`;
 }
 
-/** Photos (déjà publiées) reprises sur les cartes des parcours : celles des guides les plus proches. */
-const PHOTOS_PARCOURS: Record<string, string> = { 'debuter.html': 'culture-demarrer.html', 'tente.html': 'culture-climat.html' };
 
 /** Cartes des pages de parcours (marqueur <!--#parcours-->, et accueil). */
 function cartesParcours(): string {
   return PARCOURS.map(
     (p) => `<a class="carte-guide" href="${p.fichier}">
-      <span class="carte-guide__photo">${photoGuide(PHOTOS_PARCOURS[p.fichier] ?? p.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw')}</span>
+      <span class="carte-guide__photo">${photoGuide(p.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw')}${creditCarte(p.fichier)}</span>
       <span class="carte-guide__icone">${icone(p.icone)}</span>
       <strong>${p.titre}</strong>
       <span>${p.resume}</span>
@@ -591,9 +593,14 @@ export function cartesOrientation(date = dateDuJour()): string {
 }
 
 /** Photo de couverture d'un guide, qui chevauche le bas du bandeau. */
-function couverture(g: Guide): string {
-  const img = photoGuide(g.fichier, g.photo, '(min-width: 1100px) 1040px, 94vw', 'eager');
-  return img ? `<div class="conteneur"><figure class="article__couverture">${img}</figure></div>` : '';
+function couverture(g: { fichier: string; photo?: string }): string {
+  const img = photoGuide(g.fichier, g.photo || photoLibre(g.fichier)?.alt || '', '(min-width: 1100px) 1040px, 94vw', 'eager');
+  const credit = legendePhoto(g.fichier);
+  if (!img) return '';
+  // Photo libre : le crédit va sous l'image, hors du cadre recadré.
+  return credit
+    ? `<div class="conteneur"><figure class="couverture-creditee"><div class="article__couverture">${img}</div>${credit}</figure></div>`
+    : `<div class="conteneur"><figure class="article__couverture">${img}</figure></div>`;
 }
 
 /** Photo de couverture d'un article de conseil, s'il en a une. */
@@ -667,7 +674,7 @@ export function mettreEnPageArticle(html: string, fichier: string): string {
       ${chapo.replace('class="chapo"', 'class="chapo bandeau__chapo"')}
     </div>
   </header>
-  ${guides[rang] ? couverture(guides[rang]) : couvertureConseil(fichier)}
+  ${guides[rang] ? couverture(guides[rang]) : parcours ? couverture(parcours) : couvertureConseil(fichier)}
   <div class="conteneur article__grille${sommaire ? '' : ' article__grille--seule'}">
     ${sommaire ? `<aside class="article__cote">${sommaire}</aside>` : ''}
     <article class="prose">${corps}${estPartageable(fichier) ? boutonPartage() : ''}</article>
@@ -838,6 +845,7 @@ export function transformerPage(html: string, fichier: string): string {
     .replace(/<!--#budget:([a-z-]+)-->/g, (_m, id: string) => rendreBudget(id))
     .replace('<!--#conseils-->', () => rendreListeConseils())
     .replace('<!--#orientation-->', () => cartesOrientation())
+    .replace(/<!--#actus:[^>]*-->/g, (m) => remplacerMarqueursActus(m))
     .replace('<!--#parcours-->', () => `<div class="cartes-guides cartes-orientation">${cartesParcours()}</div>`)
     .replace(/<!--#conseils-lies:([a-z0-9,\s-]+)-->/g, (_m, liste: string) => rendreConseilsLies(liste.split(',')))
     .replace('<!--#puissances-surfaces-->', () => rendrePuissancesSurfaces())
@@ -906,6 +914,8 @@ export function pluginSite(): Plugin {
         .filter((f) => !sourcePage(racine, f).includes('content="noindex"') && !(f in canoniquesTop10()));
       this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap(pages, SITE_URL, (f) => dateDerniereModification(f, sourcePage(racine, f))) });
       this.emitFile({ type: 'asset', fileName: FICHIER_FLUX, source: fluxRss() });
+      // Liste des cultures lue par la tâche de veille (jamais le chanvre).
+      this.emitFile({ type: 'asset', fileName: FICHIER_ENTITES, source: `${JSON.stringify(entitesVeille(), null, 2)}\n` });
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}sitemap.xml\n` });
     },
     closeBundle() {

@@ -11,7 +11,7 @@ Mis à jour le 27 octobre 2026. Compagnon de INFRA.md.
 - **Différenciation** (d'après le code) :
   - 26 cultures avec des valeurs sourcées (références listées dans le glossaire) ;
   - calcul complet dans le navigateur, sans compte, utilisable hors ligne (PWA) ; le site ne dépose lui-même aucun cookie (seuls ceux de la publicité Google, avec accord) ;
-  - 12 guides (6 sur les LED, dont 3 guides d'achat, et 6 sur la culture), 26 pages de cultures, une rubrique Conseils, un glossaire ;
+  - 12 guides (6 sur les LED, dont 3 guides d'achat, et 6 sur la culture), 26 pages de cultures, une rubrique Conseils, une page Actus mise à jour deux fois par jour (depuis le 27 octobre 2026), un glossaire ;
   - lien de partage des réglages et liste d'achat à copier ou imprimer ;
   - sélection de lampes du commerce reliée aux besoins calculés ;
   - neuf classements « Top 10 » (lampes, tentes, kits, ventilation, minuteurs, terreaux…), sans prix ni note affichés.
@@ -32,7 +32,7 @@ Mis à jour le 27 octobre 2026. Compagnon de INFRA.md.
 
 | Canal | Détail | Statut |
 |---|---|---|
-| Référencement naturel (base technique) | Sitemap (101 adresses le 27 octobre 2026) avec date de dernière modification réelle, robots.txt, adresses canoniques, Open Graph et Twitter Card avec images de partage 1200 × 630, données structurées schema.org sur toutes les pages | ✅ |
+| Référencement naturel (base technique) | Sitemap (102 adresses le 27 octobre 2026, avec la page Actus) avec date de dernière modification réelle, robots.txt, adresses canoniques, Open Graph et Twitter Card avec images de partage 1200 × 630, données structurées schema.org sur toutes les pages | ✅ |
 | IndexNow (Bing et autres moteurs) | Signalement automatique des pages chaque lundi (`.github/workflows/indexnow.yml`) | ✅ |
 | Flux RSS et Google Discover | `conseils.xml`, grandes images autorisées (`max-image-preview:large`) | ✅ |
 | Calculateur intégrable | `integrer.html` : code à coller pour les blogs, avec lien vers le site | ✅ prêt, aucun blog contacté |
@@ -40,6 +40,7 @@ Mis à jour le 27 octobre 2026. Compagnon de INFRA.md.
 | Guides d'achat | 3 guides (`led-puissance`, `led-comparer`, `led-semis`) avec tableaux calculés depuis les données du site, sans prix ni liens Amazon dans le texte | ✅ |
 | Pages « Top 10 » | 9 onglets de 10 produits avec liens Amazon (`top-10-<sujet>.html`), en ligne depuis le 19 octobre 2026 | ✅ |
 | Articles de conseil | Rubrique « Conseils » : 40 articles en ligne et 34 programmés jusqu'au 7 juin 2027 (33 jusqu'au 15 janvier 2027, puis un en juin), trois par semaine (lundi, mercredi, vendredi, publication automatique) ; rappel le 16 novembre 2026 pour préparer la série suivante | ✅ |
+| Actus (veille) | Actus de la culture en intérieur lues en direct depuis la veille du Studio (2 passages par jour) : 4 sur l'accueil, page `actus.html` (20), 3 sur chaque page culture concernée ; source et crédit de l'image toujours visibles ; en ligne depuis le 27 octobre 2026 | ✅ |
 | Pages détaillées par culture | 26 pages `legume-<id>.html` (lumière, exemple pour 1 m², lampes, climat, solution nutritive, récolte) | ✅ |
 | Partage par les visiteurs | Bouton « Partager » du calculateur (lien avec les réglages) | ✅ |
 | Installation sur mobile | Manifest et service worker (PWA) | ✅ |
@@ -75,7 +76,7 @@ Mis à jour le 27 octobre 2026. Compagnon de INFRA.md.
 
 ## Les 3 priorités
 
-- Réussir le changement de domaine dans Google : suivre dans Search Console l'indexation des 101 adresses sous kultiled.com et y signaler le déménagement depuis optiled.fr, avant la fin du contrat IONOS en novembre.
+- Réussir le changement de domaine dans Google : suivre dans Search Console l'indexation des 102 adresses sous kultiled.com et y signaler le déménagement depuis optiled.fr, avant la fin du contrat IONOS en novembre.
 - Ouvrir un premier canal d'audience : créer et brancher un compte Pinterest Kultiled, puis importer les 12 épingles déjà prêtes (`docs/pinterest.csv`).
 - Obtenir de premiers liens entrants : proposer le calculateur intégrable (`integrer.html`) à quelques blogs et forums de jardinage en intérieur, aucun n'ayant encore été contacté.
 

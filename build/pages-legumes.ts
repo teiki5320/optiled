@@ -4,6 +4,7 @@
  * Chaque page suit le modèle d'article (fil d'Ariane, h1, chapô, sommaire) pour recevoir
  * la même mise en page que les guides.
  */
+import { CULTURES_EXCLUES } from './veille.ts';
 import { calculer, calculerDli, longueurBarreConseillee, nombrePlants, type ResultatCalcul, type Surface } from '../src/calc.ts';
 import type { Legume, ParametresStade } from '../src/data.ts';
 import { arrondiPuissance } from '../src/liste.ts';
@@ -425,6 +426,7 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
         ${sections.map((s) => `<h2 id="${s.id}">${s.titre}</h2>\n        ${s.html}`).join('\n        ')}
         <p class="aide">Valeurs indicatives tirées de la littérature horticole (voir les <a href="glossaire.html#sources">sources</a>). Vérifiez l’intensité réelle avec un PAR-mètre.</p>
       </article>
+      ${CULTURES_EXCLUES.has(l.id) ? '' : `<!--#actus:3:legume:${l.id}-->`}
       ${
         voisines.length
           ? `<section class="voisines" aria-labelledby="voisines">
