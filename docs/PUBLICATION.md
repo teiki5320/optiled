@@ -17,7 +17,7 @@
 | Hébergement | [ok] GitHub Pages, publication automatique par GitHub Actions |
 | Domaine | [ok] www.kultiled.com (Cloudflare) depuis le 16 octobre 2026 |
 | SSL | [ok] certificat GitHub Pages, HTTPS forcé |
-| Indexation | [à faire] nouveau domaine à faire indexer, IndexNow chaque lundi |
+| Indexation | [ok] 96 pages sur 101 indexées (27 octobre 2026), IndexNow chaque lundi |
 | Mesure d'audience | [ok] Cloudflare Web Analytics, sans cookie |
 
 ## Ce qui reste, dans l'ordre
@@ -50,7 +50,7 @@
 
 - **Référencement** : sitemap (`sitemap.xml`, 102 adresses le 27 octobre 2026 avec la nouvelle page Actus) et `robots.txt` générés au build, adresses canoniques, balises Open Graph et Twitter Card avec une image de partage par page, données structurées schema.org sur toutes les pages.
 - **Google Search Console** : `kultiled.com` ajouté le 16 octobre 2026, comme dans Bing Webmaster Tools ; l'ancienne propriété `optiled.fr` y avait été vérifiée avant le changement de domaine (état actuel à vérifier dans la console).
-- **Pages indexées** : à vérifier dans la console pour le nouveau domaine (62 des 86 adresses sous `optiled.fr` au 12 octobre 2026).
+- **Pages indexées** : 96 des 101 adresses de kultiled.com, 4 encore inconnues de Google et 1 explorée non indexée (relevé du Studio, 27 octobre 2026) ; l'ancien `optiled.fr` en avait 62 sur 86 au 12 octobre 2026.
 - **IndexNow** : pages signalées chaque lundi à Bing et aux autres moteurs (dernier passage réussi le 26 octobre 2026).
 - **Analytics** : Cloudflare Web Analytics actif sur le site en ligne depuis le 12 octobre 2026 (sans cookie), décrit comme tel dans les mentions légales.
 - **Publicité** : Google AdSense en ligne depuis le 12 octobre 2026 (script, bandeau de consentement de Google, lien « Gérer les cookies », `ads.txt` constatés le 13 octobre 2026) ; examen du nouveau domaine demandé le 16 octobre 2026 ; l'ancien site `optiled.fr` a été supprimé du compte AdSense le 22 octobre 2026 ; diffusion des annonces à vérifier dans la console AdSense.

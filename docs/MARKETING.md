@@ -51,7 +51,7 @@ Mis à jour le 27 octobre 2026. Compagnon de INFRA.md.
 ## Mesures
 
 - **Visiteurs** : à vérifier dans la console Cloudflare Web Analytics (mesure active depuis le 12 octobre 2026)
-- **Pages indexées par Google** : à vérifier dans la console pour kultiled.com (62 sur 86 sous optiled.fr au 12 octobre 2026)
+- **Pages indexées par Google** : 96 sur 101 pour kultiled.com, 4 encore inconnues de Google et 1 explorée non indexée (relevé du Studio, 27 octobre 2026 ; le sitemap compte 102 adresses depuis la page Actus du même jour). L'ancien optiled.fr en avait 62 sur 86 au 12 octobre 2026.
 - **Clics vers Amazon** : à vérifier dans la console Partenaires Amazon
 - **Commissions Amazon** : à vérifier dans la console Partenaires Amazon
 - **Revenus publicitaires** : à vérifier dans la console AdSense
@@ -72,11 +72,12 @@ Mis à jour le 27 octobre 2026. Compagnon de INFRA.md.
 | 19 octobre 2026 | Pages « Top 10 » en ligne (9 onglets) et page « Les meilleures lampes LED de culture » |
 | 22 octobre 2026 | Ancien site `optiled.fr` supprimé du compte AdSense |
 | 16 novembre 2026 | Rappel : préparer la série suivante d'articles de conseil |
-| 15 janvier 2027 | Dernier article programmé de la série actuelle (hors un article en juin 2027) |
+| 15 janvier 2027 | Fin de la série régulière d'articles programmés (lundi, mercredi, vendredi) |
+| 7 juin 2027 | Dernier article programmé (article isolé, après la série) |
 
 ## Les 3 priorités
 
-- Réussir le changement de domaine dans Google : suivre dans Search Console l'indexation des 102 adresses sous kultiled.com et y signaler le déménagement depuis optiled.fr, avant la fin du contrat IONOS en novembre.
+- Réussir le changement de domaine dans Google : faire indexer les dernières adresses de kultiled.com (96 sur 101 au 27 octobre 2026) et y signaler le déménagement depuis optiled.fr, avant la fin du contrat IONOS en novembre.
 - Ouvrir un premier canal d'audience : créer et brancher un compte Pinterest Kultiled, puis importer les 12 épingles déjà prêtes (`docs/pinterest.csv`).
 - Obtenir de premiers liens entrants : proposer le calculateur intégrable (`integrer.html`) à quelques blogs et forums de jardinage en intérieur, aucun n'ayant encore été contacté.
 

@@ -15,7 +15,7 @@ Généré le 21 octobre 2026, mis à jour le 27 octobre 2026 par un scan du dép
 
 ## Parcours
 
-- 🌐 **Web** : 🐙 GitHub — main, CI au vert le 27 octobre [ok] → ⚙️ GitHub Actions — tests, build et test de bout en bout [ok] → 🏠 GitHub Pages — hébergement du site [ok] → 🔗 Nom de domaine — www.kultiled.com depuis le 16 octobre [ok] → 🔎 Google — nouveau domaine à faire indexer [à faire]
+- 🌐 **Web** : 🐙 GitHub — main, CI au vert le 27 octobre [ok] → ⚙️ GitHub Actions — tests, build et test de bout en bout [ok] → 🏠 GitHub Pages — hébergement du site [ok] → 🔗 Nom de domaine — www.kultiled.com depuis le 16 octobre [ok] → 🔎 Google — 96 pages sur 101 indexées au 27 octobre [ok]
 - 📝 **Contenu** : ✍️ Articles de conseil — 74 rédigés [ok] → ⏰ GitHub Actions — publication lundi, mercredi, vendredi [ok] → 📰 Rubrique Conseils — 40 en ligne, 34 programmés [ok] → 📌 Pinterest — 12 épingles prêtes, aucun compte [pas encore]
 - 🛒 **Affiliation** : 💡 Sélection de lampes — 16 lampes, une indisponible [ok] → 🔁 Routine de vérification — dernier passage le 27 octobre [ok] → 🏆 Top 10 — 9 onglets de 10 produits depuis le 19 octobre [ok] → 🛍️ Affiliation — liens Amazon.fr kultiledfr-21 [ok]
 - 📰 **Actus** : 🤖 Veille du Studio — 2 passages par jour, 12 h et 19 h [ok] → 🐙 Dépôt teiki5320/veille — fichier kultiled.json [ok] → 🌐 kultiled.com — accueil, page Actus et fiches des cultures, depuis le 27 octobre [ok]
