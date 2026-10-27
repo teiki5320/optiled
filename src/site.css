@@ -692,6 +692,8 @@ img, svg { max-width: 100%; }
   .actus--page .actu--une .actu__cadre { width: 58%; flex: none; }
   .actus--page .actu--une .actu__corps { padding: 1.5rem; justify-content: center; }
   .actus--page .actus__vignettes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Nombre impair : la dernière vignette, seule sur sa rangée, prend toute la ligne (jamais de case vide). */
+  .actus--page .actus__vignettes > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
 
 /* ---------- Crédit des photos libres de droits (src/data/photos-libres.json) ---------- */
