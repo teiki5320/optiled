@@ -53,11 +53,12 @@ describe('blocs d’actus', () => {
     expect(NAVIGATION.some((n) => n.href === 'actus.html')).toBe(true);
     expect(html.match(/<footer[\s\S]*<\/footer>/)?.[0]).toContain('href="actus.html"');
   });
-  it('chaque fiche culture (sauf le chanvre) a son bloc de 3 actus', () => {
-    for (const l of chargerLegumes().filter((x) => x.id !== 'chanvre-cbd')) {
-      expect(page(`legume-${l.id}.html`), l.id).toContain(`data-limite="3" data-tag="legume:${l.id}"`);
-    }
-  });
+  // Un test par fiche : chaque page générée prend du temps à construire (un seul test dépasserait le délai sur la CI).
+  for (const l of chargerLegumes().filter((x) => x.id !== 'chanvre-cbd')) {
+    it(`fiche ${l.id} : son bloc de 3 actus`, () => {
+      expect(page(`legume-${l.id}.html`)).toContain(`data-limite="3" data-tag="legume:${l.id}"`);
+    });
+  }
   it('aucun lien Amazon ni prix dans les blocs d’actus et sur la page Actus', () => {
     const html = page('actus.html');
     const main = html.match(/<main[\s\S]*<\/main>/)?.[0] ?? '';
