@@ -19,7 +19,7 @@ Généré le 21 octobre 2026, mis à jour le 27 octobre 2026 par un scan du dép
 - 📝 **Contenu** : ✍️ Articles de conseil — 74 rédigés [ok] → ⏰ GitHub Actions — publication lundi, mercredi, vendredi [ok] → 📰 Rubrique Conseils — 40 en ligne, 34 programmés [ok] → 📌 Pinterest — 12 épingles prêtes, aucun compte [pas encore]
 - 🛒 **Affiliation** : 💡 Sélection de lampes — 16 lampes, une indisponible [ok] → 🔁 Routine de vérification — dernier passage le 27 octobre [ok] → 🏆 Top 10 — 9 onglets de 10 produits depuis le 19 octobre [ok] → 🛍️ Affiliation — liens Amazon.fr kultiledfr-21 [ok]
 - 📰 **Actus** : 🤖 Veille du Studio — 2 passages par jour, 12 h et 19 h [ok] → 🐙 Dépôt teiki5320/veille — fichier kultiled.json [ok] → 🌐 kultiled.com — accueil, page Actus et fiches des cultures, depuis le 27 octobre [ok]
-- 📢 **Publicité** : 📰 Pages de lecture — deux emplacements au plus [ok] → 🍪 Consentement — bandeau de Google en ligne [ok] → 💰 AdSense (publicité web) — examen de kultiled.com demandé [à faire]
+- 📢 **Publicité** : 📰 Pages de lecture — deux emplacements au plus [ok] → 🍪 Consentement — bandeau de Google en ligne [ok] → 💰 AdSense (publicité web) — examen de kultiled.com demandé le 16 octobre, « En préparation » au 27 octobre [à faire]
 
 ## Vue d'ensemble
 
@@ -72,7 +72,7 @@ Généré le 21 octobre 2026, mis à jour le 27 octobre 2026 par un scan du dép
 ## Analytics (mesure d'usage)
 
 - **Rôle** : Cloudflare Web Analytics, mesure d'audience gratuite et sans cookie, **active sur le site en ligne** depuis la publication du 12 octobre 2026 (script `static.cloudflareinsights.com/beacon.min.js` présent sur les pages). Une seule source depuis le 12 octobre 2026 : le jeton du site, écrit dans le code (constante `JETON_MESURE_AUDIENCE`, `build/site.ts`), commande à la fois le script, ajouté au seul build de production, et la phrase des mentions légales, qui décrit la mesure (sans cookie, pages vues agrégées, adresse IP non conservée). L'ancienne variable de dépôt `CF_BEACON_TOKEN` a été retirée du code et du workflow. Le test de bout en bout (`scripts/e2e.mjs`) n'autorise que ce script et ceux de Google AdSense.
-- **Console** : https://dash.cloudflare.com → Analytics & Logs → Web Analytics (site créé pour `www.optiled.fr`, même jeton depuis le passage à `kultiled.com` : nom d'hôte à vérifier dans la console).
+- **Console** : https://dash.cloudflare.com → Analytics & Logs → Web Analytics (site créé pour `www.optiled.fr`, même jeton depuis le passage à `kultiled.com` ; dernier état connu, non revérifié le 27 octobre 2026 : nom d'hôte à vérifier dans la console).
 - **Identifiants publics** : jeton du site (32 caractères, visible dans les pages, non secret), dans `JETON_MESURE_AUDIENCE`.
 - **Secrets** : aucun.
 - **Coût** : gratuit.
@@ -80,7 +80,7 @@ Généré le 21 octobre 2026, mis à jour le 27 octobre 2026 par un scan du dép
 ## AdSense (publicité web)
 
 - **Rôle** : annonces display de Google dans les pages de lecture, ajoutées le 12 octobre 2026 (`build/annonces.ts`). Au plus deux par page (milieu et fin de l'article), signalées « Publicité », jamais dans le calculateur, le carnet de suivi ni les pages de lampes, jamais à côté d'un lien Amazon ; l'emplacement reste replié tant que Google ne fournit pas d'annonce. Le bandeau de consentement est celui de Google (Autoriser, Refuser, Gérer les options), rouvert par le lien « Gérer les cookies » du pied de page ; les mentions légales et la page « À propos » décrivent la publicité et ses cookies. Le calculateur intégré sur d'autres sites ne charge pas le code de Google. Script et `ads.txt` constatés en ligne le 13 octobre 2026 ; examen du nouveau domaine `kultiled.com` demandé le 16 octobre 2026 ; l'ancien site `optiled.fr` a été supprimé du compte AdSense le 22 octobre 2026. Identifiant d'éditeur `ca-pub-…` et `ads.txt` constatés en ligne sur kultiled.com le 27 octobre 2026.
-- **Console** : https://adsense.google.com (examen de `kultiled.com` et diffusion des annonces : à vérifier dans la console).
+- **Console** : https://adsense.google.com (examen de `kultiled.com` « En préparation » au 27 octobre 2026 ; la console y affiche encore `ads.txt` « Introuvable » alors que le fichier répond (200) : elle ne l'a pas revérifié).
 - **Identifiants publics** : identifiant d'éditeur (constante `CLIENT_ADSENSE`) et bloc d'annonces « Kultiled - articles » (constante `BLOC_ARTICLES`), dans `build/annonces.ts` ; ligne de déclaration dans `public/ads.txt`.
 - **Secrets** : aucun dans le dépôt ; compte et informations de paiement uniquement dans la console AdSense.
 - **Coût** : gratuit (Google prélève sa part sur les revenus).

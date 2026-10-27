@@ -24,8 +24,8 @@
 
 1. ✅ **Site en ligne** : www.kultiled.com publié par GitHub Pages, HTTPS forcé, anciennes adresses redirigées.
 2. ✅ **Revenus branchés** : affiliation Amazon et publicité AdSense en ligne, mentions légales à jour.
-3. **Validation AdSense** : obtenir l'accord de Google pour kultiled.com, examen demandé le 16 octobre.
-4. **Indexation complète** : faire entrer dans Google les 102 adresses du plan du site sous le nouveau domaine.
+3. **Validation AdSense** : obtenir l'accord de Google pour kultiled.com, examen demandé le 16 octobre, « En préparation » au 27 octobre 2026.
+4. **Indexation complète** : faire entrer dans Google les dernières adresses du nouveau domaine (96 sur 101 indexées au 27 octobre 2026) et signaler le changement d'adresse depuis la propriété optiled.fr (pas encore fait au 27 octobre 2026).
 
 ## Web · Production
 
@@ -49,9 +49,9 @@
 ## Visibilité
 
 - **Référencement** : sitemap (`sitemap.xml`, 102 adresses le 27 octobre 2026 avec la nouvelle page Actus) et `robots.txt` générés au build, adresses canoniques, balises Open Graph et Twitter Card avec une image de partage par page, données structurées schema.org sur toutes les pages.
-- **Google Search Console** : `kultiled.com` ajouté le 16 octobre 2026, comme dans Bing Webmaster Tools ; l'ancienne propriété `optiled.fr` y avait été vérifiée avant le changement de domaine (état actuel à vérifier dans la console).
+- **Google Search Console** : `kultiled.com` ajouté le 16 octobre 2026, comme dans Bing Webmaster Tools ; l'ancienne propriété `optiled.fr` y avait été vérifiée avant le changement de domaine ; le changement d'adresse vers kultiled.com n'y est pas encore signalé au 27 octobre 2026 (bouton « Valider et informer Google » toujours proposé).
 - **Pages indexées** : 96 des 101 adresses de kultiled.com, 4 encore inconnues de Google et 1 explorée non indexée (relevé du Studio, 27 octobre 2026) ; l'ancien `optiled.fr` en avait 62 sur 86 au 12 octobre 2026.
 - **IndexNow** : pages signalées chaque lundi à Bing et aux autres moteurs (dernier passage réussi le 26 octobre 2026).
 - **Analytics** : Cloudflare Web Analytics actif sur le site en ligne depuis le 12 octobre 2026 (sans cookie), décrit comme tel dans les mentions légales.
-- **Publicité** : Google AdSense en ligne depuis le 12 octobre 2026 (script, bandeau de consentement de Google, lien « Gérer les cookies », `ads.txt` constatés le 13 octobre 2026) ; examen du nouveau domaine demandé le 16 octobre 2026 ; l'ancien site `optiled.fr` a été supprimé du compte AdSense le 22 octobre 2026 ; diffusion des annonces à vérifier dans la console AdSense.
+- **Publicité** : Google AdSense en ligne depuis le 12 octobre 2026 (script, bandeau de consentement de Google, lien « Gérer les cookies », `ads.txt` constatés le 13 octobre 2026) ; examen du nouveau domaine demandé le 16 octobre 2026, « En préparation » au 27 octobre 2026 ; l'ancien site `optiled.fr` a été supprimé du compte AdSense le 22 octobre 2026 ; diffusion des annonces à vérifier dans la console AdSense.
 - **PWA** : installable sur mobile, consultable hors ligne.

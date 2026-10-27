@@ -19,7 +19,7 @@ Mis à jour le 27 octobre 2026. Compagnon de INFRA.md.
 ## Rémunération par phases
 
 - [fait] **Aujourd'hui** : site gratuit sans compte ; affiliation Amazon (16 lampes, identifiant `kultiledfr-21`, liens `rel="sponsored"`, mentions obligatoires) et publicité AdSense dans les pages de lecture.
-- [en cours] **Validation AdSense** : examen de kultiled.com demandé le 16 octobre 2026, réponse à suivre dans la console AdSense.
+- [en cours] **Validation AdSense** : examen de kultiled.com demandé le 16 octobre 2026, « En préparation » dans la console AdSense, ni validé ni refusé (vérifié le 27 octobre 2026).
 - **Affiliation élargie** : proposer aussi les autres achats de la liste (alimentation, programmateur, variateur…).
 
 ## Points forts
@@ -77,7 +77,7 @@ Mis à jour le 27 octobre 2026. Compagnon de INFRA.md.
 
 ## Les 3 priorités
 
-- Réussir le changement de domaine dans Google : faire indexer les dernières adresses de kultiled.com (96 sur 101 au 27 octobre 2026) et y signaler le déménagement depuis optiled.fr, avant la fin du contrat IONOS en novembre.
+- Réussir le changement de domaine dans Google : faire indexer les dernières adresses de kultiled.com (96 sur 101 au 27 octobre 2026) et signaler le déménagement depuis optiled.fr (outil « Changement d'adresse » de la propriété optiled.fr : pas encore fait au 27 octobre 2026, le bouton « Valider et informer Google » est toujours proposé), avant la fin du contrat IONOS en novembre.
 - Ouvrir un premier canal d'audience : créer et brancher un compte Pinterest Kultiled, puis importer les 12 épingles déjà prêtes (`docs/pinterest.csv`).
 - Obtenir de premiers liens entrants : proposer le calculateur intégrable (`integrer.html`) à quelques blogs et forums de jardinage en intérieur, aucun n'ayant encore été contacté.
 
