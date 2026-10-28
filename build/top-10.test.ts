@@ -28,14 +28,18 @@ describe('Top 10 à onglets', () => {
       expect(rangs, s.slug).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
       const liens = [...html.matchAll(/<a [^>]*amazon\.fr[^>]*>/g)].map(([l]) => l);
       expect(liens.length, s.slug).toBe(10);
+      for (const [i, p] of s.produits().entries()) expect(liens[i]).toContain(`aria-label="Voir sur Amazon : ${p.nom.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}, lien partenaire`);
       for (const l of liens) {
         expect(l).toContain('tag=kultiledfr-21');
-        expect(l).toContain('rel="sponsored noopener"');
+        expect(l).toContain('rel="sponsored nofollow noopener"');
+        // Le bouton dit pour quel produit il est.
+        expect(l).toMatch(/aria-label="Voir sur Amazon : [^"]+, lien partenaire \(nouvel onglet\)"/);
       }
       expect(html.match(/>Voir sur Amazon<\/a>/g)?.length).toBe(10);
       expect(html.match(/<p class="note-amazon">Lien partenaire Amazon\. Prix, disponibilité et vendeur sont indiqués sur Amazon\.<\/p>/g)?.length).toBe(10);
-      expect(html).toContain('En tant que Partenaire Amazon');
-      expect(html.indexOf('En tant que Partenaire Amazon')).toBeLessThan(html.indexOf('amazon.fr/dp/'));
+      // Pas d'encadré d'affiliation au-dessus de la liste : la ligne sous chaque bouton suffit (et le pied de page).
+      expect(html.indexOf('En tant que Partenaire Amazon')).toBeGreaterThan(html.lastIndexOf('amazon.fr/dp/'));
+      expect(html.match(/Voir sur Amazon<\/a>\s*<p class="note-amazon">Lien partenaire Amazon\./g)?.length).toBe(10);
       expect(html).toContain('<h2>Comment choisir</h2>');
       expect(html.match(/<details>/g)?.length).toBe(3);
     }

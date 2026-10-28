@@ -161,7 +161,8 @@ describe('pages des articles d’actus (build)', () => {
 
   it('page de secours : noindex, sans publicité, script dédié et fiches du site', () => {
     const html = transformerPage(sourcePage(racine, FICHIER_SECOURS), FICHIER_SECOURS);
-    expect(html).toContain('<meta name="robots" content="noindex" />');
+    expect(html.match(/<meta name="robots"/g)).toHaveLength(1);
+    expect(html).toContain('<meta name="robots" content="noindex, max-image-preview:large" />');
     expect(html).not.toContain('rel="canonical"');
     expect(html).not.toContain('adsbygoogle');
     expect(html).toContain('src="/src/article-secours.ts"');

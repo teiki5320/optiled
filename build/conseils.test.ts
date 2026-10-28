@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { aLireAussi, type Conseil, conseilsPublies, dateDuJour, lireConseil, pagesConseils, rendreListeConseils, sourcePageConseil, THEMES, tousLesConseils } from './conseils.ts';
 import { chargerLegumes } from './fiches.ts';
+import { CULTURES_EXCLUES } from './veille.ts';
 import { FICHIER_FLUX, sourcePage, toutesLesPages, transformerPage } from './site.ts';
 
 const racine = resolve(import.meta.dirname, '..');
@@ -68,27 +69,42 @@ describe('articles de conseil', () => {
     expect(html).toContain('<h1>Un titre complet et long</h1>');
   });
 
-  it('« À lire aussi » : même thème, les plus proches en date, avant comme après', () => {
+  it('« À lire aussi » en boucle : rangés par thème puis par date, chacun reçoit exactement 3 liens', () => {
     const faux = (slug: string, publieLe: string, theme: Conseil['theme']): Conseil => ({
       slug, fichier: `conseil-${slug}.html`, titre: slug, titrePage: slug, description: '', publieLe, theme, photo: '', cultures: [], corps: '',
     });
     const liste = [
+      faux('g', '2026-01-20', 'eau'),
       faux('a', '2026-01-05', 'lumiere'),
       faux('b', '2026-01-12', 'lumiere'),
       faux('c', '2026-01-19', 'lumiere'),
       faux('d', '2026-01-26', 'lumiere'),
       faux('e', '2026-02-02', 'lumiere'),
       faux('f', '2026-02-09', 'lumiere'),
-      faux('g', '2026-01-20', 'eau'),
     ];
-    const slugs = (c: Conseil) => aLireAussi(c, liste).map((v) => v.slug);
-    // Article du milieu : voisins d'avant et d'après, pas les trois plus récents.
-    expect(slugs(liste[2])).toEqual(['b', 'd', 'a']);
-    // Dernier article : les précédents du même thème.
-    expect(slugs(liste[5])).toEqual(['e', 'd', 'c']);
-    // Thème peu fourni : complété par les autres thèmes, eux aussi par proximité.
-    expect(slugs(liste[6])).toEqual(['c', 'd', 'b']);
+    const slugs = (slug: string) => aLireAussi(liste.find((c) => c.slug === slug)!, liste).map((v) => v.slug);
+    expect(slugs('c')).toEqual(['d', 'e', 'f']);
+    // Fin du thème : on passe au thème suivant, puis on repart au début.
+    expect(slugs('f')).toEqual(['g', 'a', 'b']);
+    expect(slugs('g')).toEqual(['a', 'b', 'c']);
+    const recus = new Map(liste.map((c) => [c.slug, 0]));
+    for (const c of liste) for (const v of aLireAussi(c, liste)) recus.set(v.slug, recus.get(v.slug)! + 1);
+    expect([...recus.values()].every((n) => n === 3)).toBe(true);
   });
+
+  it('chaque conseil publié et chaque fiche reçoivent au moins 3 liens « À lire aussi » d’autres pages', () => {
+    const recus = new Map<string, Set<string>>();
+    for (const page of Object.keys(toutesLesPages(racine)).map((n) => `${n}.html`)) {
+      const bloc = sourcePage(racine, page).match(/<h2 id="a-lire">À lire aussi<\/h2>([\s\S]*?)<\/section>/)?.[1] ?? '';
+      for (const [, cible] of bloc.matchAll(/href="([^"#?]+\.html)"/g)) if (cible !== page) recus.set(cible, (recus.get(cible) ?? new Set()).add(page));
+    }
+    const cibles = [
+      ...conseilsPublies().map((c) => c.fichier),
+      // Le chanvre n'est jamais mis en avant (voir CULTURES_EXCLUES).
+      ...chargerLegumes().filter((l) => !CULTURES_EXCLUES.has(l.id)).map((l) => `legume-${l.id}.html`),
+    ];
+    for (const f of cibles) expect(recus.get(f)?.size ?? 0, f).toBeGreaterThanOrEqual(3);
+  }, 60_000);
 
   it('les guides ne renvoient qu’à des articles déjà publiés', () => {
     const publies = new Set(conseilsPublies().map((c) => c.fichier));

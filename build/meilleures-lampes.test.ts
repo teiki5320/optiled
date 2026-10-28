@@ -20,10 +20,10 @@ describe('page « Meilleures lampes »', () => {
     expect(page).not.toMatch(/<!--#(mois-lampes|lampes-verifiees-le|meilleures-lampes|mention-affiliation)-->/);
   });
 
-  it('divulgation d’affiliation en haut de page, avant le premier lien Amazon', () => {
-    const divulgation = page.indexOf('Liens sponsorisés.');
-    expect(divulgation).toBeGreaterThan(0);
-    expect(divulgation).toBeLessThan(page.indexOf('amazon.fr/dp/'));
+  it('pas d’encadré d’affiliation en haut de page : la ligne sous chaque bouton suffit', () => {
+    expect(page).not.toContain('Liens sponsorisés.</strong>');
+    const boutons = [...page.matchAll(/<a [^>]*amazon\.fr\/dp\/[^>]*>Voir sur Amazon<\/a>\s*<p class="note-amazon">Lien partenaire Amazon\./g)];
+    expect(boutons.length).toBe(page.match(/amazon\.fr\/dp\//g)?.length);
     expect(page).toContain('En tant que Partenaire Amazon');
   });
 
@@ -43,7 +43,7 @@ describe('page « Meilleures lampes »', () => {
 
   it('liens Amazon sponsorisés, ni prix par produit ni note', () => {
     const html = rendreMeilleuresLampes();
-    for (const [lien] of html.matchAll(/<a [^>]*amazon\.fr[^>]*>/g)) expect(lien).toContain('rel="sponsored noopener"');
+    for (const [lien] of html.matchAll(/<a [^>]*amazon\.fr[^>]*>/g)) expect(lien).toContain('rel="sponsored nofollow noopener"');
     // Aucun montant dans les cartes des lampes (les fourchettes par gamme sont dans une section à part, sans lien).
     for (const [carte] of html.matchAll(/<div class="choix-lampe">[\s\S]*?<\/div>/g)) expect(carte).not.toMatch(/€/);
     expect(html).not.toContain('★');

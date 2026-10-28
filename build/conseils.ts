@@ -26,7 +26,7 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { chargerLegumes, echapper, pageDetaillee } from './fiches.ts';
+import { chargerLegumes, echapper, pageDetaillee, suivantsEnBoucle } from './fiches.ts';
 import { icone, type NomIcone } from './icones.ts';
 import { CARTES_PREMIERE_RANGEE, photoGuide } from './photos.ts';
 
@@ -113,21 +113,17 @@ export function dateLongue(iso: string): string {
   return new Date(Date.UTC(a, m - 1, j)).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 }
 
-/** Écart en jours entre deux dates AAAA-MM-JJ. */
-function ecartJours(a: string, b: string): number {
-  return Math.abs(Date.parse(a) - Date.parse(b)) / 86_400_000;
-}
-
 /**
- * Suggestions « À lire aussi » : d'abord les articles du même thème, puis les autres, en prenant
- * à chaque fois les plus proches en date (avant comme après), pour ne pas renvoyer toujours
- * vers les derniers parus. À écart égal, le plus ancien passe devant.
+ * Suggestions « À lire aussi », en boucle : les articles sont rangés par thème, puis par date de publication,
+ * et chacun renvoie vers les `nombre` suivants (le dernier repart au premier). Chaque article reçoit donc
+ * exactement `nombre` liens d'autres articles, presque toujours du même thème.
  */
 export function aLireAussi(c: Conseil, publies: Conseil[], nombre = 3): Conseil[] {
-  const proches = (liste: Conseil[]) =>
-    [...liste].sort((a, b) => ecartJours(a.publieLe, c.publieLe) - ecartJours(b.publieLe, c.publieLe) || a.publieLe.localeCompare(b.publieLe) || a.titre.localeCompare(b.titre, 'fr'));
-  const autres = publies.filter((v) => v.slug !== c.slug);
-  return [...proches(autres.filter((v) => v.theme === c.theme)), ...proches(autres.filter((v) => v.theme !== c.theme))].slice(0, nombre);
+  const ordreTheme = Object.keys(THEMES);
+  const ordre = [...publies].sort(
+    (a, b) => ordreTheme.indexOf(a.theme) - ordreTheme.indexOf(b.theme) || a.publieLe.localeCompare(b.publieLe) || a.slug.localeCompare(b.slug),
+  );
+  return suivantsEnBoucle(ordre, c, nombre, (x) => x.slug).filter((v) => v.slug !== c.slug);
 }
 
 /** Page complète (avec marqueurs) d'un article. `publies` sert aux suggestions de lecture. */

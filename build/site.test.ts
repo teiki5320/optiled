@@ -26,6 +26,10 @@ import {
   dateDerniereModification,
   tempsLecture,
   transformerPage,
+  couperTexte,
+  sourcePage,
+  titrePage,
+  toutesLesPages,
 } from './site.ts';
 
 const racine = resolve(import.meta.dirname, '..');
@@ -188,6 +192,16 @@ describe('référencement', () => {
     expect(h).toContain('"@type":"WebApplication"');
   });
 
+  it('max-image-preview:large sur toutes les pages, une seule balise robots (noindex compris)', () => {
+    const tete = (robots: string) => `<html><head>${robots}<!--#head--></head><body></body></html>`;
+    const indexee = transformerPage(tete(''), 'a-propos.html');
+    expect(indexee.match(/<meta name="robots"/g)).toHaveLength(1);
+    expect(indexee).toContain('<meta name="robots" content="max-image-preview:large" />');
+    const cachee = transformerPage(tete('<meta name="robots" content="noindex" />'), '404.html');
+    expect(cachee.match(/<meta name="robots"/g)).toHaveLength(1);
+    expect(cachee).toContain('<meta name="robots" content="noindex, max-image-preview:large" />');
+  });
+
   it('rien pour les pages non indexées ; échappement des guillemets', () => {
     expect(referencement(page('X', '<meta name="robots" content="noindex" />'), '404.html')).toBe('');
     expect(referencement(page('Le "calcul"'), 'legumes.html')).toContain('content="Le &quot;calcul&quot;"');
@@ -269,4 +283,29 @@ describe('images des articles programmés', () => {
     expect(avant.length).toBeGreaterThan(0);
     expect(avant.every((f) => /^images\/(guides|partage)\/conseil-/.test(f))).toBe(true);
   });
+});
+
+describe('titres de page', () => {
+  it('coupés proprement en fin de mot, « … » à la fin, 60 caractères au plus', () => {
+    expect(couperTexte('Court', 60)).toBe('Court');
+    const t = "Canada : des chercheurs doutent que les fermes verticales sauvent l'alimentation";
+    const c = couperTexte(t, 60);
+    expect(c.length).toBeLessThanOrEqual(60);
+    expect(c).toBe('Canada : des chercheurs doutent que les fermes verticales…');
+    expect(t.startsWith(c.slice(0, -1))).toBe(true);
+    expect(titrePage('Top 10 des tentes de culture — Kultiled')).toBe('Top 10 des tentes de culture — Kultiled');
+    // Trop long avec le nom du site : le titre seul, coupé si besoin.
+    expect(titrePage(`${'mot '.repeat(14)}fin — Kultiled`)).toBe(`${'mot '.repeat(14)}fin`);
+  });
+
+  it('toutes les pages du site ont un <title> de 60 caractères au plus, qui finit sur un mot entier', () => {
+    for (const nom of Object.keys(toutesLesPages(racine))) {
+      const fichier = `${nom}.html`;
+      const html = transformerPage(sourcePage(racine, fichier), fichier);
+      const titre = decoderEntites(html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '');
+      if (!titre) continue;
+      expect(titre.length, fichier).toBeLessThanOrEqual(60);
+      expect(titre, fichier).not.toMatch(/[\s,;:–—-]…?$/);
+    }
+  }, 60_000);
 });

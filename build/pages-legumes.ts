@@ -10,7 +10,7 @@ import type { Legume, ParametresStade } from '../src/data.ts';
 import { arrondiPuissance } from '../src/liste.ts';
 import { boutonAmazon, imageLampe, lampesConseillees, lienAmazon, MENTION_AFFILIATION, type Proposition } from '../src/lampes.ts';
 import { conseilsDeLaCulture, dateDuJour, THEMES } from './conseils.ts';
-import { badgeDifficulte, chargerLegumes, DEPART_RECOLTE, delaiRecolte, echapper, libellesFloraison, miniature, slug, stadeLePlusExigeant } from './fiches.ts';
+import { badgeDifficulte, chargerLegumes, DEPART_RECOLTE, delaiRecolte, echapper, libellesFloraison, miniature, slug, stadeLePlusExigeant, suivantsEnBoucle } from './fiches.ts';
 
 export { libellesFloraison, stadeLePlusExigeant };
 
@@ -281,6 +281,8 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
   const questions = conseilsDeLaCulture(l.id, date);
 
   const voisines = legumes.filter((v) => v.famille === l.famille && v.id !== l.id);
+  // « À lire aussi » en boucle : les 3 fiches qui suivent dans la liste (le chanvre n'y figure jamais).
+  const aLire = suivantsEnBoucle(legumes.filter((v) => !CULTURES_EXCLUES.has(v.id)), l, 3, (v) => v.id).filter((v) => v.id !== l.id);
 
   const sections: { id: string; titre: string; html: string }[] = [
     {
@@ -435,6 +437,10 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
       </section>`
           : ''
       }
+      <section class="voisines" aria-labelledby="a-lire">
+        <h2 id="a-lire">À lire aussi</h2>
+        <nav class="suite suite--familles">${aLire.map((v) => `<a href="${fichierLegume(v.id)}"><small>${echapper(v.famille)}</small>${echapper(v.nom)}</a>`).join('')}</nav>
+      </section>
     </main>
     <!--#footer-->
     <script type="module" src="/src/site.ts"></script>

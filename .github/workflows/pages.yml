@@ -23,6 +23,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -37,6 +39,13 @@ jobs:
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      # Repère propre à cette publication : la tâche « deploy » vérifie ensuite que www.kultiled.com le sert bien.
+      - name: Marquer la version publiée
+        id: version
+        run: |
+          version="${GITHUB_SHA} ${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          echo "$version" > dist/version.txt
+          echo "version=$version" >> "$GITHUB_OUTPUT"
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
@@ -48,9 +57,49 @@ jobs:
     permissions:
       pages: write
       id-token: write
+      # Pour réactiver la tâche programmée (dernière étape).
+      actions: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+      # Le site en ligne doit servir la version qui vient d'être publiée (jusqu'à 3 minutes d'attente).
+      - name: Vérifier que www.kultiled.com sert la nouvelle version
+        env:
+          ATTENDU: ${{ needs.build.outputs.version }}
+        run: |
+          servi=""
+          for i in $(seq 1 18); do
+            servi="$(curl -fsS -H 'Cache-Control: no-cache' "https://www.kultiled.com/version.txt?v=${GITHUB_RUN_ID}-${i}" || true)"
+            if [ "$servi" = "$ATTENDU" ]; then
+              echo "www.kultiled.com sert bien la version $ATTENDU"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::www.kultiled.com ne sert pas la nouvelle version (attendu « $ATTENDU », reçu « $servi »)."
+          exit 1
+
+      # GitHub coupe les tâches programmées d'un dépôt public après 60 jours sans activité :
+      # chaque publication programmée réactive la tâche, pour que les articles continuent de paraître.
+      - name: Garder la publication programmée active
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/pages.yml/enable"
+
+  # Après chaque publication réussie (envoi sur main, passages programmés ou à la demande), une fois la
+  # nouvelle version en ligne : signale les pages à Bing via IndexNow. Le passage du lundi (indexnow.yml) reste.
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      # Le script lit le sitemap publié : il n'a besoin d'aucune dépendance.
+      - run: node scripts/indexnow.mjs

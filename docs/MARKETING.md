@@ -18,7 +18,7 @@ Mis à jour le 28 octobre 2026. Compagnon de INFRA.md.
 
 ## Rémunération par phases
 
-- [fait] **Aujourd'hui** : site gratuit sans compte ; affiliation Amazon (16 lampes, identifiant `kultiledfr-21`, liens `rel="sponsored"`, mentions obligatoires) et publicité AdSense dans les pages de lecture.
+- [fait] **Aujourd'hui** : site gratuit sans compte ; affiliation Amazon (16 lampes, identifiant `kultiledfr-21`, liens `rel="sponsored nofollow noopener"`, ligne « Lien partenaire Amazon » sous chaque bouton, mention dans le pied de page et les mentions légales ; plus d'encadré en haut des pages depuis le 28 octobre 2026) et publicité AdSense dans les pages de lecture.
 - [en cours] **Validation AdSense** : examen de kultiled.com demandé le 16 octobre 2026, « En préparation » dans la console AdSense, ni validé ni refusé (vérifié le 28 octobre 2026).
 - **Affiliation élargie** : proposer aussi les autres achats de la liste (alimentation, programmateur, variateur…).
 
@@ -33,8 +33,8 @@ Mis à jour le 28 octobre 2026. Compagnon de INFRA.md.
 | Canal | Détail | Statut |
 |---|---|---|
 | Référencement naturel (base technique) | Sitemap (102 adresses le 27 octobre 2026 avec la page Actus ; 107 le 28 octobre 2026 avec les 4 premiers articles d'actus et le 41e conseil, puis de plus en plus) avec date de dernière modification réelle, robots.txt, adresses canoniques, Open Graph et Twitter Card avec images de partage 1200 × 630, données structurées schema.org sur toutes les pages | ✅ |
-| IndexNow (Bing et autres moteurs) | Signalement automatique des pages chaque lundi (`.github/workflows/indexnow.yml`) | ✅ |
-| Flux RSS et Google Discover | `conseils.xml`, grandes images autorisées (`max-image-preview:large`) | ✅ |
+| IndexNow (Bing et autres moteurs) | Signalement automatique des pages après chaque publication (depuis le 28 octobre 2026) et chaque lundi (`.github/workflows/indexnow.yml`) | ✅ |
+| Flux RSS et Google Discover | `conseils.xml`, grandes images autorisées (`max-image-preview:large`, sur toutes les pages, une seule balise robots par page depuis le 28 octobre 2026) | ✅ |
 | Calculateur intégrable | `integrer.html` : code à coller pour les blogs, avec lien vers le site | ✅ prêt, aucun blog contacté |
 | Google Search Console et Bing | `kultiled.com` ajouté le 16 octobre 2026 dans les deux consoles ; l'ancienne propriété `optiled.fr` y avait été vérifiée avant le changement de domaine du 16 octobre 2026 | ✅ |
 | Guides d'achat | 3 guides (`led-puissance`, `led-comparer`, `led-semis`) avec tableaux calculés depuis les données du site, sans prix ni liens Amazon dans le texte | ✅ |

@@ -172,15 +172,22 @@ export function rubriqueDe(fichier: string): Rubrique | null {
   return null;
 }
 
-/** Icônes publiées dans public/ (générées par scripts/icones-marque.mjs) : adresses réelles, utilisables par les moteurs de recherche. */
-export function head(): string {
+/** Balise robots d'une page non indexée : une seule balise, avec la grande image autorisée (comme keurdeco.com). */
+const ROBOTS_SOURCE_NOINDEX = '<meta name="robots" content="noindex" />';
+export const ROBOTS_NOINDEX = '<meta name="robots" content="noindex, max-image-preview:large" />';
+
+/**
+ * Début commun du <head>. Icônes publiées dans public/ (générées par scripts/icones-marque.mjs) : adresses réelles,
+ * utilisables par les moteurs de recherche. Grande image autorisée (« max-image-preview:large ») ; une page noindex
+ * garde sa propre balise robots, complétée par transformerPage.
+ */
+export function head(noindex = false): string {
   return `<link rel="icon" href="icones/favicon-96.png" sizes="96x96" type="image/png" />
     <link rel="icon" href="favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="icones/apple-touch-icon.png" />
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title="Conseils Kultiled" href="${FICHIER_FLUX}" />
-    <meta name="robots" content="max-image-preview:large" />
-    <meta name="theme-color" content="#1b1322" />`;
+    ${noindex ? '' : '<meta name="robots" content="max-image-preview:large" />\n    '}<meta name="theme-color" content="#1b1322" />`;
 }
 
 const DOSSIER_PARTAGE = resolve(import.meta.dirname, '../public/images/partage');
@@ -200,6 +207,29 @@ export function decoderEntites(s: string): string {
     if (dec) return String.fromCodePoint(Number(dec));
     if (hex) return String.fromCodePoint(parseInt(hex, 16));
     return nommees[nom!.toLowerCase()] ?? m;
+  });
+}
+
+/** Coupe un texte trop long au dernier mot entier et ajoute « … » (au plus `max` caractères), comme keurdeco.com. */
+export function couperTexte(texte: string, max: number): string {
+  if (texte.length <= max) return texte;
+  const coupe = texte.slice(0, max - 1);
+  const espace = coupe.search(/[\s\u00a0\u202f][^\s\u00a0\u202f]*$/);
+  return `${(espace > max / 2 ? coupe.slice(0, espace) : coupe).replace(/[\s\u00a0\u202f,;:.!?«»–—-]+$/, '')}…`;
+}
+
+/** Balise <title> d'au plus 60 caractères : « titre — Kultiled » si cela tient, sinon le titre seul, coupé en fin de mot. */
+export function titrePage(titre: string): string {
+  if (titre.length <= 60) return titre;
+  return couperTexte(titre.replace(/ — Kultiled$/, ''), 60);
+}
+
+/** Applique titrePage à la balise <title> d'une page (texte décodé pour compter les vrais caractères). */
+function titreCourt(page: string): string {
+  return page.replace(/<title>([^<]*)<\/title>/, (m, t: string) => {
+    const texte = decoderEntites(t);
+    const court = titrePage(texte);
+    return court === texte ? m : `<title>${court.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</title>`;
   });
 }
 
@@ -881,14 +911,15 @@ export function transformerPage(html: string, fichier: string): string {
     .replace(/<div class="tableau-defile">/g, () => `<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau ${++numeroTableau} (faire défiler horizontalement)">`)
     // La 404 peut être servie sous n'importe quel chemin : liens résolus depuis la racine du site.
     .replace('<!--#head-->', `${base}<!--#head-->\n    ${referencement(html, fichier)}`)
-    .replace('<!--#head-->', head())
+    .replace('<!--#head-->', head(html.includes(ROBOTS_SOURCE_NOINDEX)))
+    .replace(ROBOTS_SOURCE_NOINDEX, ROBOTS_NOINDEX)
     .replace('<!--#header-->', header(fichier))
     .replace('<!--#footer-->', footer())
     .replace('<!--#fiches-->', () => rendreFiches())
     .replace(/<!--#cartes:(led|culture)-->/g, (_m, r: Rubrique) => cartesGuides(r))
     .replace(/<!--#icone:([a-z]+)-->/g, (_m, nom: NomIcone) => icone(nom));
   // Pages rangées dans un sous-dossier (actus/<slug>/) : liens relatifs ramenés à la racine du site.
-  return reecrireLiensRelatifs(insecables(placerAnnonces(page, fichier)), prefixeRelatif(fichier));
+  return reecrireLiensRelatifs(titreCourt(insecables(placerAnnonces(page, fichier))), prefixeRelatif(fichier));
 }
 
 /** Images (photo et partage) des articles de conseil pas encore publiés, chemins relatifs au dossier de sortie. */

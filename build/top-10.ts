@@ -6,7 +6,7 @@
  * Uniquement des produits et des chiffres de src/data/lampes.json ; ni prix, ni note.
  * Pas de filtre, de tri ni de comparateur : une liste numérotée, c'est tout.
  */
-import { boutonAmazon, imageLampe, LAMPES, LAMPES_VERIFIEES_LE, lampesConseillees, lienAmazon, lienAmazonAsin, MENTION_AFFILIATION, type Lampe } from '../src/lampes.ts';
+import { boutonAmazon, imageLampe, LAMPES, LAMPES_VERIFIEES_LE, lampesConseillees, lienAmazon, lienAmazonAsin, type Lampe } from '../src/lampes.ts';
 import brutTentes from '../src/data/tentes.json' with { type: 'json' };
 import brutKits from '../src/data/top-10/kits-complets.json' with { type: 'json' };
 import brutHydro from '../src/data/top-10/kits-hydroponiques.json' with { type: 'json' };
@@ -665,7 +665,7 @@ export function sourcePageTop10(s: Sujet): string {
           <h1>${s.titre}</h1>
           <p class="top10__intro">${s.intro}</p>
           <p class="top10__intro">${phraseEnTete(s, produits[0])}</p>
-          <p class="top10__mention"><strong>Liens sponsorisés.</strong> ${MENTION_AFFILIATION} Ni prix ni note ne sont affichés : ils sont sur la page de chaque produit. Sélection vérifiée le <time datetime="${s.verifieLe}">${dateLongue(s.verifieLe)}</time>.</p>
+          <p class="top10__mention">Ni prix ni note ne sont affichés : ils sont sur la page de chaque produit. Sélection vérifiée le <time datetime="${s.verifieLe}">${dateLongue(s.verifieLe)}</time>.</p>
         </header>
         <ol class="top10__liste">
         ${produits.map(carte).join('\n        ')}

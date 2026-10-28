@@ -44,7 +44,7 @@ const attribut = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').r
  * Partout le même texte (calculateur, lampes, meilleures lampes, fiches cultures, Top 10).
  */
 export function boutonAmazon(lien: string, nom: string, illustre: boolean, classe = 'bouton'): string {
-  return `<a class="${classe}" href="${lien}" target="_blank" rel="sponsored noopener" aria-label="Voir sur Amazon : ${attribut(nom)}, lien partenaire (nouvel onglet)">Voir sur Amazon</a>
+  return `<a class="${classe}" href="${lien}" target="_blank" rel="sponsored nofollow noopener" aria-label="Voir sur Amazon : ${attribut(nom)}, lien partenaire (nouvel onglet)">Voir sur Amazon</a>
   <p class="note-amazon">${NOTE_LIEN_AMAZON}</p>${illustre ? `\n  <p class="note-amazon">${NOTE_ILLUSTRATION_IA}</p>` : ''}`;
 }
 

@@ -10,6 +10,16 @@ export const pageDetaillee = (id: string) => `legume-${id}.html`;
 
 const FICHIER = resolve(import.meta.dirname, '../src/data/legumes.json');
 
+/**
+ * Les `n` éléments qui suivent `courant` dans `liste`, en repartant du début après le dernier (comme keurdeco.com) :
+ * chaque élément reçoit ainsi exactement `n` liens, de ses `n` prédécesseurs. `cle` reconnaît `courant` dans la liste.
+ */
+export function suivantsEnBoucle<T>(liste: T[], courant: T, n: number, cle: (x: T) => unknown = (x) => x): T[] {
+  const i = liste.findIndex((x) => cle(x) === cle(courant));
+  const autres = i < 0 ? liste : [...liste.slice(i + 1), ...liste.slice(0, i)];
+  return autres.slice(0, n);
+}
+
 export function echapper(s: string): string {
   return s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 }

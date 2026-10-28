@@ -42,7 +42,7 @@ Node.js 22.12 ou plus récent est requis (Vite 8 et Vitest 5).
 | Fichier | Rôle |
 | --- | --- |
 | `*.html` (racine) | Une page du site chacune (détectées automatiquement par le build) |
-| `build/site.ts` | Plugin Vite : en-tête, menu, pied de page, cartes de guides, mise en page automatique des articles (bandeau, sommaire latéral, temps de lecture), espaces insécables de la typographie française ; génère `sitemap.xml` et `robots.txt` |
+| `build/site.ts` | Plugin Vite : balise `<title>` de 60 caractères au plus (`titrePage`, coupée en fin de mot par `couperTexte`), une seule balise robots par page avec `max-image-preview:large` (noindex compris), en-tête, menu, pied de page, cartes de guides, mise en page automatique des articles (bandeau, sommaire latéral, temps de lecture), espaces insécables de la typographie française ; génère `sitemap.xml` et `robots.txt` |
 | `build/icones.ts` | Icônes SVG et logo |
 | `build/fiches.ts` | Génération HTML des fiches légumes et du tableau des températures (guide climat) |
 | `build/pages-legumes.ts` | Pages détaillées des cultures (`legume-<id>.html`) ; pas de liens d'achat pour une culture qui a un `avertissement` |
@@ -76,7 +76,7 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 ## Lampes conseillées (Amazon)
 
 - `src/data/lampes.json` : sélection de lampes vendues sur Amazon.fr (note ≥ 4 étoiles), avec ASIN, puissance, PPF (publié ou estimé = puissance × efficacité annoncée), surface couverte, variateur, date de vérification (`verifie_le`) ; la note Amazon est vérifiée à la main chaque mois mais n'est ni enregistrée ni publiée. Une lampe sans PPF exploitable (`ppf: null`) n'apparaît que dans « Autres modèles populaires ».
-- `src/lampes.ts` : identifiant Partenaires Amazon (`TAG_AMAZON`, à changer à un seul endroit), liens `amazon.fr/dp/<ASIN>?tag=…` (`rel="sponsored"`), et choix des lampes qui conviennent (`lampesConseillees` : assez de PPF, au moins 80 % de la surface couverte, au plus 6 lampes, au plus 2,5 fois le besoin).
+- `src/lampes.ts` : identifiant Partenaires Amazon (`TAG_AMAZON`, à changer à un seul endroit), liens `amazon.fr/dp/<ASIN>?tag=…` (`rel="sponsored nofollow noopener"`, bouton `boutonAmazon` nommé « Voir sur Amazon : <nom>, lien partenaire (nouvel onglet) »), et choix des lampes qui conviennent (`lampesConseillees` : assez de PPF, au moins 80 % de la surface couverte, au plus 6 lampes, au plus 2,5 fois le besoin).
 - `lampes.html` + `build/lampes.ts` (marqueur `<!--#lampes-->`) : page de la sélection, groupée par format.
 - Aucun prix par produit (ils changent en permanence) ; seules des fourchettes par gamme sont publiées (`src/data/budget.json`). À revérifier chaque mois : note, disponibilité, chiffres, fourchettes ; mettre à jour `verifie_le` et `releve_le`.
 - La mention obligatoire « En tant que Partenaire Amazon… » figure près des liens, dans le pied de page et dans les mentions légales.
@@ -96,13 +96,13 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 
 - Le mois et l'année viennent de `verifie_le` de `lampes.json` (marqueurs `<!--#mois-lampes-->` dans le `<title>` et le `h1`, `<!--#lampes-verifiees-le-->` dans `date-modification`, donc `dateModified`) : mettre à jour `verifie_le` suffit à changer le titre.
 - Besoins (`BESOINS`) : semis et micro-pousses sur étagère, étagère de salades et d'aromatiques (60 × 30 cm), tentes de 60 × 60, 80 × 80 et 100 × 100 cm (légumes fruits en fructification). Pour chacun, `lampesConseillees` (mêmes règles que le calculateur) donne le choix recommandé et une alternative, avec efficacité, PPF, PPFD moyen sur la surface et consommation. Une lampe sans PPF ou indisponible n'est jamais recommandée.
-- Divulgation d'affiliation en haut de page, liens « Voir sur Amazon » en `rel="sponsored noopener"`, méthode publiée, aucun prix par produit ni note.
+- Ligne « Lien partenaire Amazon… » sous chaque bouton « Voir sur Amazon » (en `rel="sponsored nofollow noopener"`), mention dans le pied de page et les mentions légales ; plus d'encadré d'affiliation en haut des pages depuis le 28 octobre 2026. Méthode publiée, aucun prix par produit ni note.
 - Liens : menu Lampes (entrée active), encadré en haut de `lampes.html`, pied de page, sitemap (automatique), `debuter.html`, `tente.html`, `led-choisir.html`.
 
 ## Articles de conseil
 
 - Un article = un fichier `contenu/conseils/<slug>.html` : un commentaire d'en-tête (`titre`, `description` de 70 à 180 caractères, `publie_le` au format AAAA-MM-JJ, `theme` parmi `lumiere`, `cultures`, `eau`, `installation`), puis le corps en HTML qui commence par `<p class="chapo">` (la réponse courte) et contient des `<h2 id="…">` (le sommaire est construit automatiquement).
-- `build/conseils.ts` ne construit que les articles dont la date est passée (date du jour à Paris) : page `conseil-<slug>.html`, liste de `conseils.html` (marqueur `<!--#conseils-->`), sitemap, suggestions « À lire aussi ». Les articles programmés restent dans le dépôt sans être publiés.
+- `build/conseils.ts` ne construit que les articles dont la date est passée (date du jour à Paris) : page `conseil-<slug>.html`, liste de `conseils.html` (marqueur `<!--#conseils-->`), sitemap, suggestions « À lire aussi » en boucle (articles rangés par thème puis par date, chacun renvoie vers les 3 suivants : chacun reçoit donc 3 liens ; les fiches cultures font de même, sans le chanvre). Les articles programmés restent dans le dépôt sans être publiés.
 - Publication automatique : le workflow GitHub Pages se relance chaque lundi, mercredi et vendredi à 5 h UTC ; il suffit donc de dater les articles d’un de ces jours.
 - Prévisualiser le site à une date future : `DATE_PUBLICATION=2027-01-04 npm run build`.
 - Les tests vérifient l'en-tête de chaque article et ses liens internes tels qu'ils seront à sa date de publication (un article ne peut renvoyer qu'à un article publié avant lui).
@@ -220,7 +220,7 @@ La consommation est calculée sur la puissance nécessaire (barres gradées à l
 - Chaque page reçoit une adresse canonique, des balises de partage (Open Graph : image `public/images/partage/<page>.jpg`, 1200 × 630) et, pour l'accueil et les guides, des données structurées schema.org (`build/site.ts`, fonction `referencement`).
 - Le site est installable et consultable hors ligne (`public/manifest.webmanifest`, `public/sw.js`) ; changez `VERSION` dans `sw.js` pour forcer le renouvellement du cache.
 - Mesure d'audience gratuite et sans cookie (Cloudflare Web Analytics) : le jeton public du site est écrit dans `build/site.ts` (constante `JETON_MESURE_AUDIENCE`). Il commande à la fois le script ajouté au site publié (`npm run build`, pas en développement) et la phrase des mentions légales ; vider le jeton retire les deux.
-- IndexNow (Bing, Yandex, Seznam…) : `scripts/indexnow.mjs` lit le sitemap publié et signale toutes ses adresses à https://api.indexnow.org. La clé (publique) est dans le script et dans `public/<clé>.txt`. Le workflow `indexnow.yml` le lance chaque lundi à 7 h UTC, après la publication, et à la demande (onglet Actions → « Signaler les pages (IndexNow) » → Run workflow) ; en local : `npm run indexnow`.
+- IndexNow (Bing, Yandex, Seznam…) : `scripts/indexnow.mjs` lit le sitemap publié et signale toutes ses adresses à https://api.indexnow.org. La clé (publique) est dans le script et dans `public/<clé>.txt`. Le workflow `pages.yml` le lance après chaque publication réussie (depuis le 28 octobre 2026), et `indexnow.yml` chaque lundi à 7 h UTC et à la demande (onglet Actions → « Signaler les pages (IndexNow) » → Run workflow) ; en local : `npm run indexnow`.
 - Flux RSS des 20 derniers conseils publiés : `conseils.xml`, généré au build (`fluxRss`), annoncé dans le `<head>` de chaque page.
 - Calculateur intégrable sur d'autres sites : `index.html?integre=1` (sans en-tête, pied de page ni liens Amazon, liens en nouvel onglet ; `src/integre.ts`). Code à copier sur `integrer.html`.
 - Mentions légales : `mentions-legales.html`. Éditeur : ALOHASH (SAS, nom commercial TOA CORP), avec siège, RCS, TVA, directeur de la publication (désigné par sa fonction) et e-mail de contact. Si le site change d'hébergeur, mettez à jour la rubrique Hébergeur.
@@ -237,4 +237,4 @@ Le domaine `kultiled.com` est acheté chez Cloudflare depuis le 16 octobre 2026 
 
 ## Mise en ligne
 
-Il n'y a rien à envoyer à la main : le workflow `.github/workflows/pages.yml` publie le site sur GitHub Pages à chaque envoi sur `main`, chaque lundi, mercredi et vendredi à 5 h UTC pour les articles de conseil programmés, et chaque jour à 11 h 50 et 18 h 50 UTC pour les pages des articles d'actus. Il lance d'abord les tests unitaires, le build et le test de bout en bout ; si l'un d'eux échoue, rien n'est mis en ligne. Le suivi se fait dans l'onglet *Actions* du dépôt.
+Il n'y a rien à envoyer à la main : le workflow `.github/workflows/pages.yml` publie le site sur GitHub Pages à chaque envoi sur `main`, chaque lundi, mercredi et vendredi à 5 h UTC pour les articles de conseil programmés, et chaque jour à 11 h 50 et 18 h 50 UTC pour les pages des articles d'actus. Il lance d'abord les tests unitaires, le build et le test de bout en bout ; si l'un d'eux échoue, rien n'est mis en ligne. Après la mise en ligne, il écrit `version.txt` (commit et numéro de lancement) et vérifie pendant 3 minutes au plus que www.kultiled.com sert cette version, sinon la publication échoue ; chaque passage programmé réactive la tâche, que GitHub coupe après 60 jours sans activité. Le suivi se fait dans l'onglet *Actions* du dépôt.

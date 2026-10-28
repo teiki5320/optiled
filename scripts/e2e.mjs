@@ -66,7 +66,7 @@ try {
   await page.fill('#longueur', '1,2');
   verifier(/^Résultat : .* W, \d+ barres? LED\.$/.test((await page.textContent('#annonce-resultats')) ?? ''), "annonce courte pour les lecteurs d'écran");
   const lienAmazon = await page.getAttribute('.lampe-proposee a', 'href').catch(() => null);
-  verifier(!!lienAmazon && /^https:\/\/www\.amazon\.fr\/dp\/B0\w{8}\?tag=kultiledfr-21$/.test(lienAmazon) && (await page.getAttribute('.lampe-proposee a', 'rel')) === 'sponsored noopener', 'lampes du commerce proposées, lien Amazon sponsorisé avec identifiant');
+  verifier(!!lienAmazon && /^https:\/\/www\.amazon\.fr\/dp\/B0\w{8}\?tag=kultiledfr-21$/.test(lienAmazon) && (await page.getAttribute('.lampe-proposee a', 'rel')) === 'sponsored nofollow noopener', 'lampes du commerce proposées, lien Amazon sponsorisé avec identifiant');
   verifier((await page.locator('[data-legume]:not([hidden])').count()) === 4 && (await page.getAttribute('#tuiles-deplier', 'aria-expanded')) === 'false', 'liste des cultures repliée sur une ligne de 4');
   await page.click('#tuiles-deplier');
   await page.click('[data-legume="wasabi"]');
@@ -166,7 +166,7 @@ try {
   await Promise.all([p.waitForURL(/\/actus\/article\/\?id=2{40}$/), p.locator('.actu', { hasText: "Actu d'essai numéro 2" }).locator('.actu__resume').click({ force: true })]);
   await p.waitForSelector('[data-article-secours] h2', { timeout: 10000 }).catch(() => {});
   verifier((await p.textContent('h1'))?.includes("Article d'essai numéro 2") && (await p.locator('.prose h2').count()) === 1, 'page de secours : titre et intertitre de l’article');
-  verifier(await p.locator('meta[name="robots"][content="noindex"]').count() === 1, 'page de secours : noindex');
+  verifier(await p.locator('meta[name="robots"][content^="noindex"]').count() === 1, 'page de secours : noindex');
   verifier(/Article rédigé par Kultiled à partir de\s:\sPhys\.org\s↗ et example\.org\s↗\./.test((await p.textContent('.actu-article__sources')) ?? ''), 'page de secours : encadré Sources');
   verifier((await p.getAttribute('.actu-article__fiches a', 'href'))?.endsWith('/legume-tomate.html') && (await p.locator('.actu-article__fiches a').count()) === 1, 'page de secours : lien vers la fiche existante, tag inconnu ignoré');
   verifier((await p.locator('[data-a-autres] .actu').count()) === 3 && /Photo\s:\sJane Doe/.test((await p.textContent('.actu-article__figure')) ?? ''), 'page de secours : image, crédit et 3 autres actus');
