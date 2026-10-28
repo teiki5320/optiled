@@ -15,8 +15,12 @@ export const CLIENT_ADSENSE = 'ca-pub-2680784147246798';
 /** Bloc d'annonces display responsive « Kultiled - articles » (AdSense › Annonces › Par bloc d'annonces). Vide : aucune annonce placée. */
 export const BLOC_ARTICLES = '3648517188';
 
-/** Pages qui reçoivent des annonces : guides, parcours, glossaire, articles de conseil et fiches des cultures. */
+/**
+ * Pages qui reçoivent des annonces : guides, parcours, glossaire, articles de conseil, fiches des
+ * cultures et pages des articles d'actus construites (actus/<slug>/ ; jamais la page de secours).
+ */
 export function pageAvecAnnonces(fichier: string): boolean {
+  if (/^actus\/(?!article\/)[a-z0-9-]+\/index\.html$/.test(fichier)) return true;
   return /^(led-|culture-|conseil-|legume-)/.test(fichier) || ['debuter.html', 'tente.html', 'glossaire.html'].includes(fichier);
 }
 

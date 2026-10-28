@@ -44,6 +44,11 @@ export interface Actu {
   collecte_le?: string;
   langue?: string;
   image: ImageActu;
+  /** Article complet (veille, depuis le 28 octobre 2026) : sa page sur le site est actus/<slug>/. */
+  slug?: string;
+  /** Adresse du fichier article de la veille (articles/kultiled/<id>.json). Absente : pas encore d'article. */
+  article_url?: string;
+  lecture_min?: number;
 }
 
 export interface FichierActus {
@@ -57,13 +62,39 @@ const DELAI_MS = 8000;
 const CACHE_MS = 15 * 60 * 1000;
 const CLE_CACHE = 'kultiled-veille-actus-v3';
 
-const estHttp = (u: unknown): u is string => typeof u === 'string' && /^https?:\/\//.test(u);
+export const estHttp = (u: unknown): u is string => typeof u === 'string' && /^https?:\/\//.test(u);
 
 /** Lien d'achat (Amazon et ses liens courts) : jamais dans un bloc d'actus. */
-const estLienAmazon = (u: string) => /(^|\.)(amazon\.[a-z.]+|amzn\.[a-z]+)$/i.test(new URL(u).hostname);
+export const estLienAmazon = (u: string) => /(^|\.)(amazon\.[a-z.]+|amzn\.[a-z]+)$/i.test(new URL(u).hostname);
+
+/** Lien sûr vers une source : http(s), adresse lisible, jamais Amazon. */
+export function lienSourceSur(u: unknown): u is string {
+  if (!estHttp(u)) return false;
+  try {
+    return !estLienAmazon(u);
+  } catch {
+    return false;
+  }
+}
 
 /** Garde-fou en plus de la veille : jamais de cannabis ni de drogue sur le site. */
-const SUJET_EXCLU = /\b(cannabis|chanvre|cbd|thc|marijuana|marihuana|hemp|drogues?)\b/i;
+export const SUJET_EXCLU = /\b(cannabis|chanvre|cbd|thc|marijuana|marihuana|hemp|drogues?)\b/i;
+
+/** Image servie par la veille, avec son crédit et son texte alternatif. */
+export function imageValide(i: unknown): i is ImageActu {
+  if (!i || typeof i !== 'object') return false;
+  const x = i as Partial<ImageActu>;
+  if (typeof x.url !== 'string' || !x.url.startsWith(BASE_IMAGES)) return false;
+  if (typeof x.credit !== 'string' || typeof x.alt !== 'string') return false;
+  if (x.page != null && !estHttp(x.page)) return false;
+  return true;
+}
+
+export const MOTIF_ID = /^[0-9a-f]{40}$/;
+export const MOTIF_SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+/** Slug réservé : actus/article/ est la page de secours. */
+export const SLUG_RESERVE = 'article';
 
 /** Garde seulement les actus complètes et sûres (source http(s) non Amazon, image servie par la veille). */
 export function actuValide(a: unknown): a is Actu {
@@ -77,11 +108,7 @@ export function actuValide(a: unknown): a is Actu {
     return false;
   }
   if (SUJET_EXCLU.test(`${x.titre} ${x.resume}`) || x.tags?.includes('legume:chanvre-cbd')) return false;
-  const i = x.image;
-  if (!i || typeof i.url !== 'string' || !i.url.startsWith(BASE_IMAGES)) return false;
-  if (typeof i.credit !== 'string' || typeof i.alt !== 'string') return false;
-  if (i.page != null && !estHttp(i.page)) return false;
-  return true;
+  return imageValide(x.image);
 }
 
 /** Nettoie un fichier reçu : actus valides, de la plus récente à la plus ancienne. */
@@ -96,6 +123,29 @@ export function nettoyerFichier(brut: unknown): FichierActus | null {
 /** Actus d'une fiche (« legume:tomate »), ou toutes si aucun tag n'est donné. */
 export function filtrerParTag(actus: Actu[], tag?: string): Actu[] {
   return tag ? actus.filter((a) => a.tags?.includes(tag)) : actus;
+}
+
+declare const __ARTICLES_CONSTRUITS__: string[] | undefined;
+
+/** Slugs des pages d'articles construites avec le site (écrits au build par build/site.ts). */
+export const SLUGS_CONSTRUITS: ReadonlySet<string> = new Set(typeof __ARTICLES_CONSTRUITS__ !== 'undefined' ? __ARTICLES_CONSTRUITS__ : []);
+
+/** Lien d'une carte d'actu : vers l'article sur le site (page construite ou page de secours), sinon null (lien vers la source). */
+export interface LienCarte {
+  href: string;
+  /** true : l'article sur le site ; false : la source, dans un nouvel onglet. */
+  interne: boolean;
+}
+
+/**
+ * Choix du lien d'une carte : la page construite actus/<slug>/ si elle existe, sinon la page de
+ * secours actus/article/?id=<id> si la veille a écrit l'article, sinon la source (comme avant).
+ * `racine` : adresse de la racine du site (« » ou « ../../ » au build, adresse absolue dans le navigateur).
+ */
+export function lienCarte(a: Actu, construits: ReadonlySet<string> = SLUGS_CONSTRUITS, racine = ''): LienCarte {
+  if (a.slug && MOTIF_SLUG.test(a.slug) && a.slug !== SLUG_RESERVE && construits.has(a.slug)) return { href: `${racine}actus/${a.slug}/`, interne: true };
+  if (a.article_url && MOTIF_ID.test(a.id)) return { href: `${racine}actus/article/?id=${a.id}`, interne: true };
+  return { href: a.source_url, interne: false };
 }
 
 /** Vignette carrée : « -carre.webp » pour les photos ; la carte SVG est la même image, recadrée à l'affichage. */
@@ -190,14 +240,20 @@ function el<K extends keyof HTMLElementTagNameMap>(balise: K, classe?: string, t
   return e;
 }
 
-/** Lien « Source : Nom ↗ » (nouvel onglet, sans transmettre de réputation) et âge de l'actu. */
-function ligneSource(a: Actu): HTMLElement {
+/**
+ * Ligne « Source : Nom » et âge de l'actu. Quand la carte ouvre l'article du site, le nom de la
+ * source reste en texte ; sinon c'est le lien vers la source (nouvel onglet, sans transmettre de réputation).
+ */
+function ligneSource(a: Actu, interne: boolean): HTMLElement {
   const p = el('p', 'actu__source');
-  const lien = el('a', undefined, `Source : ${a.source_nom} ↗`);
-  lien.href = a.source_url;
-  lien.target = '_blank';
-  lien.rel = 'noopener nofollow';
-  p.append(lien);
+  if (interne) p.append(`Source : ${a.source_nom}`);
+  else {
+    const lien = el('a', undefined, `Source : ${a.source_nom}\u00a0↗`);
+    lien.href = a.source_url;
+    lien.target = '_blank';
+    lien.rel = 'noopener nofollow';
+    p.append(lien);
+  }
   const age = ageActu(a.publie_le);
   if (age) {
     const t = el('time', 'actu__age', age);
@@ -205,6 +261,16 @@ function ligneSource(a: Actu): HTMLElement {
     p.append(' · ', t);
   }
   return p;
+}
+
+/** Racine du site, déduite de l'adresse du module (servi depuis assets/ une fois construit, src/ en développement). */
+export function racineSite(): string {
+  try {
+    const parent = '../'; // variable : Vite ne doit pas chercher ce chemin au build
+    return new URL(parent, import.meta.url).href;
+  } catch {
+    return '';
+  }
 }
 
 /** « Photo : auteur · licence » (lien vers la page d'origine) ou « Illustration : Kultiled ». */
@@ -231,13 +297,23 @@ function image(a: Actu, carree: boolean): HTMLImageElement {
   return img;
 }
 
-/** Une actu : « une » (bandeau 16:9) ou vignette (image carrée). */
-export function carteActu(a: Actu, une: boolean, niveauTitre: 'h2' | 'h3' = 'h3'): HTMLElement {
-  const article = el('article', `actu ${une ? 'actu--une' : 'actu--vignette'}`);
+/**
+ * Une actu : « une » (bandeau 16:9) ou vignette (image carrée). Si l'article existe sur le site,
+ * le titre est un lien qui couvre toute la carte (seul le crédit de la photo garde son propre lien).
+ */
+export function carteActu(a: Actu, une: boolean, niveauTitre: 'h2' | 'h3' = 'h3', racine = racineSite()): HTMLElement {
+  const lien = lienCarte(a, SLUGS_CONSTRUITS, racine);
+  const article = el('article', `actu ${une ? 'actu--une' : 'actu--vignette'}${lien.interne ? ' actu--lien' : ''}`);
   const cadre = el('div', 'actu__cadre');
   cadre.append(image(a, !une));
   const corps = el('div', 'actu__corps');
-  corps.append(el(niveauTitre, 'actu__titre', a.titre), el('p', 'actu__resume', a.resume), ligneSource(a), credit(a.image));
+  const titre = el(niveauTitre, 'actu__titre');
+  if (lien.interne) {
+    const a2 = el('a', 'actu__lien', a.titre);
+    a2.href = lien.href;
+    titre.append(a2);
+  } else titre.textContent = a.titre;
+  corps.append(titre, el('p', 'actu__resume', a.resume), ligneSource(a, lien.interne), credit(a.image));
   article.append(cadre, corps);
   return article;
 }

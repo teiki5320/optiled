@@ -204,7 +204,9 @@ actusDifferees();
 /** Mode hors ligne : enregistre le service worker (site publié en HTTPS uniquement). */
 if (import.meta.env.PROD && 'serviceWorker' in navigator && location.protocol === 'https:') {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {
+    // Adresse depuis la racine du site (le module est servi depuis assets/) : valable aussi pour les pages actus/<slug>/.
+    const chemin = '../sw.js'; // variable : Vite ne doit pas chercher ce fichier au build
+    navigator.serviceWorker.register(new URL(chemin, import.meta.url)).catch(() => {
       /* sans service worker, le site fonctionne normalement en ligne */
     });
   });

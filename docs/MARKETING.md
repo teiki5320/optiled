@@ -32,7 +32,7 @@ Mis à jour le 27 octobre 2026. Compagnon de INFRA.md.
 
 | Canal | Détail | Statut |
 |---|---|---|
-| Référencement naturel (base technique) | Sitemap (102 adresses le 27 octobre 2026, avec la page Actus) avec date de dernière modification réelle, robots.txt, adresses canoniques, Open Graph et Twitter Card avec images de partage 1200 × 630, données structurées schema.org sur toutes les pages | ✅ |
+| Référencement naturel (base technique) | Sitemap (102 adresses le 27 octobre 2026 avec la page Actus ; 107 le 28 octobre 2026 avec les 4 premiers articles d'actus, puis de plus en plus) avec date de dernière modification réelle, robots.txt, adresses canoniques, Open Graph et Twitter Card avec images de partage 1200 × 630, données structurées schema.org sur toutes les pages | ✅ |
 | IndexNow (Bing et autres moteurs) | Signalement automatique des pages chaque lundi (`.github/workflows/indexnow.yml`) | ✅ |
 | Flux RSS et Google Discover | `conseils.xml`, grandes images autorisées (`max-image-preview:large`) | ✅ |
 | Calculateur intégrable | `integrer.html` : code à coller pour les blogs, avec lien vers le site | ✅ prêt, aucun blog contacté |
@@ -40,7 +40,7 @@ Mis à jour le 27 octobre 2026. Compagnon de INFRA.md.
 | Guides d'achat | 3 guides (`led-puissance`, `led-comparer`, `led-semis`) avec tableaux calculés depuis les données du site, sans prix ni liens Amazon dans le texte | ✅ |
 | Pages « Top 10 » | 9 onglets de 10 produits avec liens Amazon (`top-10-<sujet>.html`), en ligne depuis le 19 octobre 2026 | ✅ |
 | Articles de conseil | Rubrique « Conseils » : 40 articles en ligne et 34 programmés jusqu'au 7 juin 2027 (33 jusqu'au 15 janvier 2027, puis un en juin), trois par semaine (lundi, mercredi, vendredi, publication automatique) ; rappel le 16 novembre 2026 pour préparer la série suivante | ✅ |
-| Actus (veille) | Actus de la culture en intérieur lues en direct depuis la veille du Studio (2 passages par jour) : 4 sur l'accueil, page `actus.html` (20), 3 sur chaque page culture concernée ; source et crédit de l'image toujours visibles ; en ligne depuis le 27 octobre 2026 | ✅ |
+| Actus (veille) | Actus de la culture en intérieur lues en direct depuis la veille du Studio (2 passages par jour) : 4 sur l'accueil, page `actus.html` (20), 3 sur chaque page culture concernée ; source et crédit de l'image toujours visibles ; en ligne depuis le 27 octobre 2026. Depuis le 28 octobre 2026, toucher une actu ouvre son article complet sur le site (une page `actus/<slug>/` par article, dans le sitemap, avec données `NewsArticle` ; 4 pages ce jour-là), pages reconstruites deux fois par jour | ✅ |
 | Pages détaillées par culture | 26 pages `legume-<id>.html` (lumière, exemple pour 1 m², lampes, climat, solution nutritive, récolte) | ✅ |
 | Partage par les visiteurs | Bouton « Partager » du calculateur (lien avec les réglages) | ✅ |
 | Installation sur mobile | Manifest et service worker (PWA) | ✅ |
@@ -71,6 +71,7 @@ Mis à jour le 27 octobre 2026. Compagnon de INFRA.md.
 | 18 octobre 2026 | Ancien compte Amazon Partenaires fermé par Amazon ; nouvel identifiant `kultiledfr-21` |
 | 19 octobre 2026 | Pages « Top 10 » en ligne (9 onglets) et page « Les meilleures lampes LED de culture » |
 | 22 octobre 2026 | Ancien site `optiled.fr` supprimé du compte AdSense |
+| 28 octobre 2026 | Actus : chaque actu ouvre son article complet sur le site (pages `actus/<slug>/` dans le sitemap), reconstruites deux fois par jour après la veille |
 | 16 novembre 2026 | Rappel : préparer la série suivante d'articles de conseil |
 | 15 janvier 2027 | Fin de la série régulière d'articles programmés (lundi, mercredi, vendredi) |
 | 7 juin 2027 | Dernier article programmé (article isolé, après la série) |

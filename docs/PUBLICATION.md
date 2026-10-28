@@ -31,7 +31,7 @@
 
 - **État** : ✅ en ligne (réponse 200 constatée le 27 octobre 2026)
 - **URL** : https://www.kultiled.com/
-- **Hébergeur** : GitHub Pages, publication automatique à chaque envoi sur `main` et chaque lundi, mercredi et vendredi pour les articles programmés (`.github/workflows/pages.yml` : tests unitaires, build, test de bout en bout, puis mise en ligne). Aucune action manuelle.
+- **Hébergeur** : GitHub Pages, publication automatique à chaque envoi sur `main` et chaque lundi, mercredi et vendredi pour les articles programmés, et chaque jour à 11 h 50 et 18 h 50 UTC pour les articles d'actus depuis le 28 octobre 2026 (`.github/workflows/pages.yml` : tests unitaires, build, test de bout en bout, puis mise en ligne). Aucune action manuelle.
 - **Anciennes adresses** : https://teiki5320.github.io/optiled/ et `kultiled.com` redirigent vers `www.kultiled.com` (301) ; `www.optiled.fr`, abandonné le 16 octobre 2026, affichait encore le 27 octobre 2026 une page « Kultiled a déménagé » vers le nouveau domaine (dépôt `teiki5320/optiled-redirection`).
 - **Dernière mise en production** : 27 octobre 2026, publication réussie (vérification quotidienne des lampes) ; les pages « Top 10 » ont été mises en ligne le 19 octobre 2026 ; le 16 octobre, le site est devenu Kultiled (nom, logo, contact) et a changé de domaine.
 - **Articles de conseil** : 40 en ligne, 34 programmés jusqu'au 7 juin 2027 (le prochain le 28 octobre 2026).
@@ -48,7 +48,7 @@
 
 ## Visibilité
 
-- **Référencement** : sitemap (`sitemap.xml`, 102 adresses le 27 octobre 2026 avec la nouvelle page Actus) et `robots.txt` générés au build, adresses canoniques, balises Open Graph et Twitter Card avec une image de partage par page, données structurées schema.org sur toutes les pages.
+- **Référencement** : sitemap (`sitemap.xml`, 102 adresses le 27 octobre 2026 avec la nouvelle page Actus ; 107 le 28 octobre 2026 avec les 4 premières pages d'articles d'actus `actus/<slug>/`, nombre qui grandit avec la veille) et `robots.txt` générés au build, adresses canoniques, balises Open Graph et Twitter Card avec une image de partage par page, données structurées schema.org sur toutes les pages.
 - **Google Search Console** : `kultiled.com` ajouté le 16 octobre 2026, comme dans Bing Webmaster Tools ; l'ancienne propriété `optiled.fr` y avait été vérifiée avant le changement de domaine ; le changement d'adresse vers kultiled.com n'y est pas encore signalé au 27 octobre 2026 (bouton « Valider et informer Google » toujours proposé).
 - **Pages indexées** : 96 des 101 adresses de kultiled.com, 4 encore inconnues de Google et 1 explorée non indexée (relevé du Studio, 27 octobre 2026) ; l'ancien `optiled.fr` en avait 62 sur 86 au 12 octobre 2026.
 - **IndexNow** : pages signalées chaque lundi à Bing et aux autres moteurs (dernier passage réussi le 26 octobre 2026).

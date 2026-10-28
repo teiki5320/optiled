@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { posix, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { FICHIER_FLUX, sourcePage, toutesLesPages, transformerPage } from './site.ts';
 
@@ -39,7 +39,9 @@ describe('liens internes', () => {
       for (const [, href] of html.matchAll(/href="([^"]+)"/g)) {
         if (/^(https?:|mailto:|data:|\/src\/)/.test(href)) continue;
         const [chemin, ancre] = href.split('#');
-        const cible = (chemin.split('?')[0] || page);
+        // Pages rangées dans un sous-dossier (actus/<slug>/) : liens relatifs à leur dossier.
+        let cible = chemin.split('?')[0] ? posix.normalize(posix.join(posix.dirname(page), chemin.split('?')[0])) : page;
+        if (cible.endsWith('/')) cible += 'index.html';
         // Fichiers générés au build (flux RSS).
         if (cible === FICHIER_FLUX) continue;
         // Fichier statique (manifeste, icônes…) : il doit exister dans public/.
@@ -68,7 +70,8 @@ describe('liens internes', () => {
 const texte = (s: string) => s.replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&');
 
 describe('référencement des pages publiées', () => {
-  for (const page of pages.filter((p) => p !== '404.html' && !estRedirection(p))) {
+  // Pages publiées = indexables (la page de secours des actus porte noindex).
+  for (const page of pages.filter((p) => p !== '404.html' && !estRedirection(p) && !sourcePage(racine, p).includes('content="noindex"'))) {
     it(`${page} : titre de 60 caractères au plus, description de 70 à 160, données structurées`, () => {
       const html = contenu(page);
       const titre = texte(html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '');

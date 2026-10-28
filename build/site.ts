@@ -39,7 +39,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync, rmSync } from 'node:fs';
-import { basename, resolve } from 'node:path';
+import { relative, resolve, sep } from 'node:path';
 import type { Plugin } from 'vite';
 import { chargerLegumes, pageDetaillee, rendreFiches, rendreSources, rendreTableauClimat } from './fiches.ts';
 import { htmlTuiles } from '../src/tuiles.ts';
@@ -59,6 +59,7 @@ import { icone, logo, type NomIcone } from './icones.ts';
 import { CARTES_PREMIERE_RANGEE, creditCarte, legendePhoto, photoGuide, photoLibre } from './photos.ts';
 import { placerAnnonces, scriptAdsense } from './annonces.ts';
 import { entitesVeille, FICHIER_ACTUS, FICHIER_ENTITES, remplacerMarqueursActus } from './veille.ts';
+import { articleDuFichier, chargerVeilleAuBuild, dateArticleSitemap, DOSSIER_ACTUS, FICHIER_RENVOI_ACTUS, pagesActus, prefixeRelatif, reecrireLiensRelatifs, referencementArticle, slugsConstruits } from './articles.ts';
 export { photoGuide };
 
 export const NOM_SITE = 'Kultiled';
@@ -76,7 +77,7 @@ export const NAVIGATION: { href: string; libelle: string; pages: RegExp }[] = [
   { href: 'culture.html', libelle: 'Culture', pages: /^(culture(-.*)?|debuter|tente)\.html$/ },
   { href: 'legumes.html', libelle: 'Légumes', pages: /^legumes?(-.*)?\.html$/ },
   { href: 'conseils.html', libelle: 'Conseils', pages: /^conseils?(-.*)?\.html$/ },
-  { href: FICHIER_ACTUS, libelle: 'Actus', pages: /^actus\.html$/ },
+  { href: FICHIER_ACTUS, libelle: 'Actus', pages: /^actus(\.html|\/)/ },
   { href: 'glossaire.html', libelle: 'Glossaire', pages: /^glossaire\.html$/ },
 ];
 
@@ -204,7 +205,7 @@ export function decoderEntites(s: string): string {
 
 /** Adresse publique d'une page (l'accueil est servi à la racine). */
 export function urlPage(fichier: string, url = SITE_URL): string {
-  return fichier === 'index.html' ? url : `${url}${fichier}`;
+  return fichier === 'index.html' ? url : `${url}${fichier.replace(/(^|\/)index\.html$/, '$1')}`;
 }
 
 /**
@@ -213,6 +214,9 @@ export function urlPage(fichier: string, url = SITE_URL): string {
  */
 export function referencement(html: string, fichier: string, url = SITE_URL): string {
   if (/content="noindex"/.test(html)) return '';
+  // Pages des articles d'actus (build/articles.ts) : NewsArticle, image de l'actu.
+  const articleActu = articleDuFichier(fichier);
+  if (articleActu) return referencementArticle(articleActu, url, `${SITE_URL}marque/kultiled-logo-512.png`);
   const titre = decoderEntites(html.match(/<title>([^<]*)<\/title>/)?.[1]?.trim() ?? NOM_SITE);
   const description = decoderEntites(html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '');
   // top-10.html reprend le premier onglet : même image de partage.
@@ -695,7 +699,7 @@ export function pagesHtml(racine: string): Record<string, string> {
 
 /** Pages générées au build (elles n'existent pas sur le disque) : cultures et articles de conseil publiés. */
 export function pagesGenerees(): Map<string, string> {
-  return new Map([...pagesLegumes(), ...pagesConseils(), ...pagesTop10()]);
+  return new Map([...pagesLegumes(), ...pagesConseils(), ...pagesTop10(), ...pagesActus()]);
 }
 
 /** Toutes les entrées du build multi-pages : pages écrites + pages générées. */
@@ -703,6 +707,11 @@ export function toutesLesPages(racine: string): Record<string, string> {
   const entrees = pagesHtml(racine);
   for (const f of pagesGenerees().keys()) entrees[f.replace(/\.html$/, '')] = resolve(racine, f);
   return entrees;
+}
+
+/** Chemin d'une page depuis la racine du projet, avec des « / » (« legume-tomate.html », « actus/x/index.html »). */
+export function cheminDepuisRacine(racine: string, fichier: string): string {
+  return relative(racine, fichier).split(sep).join('/');
 }
 
 /** Contenu source d'une page (avec marqueurs) : fichier écrit, ou page générée. */
@@ -714,11 +723,23 @@ export function sourcePage(racine: string, fichier: string): string {
   return genere;
 }
 
-/** Nom de fichier d'une page générée (legume-<id>.html, conseil-<slug>.html) à partir d'un chemin ou d'une adresse, ou null. */
-function pageGeneree(id: string): string | null {
-  const f = basename(id.split('?')[0]);
-  if (!f.startsWith(PREFIXE_PAGE_LEGUME) && !f.startsWith(PREFIXE_PAGE_CONSEIL) && !f.startsWith(PREFIXE_TOP_10)) return null;
-  return pagesGenerees().has(f) ? f : null;
+/**
+ * Chemin d'une page générée (legume-<id>.html, conseil-<slug>.html, actus/<slug>/index.html…) à
+ * partir d'un chemin absolu ou d'une adresse (« /actus/x/?id=… »), ou null.
+ */
+function pageGeneree(id: string, racine: string): string | null {
+  let chemin = id.split(/[?#]/)[0];
+  if (chemin.startsWith(racine)) chemin = chemin.slice(racine.length);
+  chemin = chemin.split(sep).join('/').replace(/^\/+/, '');
+  try {
+    chemin = decodeURIComponent(chemin);
+  } catch {
+    return null;
+  }
+  if (chemin === '' || chemin.endsWith('/')) chemin += 'index.html';
+  const generes = [PREFIXE_PAGE_LEGUME, PREFIXE_PAGE_CONSEIL, PREFIXE_TOP_10, DOSSIER_ACTUS];
+  if (!generes.some((p) => chemin.startsWith(p))) return null;
+  return pagesGenerees().has(chemin) ? chemin : null;
 }
 
 /**
@@ -730,7 +751,9 @@ function pageGeneree(id: string): string | null {
 export function dateDerniereModification(fichier: string, source: string, date = dateDuJour()): string | undefined {
   const publies = conseilsPublies(date);
   const candidates: (string | undefined)[] = [dateModification(source)];
-  if (fichier.startsWith(PREFIXE_PAGE_CONSEIL)) {
+  if (fichier.startsWith(DOSSIER_ACTUS)) {
+    candidates.push(dateArticleSitemap(fichier));
+  } else if (fichier.startsWith(PREFIXE_PAGE_CONSEIL)) {
     const c = publies.find((x) => x.fichier === fichier);
     candidates.push(c?.publieLe, dateGit([`contenu/conseils/${c?.slug}.html`]));
   } else if (fichier.startsWith(PREFIXE_PAGE_LEGUME)) {
@@ -780,7 +803,7 @@ export function sitemap(pages: string[], url = SITE_URL, lastmod: (page: string)
     .sort()
     .map((p) => {
       const d = lastmod(p);
-      return `  <url><loc>${url}${p === 'index.html' ? '' : p}</loc>${d ? `<lastmod>${d}</lastmod>` : ''}</url>`;
+      return `  <url><loc>${urlPage(p, url)}</loc>${d ? `<lastmod>${d}</lastmod>` : ''}</url>`;
     })
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
@@ -864,7 +887,8 @@ export function transformerPage(html: string, fichier: string): string {
     .replace('<!--#fiches-->', () => rendreFiches())
     .replace(/<!--#cartes:(led|culture)-->/g, (_m, r: Rubrique) => cartesGuides(r))
     .replace(/<!--#icone:([a-z]+)-->/g, (_m, nom: NomIcone) => icone(nom));
-  return insecables(placerAnnonces(page, fichier));
+  // Pages rangées dans un sous-dossier (actus/<slug>/) : liens relatifs ramenés à la racine du site.
+  return reecrireLiensRelatifs(insecables(placerAnnonces(page, fichier)), prefixeRelatif(fichier));
 }
 
 /** Images (photo et partage) des articles de conseil pas encore publiés, chemins relatifs au dossier de sortie. */
@@ -880,29 +904,44 @@ export function pluginSite(): Plugin {
   let sortie = resolve(racine, 'dist');
   return {
     name: 'optiled-site',
+    // Articles des actus : lus dans la veille avant le build (jamais pendant les tests), puis ajoutés
+    // aux pages ; leurs slugs sont écrits dans le code (__ARTICLES_CONSTRUITS__, src/veille.ts).
+    async config(config, env) {
+      const racineConfig = config.root ? resolve(config.root) : process.cwd();
+      if (!process.env.VITEST && !env.isPreview) {
+        await chargerVeilleAuBuild();
+        const options = (config.build ??= {}).rollupOptions ??= {};
+        options.input = { ...(options.input as Record<string, string> | undefined), ...toutesLesPages(racineConfig) };
+      }
+      return { define: { __ARTICLES_CONSTRUITS__: JSON.stringify(slugsConstruits()) } };
+    },
     configResolved(config) {
       racine = config.root;
       sortie = resolve(config.root, config.build.outDir);
     },
     // Pages détaillées des cultures : elles n'existent pas sur le disque, on les fournit à Vite.
     resolveId(id) {
-      return pageGeneree(id) ? resolve(racine, basename(id.split('?')[0])) : null;
+      const f = pageGeneree(id, racine);
+      return f ? resolve(racine, f) : null;
     },
     load(id) {
-      const f = pageGeneree(id);
+      const f = pageGeneree(id, racine);
       return f ? sourcePage(racine, f) : null;
     },
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        const f = req.url ? pageGeneree(req.url) : null;
+        const f = req.url ? pageGeneree(req.url, racine) : null;
         if (!f) return next();
-        const html = await server.transformIndexHtml(req.url!, sourcePage(racine, f));
+        const html = await server.transformIndexHtml(`/${f}`, sourcePage(racine, f), req.originalUrl);
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         res.end(html);
       });
     },
     transformIndexHtml(html, ctx) {
-      const page = transformerPage(html, basename(ctx.filename));
+      const fichier = cheminDepuisRacine(racine, ctx.filename);
+      // Simple renvoi de /actus/ vers actus.html : rien à ajouter.
+      if (fichier === FICHIER_RENVOI_ACTUS) return html;
+      const page = transformerPage(html, fichier);
       // Mesure d'audience Cloudflare Web Analytics (sans cookie), seulement sur le site publié.
       // Publicité Google AdSense (et son bandeau de consentement), seulement sur le site publié.
       return ctx.server ? page : page.replace('</head>', `  ${scriptAdsense()}\n  </head>`).replace('</body>', `${mesureAudience()}\n</body>`);

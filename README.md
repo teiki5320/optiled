@@ -14,7 +14,7 @@ Site web statique (Vite + TypeScript, sans backend), en français et pensé d'ab
 | `lampes.html` | Sélection de lampes Amazon.fr, groupée par format |
 | `meilleures-lampes.html` | **Meilleures lampes LED horticoles (mois année)** : choix recommandé et alternative par besoin, mis à jour chaque mois (voir « Budget et page mensuelle » ci-dessous) |
 | `glossaire.html` | Glossaire des termes techniques |
-| `actus.html` | **Actus de la culture en intérieur et des LED** (20), lues en direct dans le navigateur depuis la veille du Studio (`https://teiki5320.github.io/veille/actus/kultiled.json`) ; aussi 4 actus sur l'accueil (sous le calculateur) et 3 sur chaque page culture concernée, jamais sur la fiche Chanvre CBD (voir « Actus » ci-dessous) |
+| `actus.html` | **Actus de la culture en intérieur et des LED** (20), lues en direct dans le navigateur depuis la veille du Studio (`https://teiki5320.github.io/veille/actus/kultiled.json`) ; aussi 4 actus sur l'accueil (sous le calculateur) et 3 sur chaque page culture concernée, jamais sur la fiche Chanvre CBD ; toucher une actu ouvre son article complet sur le site, `actus/<slug>/` (voir « Actus » ci-dessous) |
 
 Le calculateur accepte un légume présélectionné dans l'adresse : `index.html?legume=tomate#calculateur`. Tous les réglages différents des valeurs par défaut sont reflétés dans l'adresse (`?l=tomate&s=floraison&n=3…`, voir `src/etat.ts`) : le bouton **Partager** envoie ce lien, et les derniers réglages sont mémorisés sur l'appareil du visiteur. Chaque bloc de résultat renvoie vers le guide qui l'explique ; sur mobile, une barre fixe rappelle la puissance et le nombre de barres pendant la saisie.
 
@@ -59,6 +59,7 @@ Node.js 22.12 ou plus récent est requis (Vite 8 et Vitest 5).
 | `src/format.ts` | Mise en forme des nombres à la française |
 | `src/main.ts`, `src/style.css`, `src/theme-calcul.css` | Interface du calculateur |
 | `src/*.test.ts`, `build/*.test.ts` | Tests Vitest (calculs, alertes, lien de partage, intégrité du JSON, liste d'achat, pages générées, liens internes) |
+| `build/articles.ts`, `src/article.ts`, `src/article-secours.ts` | Articles complets des actus : pages `actus/<slug>/` construites au build depuis l'index des articles de la veille, page de secours `actus/article/?id=<id>` (noindex) remplie dans le navigateur, renvoi `actus/` → `actus.html` |
 | `build/veille.ts`, `src/veille.ts` | Actus : marqueurs `<!--#actus:4-->` / `<!--#actus:3:legume:tomate-->` (sections cachées écrites au build), fichier `veille/entites.json` des cultures (sans le chanvre), lecture et affichage en direct dans le navigateur |
 | `build/photos.ts`, `src/data/photos-libres.json` | Photos des guides ; crédits des photos libres de droits (auteur, licence, page d'origine, texte alternatif) |
 | `scripts/e2e.mjs` | Test de bout en bout dans Chromium (`npm run test:e2e`) |
@@ -123,6 +124,11 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 - La tâche de veille du Studio écrit, deux fois par jour, `https://teiki5320.github.io/veille/actus/kultiled.json` (schéma v3). Le site ne fait que le lire, dans le navigateur, après l'affichage de la page (module chargé à part : le calculateur ne s'en trouve pas alourdi). Délai de 8 s, cache de 15 min ; en cas d'erreur, rien n'est affiché et la page reste intacte.
 - Marqueurs : `<!--#actus:4-->` (accueil, avec le lien « Toutes les actus »), `<!--#actus:20-->` (page `actus.html`, avec la date de mise à jour), `<!--#actus:3:legume:<id>-->` (ajouté automatiquement à chaque page culture, sauf le chanvre CBD).
 - La 1re actu s'affiche en bandeau (image 16:9), les suivantes en vignettes (image carrée) ; source cliquable (`target="_blank" rel="noopener nofollow"`), âge de l'actu, crédit de l'image. Texte inséré avec `textContent` uniquement ; actus sans image de la veille, avec un lien Amazon ou parlant de cannabis écartées par sécurité.
+- **Articles complets (depuis le 28 octobre 2026)** : la veille écrit aussi un article de 300 à 450 mots par actu (`articles/kultiled/<id>.json`, schéma `article-schema-v1.json`) et l'index de tous les articles (`articles/kultiled/index.json`, jamais vidé). Au build, `build/articles.ts` lit cet index et le fichier des actus, puis construit une page statique par article : `actus/<slug>/index.html` (fil d'Ariane, h1, chapô, date, durée de lecture, image 16:9 et crédit, intertitres h2, encadré « Sources » en `target="_blank" rel="noopener nofollow"`, liens vers les fiches cultures citées, 3 autres actus, publicité comme les autres pages de lecture), avec `<title>`, description, canonical, Open Graph et `NewsArticle` ; ces pages vont dans le sitemap (donc dans IndexNow). Une page reste construite même quand son actu sort des actus récentes.
+- Lien d'une carte (`lienCarte`, `src/veille.ts`) : page construite si son slug est dans la liste écrite au build (constante `__ARTICLES_CONSTRUITS__`), sinon page de secours `actus/article/?id=<id>` si l'actu a un `article_url`, sinon la source comme avant. Toute la carte est cliquable ; le nom de la source reste affiché en texte.
+- Page de secours (`src/article-secours.ts`) : `noindex`, hors sitemap ; renvoie vers la page construite si elle existe ; identifiant inconnu : message et lien vers `actus.html`.
+- Veille injoignable au build : 0 page d'article, le build passe. Essais : `VEILLE_HORS_LIGNE=1 npm run build` (aucune lecture) ou `VEILLE_BASE=<dossier ou adresse> npm run build`.
+- Reconstruction automatique deux fois par jour, après la veille : `cron: '50 11,18 * * *'` dans `.github/workflows/pages.yml`.
 - Le build publie `veille/entites.json` : les cultures (tag `legume:<id>`, nom, autres noms dont l'anglais), sans le chanvre CBD.
 
 ## Modifier ou ajouter un légume
@@ -231,4 +237,4 @@ Le domaine `kultiled.com` est acheté chez Cloudflare depuis le 16 octobre 2026 
 
 ## Mise en ligne
 
-Il n'y a rien à envoyer à la main : le workflow `.github/workflows/pages.yml` publie le site sur GitHub Pages à chaque envoi sur `main`, et chaque lundi, mercredi et vendredi à 5 h UTC pour les articles de conseil programmés. Il lance d'abord les tests unitaires, le build et le test de bout en bout ; si l'un d'eux échoue, rien n'est mis en ligne. Le suivi se fait dans l'onglet *Actions* du dépôt.
+Il n'y a rien à envoyer à la main : le workflow `.github/workflows/pages.yml` publie le site sur GitHub Pages à chaque envoi sur `main`, chaque lundi, mercredi et vendredi à 5 h UTC pour les articles de conseil programmés, et chaque jour à 11 h 50 et 18 h 50 UTC pour les pages des articles d'actus. Il lance d'abord les tests unitaires, le build et le test de bout en bout ; si l'un d'eux échoue, rien n'est mis en ligne. Le suivi se fait dans l'onglet *Actions* du dépôt.

@@ -696,6 +696,41 @@ img, svg { max-width: 100%; }
   .actus--page .actus__vignettes > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
 
+/* Carte d'actu qui ouvre l'article du site : le lien du titre couvre toute la carte
+   (seul le crédit de la photo garde son propre lien, au-dessus). */
+.actu--lien { position: relative; transition: border-color 0.15s ease; }
+.actu--lien:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--bordure)); }
+.actu__lien { color: inherit; text-decoration: none; }
+.actu__lien::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.actu--lien:hover .actu__lien { text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 60%, transparent); text-underline-offset: 0.15em; }
+.actu__lien:focus-visible { outline: none; }
+.actu--lien:has(.actu__lien:focus-visible) { outline: 3px solid var(--accent); outline-offset: 2px; }
+.actu--lien .actu__credit a { position: relative; z-index: 2; }
+
+/* ---------- Page d'un article d'actu (actus/<slug>/ et page de secours) ---------- */
+.article--actu .prose { max-width: 42.5rem; overflow-wrap: break-word; }
+@media (min-width: 1000px) { .article--actu .article__grille--seule { grid-template-columns: minmax(0, 42.5rem); } }
+.article--actu .bandeau h1 { max-width: 28ch; overflow-wrap: break-word; }
+.actu-article__figure { margin: 0 0 1.8rem; }
+.actu-article__image { aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--rayon-petit); background: var(--nuit-2); border: 1px solid var(--bordure); }
+.actu-article__image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.prose .actu-article__figure .actu__credit { margin: 0.45rem 0 0; }
+.actu-article__sources {
+  margin: 2.4rem 0 1.2rem; padding: 1rem 1.2rem; font-size: 0.95rem; line-height: 1.6;
+  background: var(--carte); border: 1px solid var(--bordure); border-left: 4px solid var(--r, var(--accent));
+  border-radius: var(--rayon-petit); overflow-wrap: anywhere;
+}
+.prose .actu-article__sources p { margin: 0; }
+.prose .actu-article__sources .actu-article__sources-titre {
+  margin: 0 0 0.3rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--attenue);
+}
+.prose .actu-article__fiches { list-style: none; padding: 0; margin: 1rem 0; }
+.prose .actu-article__fiches > li::marker { content: none; }
+.actu-article__fiches a { font-weight: 700; }
+.actus--autres { max-width: 46rem; margin: 2.5rem 0 1.5rem; }
+.actus--autres .section__tete h2 { font-size: 1.4rem; }
+[data-a-date][hidden], [data-a-lecture][hidden], [data-a-chapo][hidden] { display: none; }
+
 /* ---------- Crédit des photos libres de droits (src/data/photos-libres.json) ---------- */
 .couverture-creditee { margin: 0; }
 .credit-photo { margin: 0.5rem 0.25rem 0; font-size: 0.78rem; color: var(--attenue); text-align: right; overflow-wrap: anywhere; }

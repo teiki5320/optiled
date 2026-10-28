@@ -132,6 +132,60 @@ try {
   verifier(await p.isVisible('[data-actus-vide]'), 'veille injoignable : la page Actus le dit simplement');
   await p.context().close();
   verifier(erreurs.length === 0, `aucune erreur JavaScript avec les actus${erreurs.length ? ' : ' + erreurs.join(' | ') : ''}`);
+
+  // Articles complets : une carte ouvre l'article sur le site (page construite, sinon page de secours).
+  const { readFileSync } = await import('node:fs');
+  const construit = readFileSync('dist/sitemap.xml', 'utf8').match(/\/actus\/([a-z0-9-]+)\/<\/loc>/)?.[1];
+  const ARTICLES = 'https://teiki5320.github.io/veille/articles/kultiled/';
+  const articleEssai = (n) => ({
+    version: 1, site: 'kultiled', id: String(n).repeat(40), slug: `article-essai-${n}`, titre: `Article d'essai numéro ${n}`,
+    chapo: "Un chapô d'essai, mis en avant sous le titre, qui résume l'article en une phrase.",
+    blocs: [{ intertitre: null, paragraphes: ['Premier paragraphe.'] }, { intertitre: 'Un intertitre', paragraphes: ['Deuxième paragraphe.', 'Troisième.'] }],
+    mots: 320, lecture_min: 2, tags: ['legume:tomate', 'legume:inconnu'], source_nom: 'Phys.org', source_url: 'https://phys.org/news/2.html',
+    autres_sources: ['https://www.example.org/etude'], publie_le: '2026-10-22T08:00:00Z', redige_le: '2026-10-28T08:00:00Z', image: image(n),
+  });
+  const essaiArticles = {
+    ...essai,
+    actus: [
+      actu(1, construit ? { slug: construit, article_url: `${ARTICLES}x.json` } : {}),
+      actu(2, { slug: 'article-essai-2', article_url: `${ARTICLES}${'2'.repeat(40)}.json`, tags: ['legume:tomate'] }),
+      actu(3), actu(4), actu(5),
+    ],
+  };
+  p = await contexte(essaiArticles);
+  await p.context().route(`${ARTICLES}**`, (r) => (r.request().url().endsWith(`${'2'.repeat(40)}.json`) ? r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(articleEssai(2)) }) : r.fulfill({ status: 404, body: '' })));
+  await p.goto(`${BASE}actus.html`, { waitUntil: 'networkidle' });
+  await attendreActus(p);
+  // Liens des cartes, par numéro d'actu (titre « Actu d'essai numéro N »).
+  const liens = Object.fromEntries(await p.$$eval('[data-actus] .actu', (cartes) => cartes.map((c) => [c.querySelector('.actu__titre')?.textContent?.match(/\d+$/)?.[0], c.querySelector('.actu__lien')?.getAttribute('href') ?? null])));
+  const chemin = (u) => (u ? new URL(u).pathname + new URL(u).search : null);
+  verifier(construit ? chemin(liens[1]) === `/actus/${construit}/` : liens[1] === null, `carte d'une actu à page construite → /actus/<slug>/${construit ? '' : ' (aucune page construite : ignoré)'}`);
+  verifier(chemin(liens[2]) === `/actus/article/?id=${'2'.repeat(40)}`, 'carte d’une actu sans page construite → page de secours');
+  verifier(liens[3] === null && (await p.locator('.actu', { hasText: "Actu d'essai numéro 3" }).locator('.actu__source a').getAttribute('rel')) === 'noopener nofollow', 'carte sans article → lien vers la source, comme avant');
+  // Toucher n'importe où sur la carte (ici le résumé) ouvre l'article.
+  await Promise.all([p.waitForURL(/\/actus\/article\/\?id=2{40}$/), p.locator('.actu', { hasText: "Actu d'essai numéro 2" }).locator('.actu__resume').click({ force: true })]);
+  await p.waitForSelector('[data-article-secours] h2', { timeout: 10000 }).catch(() => {});
+  verifier((await p.textContent('h1'))?.includes("Article d'essai numéro 2") && (await p.locator('.prose h2').count()) === 1, 'page de secours : titre et intertitre de l’article');
+  verifier(await p.locator('meta[name="robots"][content="noindex"]').count() === 1, 'page de secours : noindex');
+  verifier(/Article rédigé par Kultiled à partir de\s:\sPhys\.org\s↗ et example\.org\s↗\./.test((await p.textContent('.actu-article__sources')) ?? ''), 'page de secours : encadré Sources');
+  verifier((await p.getAttribute('.actu-article__fiches a', 'href'))?.endsWith('/legume-tomate.html') && (await p.locator('.actu-article__fiches a').count()) === 1, 'page de secours : lien vers la fiche existante, tag inconnu ignoré');
+  verifier((await p.locator('[data-a-autres] .actu').count()) === 3 && /Photo\s:\sJane Doe/.test((await p.textContent('.actu-article__figure')) ?? ''), 'page de secours : image, crédit et 3 autres actus');
+  verifier(await sansDefilement(p), 'page de secours : pas de défilement horizontal en 375 px');
+  await p.goto(`${BASE}actus/article/?id=${'9'.repeat(40)}`, { waitUntil: 'networkidle' });
+  await p.waitForFunction(() => document.querySelector('h1')?.textContent?.includes('introuvable'), null, { timeout: 10000 }).catch(() => {});
+  verifier((await p.textContent('h1')) === 'Article introuvable' && (await p.getAttribute('[data-article-secours] a', 'href'))?.endsWith('/actus.html'), 'page de secours, identifiant inconnu : message et lien vers les actus');
+  if (construit) {
+    for (const largeur of [375, 768]) {
+      await p.setViewportSize({ width: largeur, height: 900 });
+      await p.goto(`${BASE}actus/${construit}/`, { waitUntil: 'networkidle' });
+      verifier(await sansDefilement(p), `page d'article construite : pas de défilement horizontal en ${largeur} px`);
+    }
+    verifier((await p.locator('h1').count()) === 1 && (await p.locator('.bandeau__chapo').count()) === 1 && (await p.locator('.actu-article__figure img').count()) === 1 && (await p.locator('.actu-article__sources a[rel="noopener nofollow"]').count()) >= 1, "page d'article construite : titre, chapô, image, sources");
+    verifier((await p.getAttribute('link[rel="canonical"]', 'href')) === `https://www.kultiled.com/actus/${construit}/` && (await p.locator('script[type="application/ld+json"]').first().textContent())?.includes('"NewsArticle"'), "page d'article construite : canonical et NewsArticle");
+    verifier((await p.locator('.site-nav a[href$="actus.html"]').count()) === 1 && (await p.evaluate(() => getComputedStyle(document.body).fontFamily)).length > 0, "page d'article construite : menu et styles chargés");
+  }
+  await p.context().close();
+  verifier(erreurs.length === 0, `aucune erreur JavaScript sur les articles${erreurs.length ? ' : ' + erreurs.join(' | ') : ''}`);
   await navigateur.close();
 } catch (e) {
   console.error(e);
