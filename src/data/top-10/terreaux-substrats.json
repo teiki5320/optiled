@@ -1,11 +1,13 @@
 {
   "_lisezmoi": [
+    "Vérification de disponibilité : npm run verifier-produits (sur le Mac, voir scripts/verifier-produits.mjs) ; chaque produit reçoit verifie_le (date de sa dernière vérification) ou disponible: false (plus de bouton d'achat sur Amazon.fr : il n'est plus affiché nulle part).",
     "Onglet « Terreaux et substrats » du Top 10 (build/top-10.ts).",
     "Ordre du tableau = classement : note moyenne des acheteurs sur Amazon.fr relevée le jour de `classement_le`, à égalité la plus évaluée d'abord ; seuls les produits disponibles avec au moins 10 évaluations, destinés aux plantes cultivées (ni terrarium, ni terreau spécial plantes vertes ou cactus) sont retenus ; une seule version par produit. Les notes ne sont ni enregistrées ni publiées.",
-    "Composition et volumes repris des fiches Amazon.fr le jour de `verifie_le`."
+    "Composition et volumes repris des fiches Amazon.fr le jour de `verifie_le`.",
+    "28/10/2026 : produits devenus indisponibles sur Amazon.fr (« disponible: false », plus affichés) remplacés par plagron-growmix-50, fertiligene-poids-plume-10, vérifiés le jour même (bouton d'achat présent, au moins 10 évaluations) ; tout l'onglet reclassé selon les notes relevées ce jour-là."
   ],
-  "verifie_le": "2026-10-19",
-  "classement_le": "2026-10-19",
+  "verifie_le": "2026-10-28",
+  "classement_le": "2026-10-28",
   "produits": [
     {
       "id": "biobizz-coco-mix-50",
@@ -36,7 +38,8 @@
         "beaucoup d'air et peu d'eau",
         "utilisable en culture hydroponique"
       ],
-      "pour_qui": "des tomates ou des piments en pots dans une tente, avec un engrais adapté à la coco"
+      "pour_qui": "des tomates ou des piments en pots dans une tente, avec un engrais adapté à la coco",
+      "verifie_le": "2026-10-28"
     },
     {
       "id": "floragard-argile-50",
@@ -67,7 +70,8 @@
         "bonne circulation de l'air autour des racines",
         "réduit le risque de moisissures"
       ],
-      "pour_qui": "le fond des pots et des bacs, ou une culture hydroponique"
+      "pour_qui": "le fond des pots et des bacs, ou une culture hydroponique",
+      "verifie_le": "2026-10-28"
     },
     {
       "id": "plaine-chassart-universel-50",
@@ -97,161 +101,8 @@
         "convient à toutes les plantes",
         "30 ans d'expérience annoncés par le fabricant"
       ],
-      "pour_qui": "remplir plusieurs pots ou bacs d'une tente sans racheter souvent"
-    },
-    {
-      "id": "floordirekt-coco-75",
-      "nom": "Floordirekt, fibre de coco compressée 75 L",
-      "asin": "B0F3PB1T7J",
-      "illustration": "coco",
-      "chiffres": [
-        [
-          "Type",
-          "fibre de coco"
-        ],
-        [
-          "Volume",
-          "jusqu'à 75 L"
-        ],
-        [
-          "Format",
-          "compressé"
-        ],
-        [
-          "Usage",
-          "semis et plantation"
-        ]
-      ],
-      "description": "De la fibre de coco compressée qui donne jusqu'à 75 litres une fois réhydratée : peu encombrante à stocker.",
-      "annonce": [
-        "jusqu'à 75 litres de substrat",
-        "structure stable",
-        "limite la formation de moisissures"
-      ],
-      "pour_qui": "les semis et les jeunes plants, ou alléger un terreau"
-    },
-    {
-      "id": "plagron-argile-10",
-      "nom": "Plagron, billes d'argile 10 L",
-      "asin": "B01AUNO9NK",
-      "illustration": "billes",
-      "chiffres": [
-        [
-          "Type",
-          "billes d'argile"
-        ],
-        [
-          "Volume",
-          "10 L"
-        ],
-        [
-          "Calibre",
-          "8 à 16 mm"
-        ],
-        [
-          "Usage",
-          "drainage ou hydroponie"
-        ]
-      ],
-      "description": "Des billes d'argile pure, sans sel, de 8 à 16 mm : un substrat inerte, seul en hydroponie ou mélangé à un terreau.",
-      "annonce": [
-        "calibre de 8 à 16 mm",
-        "argile pure sans sel",
-        "utilisable seule ou en mélange"
-      ],
-      "pour_qui": "un système hydroponique ou le drainage de quelques pots"
-    },
-    {
-      "id": "biobizz-light-mix-50",
-      "nom": "BioBizz Light-Mix, terreau léger 50 L",
-      "asin": "B004OOU3TG",
-      "illustration": "terreau",
-      "chiffres": [
-        [
-          "Type",
-          "terreau léger"
-        ],
-        [
-          "Volume",
-          "50 L"
-        ],
-        [
-          "Usage",
-          "empotage"
-        ],
-        [
-          "Composition",
-          "non détaillée sur la fiche"
-        ]
-      ],
-      "description": "Un terreau d'empotage dit « léger », en sac de 50 litres ; la fiche Amazon ne détaille pas sa composition.",
-      "annonce": [
-        "terreau d'empotage léger",
-        "sac de 50 litres"
-      ],
-      "pour_qui": "remplir des pots dans une tente, en ajoutant un engrais selon la culture"
-    },
-    {
-      "id": "lerava-perlite-3",
-      "nom": "LERAVA, perlite 3 L",
-      "asin": "B0CT5S3S1N",
-      "illustration": "perlite",
-      "chiffres": [
-        [
-          "Type",
-          "perlite"
-        ],
-        [
-          "Volume",
-          "3 L"
-        ],
-        [
-          "pH",
-          "neutre"
-        ],
-        [
-          "Usage",
-          "à mélanger au terreau"
-        ]
-      ],
-      "description": "De la perlite, une roche volcanique expansée qui allège le terreau et l'aère : elle se mélange au substrat, elle ne s'utilise pas seule.",
-      "annonce": [
-        "roche volcanique expansée",
-        "pH neutre",
-        "améliore l'enracinement et le drainage"
-      ],
-      "pour_qui": "alléger un terreau trop compact pour des semis, des aromatiques ou des salades"
-    },
-    {
-      "id": "biobizz-all-mix-50",
-      "nom": "BioBizz All-Mix, terreau complet 50 L",
-      "asin": "B0090HOCWG",
-      "illustration": "terreau",
-      "chiffres": [
-        [
-          "Type",
-          "terreau enrichi"
-        ],
-        [
-          "Volume",
-          "50 L"
-        ],
-        [
-          "Perlite",
-          "30 %"
-        ],
-        [
-          "Usage",
-          "culture biologique"
-        ]
-      ],
-      "description": "Un terreau complet pour la culture biologique : un mélange de tourbes, d'humus biologique et de 30 % de perlite.",
-      "annonce": [
-        "20 % de tourbe de sphaigne et 35 % de tourbe de jardin",
-        "10 % d'humus biologique",
-        "30 % de perlite"
-      ],
-      "pour_qui": "des légumes en pots, cultivés en bio"
+      "pour_qui": "remplir plusieurs pots ou bacs d'une tente sans racheter souvent",
+      "verifie_le": "2026-10-28"
     },
     {
       "id": "or-brun-argile-6",
@@ -282,7 +133,135 @@
         "retiennent et libèrent l'humidité",
         "rempotage et hydroponie"
       ],
-      "pour_qui": "le fond de quelques pots, ou un petit potager hydroponique"
+      "pour_qui": "le fond de quelques pots, ou un petit potager hydroponique",
+      "verifie_le": "2026-10-28"
+    },
+    {
+      "id": "floordirekt-coco-75",
+      "nom": "Floordirekt, fibre de coco compressée 75 L",
+      "asin": "B0F3PB1T7J",
+      "illustration": "coco",
+      "chiffres": [
+        [
+          "Type",
+          "fibre de coco"
+        ],
+        [
+          "Volume",
+          "jusqu'à 75 L"
+        ],
+        [
+          "Format",
+          "compressé"
+        ],
+        [
+          "Usage",
+          "semis et plantation"
+        ]
+      ],
+      "description": "De la fibre de coco compressée qui donne jusqu'à 75 litres une fois réhydratée : peu encombrante à stocker.",
+      "annonce": [
+        "jusqu'à 75 litres de substrat",
+        "structure stable",
+        "limite la formation de moisissures"
+      ],
+      "pour_qui": "les semis et les jeunes plants, ou alléger un terreau",
+      "verifie_le": "2026-10-28"
+    },
+    {
+      "id": "plagron-growmix-50",
+      "nom": "Plagron Growmix, terreau 50 L",
+      "asin": "B004G73MOY",
+      "illustration": "terreau",
+      "chiffres": [
+        [
+          "Type",
+          "terreau de culture"
+        ],
+        [
+          "Volume",
+          "50 L"
+        ],
+        [
+          "Usage",
+          "culture en intérieur"
+        ],
+        [
+          "Composition",
+          "non détaillée sur la fiche"
+        ]
+      ],
+      "description": "Un terreau de culture en sac de 50 litres, prévu pour la culture en intérieur ; la fiche Amazon ne détaille pas sa composition.",
+      "annonce": [
+        "terreau de culture",
+        "sac de 50 litres"
+      ],
+      "pour_qui": "remplir des pots dans une tente, en ajoutant un engrais selon la culture",
+      "verifie_le": "2026-10-28"
+    },
+    {
+      "id": "plagron-argile-10",
+      "nom": "Plagron, billes d'argile 10 L",
+      "asin": "B01AUNO9NK",
+      "illustration": "billes",
+      "chiffres": [
+        [
+          "Type",
+          "billes d'argile"
+        ],
+        [
+          "Volume",
+          "10 L"
+        ],
+        [
+          "Calibre",
+          "8 à 16 mm"
+        ],
+        [
+          "Usage",
+          "drainage ou hydroponie"
+        ]
+      ],
+      "description": "Des billes d'argile pure, sans sel, de 8 à 16 mm : un substrat inerte, seul en hydroponie ou mélangé à un terreau.",
+      "annonce": [
+        "calibre de 8 à 16 mm",
+        "argile pure sans sel",
+        "utilisable seule ou en mélange"
+      ],
+      "pour_qui": "un système hydroponique ou le drainage de quelques pots",
+      "verifie_le": "2026-10-28"
+    },
+    {
+      "id": "lerava-perlite-3",
+      "nom": "LERAVA, perlite 3 L",
+      "asin": "B0CT5S3S1N",
+      "illustration": "perlite",
+      "chiffres": [
+        [
+          "Type",
+          "perlite"
+        ],
+        [
+          "Volume",
+          "3 L"
+        ],
+        [
+          "pH",
+          "neutre"
+        ],
+        [
+          "Usage",
+          "à mélanger au terreau"
+        ]
+      ],
+      "description": "De la perlite, une roche volcanique expansée qui allège le terreau et l'aère : elle se mélange au substrat, elle ne s'utilise pas seule.",
+      "annonce": [
+        "roche volcanique expansée",
+        "pH neutre",
+        "améliore l'enracinement et le drainage"
+      ],
+      "pour_qui": "alléger un terreau trop compact pour des semis, des aromatiques ou des salades",
+      "verifie_le": "2026-10-28"
     },
     {
       "id": "fertiligene-performance-organics-10",
@@ -313,7 +292,103 @@
         "nourrit les cultures pendant 3 mois",
         "adapté aux fruits et légumes"
       ],
-      "pour_qui": "quelques pots de légumes, sans penser à l'engrais les premiers mois"
+      "pour_qui": "quelques pots de légumes, sans penser à l'engrais les premiers mois",
+      "verifie_le": "2026-10-28"
+    },
+    {
+      "id": "fertiligene-poids-plume-10",
+      "nom": "FERTILIGÈNE, terreau poids plume intérieur et extérieur 10 L",
+      "asin": "B082XS69GG",
+      "illustration": "terreau",
+      "chiffres": [
+        [
+          "Type",
+          "terreau universel léger"
+        ],
+        [
+          "Volume",
+          "10 L"
+        ],
+        [
+          "Engrais",
+          "organique, inclus"
+        ],
+        [
+          "Durée",
+          "nourrit 3 mois"
+        ]
+      ],
+      "description": "Un terreau universel deux fois plus léger qu’un terreau classique, enrichi en engrais organique qui nourrit les plantes pendant trois mois.",
+      "annonce": [
+        "2 fois plus léger",
+        "enrichi en engrais organique",
+        "nourrit les cultures pendant 3 mois"
+      ],
+      "pour_qui": "des pots posés sur une étagère, quand le poids compte",
+      "verifie_le": "2026-10-28"
+    },
+    {
+      "id": "biobizz-light-mix-50",
+      "nom": "BioBizz Light-Mix, terreau léger 50 L",
+      "asin": "B004OOU3TG",
+      "illustration": "terreau",
+      "chiffres": [
+        [
+          "Type",
+          "terreau léger"
+        ],
+        [
+          "Volume",
+          "50 L"
+        ],
+        [
+          "Usage",
+          "empotage"
+        ],
+        [
+          "Composition",
+          "non détaillée sur la fiche"
+        ]
+      ],
+      "description": "Un terreau d'empotage dit « léger », en sac de 50 litres ; la fiche Amazon ne détaille pas sa composition.",
+      "annonce": [
+        "terreau d'empotage léger",
+        "sac de 50 litres"
+      ],
+      "pour_qui": "remplir des pots dans une tente, en ajoutant un engrais selon la culture",
+      "disponible": false
+    },
+    {
+      "id": "biobizz-all-mix-50",
+      "nom": "BioBizz All-Mix, terreau complet 50 L",
+      "asin": "B0090HOCWG",
+      "illustration": "terreau",
+      "chiffres": [
+        [
+          "Type",
+          "terreau enrichi"
+        ],
+        [
+          "Volume",
+          "50 L"
+        ],
+        [
+          "Perlite",
+          "30 %"
+        ],
+        [
+          "Usage",
+          "culture biologique"
+        ]
+      ],
+      "description": "Un terreau complet pour la culture biologique : un mélange de tourbes, d'humus biologique et de 30 % de perlite.",
+      "annonce": [
+        "20 % de tourbe de sphaigne et 35 % de tourbe de jardin",
+        "10 % d'humus biologique",
+        "30 % de perlite"
+      ],
+      "pour_qui": "des légumes en pots, cultivés en bio",
+      "disponible": false
     }
   ]
 }
