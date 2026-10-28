@@ -18,6 +18,7 @@
  *   <!--#conseils-->        liste des articles de conseil publiés (build/conseils.ts)
  *   <!--#derniers-conseils--> les 3 derniers articles publiés (liste courte, accueil)
  *   <!--#conseils-lies:a,b--> liens vers les articles cités, seulement s'ils sont déjà publiés
+ *   <!--#produits-accueil--> coups de cœur de l'accueil : produits des Top 10, liens internes (build/top-10.ts)
  *   <!--#orientation-->     cartes d'orientation de l'accueil (parcours + derniers conseils)
  *   <!--#parcours-->        cartes des pages de parcours (debuter.html, tente.html)
  *   <!--#puissances-surfaces--> etc.  tableaux calculés des guides d'achat (build/guides-achat.ts)
@@ -48,7 +49,7 @@ import { rendreBudget } from './budget.ts';
 import { FICHIER_MEILLEURES_LAMPES, moisLampes, rendreMeilleuresLampes } from './meilleures-lampes.ts';
 import { LAMPES_VERIFIEES_LE, MENTION_AFFILIATION } from '../src/lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
-import { canoniquesTop10, FICHIER_TOP_10, pagesTop10, PREFIXE_TOP_10, rendreTopsAccueil, rendreTopsLies, sujetDuFichier } from './top-10.ts';
+import { canoniquesTop10, FICHIER_TOP_10, pagesTop10, PREFIXE_TOP_10, rendreProduitsAccueil, rendreTopsAccueil, rendreTopsLies, sujetDuFichier } from './top-10.ts';
 import { conseilsDeLaCulture, conseilsPublies, dateCourte, dateDuJour, dateLongue, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, THEMES, tousLesConseils } from './conseils.ts';
 import { echapper } from './fiches.ts';
 import { rendreComparaisonLampes, rendreDliSemis, rendreEffetEfficacite, rendreEtageresSemis, rendrePuissancesCultures, rendrePuissancesSurfaces } from './guides-achat.ts';
@@ -903,6 +904,7 @@ export function transformerPage(html: string, fichier: string): string {
     .replace(/<!--#conseils-lies:([a-z0-9,\s-]+)-->/g, (_m, liste: string) => rendreConseilsLies(liste.split(',')))
     .replace(/<!--#tops:([a-z0-9,*\s-]+)-->/g, (_m, liste: string) => rendreTopsLies(liste.split(',')))
     .replace('<!--#tops-accueil-->', () => rendreTopsAccueil())
+    .replace('<!--#produits-accueil-->', () => rendreProduitsAccueil())
     .replace('<!--#puissances-surfaces-->', () => rendrePuissancesSurfaces())
     .replace('<!--#puissances-cultures-->', () => rendrePuissancesCultures())
     .replace('<!--#effet-efficacite-->', () => rendreEffetEfficacite())

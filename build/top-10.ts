@@ -726,6 +726,42 @@ export function rendreTopsAccueil(): string {
     .join(' ')} <a href="${FICHIER_TOP_10}">Tous les Top 10</a></nav>`;
 }
 
+/**
+ * Coups de cœur de l'accueil (marqueur <!--#produits-accueil-->) : un produit par Top 10 choisi, avec son
+ * illustration maison. Chaque carte mène à sa place dans le Top 10 (lien interne) : aucun lien Amazon, aucun prix.
+ * Un produit devenu indisponible sort de son Top 10 : la carte prend alors le suivant du classement.
+ */
+export const PRODUITS_ACCUEIL: { sujet: string; rang: number }[] = [
+  { sujet: 'kits-hydroponiques', rang: 1 },
+  { sujet: 'lampes-led-de-culture', rang: 1 },
+  { sujet: 'lampes-petit-espace', rang: 1 },
+  { sujet: 'lampes-semis', rang: 1 },
+  { sujet: 'tentes-de-culture', rang: 1 },
+  { sujet: 'kits-complets', rang: 2 },
+];
+
+export function rendreProduitsAccueil(): string {
+  const publies = sujetsPublies();
+  const cartes = PRODUITS_ACCUEIL.flatMap(({ sujet, rang }) => {
+    const s = publies.find((x) => x.slug === sujet);
+    const p = s?.produits()[rang - 1];
+    if (!s || !p || !p.image) return [];
+    const image = p.image.replace(/sizes="[^"]*"/, 'sizes="(min-width: 960px) 220px, 46vw"');
+    return [`<li><a class="produits-accueil__carte" href="${fichierSujet(s)}#${p.id}">${image}<span class="produits-accueil__sujet">${s.onglet}</span><span class="produits-accueil__nom">${echapper(p.nom)}</span></a></li>`];
+  });
+  if (cartes.length < 4) return '';
+  return `<section class="produits-accueil" aria-labelledby="titre-produits-accueil">
+        <div class="produits-accueil__tete">
+          <h2 id="titre-produits-accueil">Nos coups de cœur</h2>
+          <a href="${FICHIER_TOP_10}">Tout voir →</a>
+        </div>
+        <ul class="produits-accueil__liste">
+          ${cartes.join('\n          ')}
+        </ul>
+        <p class="produits-accueil__plus"><a href="${FICHIER_TOP_10}">Tous les Top 10</a> · <a href="lampes.html">Toutes les lampes</a></p>
+      </section>`;
+}
+
 /** Pages générées : top-10.html (premier onglet) et une page par sujet publié. */
 export function pagesTop10(): Map<string, string> {
   const sujets = sujetsPublies();

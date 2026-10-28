@@ -253,3 +253,40 @@ input[type='text']:focus, select:focus { background: rgb(255 255 255 / 0.1); bor
 }
 .integre__bandeau span { color: var(--nuit-attenue); }
 .integre__bandeau a { margin-left: auto; font-weight: 600; }
+
+/* ---------- Coups de cœur de l'accueil (produits des Top 10, liens internes, sans lien Amazon) ---------- */
+.produits-accueil { min-width: 0; }
+.produits-accueil__tete { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin: 0 0 0.7rem; }
+.calculateur .produits-accueil h2 { margin: 0; font-size: 1.35rem; }
+.produits-accueil__tete a, .produits-accueil__plus a { color: var(--accent); font-weight: 600; text-decoration: none; }
+.produits-accueil__tete a { flex: none; font-size: 0.95rem; }
+.produits-accueil__tete a:hover, .produits-accueil__plus a:hover { text-decoration: underline; }
+/* Téléphone : un rail qui défile de côté (le calculateur reste juste en dessous) ; écran large : une grille. */
+.produits-accueil__liste {
+  list-style: none; margin: 0; padding: 0 0 0.4rem; display: grid; gap: 0.75rem;
+  grid-auto-flow: column; grid-auto-columns: minmax(9.5rem, 42%);
+  overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: thin;
+}
+.produits-accueil__liste li { scroll-snap-align: start; min-width: 0; }
+.produits-accueil__carte {
+  display: flex; flex-direction: column; gap: 0.2rem; height: 100%; padding: 0.5rem 0.5rem 0.75rem;
+  border-radius: 20px; background: var(--verre-fort); border: 1px solid rgb(255 255 255 / 0.12);
+  color: var(--texte); text-decoration: none; transition: border-color 0.15s;
+}
+.produits-accueil__carte:hover, .produits-accueil__carte:focus-visible { border-color: var(--accent); }
+.produits-accueil__carte .lampe__image { position: relative; margin: 0 0 0.35rem; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; }
+.produits-accueil__carte .lampe__image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.produits-accueil__carte .lampe__image figcaption { position: absolute; right: 0.35rem; bottom: 0.3rem; padding: 0 0.35rem; border-radius: 999px; background: rgb(0 0 0 / 0.3); color: rgb(255 255 255 / 0.7); font-size: 0.62rem; }
+.produits-accueil__sujet { padding: 0 0.25rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em; color: var(--accent); }
+.produits-accueil__nom { padding: 0 0.25rem; font-size: 0.88rem; font-weight: 600; line-height: 1.3; }
+.produits-accueil__plus { margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--attenue); }
+@media (min-width: 700px) {
+  .produits-accueil__liste { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: visible; }
+}
+@media (min-width: 960px) {
+  /* Sur grand écran, le titre et le formulaire restent côte à côte : le bloc prend la rangée suivante, avant les résultats. */
+  .produits-accueil { grid-column: 1 / -1; grid-row: 2; }
+  .produits-accueil__liste { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+.integre .produits-accueil { display: none !important; }
+@media print { .produits-accueil { display: none; } }

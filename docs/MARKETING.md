@@ -18,7 +18,7 @@ Mis à jour le 28 octobre 2026. Compagnon de INFRA.md.
 
 ## Rémunération par phases
 
-- [fait] **Aujourd'hui** : site gratuit sans compte ; affiliation Amazon (16 lampes, identifiant `kultiledfr-21`, liens `rel="sponsored nofollow noopener"`, ligne « Lien partenaire Amazon » sous chaque bouton, mention dans le pied de page et les mentions légales ; plus d'encadré en haut des pages depuis le 28 octobre 2026 ; depuis le même jour : encadré « Lampe conseillée » sur chaque fiche culture, encadré « Le matériel pour ça » dans 13 conseils, liste d'achat du calculateur et accueil reliés aux Top 10, plus aucun prix de matériel) et publicité AdSense dans les pages de lecture.
+- [fait] **Aujourd'hui** : site gratuit sans compte ; affiliation Amazon (16 lampes, identifiant `kultiledfr-21`, liens `rel="sponsored nofollow noopener"`, ligne « Lien partenaire Amazon » sous chaque bouton, mention dans le pied de page et les mentions légales ; plus d'encadré en haut des pages depuis le 28 octobre 2026 ; depuis le même jour : encadré « Lampe conseillée » sur chaque fiche culture, encadré « Le matériel pour ça » dans 13 conseils, liste d'achat du calculateur et accueil reliés aux Top 10, plus aucun prix de matériel ; depuis le 28 octobre 2026 au soir, bloc « Nos coups de cœur » en haut de l'accueil : 6 produits illustrés des Top 10, liens internes seulement, aucun lien Amazon) et publicité AdSense dans les pages de lecture.
 - [en cours] **Validation AdSense** : examen de kultiled.com demandé le 16 octobre 2026, « En préparation » dans la console AdSense, ni validé ni refusé (vérifié le 28 octobre 2026).
 - **Affiliation élargie** : la liste d'achat du calculateur renvoie depuis le 28 octobre 2026 vers les Top 10 (lampes, minuteries, thermo-hygromètres, tentes, extracteurs) ; reste à créer un code de suivi Amazon par emplacement (table prête dans `src/suivi-amazon.ts`).
 
@@ -72,7 +72,7 @@ Mis à jour le 28 octobre 2026. Compagnon de INFRA.md.
 | 19 octobre 2026 | Pages « Top 10 » en ligne (9 onglets) et page « Les meilleures lampes LED de culture » |
 | 22 octobre 2026 | Ancien site `optiled.fr` supprimé du compte AdSense |
 | 28 octobre 2026 | Actus : chaque actu ouvre son article complet sur le site (pages `actus/<slug>/` dans le sitemap), reconstruites deux fois par jour après la veille |
-| 28 octobre 2026 | Fiche du chanvre retirée du site (25 cultures) ; fourchettes de prix remplacées par des niveaux de budget ; Top 10 reliés depuis les conseils, les fiches, l'accueil et le calculateur ; catalogue Amazon vérifié (5 produits remplacés) |
+| 28 octobre 2026 | Fiche du chanvre retirée du site (25 cultures) ; fourchettes de prix remplacées par des niveaux de budget ; Top 10 reliés depuis les conseils, les fiches, l'accueil et le calculateur ; bloc « Nos coups de cœur » (6 produits illustrés des Top 10) en haut de l'accueil ; catalogue Amazon vérifié (5 produits remplacés) |
 | 16 novembre 2026 | Rappel : préparer la série suivante d'articles de conseil |
 | 15 janvier 2027 | Fin de la série régulière d'articles programmés (lundi, mercredi, vendredi) |
 | 7 juin 2027 | Dernier article programmé (article isolé, après la série) |
