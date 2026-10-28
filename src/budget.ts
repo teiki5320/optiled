@@ -1,74 +1,42 @@
 /**
- * Budget indicatif : fourchettes de prix par gamme de lampes et par accessoire (src/data/budget.json).
- * Module pur, partagé entre le build (budgets de départ, page « Meilleures lampes ») et le calculateur.
- * Jamais de prix par produit : seulement des fourchettes par gamme, datées et arrondies.
+ * Budget indicatif : niveau de budget (petit, moyen, gros) par gamme de lampes et par accessoire
+ * (src/data/budget.json). Module pur, partagé entre le build (budgets de départ, page « Meilleures
+ * lampes ») et le calculateur. Jamais de montant en euros pour le matériel (règles Amazon Partenaires).
  */
 import brut from './data/budget.json' with { type: 'json' };
 
-/** [minimum, maximum] en euros, ou null quand le relevé n'est pas encore fait. */
-export type Fourchette = [number, number] | null;
+export type Niveau = 'petit' | 'moyen' | 'gros';
 
 export interface PosteBudget {
   libelle: string;
-  fourchette: Fourchette;
+  niveau: Niveau;
 }
 
 export type GammeLampe = 'barres' | 'appoint' | 'petits' | 'moyens' | 'grands';
 export type Accessoire = 'minuterie' | 'thermo-hygrometre' | 'tente-80' | 'extracteur-100' | 'ventilateur-pince' | 'ph-metre';
 
 export interface DonneesBudget {
-  releve_le: string;
   lampes: Record<GammeLampe, PosteBudget>;
   accessoires: Record<Accessoire, PosteBudget>;
 }
 
 export const BUDGET: DonneesBudget = brut as unknown as DonneesBudget;
 
-export const PRIX_EN_COURS = 'prix en cours de relevé';
+export const NIVEAUX: Niveau[] = ['petit', 'moyen', 'gros'];
 
-/** Pas d'arrondi : 5 € sous 50 €, 10 € à partir de 50 €. */
-function pas(v: number): number {
-  return v < 50 ? 5 : 10;
+/** « Petit budget », « Budget moyen », « Gros budget ». */
+export function texteNiveau(n: Niveau): string {
+  return n === 'petit' ? 'Petit budget' : n === 'moyen' ? 'Budget moyen' : 'Gros budget';
 }
 
-/** Borne basse d'une fourchette : arrondie vers le bas. */
-export function arrondirBas(v: number): number {
-  return Math.floor(v / pas(v)) * pas(v);
+/** Niveau d'un poste de lampes : plusieurs lampes identiques montent d'un niveau. */
+export function niveauLampes(n: Niveau, nombre: number): Niveau {
+  return nombre > 1 ? NIVEAUX[Math.min(NIVEAUX.indexOf(n) + 1, 2)] : n;
 }
 
-/** Borne haute d'une fourchette : arrondie vers le haut (49,44 → 50 ; 127,99 → 130). */
-export function arrondirHaut(v: number): number {
-  return Math.ceil(v / pas(v)) * pas(v);
-}
-
-/** Fourchette arrondie à partir de prix relevés (outil pour la mise à jour mensuelle). */
-export function fourchetteDepuisPrix(prix: number[]): Fourchette {
-  if (prix.length === 0) return null;
-  return [arrondirBas(Math.min(...prix)), arrondirHaut(Math.max(...prix))];
-}
-
-/** Somme de postes ; null dès qu'un poste n'a pas encore de prix. */
-export function sommeFourchettes(fourchettes: Fourchette[]): Fourchette {
-  let min = 0;
-  let max = 0;
-  for (const f of fourchettes) {
-    if (f === null) return null;
-    min += f[0];
-    max += f[1];
-  }
-  return [min, max];
-}
-
-/** Multiplie une fourchette (plusieurs lampes identiques). */
-export function multiplier(f: Fourchette, n: number): Fourchette {
-  return f === null ? null : [f[0] * n, f[1] * n];
-}
-
-const milliers = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-
-/** « 45 à 130 € », ou « prix en cours de relevé ». */
-export function texteFourchette(f: Fourchette): string {
-  return f === null ? PRIX_EN_COURS : `${milliers(f[0])} à ${milliers(f[1])} €`;
+/** Niveau d'une installation complète : celui du poste le plus coûteux. */
+export function niveauTotal(niveaux: Niveau[]): Niveau {
+  return NIVEAUX[Math.max(0, ...niveaux.map((n) => NIVEAUX.indexOf(n)))];
 }
 
 /** Puissance maximale d'un grand panneau courant : au-delà, on compte plusieurs lampes. */
@@ -87,12 +55,6 @@ export function gammePourPuissance(puissanceW: number): { gamme: GammeLampe; nom
 
 const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 
-/** « 29 septembre 2026 » (sans dépendre de la langue du navigateur). */
-export function dateReleve(iso = BUDGET.releve_le): string {
-  const [a, m, j] = iso.split('-').map(Number);
-  return `${j === 1 ? '1er' : j} ${MOIS[m - 1]} ${a}`;
-}
-
 /** « septembre 2026 ». */
 export function moisAnnee(iso: string): string {
   const [a, m] = iso.split('-').map(Number);
@@ -100,6 +62,6 @@ export function moisAnnee(iso: string): string {
 }
 
 /** Phrase de méthode, affichée sous chaque budget. */
-export function mentionReleve(): string {
-  return `Prix relevés sur Amazon.fr le ${dateReleve()}, à titre indicatif : fourchettes par gamme, arrondies, qui varient selon les marques et les périodes.`;
+export function mentionNiveaux(): string {
+  return 'Niveaux de budget indicatifs, comparés entre les postes d’une installation : le prix du jour est sur la page de chaque produit.';
 }

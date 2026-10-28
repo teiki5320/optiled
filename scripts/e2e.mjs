@@ -3,6 +3,7 @@
 // Vérifie que les pages s'affichent sans erreur et que le calculateur fonctionne.
 import { spawn } from 'node:child_process';
 import { chromium } from 'playwright';
+import { tagsConnus, verifierDossier } from './verifier-site.mjs';
 
 const PORT = 4179;
 const BASE = `http://localhost:${PORT}/`;
@@ -13,6 +14,10 @@ const verifier = (condition, message) => {
   console.log(`${condition ? '✓' : '✗'} ${message}`);
   if (!condition) echecs++;
 };
+
+// Contrôles du site construit : mots interdits, aucun prix près d'un lien Amazon, codes de suivi connus.
+const problemes = verifierDossier('dist', tagsConnus('.'));
+verifier(problemes.length === 0, `site construit sans mot interdit ni prix près d'un lien Amazon, codes de suivi connus${problemes.length ? ' : ' + problemes.slice(0, 10).join(' | ') : ''}`);
 
 try {
   for (let i = 0; i < 40; i++) {
@@ -119,8 +124,6 @@ try {
   await p.goto(`${BASE}legume-basilic.html`, { waitUntil: 'networkidle' });
   await p.waitForTimeout(1500);
   verifier((await visibles(p)).join() === '-1', 'fiche sans actu : bloc absent');
-  await p.goto(`${BASE}legume-chanvre-cbd.html`, { waitUntil: 'networkidle' });
-  verifier((await p.locator('[data-actus]').count()) === 0, 'fiche Chanvre CBD : jamais de bloc');
   await p.context().close();
 
   p = await contexte(null);

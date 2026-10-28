@@ -118,6 +118,7 @@ export interface Produit {
   rang: number;
   id: string;
   nom: string;
+  asin: string;
   lien: string;
   /** Illustration générée (figure signalée « Illustration »). */
   image: string;
@@ -178,7 +179,8 @@ export function classementLampes(): Produit[] {
         rang: i + 1,
         id: lampe.id,
         nom: lampe.nom,
-        lien: lienAmazon(lampe),
+        asin: lampe.asin,
+        lien: lienAmazon(lampe, 'top'),
         image: imageLampe(lampe, '(min-width: 760px) 360px, 92vw'),
         chiffres: chiffresLampe(lampe),
         pourquoi: f.pourquoi(lampe),
@@ -196,6 +198,8 @@ export interface Tente {
   toile_d: number;
   illustration: string;
   annonce: string[];
+  /** false : plus achetable sur Amazon.fr lors de la dernière vérification (npm run verifier-produits). */
+  disponible?: boolean;
 }
 const TENTES = brutTentes as unknown as { verifie_le: string; classement_le: string; tentes: Tente[] };
 
@@ -214,7 +218,7 @@ function lampePourTente(t: Tente): string {
 
 /** Les tentes dans l'ordre du classement (tentes.json), avec des textes tirés des seules données. */
 export function classementTentes(): Produit[] {
-  return TENTES.tentes.slice(0, TAILLE).map((t, i) => {
+  return TENTES.tentes.filter((t) => t.disponible !== false).slice(0, TAILLE).map((t, i) => {
     const [l, p, h] = t.dimensions_cm;
     const surface = (l * p) / 10000;
     const toile = t.toile_d >= 1000 ? `toile épaisse de ${t.toile_d}D, parmi les plus solides de la sélection` : `toile de ${t.toile_d}D, plus légère`;
@@ -236,7 +240,8 @@ export function classementTentes(): Produit[] {
       rang: i + 1,
       id: t.id,
       nom: t.nom,
-      lien: lienAmazonAsin(t.asin),
+      asin: t.asin,
+      lien: lienAmazonAsin(t.asin, 'top'),
       image: `<figure class="lampe__image"><img src="images/tentes/${t.illustration}-400.webp" srcset="images/tentes/${t.illustration}-400.webp 400w, images/tentes/${t.illustration}-800.webp 800w" sizes="(min-width: 760px) 360px, 92vw" width="800" height="600" alt="Illustration : tente de culture de ${l} × ${p} × ${h} cm" loading="lazy" decoding="async" /><figcaption>Illustration</figcaption></figure>`,
       chiffres: [
         ['Dimensions', `${l} × ${p} × ${h} cm`],
@@ -266,16 +271,19 @@ export interface FichierProduits {
     /** Éléments annoncés dans la fiche du produit. */
     annonce: string[];
     pour_qui: string;
+    /** false : plus achetable sur Amazon.fr lors de la dernière vérification (npm run verifier-produits). */
+    disponible?: boolean;
   }[];
 }
 
 /** Produits d'un sujet décrit par un fichier de données (textes tirés des seules fiches). */
 export function produitsDuFichier(slug: string, f: FichierProduits, type: string): Produit[] {
-  return f.produits.slice(0, TAILLE).map((x, i) => ({
+  return f.produits.filter((x) => x.disponible !== false).slice(0, TAILLE).map((x, i) => ({
     rang: i + 1,
     id: x.id,
     nom: x.nom,
-    lien: lienAmazonAsin(x.asin),
+    asin: x.asin,
+    lien: lienAmazonAsin(x.asin, 'top'),
     image: `<figure class="lampe__image"><img src="images/top-10/${slug}/${x.illustration}-400.webp" srcset="images/top-10/${slug}/${x.illustration}-400.webp 400w, images/top-10/${slug}/${x.illustration}-800.webp 800w" sizes="(min-width: 760px) 360px, 92vw" width="800" height="600" alt="Illustration : ${echapper(type)}" loading="lazy" decoding="async" /><figcaption>Illustration</figcaption></figure>`,
     chiffres: x.chiffres,
     pourquoi: `${x.description} La fiche du produit annonce : ${liste(x.annonce)}.`,
@@ -636,7 +644,7 @@ function carte(p: Produit): string {
             <dl class="top10__chiffres">${chiffres}</dl>
             <p><strong>Pourquoi dans le top.</strong> ${p.pourquoi}</p>
             <p><strong>Idéale pour</strong> ${p.pourQui}.</p>
-            <div class="top10__achat">${boutonAmazon(p.lien, p.nom, p.image !== '', 'bouton bouton--plein')}</div>
+            <div class="top10__achat">${boutonAmazon(p.lien, p.nom, p.image !== '')}</div>
           </div>
         </li>`;
 }
@@ -692,6 +700,30 @@ export function sourcePageTop10(s: Sujet): string {
   </body>
 </html>
 `;
+}
+
+/**
+ * Bloc de liens vers des Top 10 (marqueur <!--#tops:slug1,slug2--> ; « * » = tous), sans lien Amazon :
+ * seulement les sujets publiés, dans l'ordre demandé.
+ */
+export function rendreTopsLies(slugs: string[], titre = 'Le matériel, classé et expliqué'): string {
+  const publies = sujetsPublies();
+  const liste = slugs.includes('*') ? publies : slugs.map((x) => publies.find((s) => s.slug === x.trim())).filter((s) => s !== undefined);
+  if (liste.length === 0) return '';
+  return `<nav class="tops-lies" aria-label="Top 10 du matériel">
+          <p class="tops-lies__titre"><strong>${titre}</strong></p>
+          <ul>${liste.map((s) => `<li><a href="${fichierSujet(s)}">${s.titre}</a></li>`).join('')}</ul>
+        </nav>`;
+}
+
+/** Ligne de l'accueil (marqueur <!--#tops-accueil-->) : les onglets du Top 10, sans lien Amazon. */
+export function rendreTopsAccueil(): string {
+  const sujets = sujetsPublies();
+  if (sujets.length === 0) return '';
+  return `<nav class="accueil__tops" aria-label="Top 10 du matériel"><span>Le matériel classé :</span> ${sujets
+    .slice(0, 4)
+    .map((s) => `<a href="${fichierSujet(s)}">${s.onglet}</a>`)
+    .join(' ')} <a href="${FICHIER_TOP_10}">Tous les Top 10</a></nav>`;
 }
 
 /** Pages générées : top-10.html (premier onglet) et une page par sujet publié. */

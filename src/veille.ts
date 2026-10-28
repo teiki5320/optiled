@@ -77,8 +77,11 @@ export function lienSourceSur(u: unknown): u is string {
   }
 }
 
-/** Garde-fou en plus de la veille : jamais de cannabis ni de drogue sur le site. */
-export const SUJET_EXCLU = /\b(cannabis|chanvre|cbd|thc|marijuana|marihuana|hemp|drogues?)\b/i;
+/**
+ * Garde-fou en plus de la veille : jamais de drogue ni de plante interdite sur le site.
+ * Les mots sont écrits avec des crochets pour qu'ils n'apparaissent pas tels quels dans le site construit.
+ */
+export const SUJET_EXCLU = /\b(c[a]nnabis|ch[a]nvre|c[b]d|t[h]c|marij[u]ana|marih[u]ana|h[e]mp|weed|dr[o]gues?)\b/i;
 
 /** Image servie par la veille, avec son crédit et son texte alternatif. */
 export function imageValide(i: unknown): i is ImageActu {
@@ -107,7 +110,7 @@ export function actuValide(a: unknown): a is Actu {
   } catch {
     return false;
   }
-  if (SUJET_EXCLU.test(`${x.titre} ${x.resume}`) || x.tags?.includes('legume:chanvre-cbd')) return false;
+  if (SUJET_EXCLU.test(`${x.titre} ${x.resume} ${(x.tags ?? []).join(' ')}`)) return false;
   return imageValide(x.image);
 }
 

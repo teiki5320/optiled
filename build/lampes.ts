@@ -1,5 +1,6 @@
 /**
  * Page « Lampes » : la sélection Amazon.fr, groupée par format, générée depuis src/data/lampes.json.
+ * Une lampe indisponible lors de la dernière vérification n'est pas affichée (jamais de produit sans bouton d'achat).
  */
 import { boutonAmazon, imageLampe, LAMPES, LAMPES_VERIFIEES_LE, lienAmazon, MENTION_AFFILIATION, type Lampe } from '../src/lampes.ts';
 import { echapper } from './fiches.ts';
@@ -13,8 +14,8 @@ function carte(l: Lampe): string {
   return `<li class="lampe">
   ${imageLampe(l)}
   <h3>${echapper(l.nom)}</h3>
-  <p>${echapper(l.dimensions)} · ${l.puissance_w} W · ${lumiere}${surface} · ${l.variateur ? 'avec variateur' : 'sans variateur'}</p>${l.disponible === false ? `\n  <p class="aide">Indisponible sur Amazon.fr lors de la dernière vérification.</p>` : ''}
-  ${boutonAmazon(lienAmazon(l), l.nom, !!l.illustration)}
+  <p>${echapper(l.dimensions)} · ${l.puissance_w} W · ${lumiere}${surface} · ${l.variateur ? 'avec variateur' : 'sans variateur'}</p>
+  ${boutonAmazon(lienAmazon(l, 'guide'), l.nom, !!l.illustration)}
 </li>`;
 }
 
@@ -34,7 +35,7 @@ export function dateVerification(): string {
 
 export function rendreLampes(): string {
   const sections = GROUPES.map((g) => {
-    const liste = LAMPES.filter(g.filtre);
+    const liste = LAMPES.filter((l) => l.disponible !== false && g.filtre(l));
     if (liste.length === 0) return '';
     const note = g.id === 'autres' ? "<p>Très vendus et bien notés, mais le fabricant ne publie pas assez de chiffres (PPF ou efficacité) pour que le calculateur les propose : il faut alors se fier aux mesures de PPFD de l'annonce.</p>" : '';
     return `<h2 id="${g.id}">${g.titre}</h2>\n${note}<ul class="lampes">${liste.map(carte).join('\n')}</ul>`;

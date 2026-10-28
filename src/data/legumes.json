@@ -5,7 +5,7 @@
     "ppfd en µmol/m²/s, photoperiode en heures/jour, hauteur_cm = [min, max] de suspension au-dessus de la canopée.",
     "stades.floraison = null pour les cultures récoltées avant floraison (feuilles, aromatiques, micro-pousses, racines, wasabi).",
     "Les valeurs sont des ordres de grandeur indicatifs : ajustez-les selon la variété et vos mesures (PAR-mètre).",
-    "culture : plages [min, max] de température de jour (temperature_c, °C) et de nuit (temperature_nuit_c, °C), texte court des températures à éviter (temperature_a_eviter), humidité relative (%), pH et EC (mS/cm) de la solution, jours_recolte = délai indicatif jusqu'à la première récolte, compté depuis le semis sauf mention contraire dans la source (fraise : depuis la plantation du plant ; romarin : depuis la bouture enracinée ; safran : depuis la plantation des cormes ; chanvre : jusqu'à la récolte des fleurs ; wasabi : jusqu'à la récolte du rhizome), espacement entre plants (cm, null pour un semis à la volée).",
+    "culture : plages [min, max] de température de jour (temperature_c, °C) et de nuit (temperature_nuit_c, °C), texte court des températures à éviter (temperature_a_eviter), humidité relative (%), pH et EC (mS/cm) de la solution, jours_recolte = délai indicatif jusqu'à la première récolte, compté depuis le semis sauf mention contraire dans la source (fraise : depuis la plantation du plant ; romarin : depuis la bouture enracinée ; safran : depuis la plantation des cormes ; wasabi : jusqu'à la récolte du rhizome), espacement entre plants (cm, null pour un semis à la volée).",
     "difficulte : « facile », « intermediaire » ou « exigeant », selon cinq critères. Facile = feuilles, racines ou pousses récoltées sans pollinisation, PPFD de 300 µmol/m²/s au plus, première récolte en trois mois au plus, température d'une pièce habitée (18 à 22 °C dans la plage conseillée), sans montaison rapide, plante compacte (étagère). Intermédiaire = un ou deux de ces critères non remplis (croissance lente, montaison en jours longs, besoin de fraîcheur, pollinisation à la main sur une plante compacte, PPFD jusqu'à 400). Exigeant = grande plante à fruits ou à fleurs (tente, PPFD de 450 µmol/m²/s ou plus, pollinisation, trois mois ou plus), ou climat très particulier et cycle très long (safran, wasabi). La source résume les critères qui ont décidé du classement. Les cultures faciles sont celles de l'article « Quels légumes cultiver facilement en intérieur quand on débute ? »."
   ],
   "references": {
@@ -23,9 +23,6 @@
     "pratique": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)",
     "resh": "Resh (2013), Hydroponic Food Production, 7e éd., CRC Press – tableaux de solutions nutritives",
     "semenciers": "Catalogues semenciers (ordre de grandeur, varie selon la variété)",
-    "rodriguez": "Rodriguez-Morrison, Llewellyn & Zheng (2021), Frontiers in Plant Science 12 – rendement du cannabis selon l'intensité lumineuse en intérieur",
-    "chandra": "Chandra, Lata, Khan & ElSohly (2008), Physiology and Molecular Biology of Plants 14 : 299–306 – photosynthèse de Cannabis sativa selon PPFD, température et CO2 (optimum 25–30 °C)",
-    "reglementation": "Arrêté du 30 décembre 2021 portant application de l'article R. 5132-86 du code de la santé publique (France)",
     "mccree": "McCree (1972), Agricultural Meteorology 9 : 191–216 – spectre d'action de la photosynthèse des plantes cultivées",
     "zhen": "Zhen & Bugbee (2020), Plant, Cell & Environment 43(5) : 1259–1272 – le rouge lointain et la notion de PAR étendu (400–750 nm)",
     "gpn": "Greenhouse Product News (GPN) – Growing Hydroponic Leafy Greens ; Cornell University (CEA), via Hort Americas – DLI 12–17 mol/m²/j des légumes feuilles",
@@ -2291,119 +2288,6 @@
         },
         "conseils": {
           "valeur": "Besoin de chaleur et de lumière intense ; secouez les fleurs pour les polliniser. Tuteurez.",
-          "source": "Pratique culturale courante"
-        }
-      }
-    },
-    {
-      "id": "chanvre-cbd",
-      "nom": "Chanvre CBD",
-      "famille": "Chanvre",
-      "difficulte": {
-        "valeur": "exigeant",
-        "source": "Critères Kultiled (voir _lisezmoi) : Jusqu’à 800 µmol/m²/s en floraison, grande plante, climat et odeurs à maîtriser"
-      },
-      "avertissement": "En France, la culture du chanvre (Cannabis sativa L.) est réservée aux agriculteurs actifs, avec des semences certifiées de variétés inscrites au catalogue européen (THC ≤ 0,30 %). Un particulier ne peut pas en cultiver, même pour du CBD : c'est une infraction à la législation sur les stupéfiants. Ces données sont fournies à titre documentaire.",
-      "stades": {
-        "croissance": {
-          "ppfd": {
-            "valeur": 500,
-            "source": "Chandra et al. (2008), Physiology and Molecular Biology of Plants 14 – photosynthèse de Cannabis sativa selon PPFD, température et CO2 ; Rodriguez-Morrison, Llewellyn & Zheng (2021), Frontiers in Plant Science 12 – rendement du cannabis selon l'intensité lumineuse en intérieur (ordre de grandeur prudent)"
-          },
-          "photoperiode": {
-            "valeur": 18,
-            "source": "Pratique courante : jours longs (18 h) pour maintenir la croissance végétative des variétés photopériodiques"
-          },
-          "hauteur_cm": {
-            "valeur": [
-              30,
-              45
-            ],
-            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
-          },
-          "spectre": {
-            "valeur": "Blanc plein spectre 4 000–5 000 K (≈ 20 % de bleu), IRC ≥ 80",
-            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
-          }
-        },
-        "floraison": {
-          "ppfd": {
-            "valeur": 800,
-            "source": "Rodriguez-Morrison, Llewellyn & Zheng (2021), Frontiers in Plant Science 12 – rendement du cannabis selon l'intensité lumineuse en intérieur (le rendement augmente encore au-delà ; 800 est un compromis courant sans CO2 ajouté)"
-          },
-          "photoperiode": {
-            "valeur": 12,
-            "source": "Plante de jours courts : 12 h de lumière et 12 h d'obscurité complète déclenchent la floraison"
-          },
-          "hauteur_cm": {
-            "valeur": [
-              35,
-              60
-            ],
-            "source": "Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
-          },
-          "spectre": {
-            "valeur": "Blanc chaud 3 000–3 500 K + rouge profond 660 nm, rouge lointain (far-red) 730 nm en option",
-            "source": "Kozai, Niu & Takagaki (2016), Plant Factory, Academic Press (ch. qualité spectrale) ; Pratique courante des fabricants de barres LED horticoles (valeur indicative)"
-          }
-        }
-      },
-      "culture": {
-        "temperature_c": {
-          "valeur": [
-            22,
-            28
-          ],
-          "source": "Chandra et al. (2008), Physiology and Molecular Biology of Plants 14 : 299–306 : optimum de photosynthèse à 25–30 °C ; plage de jour indicative"
-        },
-        "temperature_nuit_c": {
-          "valeur": [
-            18,
-            22
-          ],
-          "source": "Ordre de grandeur de pratique en culture intérieure (pas de valeur de nuit dans Chandra et al. (2008), Physiology and Molecular Biology of Plants 14 : 299–306, qui porte sur la photosynthèse de jour)"
-        },
-        "temperature_a_eviter": {
-          "valeur": "> 30 °C (photosynthèse en baisse)",
-          "source": "Chandra et al. (2008), Physiology and Molecular Biology of Plants 14 : 299–306 : optimum de photosynthèse à 25–30 °C"
-        },
-        "humidite_pct": {
-          "valeur": [
-            45,
-            65
-          ],
-          "source": "Pratique courante : humidité plus basse en floraison (≈ 45–50 %) pour limiter le botrytis"
-        },
-        "ph": {
-          "valeur": [
-            5.8,
-            6.5
-          ],
-          "source": "Pratique courante en culture de chanvre (ordre de grandeur)"
-        },
-        "ec_ms_cm": {
-          "valeur": [
-            1.2,
-            2.2
-          ],
-          "source": "Ordre de grandeur de pratique en culture de chanvre (pas de plage d'EC établie dans une référence scientifique citée ici) ; à adapter selon la variété et le stade"
-        },
-        "jours_recolte": {
-          "valeur": [
-            90,
-            130
-          ],
-          "source": "Ordre de grandeur pour une variété photopériodique : du semis à la récolte des fleurs (et non une première récolte partielle) ; varie selon la durée de croissance choisie"
-        },
-        "espacement_cm": {
-          "valeur": [
-            50,
-            80
-          ],
-          "source": "Pratique courante (plantes de plus d'un mètre en culture photopériodique ; moins en conduite palissée)"
-        },
-        "conseils": {
-          "valeur": "Réduisez la photopériode à 12 h pour déclencher la floraison, avec une obscurité totale la nuit (la moindre fuite de lumière perturbe la plante). Surveillez l'humidité en fin de floraison.",
           "source": "Pratique culturale courante"
         }
       }

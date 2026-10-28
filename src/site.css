@@ -118,6 +118,8 @@ img, svg { max-width: 100%; }
   box-shadow: 0 8px 24px -8px rgb(60 207 122 / 0.6);
 }
 .bouton--fantome { color: var(--nuit-texte); border-color: rgb(255 255 255 / 0.25); }
+/* Bouton « Voir sur Amazon » : plein, au moins 44 px de haut (cible tactile), partout le même. */
+.bouton--amazon { min-height: 44px; justify-content: center; }
 .bouton--fantome:hover { background: rgb(255 255 255 / 0.08); }
 
 /* ---------- Bandeau de titre (pages intérieures) ---------- */
@@ -479,7 +481,6 @@ img, svg { max-width: 100%; }
 .schema img { display: block; width: 100%; height: auto; border-radius: var(--rayon); box-shadow: var(--ombre); }
 .schema figcaption { margin-top: 0.55rem; font-size: 0.88rem; color: var(--attenue); line-height: 1.5; }
 
-.fiche--chanvre, .fiches-famille--chanvre { --famille: #9fd48a; }
 .fiche__avertissement { margin: 0; font-size: 0.88rem; }
 .fiche__lien { color: inherit; text-decoration: none; }
 .fiche__lien:hover { text-decoration: underline; }
@@ -536,7 +537,23 @@ p.note-amazon, .prose p.note-amazon { margin: 0; font-size: 0.78rem; line-height
 .prose .choix-lampe li { margin: 0.2rem 0; }
 .choix-lampe .bouton { align-self: flex-start; margin-top: 0.3rem; }
 
-/* Budgets (fourchettes de prix par gamme) */
+/* Encadré « Le matériel pour ça » des conseils et « Lampe conseillée » des fiches : lien vers le Top 10 ou la section, 1 à 2 produits */
+.materiel { margin: 1.4rem 0; padding: 1rem 1.1rem; border-radius: 18px; background: var(--carte); border: 1px solid var(--bordure); }
+.prose .materiel p { margin: 0; }
+.materiel__titre { font-size: 0.95rem; }
+.prose .materiel__produits { list-style: none; padding: 0; margin: 0.8rem 0 0; display: grid; gap: 0.8rem; }
+@media (min-width: 760px) { .prose .materiel__produits { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.prose .materiel__produit { margin: 0; display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
+.materiel__produit .bouton { align-self: flex-start; }
+
+/* Liens vers les Top 10 (marqueur <!--#tops:…-->) */
+.tops-lies { margin: 1.4rem 0; padding: 0.9rem 1.1rem; border-radius: 18px; background: var(--carte); border: 1px solid var(--bordure); }
+.tops-lies p { margin: 0 0 0.4rem; }
+.tops-lies ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.25rem; }
+@media (min-width: 760px) { .tops-lies ul { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.6rem; } }
+.prose .tops-lies li { margin: 0; }
+
+/* Budgets (niveaux de budget par gamme) */
 .tableau caption { caption-side: top; text-align: left; font-weight: 700; padding: 0.75rem 0.85rem 0.5rem; }
 .tableau--budget tr:not(.total) td:last-child { white-space: nowrap; }
 .tableau--budget tr.total th, .tableau--budget tr.total td { border-top: 2px solid var(--bordure); font-weight: 600; }
@@ -743,3 +760,5 @@ p.note-amazon, .prose p.note-amazon { margin: 0; font-size: 0.78rem; line-height
   position: absolute; right: 0; bottom: 0; max-width: 70%; padding: 0.2rem 0.55rem; border-top-left-radius: 10px;
   font-size: 0.7rem; line-height: 1.3; color: #f6ecf0; background: rgb(27 19 34 / 0.78); overflow-wrap: anywhere;
 }
+.prose .actu-article__top { margin: 0.4rem 0 1rem; }
+.actu-article__top a { font-weight: 700; }

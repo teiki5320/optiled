@@ -1,26 +1,24 @@
 {
   "_lisezmoi": [
-    "Fourchettes de prix indicatives par gamme de lampes et par accessoire, affichées dans le calculateur (encart « Budget indicatif »), dans les budgets de départ de debuter.html et tente.html, et sur meilleures-lampes.html.",
-    "Méthode : on relève à la main les prix affichés sur Amazon.fr le jour de `releve_le` (lampes : toutes celles de src/data/lampes.json de la gamme, sauf les indisponibles ; accessoires : 2 à 4 articles courants trouvés par une recherche Amazon.fr, hors annonces sponsorisées et hors modèles haut de gamme), puis on ne garde que le minimum et le maximum.",
-    "Arrondis : borne basse arrondie vers le bas, borne haute vers le haut, à 5 € sous 50 € et à 10 € à partir de 50 €. « Extracteur 100 mm avec gaine » = extracteur seul + gaine alu de 1,5 à 3 m, relevés séparément puis additionnés.",
-    "Jamais de prix par produit (ni ASIN, ni nom de modèle ici) : uniquement des fourchettes par gamme, datées, sans lien d'achat accolé (règles du Programme Partenaires Amazon).",
+    "Niveaux de budget indicatifs par gamme de lampes et par accessoire, affichés dans le calculateur (encart « Budget indicatif »), dans les budgets de départ de debuter.html et tente.html, et sur meilleures-lampes.html.",
+    "Depuis le 28/10/2026 : plus aucun montant en euros pour le matériel (règles du Programme Partenaires Amazon : pas de prix écrit à la main). Chaque poste a seulement un niveau : « petit », « moyen » ou « gros » budget, comparé aux autres postes d'une installation de culture.",
+    "Repères pour classer un poste : petit = un petit achat d'appoint (minuterie, thermomètre, réglettes pour étagère, petit panneau) ; moyen = l'achat principal d'une petite tente (panneau moyen, tente) ; gros = grand panneau ou plusieurs lampes.",
     "Gammes de lampes : barres = lots de réglettes ou barres pour étagère ; appoint = ampoules et lampes à pince ; petits = panneaux jusqu'à 100 W ; moyens = panneaux de plus de 100 W et jusqu'à 200 W ; grands = panneaux de plus de 200 W.",
-    "`fourchette: null` = prix en cours de relevé : le site affiche alors « prix en cours de relevé » au lieu d'un montant. À refaire chaque mois avec la vérification des lampes."
+    "Jamais de prix par produit (ni ASIN, ni nom de modèle ici) et jamais de lien d'achat accolé. Le prix du jour est sur la page de chaque produit."
   ],
-  "releve_le": "2026-10-28",
   "lampes": {
-    "barres": { "libelle": "Réglettes et barres pour étagère (lot)", "fourchette": [45, 130] },
-    "appoint": { "libelle": "Lampe d'appoint (ampoule, lampe à pince)", "fourchette": [25, 40] },
-    "petits": { "libelle": "Petit panneau (jusqu'à 100 W)", "fourchette": [60, 90] },
-    "moyens": { "libelle": "Panneau moyen (plus de 100 W, jusqu'à 200 W)", "fourchette": [90, 170] },
-    "grands": { "libelle": "Grand panneau (plus de 200 W)", "fourchette": [260, 340] }
+    "barres": { "libelle": "Réglettes et barres pour étagère (lot)", "niveau": "petit" },
+    "appoint": { "libelle": "Lampe d'appoint (ampoule, lampe à pince)", "niveau": "petit" },
+    "petits": { "libelle": "Petit panneau (jusqu'à 100 W)", "niveau": "petit" },
+    "moyens": { "libelle": "Panneau moyen (plus de 100 W, jusqu'à 200 W)", "niveau": "moyen" },
+    "grands": { "libelle": "Grand panneau (plus de 200 W)", "niveau": "gros" }
   },
   "accessoires": {
-    "minuterie": { "libelle": "Minuterie mécanique", "fourchette": [5, 10] },
-    "thermo-hygrometre": { "libelle": "Thermo-hygromètre", "fourchette": [5, 15] },
-    "tente-80": { "libelle": "Tente de culture 80 × 80 cm", "fourchette": [45, 70] },
-    "extracteur-100": { "libelle": "Extracteur 100 mm avec gaine", "fourchette": [30, 45] },
-    "ventilateur-pince": { "libelle": "Petit ventilateur à pince", "fourchette": [20, 40] },
-    "ph-metre": { "libelle": "pH-mètre stylo", "fourchette": [5, 20] }
+    "minuterie": { "libelle": "Minuterie mécanique", "niveau": "petit" },
+    "thermo-hygrometre": { "libelle": "Thermo-hygromètre", "niveau": "petit" },
+    "tente-80": { "libelle": "Tente de culture 80 × 80 cm", "niveau": "moyen" },
+    "extracteur-100": { "libelle": "Extracteur 100 mm avec gaine", "niveau": "petit" },
+    "ventilateur-pince": { "libelle": "Petit ventilateur à pince", "niveau": "petit" },
+    "ph-metre": { "libelle": "pH-mètre stylo", "niveau": "petit" }
   }
 }

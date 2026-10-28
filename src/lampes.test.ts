@@ -20,7 +20,7 @@ describe('sélection de lampes', () => {
   });
 
   it('lien Amazon avec identifiant partenaire', () => {
-    expect(lienAmazon(LAMPES[0])).toBe(`https://www.amazon.fr/dp/${LAMPES[0].asin}?tag=${TAG_AMAZON}`);
+    expect(lienAmazon(LAMPES[0], 'top')).toBe(`https://www.amazon.fr/dp/${LAMPES[0].asin}?tag=${TAG_AMAZON}`);
   });
 
   it('laitue sur 1,2 × 0,6 m : un petit panneau suffit', () => {

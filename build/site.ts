@@ -48,7 +48,7 @@ import { rendreBudget } from './budget.ts';
 import { FICHIER_MEILLEURES_LAMPES, moisLampes, rendreMeilleuresLampes } from './meilleures-lampes.ts';
 import { LAMPES_VERIFIEES_LE, MENTION_AFFILIATION } from '../src/lampes.ts';
 import { pagesLegumes, PREFIXE_PAGE_LEGUME } from './pages-legumes.ts';
-import { canoniquesTop10, FICHIER_TOP_10, pagesTop10, PREFIXE_TOP_10, sujetDuFichier } from './top-10.ts';
+import { canoniquesTop10, FICHIER_TOP_10, pagesTop10, PREFIXE_TOP_10, rendreTopsAccueil, rendreTopsLies, sujetDuFichier } from './top-10.ts';
 import { conseilsDeLaCulture, conseilsPublies, dateCourte, dateDuJour, dateLongue, pagesConseils, PREFIXE_PAGE_CONSEIL, rendreListeConseils, THEMES, tousLesConseils } from './conseils.ts';
 import { echapper } from './fiches.ts';
 import { rendreComparaisonLampes, rendreDliSemis, rendreEffetEfficacite, rendreEtageresSemis, rendrePuissancesCultures, rendrePuissancesSurfaces } from './guides-achat.ts';
@@ -556,7 +556,7 @@ export function footer(): string {
       <p class="site-pied__note">${MENTION_AFFILIATION}</p>
       <p class="site-pied__note"><a href="a-propos.html">À propos et méthode</a> · <a href="a-propos.html#contact">Contact</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="mentions-legales.html#donnees" data-gerer-cookies>Gérer les cookies</a></p>
     </div>
-    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes du mois</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="${FICHIER_ACTUS}">Actus de la culture en intérieur</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li><li><a href="integrer.html">Intégrer le calculateur</a></li></ul>
+    <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes du mois</a></li><li><a href="${FICHIER_TOP_10}">Top 10 du matériel</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="${FICHIER_ACTUS}">Actus de la culture en intérieur</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li><li><a href="integrer.html">Intégrer le calculateur</a></li></ul>
       <h2 class="site-pied__sous-titre">Parcours</h2><ul>${PARCOURS.map((p) => `<li><a href="${p.fichier}">${p.titre}</a></li>`).join('')}</ul></div>
     ${colonne('led')}
     ${colonne('culture')}
@@ -901,6 +901,8 @@ export function transformerPage(html: string, fichier: string): string {
     .replace(/<!--#actus:[^>]*-->/g, (m) => remplacerMarqueursActus(m))
     .replace('<!--#parcours-->', () => `<div class="cartes-guides cartes-orientation">${cartesParcours()}</div>`)
     .replace(/<!--#conseils-lies:([a-z0-9,\s-]+)-->/g, (_m, liste: string) => rendreConseilsLies(liste.split(',')))
+    .replace(/<!--#tops:([a-z0-9,*\s-]+)-->/g, (_m, liste: string) => rendreTopsLies(liste.split(',')))
+    .replace('<!--#tops-accueil-->', () => rendreTopsAccueil())
     .replace('<!--#puissances-surfaces-->', () => rendrePuissancesSurfaces())
     .replace('<!--#puissances-cultures-->', () => rendrePuissancesCultures())
     .replace('<!--#effet-efficacite-->', () => rendreEffetEfficacite())
@@ -984,7 +986,7 @@ export function pluginSite(): Plugin {
         .filter((f) => !sourcePage(racine, f).includes('content="noindex"') && !(f in canoniquesTop10()));
       this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap(pages, SITE_URL, (f) => dateDerniereModification(f, sourcePage(racine, f))) });
       this.emitFile({ type: 'asset', fileName: FICHIER_FLUX, source: fluxRss() });
-      // Liste des cultures lue par la tâche de veille (jamais le chanvre).
+      // Liste des cultures lue par la tâche de veille.
       this.emitFile({ type: 'asset', fileName: FICHIER_ENTITES, source: `${JSON.stringify(entitesVeille(), null, 2)}\n` });
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}sitemap.xml\n` });
     },

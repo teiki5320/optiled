@@ -50,6 +50,14 @@
   background: var(--degrade); color: #2a1422; box-shadow: 0 10px 24px -8px #e8765a;
 }
 .accueil__fleche .icone { width: 1.4rem; height: 1.4rem; }
+/* Liens vers les Top 10 (internes, sans lien Amazon), sous la phrase d'accueil */
+.accueil__tops { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-top: 0.8rem; font-size: 0.85rem; }
+.accueil__tops span { color: #f3dbe0; font-weight: 600; }
+.accueil__tops a {
+  display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0.3rem 0.8rem; border-radius: 999px;
+  color: #ffe2a8; background: rgb(40 24 48 / 0.6); border: 1px solid rgb(255 255 255 / 0.18); font-weight: 600; text-decoration: none;
+}
+.accueil__tops a:hover { background: rgb(255 255 255 / 0.12); }
 
 /* ---------- Formulaire ---------- */
 .calculateur h2 { font-size: 1.55rem; letter-spacing: -0.02em; }
@@ -88,7 +96,6 @@
 .tuile-legume--aromatiques { --famille: #8fcfc3; }
 .tuile-legume--micro-pousses { --famille: #cfe58a; }
 .tuile-legume--legumes-fruits { --famille: #f4a08e; }
-.tuile-legume--chanvre { --famille: #9fd48a; }
 .tuile-legume--legumes-racines { --famille: #f0a3c4; }
 .tuile-legume--epices-et-curiosites { --famille: #c7b0f0; }
 
@@ -186,7 +193,7 @@ input[type='text']:focus, select:focus { background: rgb(255 255 255 / 0.1); bor
   .anneau span { color: #444; }
 }
 
-/* Mise en garde réglementaire (ex. chanvre CBD) */
+/* Mise en garde (ex. safran, wasabi) */
 .avertissement-legume {
   margin: 0.8rem 0 0; padding: 0.7rem 0.9rem; border-radius: var(--rayon-petit);
   background: var(--alerte-clair); color: var(--texte); font-size: 0.85rem; line-height: 1.45;
@@ -208,7 +215,7 @@ input[type='text']:focus, select:focus { background: rgb(255 255 255 / 0.1); bor
 .lampe-proposee .note-amazon { font-size: 0.76rem; color: var(--attenue); }
 .budget-indicatif { background: rgb(255 255 255 / 0.05); border: 1px solid rgb(255 255 255 / 0.1); border-radius: 16px; padding: 0.8rem 1rem; display: grid; gap: 0.35rem; margin: 0.6rem 0; }
 .budget-indicatif p { margin: 0; }
-.bouton--amazon { justify-self: start; font-size: 0.86rem; padding: 0.45rem 0.9rem; }
+.bouton--amazon { justify-self: start; }
 
 /* Titre et phrase d'explication visibles ensemble sur ordinateur : la phrase monte sous le titre. */
 @media (min-width: 960px) {

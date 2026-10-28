@@ -29,7 +29,6 @@ describe('tableau « Puissance selon la culture »', () => {
     expect(ligne('safran')).not.toContain('floraison');
     expect(ligne('tomate')).toContain('<small>en fructification</small>');
     expect(ligne('tomate')).toContain('<td>500</td>');
-    expect(ligne('chanvre-cbd')).toContain('<small>en floraison</small>');
     expect(ligne('laitue')).not.toContain('<small>');
   });
 

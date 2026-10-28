@@ -97,7 +97,6 @@ export const REPERES_DLI = [
   { libelle: 'Aromatiques', min: 10, max: 18, rangee: 2 },
   { libelle: 'Fraisier', min: 17, max: 25, rangee: 0 },
   { libelle: 'Légumes fruits', min: 20, max: 30, rangee: 1 },
-  { libelle: 'Chanvre (floraison)', min: 30, max: 40, rangee: 2 },
 ];
 export const DLI_MAX_JAUGE = 40;
 

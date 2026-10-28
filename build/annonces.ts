@@ -6,7 +6,8 @@
  * - Les annonces ne sont placées qu'à des emplacements choisis, dans les guides et les articles :
  *   jamais dans les outils (calculateur, carnet de suivi), ni sur les pages de lampes Amazon.
  *   Au plus deux par page : une au milieu du texte, une après l'article.
- * - Une annonce n'est jamais placée à côté d'une section qui contient des liens Amazon.
+ * - Une annonce n'est jamais placée à côté d'une section qui contient des liens Amazon, ni à moins
+ *   de DISTANCE_AMAZON caractères d'un lien Amazon (encadrés produits des conseils et des fiches).
  * Les identifiants ci-dessous sont publics (ils figurent dans le code de chaque page).
  */
 
@@ -38,6 +39,9 @@ export function blocAnnonce(bloc = BLOC_ARTICLES, client = CLIENT_ADSENSE): stri
 
 const AMAZON = /amazon\.|amzn\.to/i;
 
+/** Écart minimal (en caractères de HTML) entre une annonce et un lien Amazon. */
+export const DISTANCE_AMAZON = 3000;
+
 /**
  * Place les annonces dans une page déjà mise en forme : au milieu de l'article (avant un
  * intertitre h2, si ni la section d'avant ni celle d'après ne renvoient vers Amazon) et après
@@ -55,13 +59,14 @@ export function placerAnnonces(html: string, fichier: string, bloc = BLOC_ARTICL
   if (titres.length >= 4) {
     const section = (i: number) => article.slice(titres[i], titres[i + 1] ?? article.length);
     const milieu = Math.floor(titres.length / 2);
-    const choix = [milieu, milieu + 1, milieu - 1].find((i) => i > 0 && i < titres.length && !AMAZON.test(section(i - 1)) && !AMAZON.test(section(i)));
+    const proche = (i: number) => AMAZON.test(article.slice(Math.max(0, titres[i] - DISTANCE_AMAZON), titres[i] + DISTANCE_AMAZON));
+    const choix = [milieu, milieu + 1, milieu - 1].find((i) => i > 0 && i < titres.length && !AMAZON.test(section(i - 1)) && !AMAZON.test(section(i)) && !proche(i));
     if (choix !== undefined) article = article.slice(0, titres[choix]) + annonce + article.slice(titres[choix]);
   }
 
   let suite = html.slice(fin);
   const apres = suite.indexOf('<div class="conteneur article__apres">');
-  if (apres >= 0 && !AMAZON.test(suite.slice(apres, apres + 3000))) {
+  if (apres >= 0 && !AMAZON.test(suite.slice(apres, apres + DISTANCE_AMAZON)) && !AMAZON.test(article.slice(-DISTANCE_AMAZON))) {
     suite = `${suite.slice(0, apres)}<div class="conteneur">${annonce}</div>\n  ${suite.slice(apres)}`;
   }
   return html.slice(0, debut) + article + suite;

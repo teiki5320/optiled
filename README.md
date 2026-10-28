@@ -9,12 +9,12 @@ Site web statique (Vite + TypeScript, sans backend), en français et pensé d'ab
 | `led.html` + `led-*.html` | Guides LED : bases (PAR, PPFD, DLI, spectre), choisir ses LED, installer et mesurer ; guides d'achat : puissance selon la surface, comparer des lampes, LED pour semis et boutures (tableaux calculés par `build/guides-achat.ts`) |
 | `culture.html` + `culture-*.html` | Guides culture : démarrer, substrats et hydroponie, nutriments/pH/EC, climat, semis, problèmes et ravageurs |
 | `legumes.html` | Fiches légumes, **générées au build** depuis `src/data/legumes.json` ; chaque fiche mène à sa page détaillée |
-| `legume-<id>.html` | **Page détaillée de chaque culture** (26 pages), générée au build par `build/pages-legumes.ts` : lumière par stade, exemple chiffré pour 1 m², lampes qui conviennent, climat, solution nutritive, espacement et récolte, cultures de la même famille. Ces pages n'existent pas sur le disque : le plugin du site les fournit à Vite (build et serveur de développement) |
+| `legume-<id>.html` | **Page détaillée de chaque culture** (25 pages), générée au build par `build/pages-legumes.ts` : lumière par stade, exemple chiffré pour 1 m², lampes qui conviennent, climat, solution nutritive, espacement et récolte, cultures de la même famille. Ces pages n'existent pas sur le disque : le plugin du site les fournit à Vite (build et serveur de développement) |
 | `conseils.html` + `conseil-<slug>.html` | **Conseils** : un article par question, publié à sa date (voir « Articles de conseil » ci-dessous) |
 | `lampes.html` | Sélection de lampes Amazon.fr, groupée par format |
 | `meilleures-lampes.html` | **Meilleures lampes LED horticoles (mois année)** : choix recommandé et alternative par besoin, mis à jour chaque mois (voir « Budget et page mensuelle » ci-dessous) |
 | `glossaire.html` | Glossaire des termes techniques |
-| `actus.html` | **Actus de la culture en intérieur et des LED** (20), lues en direct dans le navigateur depuis la veille du Studio (`https://teiki5320.github.io/veille/actus/kultiled.json`) ; aussi 4 actus sur l'accueil (sous le calculateur) et 3 sur chaque page culture concernée, jamais sur la fiche Chanvre CBD ; toucher une actu ouvre son article complet sur le site, `actus/<slug>/` (voir « Actus » ci-dessous) |
+| `actus.html` | **Actus de la culture en intérieur et des LED** (20), lues en direct dans le navigateur depuis la veille du Studio (`https://teiki5320.github.io/veille/actus/kultiled.json`) ; aussi 4 actus sur l'accueil (sous le calculateur) et 3 sur chaque page culture concernée ; toucher une actu ouvre son article complet sur le site, `actus/<slug>/` (voir « Actus » ci-dessous) |
 
 Le calculateur accepte un légume présélectionné dans l'adresse : `index.html?legume=tomate#calculateur`. Tous les réglages différents des valeurs par défaut sont reflétés dans l'adresse (`?l=tomate&s=floraison&n=3…`, voir `src/etat.ts`) : le bouton **Partager** envoie ce lien, et les derniers réglages sont mémorisés sur l'appareil du visiteur. Chaque bloc de résultat renvoie vers le guide qui l'explique ; sur mobile, une barre fixe rappelle la puissance et le nombre de barres pendant la saisie.
 
@@ -52,7 +52,9 @@ Node.js 22.12 ou plus récent est requis (Vite 8 et Vitest 5).
 | `src/data.ts` | Types et accès aux données |
 | `src/calc.ts` | **Module de calcul isolé** (fonctions pures, aucun accès au DOM) |
 | `src/liste.ts` | Liste d'achat et résumé texte (copie) |
-| `src/budget.ts`, `build/budget.ts` | Fourchettes de prix par gamme (`src/data/budget.json`), encart du calculateur et budgets de départ |
+| `src/budget.ts`, `build/budget.ts` | Niveaux de budget par gamme (`src/data/budget.json`), encart du calculateur et budgets de départ |
+| `src/suivi-amazon.ts` | Table unique des codes de suivi Amazon par emplacement |
+| `scripts/verifier-site.mjs` | Contrôle du site construit : jamais de plante interdite, aucun prix près d'un lien Amazon, codes de suivi connus |
 | `build/meilleures-lampes.ts` | Page mensuelle `meilleures-lampes.html` |
 | `src/alertes.ts` | Mises en garde du calculateur (photopériode, barres trop longues, rangs étroits) |
 | `src/etat.ts` | Réglages ↔ adresse de la page (lien de partage) |
@@ -60,7 +62,7 @@ Node.js 22.12 ou plus récent est requis (Vite 8 et Vitest 5).
 | `src/main.ts`, `src/style.css`, `src/theme-calcul.css` | Interface du calculateur |
 | `src/*.test.ts`, `build/*.test.ts` | Tests Vitest (calculs, alertes, lien de partage, intégrité du JSON, liste d'achat, pages générées, liens internes) |
 | `build/articles.ts`, `src/article.ts`, `src/article-secours.ts` | Articles complets des actus : pages `actus/<slug>/` construites au build depuis l'index des articles de la veille, page de secours `actus/article/?id=<id>` (noindex) remplie dans le navigateur, renvoi `actus/` → `actus.html` |
-| `build/veille.ts`, `src/veille.ts` | Actus : marqueurs `<!--#actus:4-->` / `<!--#actus:3:legume:tomate-->` (sections cachées écrites au build), fichier `veille/entites.json` des cultures (sans le chanvre), lecture et affichage en direct dans le navigateur |
+| `build/veille.ts`, `src/veille.ts` | Actus : marqueurs `<!--#actus:4-->` / `<!--#actus:3:legume:tomate-->` (sections cachées écrites au build), fichier `veille/entites.json` des cultures, lecture et affichage en direct dans le navigateur |
 | `build/photos.ts`, `src/data/photos-libres.json` | Photos des guides ; crédits des photos libres de droits (auteur, licence, page d'origine, texte alternatif) |
 | `scripts/e2e.mjs` | Test de bout en bout dans Chromium (`npm run test:e2e`) |
 
@@ -76,21 +78,21 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 ## Lampes conseillées (Amazon)
 
 - `src/data/lampes.json` : sélection de lampes vendues sur Amazon.fr (note ≥ 4 étoiles), avec ASIN, puissance, PPF (publié ou estimé = puissance × efficacité annoncée), surface couverte, variateur, date de vérification (`verifie_le`) ; la note Amazon est vérifiée à la main chaque mois mais n'est ni enregistrée ni publiée. Une lampe sans PPF exploitable (`ppf: null`) n'apparaît que dans « Autres modèles populaires ».
-- `src/lampes.ts` : identifiant Partenaires Amazon (`TAG_AMAZON`, à changer à un seul endroit), liens `amazon.fr/dp/<ASIN>?tag=…` (`rel="sponsored nofollow noopener"`, bouton `boutonAmazon` nommé « Voir sur Amazon : <nom>, lien partenaire (nouvel onglet) »), et choix des lampes qui conviennent (`lampesConseillees` : assez de PPF, au moins 80 % de la surface couverte, au plus 6 lampes, au plus 2,5 fois le besoin).
+- `src/suivi-amazon.ts` : **table unique des codes de suivi** Amazon Partenaires, par emplacement (`calculateur`, `top`, `fiche`, `guide`, `conseil`) ; chaque lien Amazon est fabriqué avec son emplacement (`lienAmazonAsin(asin, emplacement)`). Au 28 octobre 2026, tous les emplacements utilisent le code du site `kultiledfr-21` (`TAG_AMAZON`) ; pour en changer un, remplacer sa valeur dans la table (les tests vérifient que chaque lien a un code de la table).
+- `src/lampes.ts` : liens `amazon.fr/dp/<ASIN>?tag=…` (`rel="sponsored nofollow noopener"`, bouton `boutonAmazon` nommé « Voir sur Amazon : <nom>, lien partenaire (nouvel onglet) »), et choix des lampes qui conviennent (`lampesConseillees` : assez de PPF, au moins 80 % de la surface couverte, au plus 6 lampes, au plus 2,5 fois le besoin).
 - `lampes.html` + `build/lampes.ts` (marqueur `<!--#lampes-->`) : page de la sélection, groupée par format.
-- Aucun prix par produit (ils changent en permanence) ; seules des fourchettes par gamme sont publiées (`src/data/budget.json`). À revérifier chaque mois : note, disponibilité, chiffres, fourchettes ; mettre à jour `verifie_le` et `releve_le`.
+- Aucun prix (ils changent en permanence) : seulement des niveaux de budget par gamme (`src/data/budget.json`). À revérifier chaque mois : note, disponibilité, chiffres ; mettre à jour `verifie_le`.
 - La mention obligatoire « En tant que Partenaire Amazon… » figure près des liens, dans le pied de page et dans les mentions légales.
 - `disponible: false` (facultatif) : lampe « actuellement indisponible » lors de la vérification ; elle reste sur `lampes.html` avec une mention, mais n'est plus proposée par le calculateur ni recommandée sur `meilleures-lampes.html`. Retirer le champ quand elle revient en stock.
 
 ## Budget et page mensuelle
 
-**`src/data/budget.json`** : fourchettes de prix **par gamme**, jamais par produit (règles du Programme Partenaires Amazon : ni prix d'un produit précis, ni note).
+**`src/data/budget.json`** : **niveau de budget** par gamme de lampes et par accessoire (« petit », « moyen » ou « gros »), jamais de montant en euros pour le matériel depuis le 28 octobre 2026 (règles du Programme Partenaires Amazon : aucun prix écrit à la main). Les anciennes fourchettes « relevées sur Amazon.fr » ont été retirées ce jour-là.
 
-- `releve_le` : date du relevé (AAAA-MM-JJ), affichée partout : « Prix relevés sur Amazon.fr le …, à titre indicatif ».
-- `lampes` : gammes `barres` (lots de réglettes pour étagère), `appoint` (ampoules, lampes à pince), `petits` (panneaux ≤ 100 W), `moyens` (> 100 à 200 W), `grands` (> 200 W) ; `accessoires` : `minuterie`, `thermo-hygrometre`, `tente-80`, `extracteur-100` (extracteur + gaine), `ventilateur-pince`, `ph-metre`. Chaque poste : `libelle` et `fourchette` = `[min, max]` en euros, ou `null`.
-- Méthode : relever à la main les prix affichés sur Amazon.fr (lampes : toutes celles de `lampes.json` de la gamme, sauf indisponibles ; accessoires : 2 à 4 articles courants d'une recherche, hors sponsorisés et haut de gamme), garder le minimum et le maximum, arrondir la borne basse vers le bas et la haute vers le haut, à 5 € sous 50 € et à 10 € au-delà (`fourchetteDepuisPrix` dans `src/budget.ts`). Aucun ASIN, nom de modèle ni prix individuel dans le fichier (les tests le vérifient).
-- `fourchette: null` : le site affiche « prix en cours de relevé » ; tout le reste fonctionne.
-- Affichage : encart « Budget indicatif » du calculateur (gamme selon la puissance calculée, `gammePourPuissance`, plus l'électricité par mois et par an), budgets de départ de `debuter.html` et `tente.html` (marqueurs `<!--#budget:etagere-->` et `<!--#budget:tente-->`, `build/budget.ts` : lampe + accessoires + électricité, calculés depuis `legumes.json`), tableau « Budget par gamme » de `meilleures-lampes.html`. Pas de lien d'achat à côté d'une fourchette.
+- `lampes` : gammes `barres` (lots de réglettes pour étagère), `appoint` (ampoules, lampes à pince), `petits` (panneaux ≤ 100 W), `moyens` (> 100 à 200 W), `grands` (> 200 W) ; `accessoires` : `minuterie`, `thermo-hygrometre`, `tente-80`, `extracteur-100` (extracteur + gaine), `ventilateur-pince`, `ph-metre`. Chaque poste : `libelle` et `niveau` (rien d'autre : les tests le vérifient).
+- Calcul (`src/budget.ts`) : plusieurs lampes identiques montent d'un niveau (`niveauLampes`) ; une installation prend le niveau de son poste le plus coûteux (`niveauTotal`). Seule l'électricité de l'éclairage est chiffrée (prix du kWh).
+- Affichage : encart « Budget indicatif » du calculateur (gamme selon la puissance calculée, `gammePourPuissance`, plus l'électricité par mois et par an), budgets de départ de `debuter.html` et `tente.html` (marqueurs `<!--#budget:etagere-->` et `<!--#budget:tente-->`, `build/budget.ts`), tableau « Budget par gamme » de `meilleures-lampes.html`. Pas de lien d'achat à côté d'un budget.
+- Contrôle : `scripts/verifier-site.mjs` (lancé par `npm run test:e2e` sur `dist/`, et par `build/site-construit.test.ts` sur les pages rendues) refuse tout montant en euros dans les 600 caractères qui précèdent un lien Amazon et toute mention de « prix relevés sur Amazon ».
 
 **`meilleures-lampes.html`** (`build/meilleures-lampes.ts`, marqueur `<!--#meilleures-lampes-->`) : une seule page, mise à jour chaque mois.
 
@@ -99,10 +101,20 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 - Ligne « Lien partenaire Amazon… » sous chaque bouton « Voir sur Amazon » (en `rel="sponsored nofollow noopener"`), mention dans le pied de page et les mentions légales ; plus d'encadré d'affiliation en haut des pages depuis le 28 octobre 2026. Méthode publiée, aucun prix par produit ni note.
 - Liens : menu Lampes (entrée active), encadré en haut de `lampes.html`, pied de page, sitemap (automatique), `debuter.html`, `tente.html`, `led-choisir.html`.
 
+## Liens vers les Top 10 et encadrés produits (depuis le 28 octobre 2026)
+
+- **Conseils** : `MATERIEL_CONSEILS` (`build/conseils.ts`) relie une vingtaine de conseils qui parlent de matériel à leur Top 10. Encadré « Le matériel pour ça » à la fin de la première section : lien vers le Top 10 et 2 produits au plus (code de suivi `conseil`), sans intertitre ; lien seul si un montant en euros précède l'encadré.
+- **Fiches cultures** : encadré « Lampe conseillée pour … » juste après « Besoins en lumière » (la première lampe proposée), la section « Lampes du commerce qui conviennent » montre les autres ; 3 produits au plus par fiche.
+- **Calculateur** : chaque ligne de la liste d'achat renvoie vers le Top 10 de l'objet (`TOP10_LISTE` dans `src/liste.ts` : lampes, minuterie, thermo-hygromètre, et dès 60 × 60 cm tente et extracteur), jamais vers Amazon.
+- **Marqueurs** : `<!--#tops:slug1,slug2-->` (bloc de liens vers des Top 10, `*` = tous ; `tente.html`, `debuter.html`, `legumes.html`, `conseils.html`) et `<!--#tops-accueil-->` (ligne de liens sous la phrase d'accueil) ; lien « Top 10 du matériel » dans le pied de page.
+- **Actus** : ligne finale « Le matériel pour ça » vers le Top 10 lié au sujet (`TOPS_ACTUS` dans `build/articles.ts`, d'après le titre et le chapô), jamais de lien Amazon.
+- **Annonces** : jamais à moins de `DISTANCE_AMAZON` (3 000 caractères de HTML) d'un lien Amazon (`build/annonces.ts`).
+- **Disponibilité** : `npm run verifier-produits` (sur le Mac, avec Chrome ; `-- --ecrire` pour enregistrer, `--lot 30` ou `--ids a,b`) ouvre chaque fiche Amazon du catalogue (lampes, tentes, Top 10) : bouton d'achat présent → `verifie_le` du jour ; sinon `disponible: false`, et le produit n'est plus affiché nulle part. Un Top 10 sous 10 produits disponibles n'est plus publié : remplacer le produit par un équivalent vérifié (un test le signale).
+
 ## Articles de conseil
 
 - Un article = un fichier `contenu/conseils/<slug>.html` : un commentaire d'en-tête (`titre`, `description` de 70 à 180 caractères, `publie_le` au format AAAA-MM-JJ, `theme` parmi `lumiere`, `cultures`, `eau`, `installation`), puis le corps en HTML qui commence par `<p class="chapo">` (la réponse courte) et contient des `<h2 id="…">` (le sommaire est construit automatiquement).
-- `build/conseils.ts` ne construit que les articles dont la date est passée (date du jour à Paris) : page `conseil-<slug>.html`, liste de `conseils.html` (marqueur `<!--#conseils-->`), sitemap, suggestions « À lire aussi » en boucle (articles rangés par thème puis par date, chacun renvoie vers les 3 suivants : chacun reçoit donc 3 liens ; les fiches cultures font de même, sans le chanvre). Les articles programmés restent dans le dépôt sans être publiés.
+- `build/conseils.ts` ne construit que les articles dont la date est passée (date du jour à Paris) : page `conseil-<slug>.html`, liste de `conseils.html` (marqueur `<!--#conseils-->`), sitemap, suggestions « À lire aussi » en boucle (articles rangés par thème puis par date, chacun renvoie vers les 3 suivants : chacun reçoit donc 3 liens ; les fiches cultures font de même). Les articles programmés restent dans le dépôt sans être publiés.
 - Publication automatique : le workflow GitHub Pages se relance chaque lundi, mercredi et vendredi à 5 h UTC ; il suffit donc de dater les articles d’un de ces jours.
 - Prévisualiser le site à une date future : `DATE_PUBLICATION=2027-01-04 npm run build`.
 - Les tests vérifient l'en-tête de chaque article et ses liens internes tels qu'ils seront à sa date de publication (un article ne peut renvoyer qu'à un article publié avant lui).
@@ -116,22 +128,24 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 - `public/images/culture/<nom>-800.webp` et `-1600.webp` : photos et schémas insérés dans les guides Culture (`<figure class="schema">` avec `srcset`). Pour en ajouter : `npm run images -- <dossier> culture`. Pour un schéma avec du texte, GPT Image 2 (format 16:9) écrit le français sans faute ; ne jamais mettre de code couleur dans le prompt (il s'affiche dans l'image).
 - `public/images/schemas/*.svg` : schémas explicatifs insérés dans les guides avec `<figure class="schema">`.
 - Les photos actuelles ont été générées par IA (ElevenLabs, modèle Seedream) ; le pied de page le signale.
-- Photos libres de droits (depuis le 27 octobre 2026, pour les guides et parcours qui n'avaient pas de photo : `led-puissance`, `led-comparer`, `led-semis`, `debuter`, `tente`) : déclarées dans `src/data/photos-libres.json` (source, auteur, licence, page d'origine, texte alternatif), puis `npm run images-libres` les télécharge et les convertit en WebP dans `public/images/guides/`. Ordre de recherche : Wikimedia Commons, puis Openverse en usage commercial (CC0, domaine public, CC BY, CC BY-SA ; auteur connu), sinon une carte aux couleurs du site (`"source": "carte"`, « Illustration : Kultiled »). Jamais de cannabis ni de chanvre, jamais deux fois la même image (vérifié par les tests). Le crédit « Photo : auteur · licence » s'affiche sous la couverture, avec le lien vers la page d'origine, et sur la photo des cartes.
+- Photos libres de droits (depuis le 27 octobre 2026, pour les guides et parcours qui n'avaient pas de photo : `led-puissance`, `led-comparer`, `led-semis`, `debuter`, `tente`) : déclarées dans `src/data/photos-libres.json` (source, auteur, licence, page d'origine, texte alternatif), puis `npm run images-libres` les télécharge et les convertit en WebP dans `public/images/guides/`. Ordre de recherche : Wikimedia Commons, puis Openverse en usage commercial (CC0, domaine public, CC BY, CC BY-SA ; auteur connu), sinon une carte aux couleurs du site (`"source": "carte"`, « Illustration : Kultiled »). Jamais de plante interdite, jamais deux fois la même image (vérifié par les tests). Le crédit « Photo : auteur · licence » s'affiche sous la couverture, avec le lien vers la page d'origine, et sur la photo des cartes.
 - Un test vérifie que chaque image référencée existe et possède un texte alternatif.
 
 ## Actus (veille)
 
 - La tâche de veille du Studio écrit, deux fois par jour, `https://teiki5320.github.io/veille/actus/kultiled.json` (schéma v3). Le site ne fait que le lire, dans le navigateur, après l'affichage de la page (module chargé à part : le calculateur ne s'en trouve pas alourdi). Délai de 8 s, cache de 15 min ; en cas d'erreur, rien n'est affiché et la page reste intacte.
-- Marqueurs : `<!--#actus:4-->` (accueil, avec le lien « Toutes les actus »), `<!--#actus:20-->` (page `actus.html`, avec la date de mise à jour), `<!--#actus:3:legume:<id>-->` (ajouté automatiquement à chaque page culture, sauf le chanvre CBD).
+- Marqueurs : `<!--#actus:4-->` (accueil, avec le lien « Toutes les actus »), `<!--#actus:20-->` (page `actus.html`, avec la date de mise à jour), `<!--#actus:3:legume:<id>-->` (ajouté automatiquement à chaque page culture).
 - La 1re actu s'affiche en bandeau (image 16:9), les suivantes en vignettes (image carrée) ; source cliquable (`target="_blank" rel="noopener nofollow"`), âge de l'actu, crédit de l'image. Texte inséré avec `textContent` uniquement ; actus sans image de la veille, avec un lien Amazon ou parlant de cannabis écartées par sécurité.
 - **Articles complets (depuis le 28 octobre 2026)** : la veille écrit aussi un article de 300 à 450 mots par actu (`articles/kultiled/<id>.json`, schéma `article-schema-v1.json`) et l'index de tous les articles (`articles/kultiled/index.json`, jamais vidé). Au build, `build/articles.ts` lit cet index et le fichier des actus, puis construit une page statique par article : `actus/<slug>/index.html` (fil d'Ariane, h1, chapô, date, durée de lecture, image 16:9 et crédit, intertitres h2, encadré « Sources » en `target="_blank" rel="noopener nofollow"`, liens vers les fiches cultures citées, 3 autres actus, publicité comme les autres pages de lecture), avec `<title>`, description, canonical, Open Graph et `NewsArticle` ; ces pages vont dans le sitemap (donc dans IndexNow). Une page reste construite même quand son actu sort des actus récentes.
 - Lien d'une carte (`lienCarte`, `src/veille.ts`) : page construite si son slug est dans la liste écrite au build (constante `__ARTICLES_CONSTRUITS__`), sinon page de secours `actus/article/?id=<id>` si l'actu a un `article_url`, sinon la source comme avant. Toute la carte est cliquable ; le nom de la source reste affiché en texte.
 - Page de secours (`src/article-secours.ts`) : `noindex`, hors sitemap ; renvoie vers la page construite si elle existe ; identifiant inconnu : message et lien vers `actus.html`.
 - Veille injoignable au build : 0 page d'article, le build passe. Essais : `VEILLE_HORS_LIGNE=1 npm run build` (aucune lecture) ou `VEILLE_BASE=<dossier ou adresse> npm run build`.
 - Reconstruction automatique deux fois par jour, après la veille : `cron: '50 11,18 * * *'` dans `.github/workflows/pages.yml`.
-- Le build publie `veille/entites.json` : les cultures (tag `legume:<id>`, nom, autres noms dont l'anglais), sans le chanvre CBD.
+- Le build publie `veille/entites.json` : les cultures (tag `legume:<id>`, nom, autres noms dont l'anglais).
 
 ## Modifier ou ajouter un légume
+
+> Le chanvre (fiche `legume-chanvre-cbd.html`, ses données et ses sources) a été retiré du site le 28 octobre 2026 et ne doit pas revenir : `build/site-construit.test.ts` et `scripts/verifier-site.mjs` (lancé par `npm run test:e2e` sur `dist/`) refusent ce sujet partout dans le site construit.
 
 Éditez `src/data/legumes.json`, puis relancez `npm test` et `npm run build`. Chaque légume ressemble à ceci :
 
@@ -154,9 +168,9 @@ Classes CSS utiles dans les articles : `prose`, `chapo`, `sommaire`, `encadre`, 
 
 - `ppfd` en µmol/m²/s, `photoperiode` en h/jour, `hauteur_cm` = [min, max] au-dessus du feuillage.
 - `floraison: null` pour les cultures récoltées avant floraison (le choix du stade est alors désactivé).
-- `avertissement` (facultatif) : mise en garde affichée dans le calculateur et la fiche (ex. réglementation du chanvre CBD).
+- `avertissement` (facultatif) : mise en garde affichée dans le calculateur et la fiche (ex. safran, wasabi).
 - `famille` sert à regrouper la liste déroulante et les fiches.
-- `culture` : plages [min, max] de température de jour (`temperature_c`) et de nuit (`temperature_nuit_c`) en °C, ce qu'il faut éviter (`temperature_a_eviter`, texte), humidité (%), pH, EC (mS/cm), jours jusqu'à la première récolte (depuis le semis, sauf fraise et safran : depuis la plantation, romarin : depuis la bouture, chanvre : jusqu'à la récolte des fleurs, wasabi : jusqu'à la récolte du rhizome), espacement (cm, `null` pour un semis à la volée), et un conseil ; affichées dans les fiches légumes. Les températures alimentent aussi le tableau du guide climat.
+- `culture` : plages [min, max] de température de jour (`temperature_c`) et de nuit (`temperature_nuit_c`) en °C, ce qu'il faut éviter (`temperature_a_eviter`, texte), humidité (%), pH, EC (mS/cm), jours jusqu'à la première récolte (depuis le semis, sauf fraise et safran : depuis la plantation, romarin : depuis la bouture, wasabi : jusqu'à la récolte du rhizome), espacement (cm, `null` pour un semis à la volée), et un conseil ; affichées dans les fiches légumes. Les températures alimentent aussi le tableau du guide climat.
 - Toute nouvelle référence citée doit être ajoutée à `references` (elle apparaîtra dans le glossaire).
 - Chaque valeur **doit** avoir une `source` non vide : les tests vérifient la présence des sources et la plausibilité des valeurs (PPFD entre 50 et 1 500, photopériode ≤ 24 h, etc.).
 

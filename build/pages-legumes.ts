@@ -4,7 +4,6 @@
  * Chaque page suit le modèle d'article (fil d'Ariane, h1, chapô, sommaire) pour recevoir
  * la même mise en page que les guides.
  */
-import { CULTURES_EXCLUES } from './veille.ts';
 import { calculer, calculerDli, longueurBarreConseillee, nombrePlants, type ResultatCalcul, type Surface } from '../src/calc.ts';
 import type { Legume, ParametresStade } from '../src/data.ts';
 import { arrondiPuissance } from '../src/liste.ts';
@@ -49,7 +48,7 @@ const TENTE_80: SurfaceExemple = { nom: 'une tente de 80 × 80 cm', longueurM: 0
  * - étagère de 60 × 30 cm (un niveau, quelques pots ou un plateau) pour les salades, aromatiques,
  *   micro-pousses, radis, et les plantes à fruits compactes (fraise, tomate naine) ;
  * - tente de 60 × 60 cm pour le poivron et le piment, dont un plant tient dans 45 cm environ ;
- * - tente de 80 × 80 cm pour les grands plants (tomate, concombre, aubergine, chanvre), plus hauts
+ * - tente de 80 × 80 cm pour les grands plants (tomate, concombre, aubergine), plus hauts
  *   et plus larges, espacés de 50 cm ou plus ;
  * - safran et wasabi : plantes basses et peu gourmandes en lumière, cultivées en petite quantité
  *   (voir `raison`).
@@ -60,7 +59,6 @@ const SURFACES_EXEMPLE: Record<string, SurfaceExemple> = {
   tomate: TENTE_80,
   concombre: TENTE_80,
   aubergine: TENTE_80,
-  'chanvre-cbd': TENTE_80,
   safran: {
     ...ETAGERE,
     raison: 'Le safran reste bas et ses cormes se plantent serrés : une jardinière posée sur une étagère suffit pour une première culture.',
@@ -155,8 +153,21 @@ function carteLampe(p: Proposition, r: ResultatCalcul): string {
   ${imageLampe(l)}
   <h3>${p.nombre} × ${echapper(l.nom)}</h3>
   <p>${nb(p.ppfTotal)} µmol/s${l.ppf_estime ? ' (estimé)' : ''} pour ${nb(r.ppfNecessaire)} nécessaires · ${nb(p.puissanceW)} W au maximum · ${l.variateur ? 'avec variateur' : 'sans variateur'}</p>
-  ${boutonAmazon(lienAmazon(l), l.nom, !!l.illustration)}
+  ${boutonAmazon(lienAmazon(l, 'fiche'), l.nom, !!l.illustration)}
 </li>`;
+}
+
+/**
+ * Encadré court « Lampe conseillée pour … », placé juste après « Besoins en lumière » : la première
+ * lampe proposée, avec son bouton, et un lien vers la section complète (les autres modèles).
+ */
+export function encadreLampeConseillee(p: Proposition, r: ResultatCalcul, surface: SurfaceExemple, autres: boolean): string {
+  const l = p.lampe;
+  return `<aside class="materiel materiel--lampe" aria-label="Lampe conseillée">
+          <p class="materiel__titre"><strong>Lampe conseillée pour ${surface.nom}</strong> : ${p.nombre} × ${echapper(l.nom)}, ${nb(p.ppfTotal)} µmol/s${l.ppf_estime ? ' (estimé)' : ''} pour ${nb(r.ppfNecessaire)} nécessaires, ${l.variateur ? 'avec variateur' : 'sans variateur'}.</p>
+          ${boutonAmazon(lienAmazon(l, 'fiche'), l.nom, false)}
+          <p class="materiel__suite">${autres ? '<a href="#lampes">Les autres lampes qui conviennent</a> · ' : ''}<a href="top-10-lampes-led-de-culture.html">Top 10 des lampes LED de culture</a></p>
+        </aside>`;
 }
 
 /**
@@ -271,7 +282,7 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
   const stadeLampes = stadeLePlusExigeant(l);
   const plus = stadeLampes === 'floraison' && exempleFloraison ? exempleFloraison : exempleCroissance;
   const libFloraison = libellesFloraison(l);
-  // Pas de liens d'achat pour une culture soumise à une mise en garde (réglementation du chanvre…).
+  // Pas de liens d'achat pour une culture soumise à une mise en garde (safran, wasabi…).
   const lampes = l.avertissement ? [] : lampesConseillees(plus.ppfNecessaire, plus.surfaceM2, stadeLampes);
 
   const espacement = c.espacement_cm.valeur;
@@ -281,14 +292,14 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
   const questions = conseilsDeLaCulture(l.id, date);
 
   const voisines = legumes.filter((v) => v.famille === l.famille && v.id !== l.id);
-  // « À lire aussi » en boucle : les 3 fiches qui suivent dans la liste (le chanvre n'y figure jamais).
-  const aLire = suivantsEnBoucle(legumes.filter((v) => !CULTURES_EXCLUES.has(v.id)), l, 3, (v) => v.id).filter((v) => v.id !== l.id);
+  // « À lire aussi » en boucle : les 3 fiches qui suivent dans la liste.
+  const aLire = suivantsEnBoucle(legumes, l, 3, (v) => v.id).filter((v) => v.id !== l.id);
 
   const sections: { id: string; titre: string; html: string }[] = [
     {
       id: 'lumiere',
       titre: 'Besoins en lumière',
-      html: floraison
+      html: `${floraison
         ? `${
             stadeLampes === 'floraison'
               ? `<p>La culture passe par deux stades : une phase de croissance (feuillage), puis une phase de ${libFloraison.de}, plus gourmande en lumière.</p>`
@@ -299,7 +310,7 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
         <h3>${libFloraison.titre}</h3>
         ${tableauLumiere(floraison, `Lumière en ${libFloraison.titre.toLowerCase()}`)}`
         : `<p>Cette culture se récolte avant la floraison : un seul réglage de lumière suffit pour tout le cycle.</p>
-        ${tableauLumiere(croissance, 'Lumière')}`,
+        ${tableauLumiere(croissance, 'Lumière')}`}${lampes.length ? `\n        ${encadreLampeConseillee(lampes[0], plus, surface, lampes.length > 1)}` : ''}`,
     },
     {
       id: 'exemple',
@@ -320,13 +331,14 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
         <p>Pour une autre surface, le guide <a href="led-puissance.html">Quelle puissance pour ma surface ?</a> donne les watts à prévoir pour les étagères et tentes courantes.</p>
         <p><a class="bouton bouton--plein" href="${lienCalculateur(l)}">Calculer pour mes dimensions</a></p>`,
     },
-    ...(lampes.length
+    // La première lampe est dans l'encadré « Lampe conseillée » (section Lumière) : ici, les autres.
+    ...(lampes.length > 1
       ? [
           {
             id: 'lampes',
             titre: 'Lampes du commerce qui conviennent',
-            html: `<p>Quelques modèles de la <a href="lampes.html">sélection de lampes</a> qui fournissent assez de lumière pour ${surface.nom}${floraison ? ` en ${stadeLampes === 'floraison' ? libFloraison.titre.toLowerCase() : 'croissance'}` : ''}. D’autres lampes conviennent aussi : l’important est le PPF (en µmol/s) et la surface couverte.</p>
-        <ul class="lampes">${lampes.map((p) => carteLampe(p, plus)).join('\n')}</ul>
+            html: `<p>En plus de la lampe conseillée plus haut, d’autres modèles de la <a href="lampes.html">sélection de lampes</a> fournissent assez de lumière pour ${surface.nom}${floraison ? ` en ${stadeLampes === 'floraison' ? libFloraison.titre.toLowerCase() : 'croissance'}` : ''}. L’important est le PPF (en µmol/s) et la surface couverte ; le <a href="top-10-lampes-led-de-culture.html">Top 10 des lampes LED de culture</a> les compare.</p>
+        <ul class="lampes">${lampes.slice(1).map((p) => carteLampe(p, plus)).join('\n')}</ul>
         <p class="aide">Liens sponsorisés. ${MENTION_AFFILIATION}</p>`,
           },
         ]
@@ -428,7 +440,7 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
         ${sections.map((s) => `<h2 id="${s.id}">${s.titre}</h2>\n        ${s.html}`).join('\n        ')}
         <p class="aide">Valeurs indicatives tirées de la littérature horticole (voir les <a href="glossaire.html#sources">sources</a>). Vérifiez l’intensité réelle avec un PAR-mètre.</p>
       </article>
-      ${CULTURES_EXCLUES.has(l.id) ? '' : `<!--#actus:3:legume:${l.id}-->`}
+      <!--#actus:3:legume:${l.id}-->
       ${
         voisines.length
           ? `<section class="voisines" aria-labelledby="voisines">

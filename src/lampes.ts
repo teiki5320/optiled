@@ -4,6 +4,7 @@
  */
 import brut from './data/lampes.json' with { type: 'json' };
 import type { Stade } from './data.ts';
+import { codeSuivi, type Emplacement } from './suivi-amazon.ts';
 
 export interface Lampe {
   id: string;
@@ -28,8 +29,7 @@ export interface Lampe {
 export const LAMPES: Lampe[] = (brut as unknown as { lampes: Lampe[] }).lampes;
 export const LAMPES_VERIFIEES_LE: string = (brut as unknown as { verifie_le: string }).verifie_le;
 
-/** Identifiant Partenaires Amazon (un seul endroit à changer). */
-export const TAG_AMAZON = 'kultiledfr-21';
+export { TAG_AMAZON } from './suivi-amazon.ts';
 export const MENTION_AFFILIATION = 'En tant que Partenaire Amazon, Kultiled réalise un bénéfice sur les achats remplissant les conditions requises.';
 /** Petite ligne sous chaque bouton « Voir sur Amazon ». */
 export const NOTE_LIEN_AMAZON = 'Lien partenaire Amazon. Prix, disponibilité et vendeur sont indiqués sur Amazon.';
@@ -41,19 +41,21 @@ const attribut = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').r
 /**
  * Bouton « Voir sur Amazon » d'un produit, suivi de la ligne « Lien partenaire Amazon… »
  * et, si le produit est montré par une illustration IA, de la ligne « Illustration IA… ».
- * Partout le même texte (calculateur, lampes, meilleures lampes, fiches cultures, Top 10).
+ * Partout le même texte et le même bouton plein d'au moins 44 px de haut (calculateur, lampes,
+ * meilleures lampes, fiches cultures, Top 10, conseils).
  */
-export function boutonAmazon(lien: string, nom: string, illustre: boolean, classe = 'bouton'): string {
+export function boutonAmazon(lien: string, nom: string, illustre: boolean, classe = 'bouton bouton--plein bouton--amazon'): string {
   return `<a class="${classe}" href="${lien}" target="_blank" rel="sponsored nofollow noopener" aria-label="Voir sur Amazon : ${attribut(nom)}, lien partenaire (nouvel onglet)">Voir sur Amazon</a>
   <p class="note-amazon">${NOTE_LIEN_AMAZON}</p>${illustre ? `\n  <p class="note-amazon">${NOTE_ILLUSTRATION_IA}</p>` : ''}`;
 }
 
-export function lienAmazonAsin(asin: string): string {
-  return `https://www.amazon.fr/dp/${asin}?tag=${TAG_AMAZON}`;
+/** Lien Amazon d'un produit ; le code de suivi dépend de l'emplacement (src/suivi-amazon.ts). */
+export function lienAmazonAsin(asin: string, emplacement: Emplacement): string {
+  return `https://www.amazon.fr/dp/${asin}?tag=${codeSuivi(emplacement)}`;
 }
 
-export function lienAmazon(l: Lampe): string {
-  return lienAmazonAsin(l.asin);
+export function lienAmazon(l: Lampe, emplacement: Emplacement): string {
+  return lienAmazonAsin(l.asin, emplacement);
 }
 
 export interface Proposition {

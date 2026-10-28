@@ -55,7 +55,6 @@ const ICONES_FAMILLE: Record<string, NomIcone> = {
   aromatiques: 'herbe',
   'micro-pousses': 'graines',
   'legumes-fruits': 'fruit',
-  chanvre: 'feuille',
   'legumes-racines': 'pousse',
   'epices-et-curiosites': 'fruit',
 };
@@ -92,7 +91,6 @@ export function stadeLePlusExigeant(l: Legume): Stade {
 
 export const DEPART_RECOLTE: Record<string, string> = {
   fraise: 'après plantation',
-  'chanvre-cbd': 'jusqu\'aux fleurs',
   romarin: 'après bouturage',
   safran: 'après plantation',
   wasabi: 'jusqu\'au rhizome',

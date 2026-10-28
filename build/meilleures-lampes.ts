@@ -7,7 +7,7 @@
 import { moisAnnee } from '../src/budget.ts';
 import type { Legume, Stade } from '../src/data.ts';
 import { boutonAmazon, imageLampe, LAMPES_VERIFIEES_LE, lampesConseillees, lienAmazon, MENTION_AFFILIATION, type Proposition } from '../src/lampes.ts';
-import { rendreFourchettesGammes } from './budget.ts';
+import { rendreNiveauxGammes } from './budget.ts';
 import { chargerLegumes, echapper } from './fiches.ts';
 import { COEF_UTILISATION } from './guides-achat.ts';
 import { dateVerification } from './lampes.ts';
@@ -79,7 +79,7 @@ function carte(c: ChoixBesoin, p: Proposition, role: string): string {
             <li>PPFD moyen sur ${cm(c.besoin.longueurM)} × ${cm(c.besoin.largeurM)} cm : <strong>≈ ${nb(Math.round(ppfdMoyen))} µmol/m²/s</strong> (cible : ${nb(c.ppfd)})${l.variateur ? ', réglable au variateur' : ''}</li>
             <li>Consommation : <strong>${nb(p.puissanceW)} W</strong> au maximum, ≈ ${nb(Math.round(kwhAn))} kWh par an à ${nb(c.photoperiodeH)} h par jour</li>
           </ul>
-          ${boutonAmazon(lienAmazon(l), l.nom, !!l.illustration)}
+          ${boutonAmazon(lienAmazon(l, 'guide'), l.nom, !!l.illustration)}
         </div>`;
 }
 
@@ -102,7 +102,7 @@ export function rendreMeilleuresLampes(legumes: Legume[] = chargerLegumes()): st
   return `${sections}
 
         <h2 id="budget">Budget par gamme</h2>
-        <p>Pour situer ces lampes, voici les fourchettes de prix de chaque gamme. Le budget d'une installation complète (lampe, accessoires, électricité) est détaillé dans <a href="debuter.html#budget">Débuter</a> et <a href="tente.html#budget">Cultiver dans une tente</a>.</p>
-        ${rendreFourchettesGammes()}
+        <p>Pour situer ces lampes, voici le niveau de budget de chaque gamme, sans prix : le prix du jour est sur la page de chaque produit. Le budget d'une installation complète (lampe, accessoires, électricité) est détaillé dans <a href="debuter.html#budget">Débuter</a> et <a href="tente.html#budget">Cultiver dans une tente</a>.</p>
+        ${rendreNiveauxGammes()}
         <p class="aide">Sélection vérifiée sur Amazon.fr le ${dateVerification()}. ${MENTION_AFFILIATION}</p>`;
 }

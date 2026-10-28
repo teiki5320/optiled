@@ -11,13 +11,8 @@ describe('alertes du calculateur', () => {
     expect(alertes({ ...base, legumeId: 'tomate', nom: 'Tomate', photoperiodeH: 20 })[0]).toContain('18 h');
     expect(alertes({ ...base, legumeId: 'tomate', nom: 'Tomate', photoperiodeH: 18 })).toEqual([]);
   });
-  it('chanvre : floraison à 12 h, croissance en jours longs', () => {
-    expect(alertes({ ...base, legumeId: 'chanvre-cbd', nom: 'Chanvre CBD', stade: 'floraison', photoperiodeH: 18 })[0]).toContain('ne fleurira pas');
-    expect(alertes({ ...base, legumeId: 'chanvre-cbd', nom: 'Chanvre CBD', stade: 'floraison', photoperiodeH: 12 })).toEqual([]);
-    expect(alertes({ ...base, legumeId: 'chanvre-cbd', nom: 'Chanvre CBD', photoperiodeH: 12 })[0]).toContain('floraison trop tôt');
-  });
   it('durée décimale écrite avec une virgule', () => {
-    expect(alertes({ ...base, legumeId: 'chanvre-cbd', nom: 'Chanvre CBD', stade: 'floraison', photoperiodeH: 12.75 })[0]).toContain('avec 12,75 h');
+    expect(alertes({ ...base, legumeId: 'laitue', nom: 'Laitue', photoperiodeH: 20.5 })[0]).toContain('20,5 h de lumière');
   });
   it('lésions en éclairage continu limitées aux espèces documentées', () => {
     expect(alertes({ ...base, legumeId: 'aubergine', nom: 'Aubergine', photoperiodeH: 19 })[0]).toContain('lésions');

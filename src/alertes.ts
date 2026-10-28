@@ -36,11 +36,7 @@ export function alertes(c: ContexteAlertes): string[] {
   const a: string[] = [];
   const h = String(c.photoperiodeH).replace('.', ',');
   const duree = c.photoperiodeH;
-  if (c.legumeId === 'chanvre-cbd' && c.stade === 'floraison' && duree > 12.5) {
-    a.push(`En floraison, le chanvre a besoin de 12 h de lumière et 12 h d'obscurité totale : avec ${h} h, il ne fleurira pas.`);
-  } else if (c.legumeId === 'chanvre-cbd' && c.stade === 'croissance' && duree < 16) {
-    a.push(`Avec ${h} h de lumière, le chanvre risque de passer en floraison trop tôt : gardez au moins 16 à 18 h en croissance.`);
-  } else if (SENSIBLES_ECLAIRAGE_CONTINU.includes(c.legumeId) && duree > 18) {
+  if (SENSIBLES_ECLAIRAGE_CONTINU.includes(c.legumeId) && duree > 18) {
     // Durée conseillée par les données : 16 h pour la tomate et l'aubergine, 18 h pour la tomate naine en fructification.
     a.push(`${majuscule(c.nom)} : au-delà de 18 h par jour, on s'approche de l'éclairage continu, qui provoque des lésions des feuilles. Revenez à ${String(c.photoperiodeConseilleeH).replace('.', ',')} h.`);
   } else if (MONTAISON.includes(c.legumeId) && duree > Math.max(14, c.photoperiodeConseilleeH)) {

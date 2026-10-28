@@ -3,7 +3,6 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { aLireAussi, type Conseil, conseilsPublies, dateDuJour, lireConseil, pagesConseils, rendreListeConseils, sourcePageConseil, THEMES, tousLesConseils } from './conseils.ts';
 import { chargerLegumes } from './fiches.ts';
-import { CULTURES_EXCLUES } from './veille.ts';
 import { FICHIER_FLUX, sourcePage, toutesLesPages, transformerPage } from './site.ts';
 
 const racine = resolve(import.meta.dirname, '..');
@@ -100,8 +99,7 @@ describe('articles de conseil', () => {
     }
     const cibles = [
       ...conseilsPublies().map((c) => c.fichier),
-      // Le chanvre n'est jamais mis en avant (voir CULTURES_EXCLUES).
-      ...chargerLegumes().filter((l) => !CULTURES_EXCLUES.has(l.id)).map((l) => `legume-${l.id}.html`),
+      ...chargerLegumes().map((l) => `legume-${l.id}.html`),
     ];
     for (const f of cibles) expect(recus.get(f)?.size ?? 0, f).toBeGreaterThanOrEqual(3);
   }, 60_000);

@@ -1,19 +1,20 @@
 /**
  * Budgets de départ types (marqueurs <!--#budget:etagere--> et <!--#budget:tente-->) et tableau des
- * fourchettes par gamme de lampes (<!--#budget-gammes-->), générés depuis src/data/budget.json et
- * legumes.json : aucun montant écrit à la main dans les pages. Jamais de prix par produit ni de lien d'achat.
+ * niveaux de budget par gamme de lampes (page « Meilleures lampes »), générés depuis src/data/budget.json
+ * et legumes.json. Aucun montant en euros pour le matériel (seulement petit, moyen ou gros budget) ;
+ * seule l'électricité est chiffrée. Jamais de prix par produit ni de lien d'achat.
  */
 import { calculer, longueurBarreConseillee } from '../src/calc.ts';
 import {
   BUDGET,
   gammePourPuissance,
-  mentionReleve,
-  multiplier,
-  sommeFourchettes,
-  texteFourchette,
+  mentionNiveaux,
+  niveauLampes,
+  niveauTotal,
+  texteNiveau,
   type Accessoire,
-  type Fourchette,
   type GammeLampe,
+  type Niveau,
 } from '../src/budget.ts';
 import type { Legume, Stade } from '../src/data.ts';
 import { chargerLegumes } from './fiches.ts';
@@ -64,9 +65,9 @@ export interface Budget {
   photoperiodeH: number;
   gamme: GammeLampe;
   nombreLampes: number;
-  lampe: Fourchette;
-  postes: { libelle: string; fourchette: Fourchette }[];
-  materiel: Fourchette;
+  lampe: Niveau;
+  postes: { libelle: string; niveau: Niveau }[];
+  materiel: Niveau;
   electriciteMoisEur: number;
   electriciteAnEur: number;
 }
@@ -88,9 +89,9 @@ export function calculerBudget(scenario: ScenarioBudget, legumes: Legume[] = cha
     joursParAn: 365,
   });
   const { gamme, nombre } = gammePourPuissance(r.puissanceW);
-  const lampe = multiplier(BUDGET.lampes[gamme].fourchette, nombre);
+  const lampe = niveauLampes(BUDGET.lampes[gamme].niveau, nombre);
   const postes = [
-    { libelle: `${nombre > 1 ? `${nombre} × ` : ''}${BUDGET.lampes[gamme].libelle}, pour environ ${nb(Math.round(r.puissanceW))} W`, fourchette: lampe },
+    { libelle: `${nombre > 1 ? `${nombre} × ` : ''}${BUDGET.lampes[gamme].libelle}, pour environ ${nb(Math.round(r.puissanceW))} W`, niveau: lampe },
     ...scenario.accessoires.map((a) => BUDGET.accessoires[a]),
   ];
   const coutAn = r.coutAnEur ?? 0;
@@ -103,7 +104,7 @@ export function calculerBudget(scenario: ScenarioBudget, legumes: Legume[] = cha
     nombreLampes: nombre,
     lampe,
     postes,
-    materiel: sommeFourchettes(postes.map((p) => p.fourchette)),
+    materiel: niveauTotal(postes.map((p) => p.niveau)),
     electriciteMoisEur: coutAn / 12,
     electriciteAnEur: coutAn,
   };
@@ -121,31 +122,31 @@ export function rendreBudget(id: string, legumes?: Legume[]): string {
   const scenario = SCENARIOS.find((s) => s.id === id);
   if (!scenario) throw new Error(`Budget inconnu : ${id}`);
   const b = calculerBudget(scenario, legumes);
-  const lignes = b.postes.map((p) => `<tr><td>${p.libelle}</td><td>${texteFourchette(p.fourchette)}</td></tr>`);
+  const lignes = b.postes.map((p) => `<tr><td>${p.libelle}</td><td>${texteNiveau(p.niveau)}</td></tr>`);
   return `<div class="tableau-defile">
           <table class="tableau tableau--budget">
             <caption>${scenario.titre}</caption>
-            <thead><tr><th>Poste</th><th>Fourchette de prix</th></tr></thead>
+            <thead><tr><th>Poste</th><th>Niveau de budget</th></tr></thead>
             <tbody>
               ${lignes.join('\n              ')}
-              <tr class="total"><th scope="row">Matériel, total</th><td><strong>${texteFourchette(b.materiel)}</strong></td></tr>
+              <tr class="total"><th scope="row">Matériel, ensemble</th><td><strong>${texteNiveau(b.materiel)}</strong></td></tr>
               <tr class="total"><th scope="row">Électricité de l'éclairage (${nb(b.photoperiodeH)} h par jour, ${nb(PRIX_KWH, 2)} € le kWh)</th><td><strong>≈ ${texteEuros(b.electriciteMoisEur)} par mois</strong> (${texteEuros(b.electriciteAnEur)} par an)</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="aide">Sans compter ${b.scenario.horsBudget}. ${mentionReleve()}</p>`;
+        <p class="aide">Sans compter ${b.scenario.horsBudget}. ${mentionNiveaux()}</p>`;
 }
 
-/** Fourchettes de toutes les gammes de lampes (page « Meilleures lampes »), sans lien d'achat. */
-export function rendreFourchettesGammes(): string {
-  const lignes = (Object.keys(BUDGET.lampes) as GammeLampe[]).map((g) => `<tr><td>${BUDGET.lampes[g].libelle}</td><td>${texteFourchette(BUDGET.lampes[g].fourchette)}</td></tr>`);
+/** Niveau de budget de chaque gamme de lampes (page « Meilleures lampes »), sans lien d'achat. */
+export function rendreNiveauxGammes(): string {
+  const lignes = (Object.keys(BUDGET.lampes) as GammeLampe[]).map((g) => `<tr><td>${BUDGET.lampes[g].libelle}</td><td>${texteNiveau(BUDGET.lampes[g].niveau)}</td></tr>`);
   return `<div class="tableau-defile">
           <table class="tableau tableau--budget">
-            <thead><tr><th>Gamme</th><th>Fourchette de prix</th></tr></thead>
+            <thead><tr><th>Gamme</th><th>Niveau de budget</th></tr></thead>
             <tbody>
               ${lignes.join('\n              ')}
             </tbody>
           </table>
         </div>
-        <p class="aide">${mentionReleve()} Ces fourchettes couvrent toute une gamme, pas un modèle précis : le prix du jour est sur la page du produit.</p>`;
+        <p class="aide">${mentionNiveaux()} Ces niveaux couvrent toute une gamme, pas un modèle précis.</p>`;
 }

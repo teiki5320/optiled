@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { blocAnnonce, CLIENT_ADSENSE, pageAvecAnnonces, placerAnnonces, scriptAdsense } from './annonces.ts';
+import { blocAnnonce, DISTANCE_AMAZON, CLIENT_ADSENSE, pageAvecAnnonces, placerAnnonces, scriptAdsense } from './annonces.ts';
 
 const section = (titre: string, texte = 'Texte.') => `<h2 id="${titre}">${titre}</h2><p>${texte}</p>`;
 const page = (sections: string[], apres = '<p>Suite</p>') =>
@@ -42,15 +42,27 @@ describe('publicité AdSense', () => {
   it('jamais à côté d’une section avec des liens Amazon', () => {
     const lien = '<a href="https://www.amazon.fr/dp/X">Voir sur Amazon</a>';
     const html = placerAnnonces(page(['a', 'b', 'c', 'd'].map((t) => section(t, t === 'c' ? lien : 'Texte.'))), 'legume-x.html', '123');
-    const debut = html.indexOf('class="annonce"');
-    const autour = html.slice(html.lastIndexOf('<h2', debut), html.indexOf('</h2>', debut));
-    expect(autour).not.toMatch(/amazon/);
-    expect(html.slice(0, debut)).not.toMatch(/<h2 id="c">[\s\S]*amazon[\s\S]*$/);
+    // Page courte : le lien Amazon est à moins de DISTANCE_AMAZON caractères de chaque emplacement, donc aucune annonce.
+    for (const m of html.matchAll(/class="annonce"/g)) {
+      const autour = html.slice(Math.max(0, m.index - DISTANCE_AMAZON), m.index + DISTANCE_AMAZON);
+      expect(autour).not.toMatch(/amazon/);
+    }
     const finArticle = placerAnnonces(page(['a'].map((t) => section(t)), lien), 'legume-x.html', '123');
     expect(nombre(finArticle)).toBe(0);
   });
 
   it('pages courtes : seulement l’annonce après l’article', () => {
     expect(nombre(placerAnnonces(page(['a', 'b'].map((t) => section(t))), 'glossaire.html', '123'))).toBe(1);
+  });
+});
+
+describe('annonces loin des produits Amazon', () => {
+  it(`aucune annonce à moins de ${DISTANCE_AMAZON} caractères d'un lien Amazon, même dans une section voisine`, () => {
+    const long = 'Texte. '.repeat(250);
+    const lien = '<a href="https://www.amazon.fr/dp/X">Voir sur Amazon</a>';
+    const sections = ['a', 'b', 'c', 'd', 'e', 'f'].map((t) => section(t, t === 'b' ? `${lien} ${long.slice(0, 200)}` : long));
+    const html = placerAnnonces(page(sections), 'conseil-x.html', '123');
+    expect(nombre(html)).toBeGreaterThan(0);
+    for (const m of html.matchAll(/class="annonce"/g)) expect(html.slice(Math.max(0, m.index - DISTANCE_AMAZON), m.index + DISTANCE_AMAZON)).not.toMatch(/amazon/);
   });
 });

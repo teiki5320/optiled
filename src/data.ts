@@ -35,8 +35,7 @@ export interface ParametresCulture {
   ec_ms_cm: ValeurSourcee<Plage>;
   /**
    * Délai indicatif jusqu'à la première récolte, en jours, compté depuis le semis
-   * sauf mention contraire dans la source (fraise : depuis la plantation du plant ;
-   * chanvre : du semis à la récolte des fleurs).
+   * sauf mention contraire dans la source (fraise : depuis la plantation du plant).
    */
   jours_recolte: ValeurSourcee<Plage>;
   /** cm entre plants ; null pour un semis à la volée */

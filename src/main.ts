@@ -18,7 +18,7 @@ import { arrondiPuissance, listeAchat, resumeTexte, type ContexteListe } from '.
 import { jaugeDli, planBarres } from './schema.ts';
 import { erreursParChamp } from './champs-erreur.ts';
 import { resumeCalculPartage } from './partage.ts';
-import { BUDGET, gammePourPuissance, mentionReleve, multiplier, texteFourchette } from './budget.ts';
+import { BUDGET, gammePourPuissance, mentionNiveaux, niveauLampes, texteNiveau } from './budget.ts';
 
 /** DLI qui remplit entièrement l'anneau de synthèse (mol/m²/j). */
 const DLI_ANNEAU_MAX = 40;
@@ -43,7 +43,7 @@ function echapper(s: string): string {
   return s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 }
 
-/** « Fraise (remontante) » → « fraise » ; « Chanvre CBD » → « chanvre CBD ». */
+/** « Fraise (remontante) » → « fraise » ; « Tomate naine » → « tomate naine ». */
 function nomCourt(nom: string): string {
   const n = nom.replace(/\s*\(.*\)$/, '');
   return n.charAt(0).toLowerCase() + n.slice(1);
@@ -105,7 +105,7 @@ function rendreLampesCommerce(r: ResultatCalcul): string {
       ${imageLampe(p.lampe, '(min-width: 760px) 240px, 92vw')}
       <p class="lampe-proposee__nom"><strong>${p.nombre} × ${echapper(p.lampe.nom)}</strong></p>
       <p class="lampe-proposee__detail">${nombre(p.ppfTotal)} µmol/s${p.lampe.ppf_estime ? ' (estimé)' : ''} pour ${nombre(r.ppfNecessaire)} nécessaires · ${nombre(p.puissanceW)} W au maximum · ${p.lampe.variateur ? 'avec variateur' : 'sans variateur'}</p>
-      ${boutonAmazon(lienAmazon(p.lampe), p.lampe.nom, !!p.lampe.illustration, 'bouton bouton--amazon')}
+      ${boutonAmazon(lienAmazon(p.lampe, 'calculateur'), p.lampe.nom, !!p.lampe.illustration)}
     </li>`,
     )
     .join('');
@@ -115,8 +115,8 @@ function rendreLampesCommerce(r: ResultatCalcul): string {
 }
 
 /**
- * Encart « Budget indicatif » : fourchette de la gamme de lampe qui correspond à la puissance
- * calculée (src/data/budget.json) et électricité déjà calculée. Jamais de prix par produit ni de lien d'achat.
+ * Encart « Budget indicatif » : niveau de budget (petit, moyen, gros) de la gamme de lampe qui correspond
+ * à la puissance calculée (src/data/budget.json) et électricité déjà calculée. Aucun prix de matériel ni lien d'achat.
  */
 function rendreBudget(r: ResultatCalcul): string {
   const { gamme, nombre: n } = gammePourPuissance(r.puissanceW);
@@ -127,9 +127,9 @@ function rendreBudget(r: ResultatCalcul): string {
     : `<strong>${euros(r.coutAnEur / 12)}</strong> par mois, <strong>${euros(r.coutAnEur)}</strong> par an`;
   return `${titre('Budget indicatif', 'led-choisir.html#budget', 'Budget selon l’installation')}
     <div class="budget-indicatif">
-      <p><strong>Lampe</strong>, ${echapper(lampe)} pour ${nombre(r.puissanceW)} W : <strong>${texteFourchette(multiplier(poste.fourchette, n))}</strong></p>
+      <p><strong>Lampe</strong>, ${echapper(lampe)} pour ${nombre(r.puissanceW)} W : <strong>${texteNiveau(niveauLampes(poste.niveau, n)).toLowerCase()}</strong></p>
       <p><strong>Électricité</strong> : ${electricite}</p>
-      <p class="aide">${mentionReleve()}</p>
+      <p class="aide">${mentionNiveaux()}</p>
     </div>`;
 }
 
@@ -304,7 +304,12 @@ function rendre(r: ResultatCalcul, ctx: ContexteListe, surface: Surface): string
   const degres = Math.min(360, (r.dli / DLI_ANNEAU_MAX) * 360).toFixed(1);
 
   const achats = listeAchat(r, ctx)
-    .map((a) => `<tr><td class="qte">${a.quantite}</td><td><strong>${echapper(a.article)}</strong><br><span>${echapper(a.detail)}</span></td></tr>`)
+    .map(
+      (a) =>
+        `<tr><td class="qte">${a.quantite}</td><td><strong>${echapper(a.article)}</strong><br><span>${echapper(a.detail)}</span>${
+          a.top10 && !integre ? `<br><a class="achats__top" href="${a.top10.href}">Voir le ${echapper(a.top10.libelle)}</a>` : ''
+        }</td></tr>`,
+    )
     .join('');
 
   return `

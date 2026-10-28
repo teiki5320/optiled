@@ -5,15 +5,11 @@
  *     relier une actu à une fiche (tag « legume:<id> ») ;
  *   - insérer, à la place du marqueur <!--#actus:4--> ou <!--#actus:3:legume:tomate-->, la
  *     section cachée que le script remplit (elle reste cachée s'il n'y a aucune actu).
- * La culture « chanvre-cbd » n'est jamais exposée et sa fiche n'a jamais de bloc d'actus.
  */
 import { chargerLegumes } from './fiches.ts';
 
 export const FICHIER_ENTITES = 'veille/entites.json';
 export const FICHIER_ACTUS = 'actus.html';
-
-/** Cultures jamais reliées à la veille. */
-export const CULTURES_EXCLUES = new Set(['chanvre-cbd']);
 
 /** Autres noms (anglais surtout : beaucoup de sources sont en anglais), par culture. */
 export const AUTRES_NOMS: Record<string, string[]> = {
@@ -79,10 +75,9 @@ export interface EntiteVeille {
   autres_noms: string[];
 }
 
-/** Contenu de veille/entites.json : toutes les cultures, sauf celles exclues. */
+/** Contenu de veille/entites.json : toutes les cultures. */
 export function entitesVeille(legumes = chargerLegumes()): EntiteVeille[] {
   return legumes
-    .filter((l) => !CULTURES_EXCLUES.has(l.id))
     .map((l) => ({ tag: `legume:${l.id}`, nom: l.nom, autres_noms: AUTRES_NOMS[l.id] ?? [] }));
 }
 
@@ -94,7 +89,6 @@ export function entitesVeille(legumes = chargerLegumes()): EntiteVeille[] {
  */
 export function rendreBlocActus(limite: number, tag?: string): string {
   const id = tag?.startsWith('legume:') ? tag.slice('legume:'.length) : undefined;
-  if (id && CULTURES_EXCLUES.has(id)) return '';
   const attributs = `data-actus data-limite="${limite}"${tag ? ` data-tag="${tag}"` : ''}`;
   if (limite > 4 && !tag) {
     return `<section class="actus actus--page" ${attributs} aria-label="Actus" hidden>

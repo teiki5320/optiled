@@ -29,6 +29,8 @@ import { resolve } from 'node:path';
 import { chargerLegumes, echapper, pageDetaillee, suivantsEnBoucle } from './fiches.ts';
 import { icone, type NomIcone } from './icones.ts';
 import { CARTES_PREMIERE_RANGEE, photoGuide } from './photos.ts';
+import { fichierSujet, sujetsPublies } from './top-10.ts';
+import { boutonAmazon, lienAmazonAsin } from '../src/lampes.ts';
 
 export const PREFIXE_PAGE_CONSEIL = 'conseil-';
 export const DOSSIER_CONSEILS = resolve(import.meta.dirname, '../contenu/conseils');
@@ -126,6 +128,75 @@ export function aLireAussi(c: Conseil, publies: Conseil[], nombre = 3): Conseil[
   return suivantsEnBoucle(ordre, c, nombre, (x) => x.slug).filter((v) => v.slug !== c.slug);
 }
 
+/**
+ * Conseils qui parlent de matériel → Top 10 correspondant (slug de build/top-10.ts), et
+ * éventuellement les produits à montrer (identifiants du Top 10 ; sinon les 2 premiers).
+ * Encadré « Le matériel pour ça » : lien vers le Top 10 et 2 produits au plus.
+ */
+export const MATERIEL_CONSEILS: Record<string, { top: string; produits?: string[] }> = {
+  'extracteur-tente-de-culture': { top: 'extracteurs-ventilateurs', produits: ['vivosun-aerozesh-g4-kit', 'hon-guan-kit-100'] },
+  'humidite-trop-elevee-tente': { top: 'extracteurs-ventilateurs', produits: ['vivosun-aerozesh-g4-kit', 'ac-infinity-cloudray-s6'] },
+  'choisir-tente-de-culture': { top: 'tentes-de-culture' },
+  'minuteur-lampe-culture': { top: 'minuteurs-thermometres', produits: ['otio-t10', 'novkit-cycle'] },
+  'partir-en-vacances': { top: 'minuteurs-thermometres', produits: ['otio-t10', 'scs-sentinel-hebdo'] },
+  'temperature-legumes-interieur': { top: 'minuteurs-thermometres', produits: ['temppro-tp50', 'temppro-serre-max-min'] },
+  'methode-kratky': { top: 'kits-hydroponiques', produits: ['vivosun-dwc-20l', 'spider-farmer-dwc-4-seaux'] },
+  'hydroponie-ou-terreau': { top: 'kits-hydroponiques' },
+  'potager-interieur-connecte': { top: 'kits-hydroponiques' },
+  'pompe-a-air-hydroponie': { top: 'kits-hydroponiques', produits: ['vivosun-dwc-20l', 'spider-farmer-dwc-4-seaux'] },
+  'substrat-hydroponique': { top: 'terreaux-substrats', produits: ['floragard-argile-50', 'biobizz-coco-mix-50'] },
+  'etagere-culture-moins-100-euros': { top: 'lampes-petit-espace', produits: ['jkokpmg-8-barres', 'barrina-t10-pro-42w'] },
+  'micro-pousses-etagere': { top: 'lampes-semis' },
+  'semis-qui-ne-levent-pas': { top: 'lampes-semis' },
+  'cultiver-dans-un-placard': { top: 'lampes-petit-espace' },
+  'ampoule-led-ordinaire': { top: 'lampes-petit-espace' },
+  'hauteur-lampe-led': { top: 'lampes-led-de-culture' },
+  'watts-led-par-m2': { top: 'lampes-led-de-culture' },
+  'reglette-panneau-ou-ampoule': { top: 'lampes-led-de-culture' },
+  'variateur-lampe-led': { top: 'lampes-led-de-culture' },
+};
+
+/** Produits montrés au plus dans l'encadré d'un conseil (règle de sobriété : 1 à 3 par page). */
+export const PRODUITS_PAR_ENCADRE = 2;
+
+/**
+ * Encadré « Le matériel pour ça » d'un conseil, ou chaîne vide. `avecProduits` : faux quand un
+ * montant en euros précède l'encadré (jamais de prix près d'un produit Amazon) : lien seul.
+ * Pas d'intertitre h2 : l'encadré ne compte ni dans le sommaire, ni pour placer les annonces.
+ */
+export function encadreMateriel(c: Conseil, avecProduits = true): string {
+  const choix = MATERIEL_CONSEILS[c.slug];
+  const sujet = choix && sujetsPublies().find((s) => s.slug === choix.top);
+  if (!sujet) return '';
+  const tous = sujet.produits();
+  const voulus = (choix.produits ?? []).map((id) => tous.find((p) => p.id === id)).filter((p) => p !== undefined);
+  const produits = avecProduits ? (voulus.length ? voulus : tous).slice(0, PRODUITS_PAR_ENCADRE) : [];
+  const cartes = produits
+    .map(
+      (p) => `<li class="materiel__produit">
+            <p><strong>${echapper(p.nom)}</strong><br><small>Idéal pour ${p.pourQui}.</small></p>
+            ${boutonAmazon(lienAmazonAsin(p.asin, 'conseil'), p.nom, false)}
+          </li>`,
+    )
+    .join('\n          ');
+  return `<aside class="materiel" aria-label="Le matériel pour ça">
+          <p class="materiel__titre"><strong>Le matériel pour ça</strong> : notre sélection classée, le <a href="${fichierSujet(sujet)}">${sujet.titre}</a>.</p>${
+            cartes ? `\n          <ul class="materiel__produits">\n          ${cartes}\n          </ul>` : ''
+          }
+        </aside>`;
+}
+
+/** Insère l'encadré matériel à la fin de la première section (avant le 2e intertitre), sinon à la fin. */
+export function avecEncadreMateriel(c: Conseil, suite: string): string {
+  const titres = [...suite.matchAll(/<h2[\s>]/g)].map((m) => m.index!);
+  const position = titres.length >= 2 ? titres[1] : suite.length;
+  const avant = suite.slice(0, position);
+  // Jamais de montant en euros juste avant des produits Amazon.
+  const encadre = encadreMateriel(c, !/\d\s*(€|euros?\b)/.test(avant.slice(-1500).replace(/<[^>]+>/g, ' ')));
+  if (!encadre) return suite;
+  return `${avant}${encadre}\n${suite.slice(position)}`;
+}
+
 /** Page complète (avec marqueurs) d'un article. `publies` sert aux suggestions de lecture. */
 export function sourcePageConseil(c: Conseil, publies: Conseil[]): string {
   const titres = [...c.corps.matchAll(/<h2 id="([^"]+)">([\s\S]*?)<\/h2>/g)];
@@ -137,7 +208,7 @@ export function sourcePageConseil(c: Conseil, publies: Conseil[]): string {
     : '';
   // Le chapô (réponse courte) reste en tête : il est repris dans le bandeau.
   const chapo = c.corps.match(/^<p class="chapo">[\s\S]*?<\/p>/)?.[0] ?? '';
-  const suite = chapo ? c.corps.slice(chapo.length).trim() : c.corps;
+  const suite = avecEncadreMateriel(c, chapo ? c.corps.slice(chapo.length).trim() : c.corps);
   const lire = aLireAussi(c, publies);
   const legumes = chargerLegumes();
   const fiches = c.cultures.flatMap((id) => legumes.filter((l) => l.id === id));

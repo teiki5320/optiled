@@ -9,7 +9,7 @@ export interface ContexteListe {
   longueurBarreM: number;
   puissanceBarreW?: number;
   photoperiodeH: number;
-  /** Mise en garde réglementaire éventuelle (ex. chanvre) */
+  /** Mise en garde éventuelle (ex. safran, wasabi) */
   avertissement?: string;
   /** Nombre de plants et espacement, si la culture se plante à espacement régulier */
   plants?: { total: number; espacementCm: number };
@@ -23,7 +23,20 @@ export interface ArticleAchat {
   quantite: number;
   article: string;
   detail: string;
+  /** Page « Top 10 » de cet objet sur le site (lien interne, jamais un lien Amazon direct). */
+  top10?: { href: string; libelle: string };
 }
+
+/** Pages « Top 10 » liées à la liste d'achat (build/top-10.ts : top-10-<sujet>.html). */
+export const TOP10_LISTE = {
+  lampes: { href: 'top-10-lampes-led-de-culture.html', libelle: 'Top 10 des lampes LED de culture' },
+  minuteurs: { href: 'top-10-minuteurs-thermometres.html', libelle: 'Top 10 des minuteurs et thermomètres' },
+  tentes: { href: 'top-10-tentes-de-culture.html', libelle: 'Top 10 des tentes de culture' },
+  extracteurs: { href: 'top-10-extracteurs-ventilateurs.html', libelle: 'Top 10 des extracteurs et ventilateurs' },
+} as const;
+
+/** Surface à partir de laquelle on conseille une tente (60 × 60 cm) et son extracteur. */
+export const SURFACE_TENTE_M2 = 0.36;
 
 /** Arrondit une puissance au multiple de 5 W supérieur (lisibilité en magasin). */
 export function arrondiPuissance(w: number): number {
@@ -36,11 +49,13 @@ export function listeAchat(r: ResultatCalcul, c: ContexteListe): ArticleAchat[] 
     ? `${nombre(c.puissanceBarreW)} W, avec variateur réglé à ~${nombre(b.tauxGradation * 100)} %`
     : `≥ ${nombre(arrondiPuissance(b.puissanceParBarreNecessaireW))} W chacune, avec variateur (fortement conseillé)`;
 
+  const tente = r.surfaceM2 >= SURFACE_TENTE_M2 - 1e-9;
   return [
     {
       quantite: b.total,
       article: `Barres LED horticoles de ${nombre(c.longueurBarreM, 2)} m`,
       detail: `${puissanceBarre} · efficacité ≥ ${nombre(c.efficaciteUmolJ, 1)} µmol/J · ${c.spectre}`,
+      top10: TOP10_LISTE.lampes,
     },
     {
       quantite: 1,
@@ -56,7 +71,30 @@ export function listeAchat(r: ResultatCalcul, c: ContexteListe): ArticleAchat[] 
       quantite: 1,
       article: 'Programmateur (minuterie)',
       detail: `${nombre(c.photoperiodeH)} h d'éclairage par jour, calibre ≥ ${nombre(arrondiPuissance(b.puissanceInstalleeW * 1.1))} W`,
+      top10: TOP10_LISTE.minuteurs,
     },
+    {
+      quantite: 1,
+      article: 'Thermo-hygromètre min/max',
+      detail: 'pour surveiller la température et l’humidité au niveau des feuilles',
+      top10: TOP10_LISTE.minuteurs,
+    },
+    ...(tente
+      ? [
+          {
+            quantite: 1,
+            article: 'Tente de culture (facultative)',
+            detail: `au moins ${nombre(r.surfaceM2, 2)} m² au sol, parois réfléchissantes`,
+            top10: TOP10_LISTE.tentes,
+          },
+          {
+            quantite: 1,
+            article: 'Extracteur d’air avec gaine (si tente)',
+            detail: 'pour évacuer la chaleur et l’humidité de la tente',
+            top10: TOP10_LISTE.extracteurs,
+          },
+        ]
+      : []),
     {
       quantite: 1,
       article: 'PAR-mètre (optionnel, recommandé)',

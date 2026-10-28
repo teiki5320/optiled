@@ -47,7 +47,7 @@ const texte = (x: unknown, min = 1): x is string => typeof x === 'string' && x.t
 
 /**
  * Garde seulement un article complet et sûr : bon identifiant, texte présent, source http(s)
- * non Amazon, image servie par la veille, jamais de cannabis. `id` : l'identifiant attendu.
+ * non Amazon, image servie par la veille, jamais de sujet exclu (SUJET_EXCLU). `id` : l'identifiant attendu.
  */
 export function articleValide(a: unknown, id?: string): a is ArticleVeille {
   if (!a || typeof a !== 'object') return false;
@@ -63,8 +63,7 @@ export function articleValide(a: unknown, id?: string): a is ArticleVeille {
     if (!b.paragraphes.every((p) => texte(p))) return false;
   }
   if (x.tags !== undefined && (!Array.isArray(x.tags) || !x.tags.every((t) => typeof t === 'string'))) return false;
-  if (x.tags?.includes('legume:chanvre-cbd')) return false;
-  const tout = [x.titre, x.chapo, ...x.blocs.flatMap((b) => [b.intertitre ?? '', ...b.paragraphes])].join(' ');
+  const tout = [...x.tags ?? [], x.titre, x.chapo, ...x.blocs.flatMap((b) => [b.intertitre ?? '', ...b.paragraphes])].join(' ');
   if (SUJET_EXCLU.test(tout)) return false;
   return imageValide(x.image);
 }

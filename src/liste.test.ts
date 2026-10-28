@@ -60,3 +60,21 @@ describe('résumé : plants, alertes et avertissement', () => {
     expect(texte).toContain('Avertissement : Réglementé.');
   });
 });
+
+describe('liste d’achat : liens vers les Top 10', () => {
+  it('lampes, minuterie et thermo-hygromètre renvoient vers leur Top 10 ; tente et extracteur dès 60 × 60 cm', () => {
+    const grande = listeAchat(calculer(entrees), ctx);
+    const lien = (mot: string, liste = grande) => liste.find((a) => a.article.includes(mot))?.top10?.href;
+    expect(lien('Barres')).toBe('top-10-lampes-led-de-culture.html');
+    expect(lien('minuterie')).toBe('top-10-minuteurs-thermometres.html');
+    expect(lien('Thermo-hygromètre')).toBe('top-10-minuteurs-thermometres.html');
+    expect(lien('Tente')).toBe('top-10-tentes-de-culture.html');
+    expect(lien('Extracteur')).toBe('top-10-extracteurs-ventilateurs.html');
+    const petite = listeAchat(calculer({ ...entrees, surface: { mode: 'rectangle', longueurM: 0.6, largeurM: 0.3 } }), ctx);
+    expect(lien('Tente', petite)).toBeUndefined();
+    expect(lien('Extracteur', petite)).toBeUndefined();
+  });
+  it('jamais de lien Amazon direct dans la liste', () => {
+    expect(JSON.stringify(listeAchat(calculer(entrees), ctx))).not.toMatch(/amazon/i);
+  });
+});

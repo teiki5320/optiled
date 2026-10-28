@@ -224,3 +224,5 @@ input[type='text']:focus, select:focus { outline: none; border-color: var(--acce
   border: 1px solid color-mix(in srgb, var(--alerte) 35%, transparent);
 }
 .alerte-calcul::before { content: '⚠'; position: absolute; left: 0.85rem; top: 0.6rem; color: var(--alerte); }
+/* Lien de la liste d'achat vers le Top 10 de l'objet (lien interne) */
+.achats__top { display: inline-block; margin-top: 0.35rem; font-size: 0.86rem; font-weight: 600; }

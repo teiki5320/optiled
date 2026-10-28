@@ -19,7 +19,7 @@ describe('fiches légumes', () => {
   it('bloc floraison intitulé selon la culture, absent pour les feuilles', () => {
     const fiche = (id: string) => rendreFiche(legumes.find((l) => l.id === id)!);
     expect(fiche('tomate')).toContain('<h4>Lumière — floraison et fructification</h4>');
-    // Safran et chanvre fleurissent sans donner de fruits.
+    // Le safran fleurit sans donner de fruits.
     expect(fiche('safran')).toContain('<h4>Lumière — floraison</h4>');
     expect(fiche('safran')).not.toContain('fructification');
     expect(fiche('laitue')).not.toMatch(/Lumière — floraison/);
@@ -46,7 +46,7 @@ describe('fiches légumes', () => {
     expect(html).toContain('data-difficulte="facile"');
     expect(html).toContain('<span class="badge-difficulte badge-difficulte--facile">Facile</span>');
     expect(html).toContain('Récolte : <strong>40–60 jours après semis</strong>');
-    expect(rendreFiche(legumes.find((l) => l.id === 'chanvre-cbd')!)).toContain('90–130 jours jusqu');
+    expect(rendreFiche(legumes.find((l) => l.id === 'wasabi')!)).toContain('jours jusqu\'au rhizome');
   });
 
   it('filtre « Pour débuter » avant les familles, avec retour à toutes les cultures', () => {

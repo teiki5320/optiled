@@ -9,8 +9,8 @@ const page = (f: string) => transformerPage(sourcePage(racine, f), f);
 
 describe('veille/entites.json', () => {
   const entites = entitesVeille();
-  it('toutes les cultures sauf le chanvre CBD', () => {
-    const attendus = chargerLegumes().filter((l) => l.id !== 'chanvre-cbd').map((l) => `legume:${l.id}`);
+  it('toutes les cultures, sans sujet exclu', () => {
+    const attendus = chargerLegumes().map((l) => `legume:${l.id}`);
     expect(entites.map((e) => e.tag)).toEqual(attendus);
     expect(JSON.stringify(entites)).not.toMatch(/chanvre|cbd|cannabis|hemp/i);
   });
@@ -35,10 +35,6 @@ describe('blocs d’actus', () => {
     expect(rendreBlocActus(3, 'legume:tomate')).toContain("L'actu de la tomate");
     expect(rendreBlocActus(3, 'legume:tomate')).toContain('data-tag="legume:tomate"');
   });
-  it('jamais de bloc pour le chanvre CBD', () => {
-    expect(rendreBlocActus(3, 'legume:chanvre-cbd')).toBe('');
-    expect(page('legume-chanvre-cbd.html')).not.toContain('data-actus');
-  });
   it('accueil : 4 actus sous le calculateur et ses résultats', () => {
     const html = page('index.html');
     expect(html).toContain('data-limite="4"');
@@ -54,7 +50,7 @@ describe('blocs d’actus', () => {
     expect(html.match(/<footer[\s\S]*<\/footer>/)?.[0]).toContain('href="actus.html"');
   });
   // Un test par fiche : chaque page générée prend du temps à construire (un seul test dépasserait le délai sur la CI).
-  for (const l of chargerLegumes().filter((x) => x.id !== 'chanvre-cbd')) {
+  for (const l of chargerLegumes()) {
     it(`fiche ${l.id} : son bloc de 3 actus`, () => {
       expect(page(`legume-${l.id}.html`)).toContain(`data-limite="3" data-tag="legume:${l.id}"`);
     });

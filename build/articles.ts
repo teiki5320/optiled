@@ -21,7 +21,8 @@ import { imageCarree, lienCarte, MOTIF_ID, MOTIF_SLUG, nettoyerFichier, SLUG_RES
 import { chargerLegumes, echapper } from './fiches.ts';
 import { icone } from './icones.ts';
 import { fichierLegume } from './pages-legumes.ts';
-import { CULTURES_EXCLUES, FICHIER_ACTUS } from './veille.ts';
+import { FICHIER_ACTUS } from './veille.ts';
+import { fichierSujet, sujetsPublies, type Sujet } from './top-10.ts';
 
 export const NOM_SITE_ARTICLES = 'Kultiled';
 export const DOSSIER_ACTUS = 'actus/';
@@ -126,11 +127,10 @@ export async function chargerVeilleAuBuild(base = process.env.VEILLE_BASE || BAS
   return retenus;
 }
 
-/** Fiches existantes du site, par tag de la veille (jamais le chanvre). */
+/** Fiches existantes du site, par tag de la veille. */
 export function fichesDuSite(): Record<string, FicheLiee> {
   const fiches: Record<string, FicheLiee> = {};
   for (const l of chargerLegumes()) {
-    if (CULTURES_EXCLUES.has(l.id)) continue;
     fiches[`legume:${l.id}`] = { href: fichierLegume(l.id), nom: l.nom };
   }
   return fiches;
@@ -202,7 +202,32 @@ export function liensFiches(a: ArticleVeille, fiches = fichesDuSite()): string {
   return `<ul class="actu-article__fiches">${liees.map((f) => `<li><a href="${attr(f.href)}">Lire la fiche culture : ${echapper(f.nom)} →</a></li>`).join('')}</ul>`;
 }
 
-/** Corps de l'article : image 16:9 et son crédit, blocs (h2 + paragraphes), sources, fiches. */
+/**
+ * Top 10 lié au sujet d'une actu, d'après son titre et son chapô (premier motif trouvé), ou rien.
+ * Jamais de lien Amazon dans une actu : seulement un lien interne vers la page du Top 10.
+ */
+export const TOPS_ACTUS: [RegExp, string][] = [
+  [/hydropon|aquapon|kratky|\bdwc\b|\bnft\b/i, 'kits-hydroponiques'],
+  [/\btentes? de culture|\bgrow ?box/i, 'tentes-de-culture'],
+  [/\bsemis\b|germination|micro-?pousses|jeunes plants/i, 'lampes-semis'],
+  [/terreau|substrat|fibre de coco|billes d.argile/i, 'terreaux-substrats'],
+  [/ventilat|extracteur|extraction d.air/i, 'extracteurs-ventilateurs'],
+  [/\bLED\b|lampes?\b|éclairage|lumière artificielle/i, 'lampes-led-de-culture'],
+];
+
+export function topDeLActu(a: Pick<ArticleVeille, 'titre' | 'chapo'>): Sujet | undefined {
+  const texte = `${a.titre} ${a.chapo}`;
+  const slug = TOPS_ACTUS.find(([motif]) => motif.test(texte))?.[1];
+  return slug ? sujetsPublies().find((s) => s.slug === slug) : undefined;
+}
+
+/** Ligne finale vers le Top 10 lié au sujet, s'il y en a un. */
+export function lienTopActu(a: ArticleVeille): string {
+  const s = topDeLActu(a);
+  return s ? `<p class="actu-article__top"><a href="${fichierSujet(s)}">Le matériel pour ça : ${s.titre.charAt(0).toLowerCase()}${s.titre.slice(1)} →</a></p>` : '';
+}
+
+/** Corps de l'article : image 16:9 et son crédit, blocs (h2 + paragraphes), sources, fiches, Top 10 lié. */
 export function corpsArticle(a: ArticleVeille, fiches = fichesDuSite()): string {
   const figure = `<figure class="actu-article__figure">
           <div class="actu-article__image"><img src="${attr(a.image.url)}" alt="${attr(a.image.alt)}" width="${a.image.largeur || 1600}" height="${a.image.hauteur || 900}" fetchpriority="high" decoding="async" /></div>
@@ -214,7 +239,8 @@ export function corpsArticle(a: ArticleVeille, fiches = fichesDuSite()): string 
   return `${figure}
         ${blocs}
         ${encadreSources(a)}
-        ${liensFiches(a, fiches)}`;
+        ${liensFiches(a, fiches)}
+        ${lienTopActu(a)}`;
 }
 
 /** Étiquettes du bandeau : rubrique, date de l'actu et durée de lecture. */
