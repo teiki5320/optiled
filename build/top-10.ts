@@ -6,7 +6,7 @@
  * Uniquement des produits et des chiffres de src/data/lampes.json ; ni prix, ni note.
  * Pas de filtre, de tri ni de comparateur : une liste numérotée, c'est tout.
  */
-import { imageLampe, LAMPES, LAMPES_VERIFIEES_LE, lampesConseillees, lienAmazon, lienAmazonAsin, MENTION_AFFILIATION, type Lampe } from '../src/lampes.ts';
+import { boutonAmazon, imageLampe, LAMPES, LAMPES_VERIFIEES_LE, lampesConseillees, lienAmazon, lienAmazonAsin, MENTION_AFFILIATION, type Lampe } from '../src/lampes.ts';
 import brutTentes from '../src/data/tentes.json' with { type: 'json' };
 import brutKits from '../src/data/top-10/kits-complets.json' with { type: 'json' };
 import brutHydro from '../src/data/top-10/kits-hydroponiques.json' with { type: 'json' };
@@ -636,7 +636,7 @@ function carte(p: Produit): string {
             <dl class="top10__chiffres">${chiffres}</dl>
             <p><strong>Pourquoi dans le top.</strong> ${p.pourquoi}</p>
             <p><strong>Idéale pour</strong> ${p.pourQui}.</p>
-            <p class="top10__achat"><a class="bouton bouton--plein" href="${p.lien}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a><small>Lien partenaire</small></p>
+            <div class="top10__achat">${boutonAmazon(p.lien, p.nom, p.image !== '', 'bouton bouton--plein')}</div>
           </div>
         </li>`;
 }

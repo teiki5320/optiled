@@ -6,7 +6,7 @@
  */
 import { moisAnnee } from '../src/budget.ts';
 import type { Legume, Stade } from '../src/data.ts';
-import { imageLampe, LAMPES_VERIFIEES_LE, lampesConseillees, lienAmazon, MENTION_AFFILIATION, type Proposition } from '../src/lampes.ts';
+import { boutonAmazon, imageLampe, LAMPES_VERIFIEES_LE, lampesConseillees, lienAmazon, MENTION_AFFILIATION, type Proposition } from '../src/lampes.ts';
 import { rendreFourchettesGammes } from './budget.ts';
 import { chargerLegumes, echapper } from './fiches.ts';
 import { COEF_UTILISATION } from './guides-achat.ts';
@@ -79,7 +79,7 @@ function carte(c: ChoixBesoin, p: Proposition, role: string): string {
             <li>PPFD moyen sur ${cm(c.besoin.longueurM)} × ${cm(c.besoin.largeurM)} cm : <strong>≈ ${nb(Math.round(ppfdMoyen))} µmol/m²/s</strong> (cible : ${nb(c.ppfd)})${l.variateur ? ', réglable au variateur' : ''}</li>
             <li>Consommation : <strong>${nb(p.puissanceW)} W</strong> au maximum, ≈ ${nb(Math.round(kwhAn))} kWh par an à ${nb(c.photoperiodeH)} h par jour</li>
           </ul>
-          <a class="bouton" href="${lienAmazon(l)}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a>
+          ${boutonAmazon(lienAmazon(l), l.nom, !!l.illustration)}
         </div>`;
 }
 

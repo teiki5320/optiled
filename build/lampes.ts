@@ -1,7 +1,7 @@
 /**
  * Page « Lampes » : la sélection Amazon.fr, groupée par format, générée depuis src/data/lampes.json.
  */
-import { imageLampe, LAMPES, LAMPES_VERIFIEES_LE, lienAmazon, MENTION_AFFILIATION, type Lampe } from '../src/lampes.ts';
+import { boutonAmazon, imageLampe, LAMPES, LAMPES_VERIFIEES_LE, lienAmazon, MENTION_AFFILIATION, type Lampe } from '../src/lampes.ts';
 import { echapper } from './fiches.ts';
 
 const nb = (n: number) => String(n).replace('.', ',');
@@ -14,7 +14,7 @@ function carte(l: Lampe): string {
   ${imageLampe(l)}
   <h3>${echapper(l.nom)}</h3>
   <p>${echapper(l.dimensions)} · ${l.puissance_w} W · ${lumiere}${surface} · ${l.variateur ? 'avec variateur' : 'sans variateur'}</p>${l.disponible === false ? `\n  <p class="aide">Indisponible sur Amazon.fr lors de la dernière vérification.</p>` : ''}
-  <a class="bouton" href="${lienAmazon(l)}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a>
+  ${boutonAmazon(lienAmazon(l), l.nom, !!l.illustration)}
 </li>`;
 }
 

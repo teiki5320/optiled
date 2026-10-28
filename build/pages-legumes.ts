@@ -8,7 +8,7 @@ import { CULTURES_EXCLUES } from './veille.ts';
 import { calculer, calculerDli, longueurBarreConseillee, nombrePlants, type ResultatCalcul, type Surface } from '../src/calc.ts';
 import type { Legume, ParametresStade } from '../src/data.ts';
 import { arrondiPuissance } from '../src/liste.ts';
-import { imageLampe, lampesConseillees, lienAmazon, MENTION_AFFILIATION, type Proposition } from '../src/lampes.ts';
+import { boutonAmazon, imageLampe, lampesConseillees, lienAmazon, MENTION_AFFILIATION, type Proposition } from '../src/lampes.ts';
 import { conseilsDeLaCulture, dateDuJour, THEMES } from './conseils.ts';
 import { badgeDifficulte, chargerLegumes, DEPART_RECOLTE, delaiRecolte, echapper, libellesFloraison, miniature, slug, stadeLePlusExigeant } from './fiches.ts';
 
@@ -155,7 +155,7 @@ function carteLampe(p: Proposition, r: ResultatCalcul): string {
   ${imageLampe(l)}
   <h3>${p.nombre} × ${echapper(l.nom)}</h3>
   <p>${nb(p.ppfTotal)} µmol/s${l.ppf_estime ? ' (estimé)' : ''} pour ${nb(r.ppfNecessaire)} nécessaires · ${nb(p.puissanceW)} W au maximum · ${l.variateur ? 'avec variateur' : 'sans variateur'}</p>
-  <a class="bouton" href="${lienAmazon(l)}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a>
+  ${boutonAmazon(lienAmazon(l), l.nom, !!l.illustration)}
 </li>`;
 }
 

@@ -30,7 +30,23 @@ export const LAMPES_VERIFIEES_LE: string = (brut as unknown as { verifie_le: str
 
 /** Identifiant Partenaires Amazon (un seul endroit à changer). */
 export const TAG_AMAZON = 'kultiledfr-21';
-export const MENTION_AFFILIATION = 'En tant que Partenaire Amazon, je réalise un bénéfice sur les achats remplissant les conditions requises.';
+export const MENTION_AFFILIATION = 'En tant que Partenaire Amazon, Kultiled réalise un bénéfice sur les achats remplissant les conditions requises.';
+/** Petite ligne sous chaque bouton « Voir sur Amazon ». */
+export const NOTE_LIEN_AMAZON = 'Lien partenaire Amazon. Prix, disponibilité et vendeur sont indiqués sur Amazon.';
+/** Ajoutée sous la précédente quand le produit est montré par une illustration générée par IA. */
+export const NOTE_ILLUSTRATION_IA = "Illustration IA : l'article vendu peut différer.";
+
+const attribut = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+/**
+ * Bouton « Voir sur Amazon » d'un produit, suivi de la ligne « Lien partenaire Amazon… »
+ * et, si le produit est montré par une illustration IA, de la ligne « Illustration IA… ».
+ * Partout le même texte (calculateur, lampes, meilleures lampes, fiches cultures, Top 10).
+ */
+export function boutonAmazon(lien: string, nom: string, illustre: boolean, classe = 'bouton'): string {
+  return `<a class="${classe}" href="${lien}" target="_blank" rel="sponsored noopener" aria-label="Voir sur Amazon : ${attribut(nom)}, lien partenaire (nouvel onglet)">Voir sur Amazon</a>
+  <p class="note-amazon">${NOTE_LIEN_AMAZON}</p>${illustre ? `\n  <p class="note-amazon">${NOTE_ILLUSTRATION_IA}</p>` : ''}`;
+}
 
 export function lienAmazonAsin(asin: string): string {
   return `https://www.amazon.fr/dp/${asin}?tag=${TAG_AMAZON}`;

@@ -7,7 +7,7 @@ import { depuisParams, PARAMETRES, versParams, type Etat } from './etat.ts';
 import { LEGUMES, legumesParFamille, parametresStade, trouverLegume, type Stade } from './data.ts';
 import { accord, euros, nombre } from './format.ts';
 import { htmlTuiles, TUILES_PAR_LIGNE } from './tuiles.ts';
-import { imageLampe, lampesConseillees, lienAmazon, MENTION_AFFILIATION } from './lampes.ts';
+import { boutonAmazon, imageLampe, lampesConseillees, lienAmazon, MENTION_AFFILIATION } from './lampes.ts';
 import { activerModeIntegre, avecIntegre, estIntegre, sansIntegre } from './integre.ts';
 
 /** Calculateur affiché dans un cadre sur un autre site (voir integrer.html). */
@@ -105,13 +105,13 @@ function rendreLampesCommerce(r: ResultatCalcul): string {
       ${imageLampe(p.lampe, '(min-width: 760px) 240px, 92vw')}
       <p class="lampe-proposee__nom"><strong>${p.nombre} × ${echapper(p.lampe.nom)}</strong></p>
       <p class="lampe-proposee__detail">${nombre(p.ppfTotal)} µmol/s${p.lampe.ppf_estime ? ' (estimé)' : ''} pour ${nombre(r.ppfNecessaire)} nécessaires · ${nombre(p.puissanceW)} W au maximum · ${p.lampe.variateur ? 'avec variateur' : 'sans variateur'}</p>
-      <a class="bouton bouton--amazon" href="${lienAmazon(p.lampe)}" target="_blank" rel="sponsored noopener">Voir sur Amazon</a>
+      ${boutonAmazon(lienAmazon(p.lampe), p.lampe.nom, !!p.lampe.illustration, 'bouton bouton--amazon')}
     </li>`,
     )
     .join('');
   return `${titre('Lampes du commerce qui conviennent', 'lampes.html', 'Toute la sélection')}
     <ul class="lampes-proposees">${cartes}</ul>
-    <p class="aide">Liens sponsorisés. ${MENTION_AFFILIATION} Prix et disponibilité sur Amazon.</p>`;
+    <p class="aide">Liens sponsorisés. ${MENTION_AFFILIATION}</p>`;
 }
 
 /**

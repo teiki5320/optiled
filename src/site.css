@@ -522,6 +522,8 @@ img, svg { max-width: 100%; }
 .lampe__note { color: var(--accent); font-weight: 700; }
 .lampe__note span { color: var(--attenue); font-weight: 500; }
 .lampe .bouton { align-self: flex-start; margin-top: 0.3rem; }
+/* Ligne discrète sous chaque bouton « Voir sur Amazon » */
+p.note-amazon, .prose p.note-amazon { margin: 0; font-size: 0.78rem; line-height: 1.4; color: var(--attenue); }
 
 /* Meilleures lampes du mois : choix recommandé et alternative */
 .choix-lampes { display: grid; gap: 0.8rem; margin: 0.8rem 0; }
@@ -630,7 +632,7 @@ img, svg { max-width: 100%; }
 .top10__chiffres div:first-child dd { color: var(--accent); }
 @media (min-width: 1000px) { .top10__chiffres { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .top10__achat { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.8rem; }
-.top10__achat small { font-size: 0.78rem; color: var(--attenue); }
+.top10__achat .note-amazon { flex-basis: 100%; }
 .top10__bloc { margin-top: 2.6rem; max-width: 48rem; }
 .top10__bloc h2 { font-size: clamp(1.4rem, 4vw, 1.8rem); font-weight: 800; margin: 0 0 0.8rem; }
 .top10__etapes { margin: 0 0 0.8rem; padding-left: 1.3rem; line-height: 1.6; }

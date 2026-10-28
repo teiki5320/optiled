@@ -32,7 +32,8 @@ describe('Top 10 à onglets', () => {
         expect(l).toContain('tag=kultiledfr-21');
         expect(l).toContain('rel="sponsored noopener"');
       }
-      expect(html.match(/<small>Lien partenaire<\/small>/g)?.length).toBe(10);
+      expect(html.match(/>Voir sur Amazon<\/a>/g)?.length).toBe(10);
+      expect(html.match(/<p class="note-amazon">Lien partenaire Amazon\. Prix, disponibilité et vendeur sont indiqués sur Amazon\.<\/p>/g)?.length).toBe(10);
       expect(html).toContain('En tant que Partenaire Amazon');
       expect(html.indexOf('En tant que Partenaire Amazon')).toBeLessThan(html.indexOf('amazon.fr/dp/'));
       expect(html).toContain('<h2>Comment choisir</h2>');

@@ -523,7 +523,7 @@ export function footer(): string {
       <p>Guides et outils gratuits pour cultiver des légumes sous LED, en intérieur.</p>
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la <a href="glossaire.html#sources">littérature horticole</a> : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
       <p class="site-pied__note">La plupart des photos (guides, conseils, cultures) et certains schémas des guides Culture sont générés par intelligence artificielle ; les autres photos sont libres de droits, avec leur auteur et leur licence sous l'image, et les autres schémas sont réalisés pour le site.</p>
-      <p class="site-pied__note">Certains liens vers Amazon sont sponsorisés : en tant que Partenaire Amazon, l'éditeur réalise un bénéfice sur les achats remplissant les conditions requises.</p>
+      <p class="site-pied__note">${MENTION_AFFILIATION}</p>
       <p class="site-pied__note"><a href="a-propos.html">À propos et méthode</a> · <a href="a-propos.html#contact">Contact</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="mentions-legales.html#donnees" data-gerer-cookies>Gérer les cookies</a></p>
     </div>
     <div><h2>Outils</h2><ul><li><a href="index.html#calculateur">Calculateur LED</a></li><li><a href="lampes.html">Lampes conseillées</a></li><li><a href="${FICHIER_MEILLEURES_LAMPES}">Meilleures lampes du mois</a></li><li><a href="legumes.html">Fiches légumes</a></li><li><a href="conseils.html">Conseils</a></li><li><a href="${FICHIER_ACTUS}">Actus de la culture en intérieur</a></li><li><a href="carnet-de-suivi.html">Carnet de suivi à imprimer</a></li><li><a href="glossaire.html">Glossaire</a></li><li><a href="integrer.html">Intégrer le calculateur</a></li></ul>
