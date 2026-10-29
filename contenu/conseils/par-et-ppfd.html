@@ -1,0 +1,44 @@
+<!--
+titre: PAR et PPFD : quelle différence, et quelle valeur viser ?
+titre_court: PAR et PPFD : la différence expliquée
+description: Le PAR est la lumière utile aux plantes (400 à 700 nm), le PPFD la quantité qui arrive sur les feuilles : définitions, unités et valeurs à viser par culture.
+publie_le: 2026-10-29
+theme: lumiere
+-->
+<p class="chapo">Le <strong>PAR</strong> n'est pas une mesure : c'est la <strong>plage de lumière utile</strong> à la photosynthèse, de 400 à 700 nm. Le <strong>PPFD</strong> est une mesure : la quantité de cette lumière PAR qui <strong>arrive sur les feuilles</strong> chaque seconde, en µmol/m²/s. Quand on parle de « valeur PAR » d'une lampe, c'est presque toujours d'un PPFD qu'il s'agit.</p>
+
+<h2 id="par">Le PAR : la lumière que les plantes utilisent</h2>
+<p>Le <a href="glossaire.html#par">PAR</a> (Photosynthetically Active Radiation, rayonnement photosynthétiquement actif) désigne les longueurs d'onde de 400 à 700 nm, du bleu au rouge. C'est la lumière que les plantes utilisent principalement pour la photosynthèse. Toutes les mesures horticoles comptent les photons dans cette plage, et pas les lumens ou les lux, faits pour l'œil humain (voir <a href="led-bases.html#par">Le PAR : la lumière utile, de 400 à 700 nm</a>).</p>
+<p>Le PAR répond donc à la question « quelle lumière compte ? », pas « combien ? ». Pour quantifier, on utilise deux mesures : le <a href="glossaire.html#ppf">PPF</a> pour la lampe, le <a href="glossaire.html#ppfd">PPFD</a> pour la plante.</p>
+
+<h2 id="ppfd">Le PPFD : la lumière PAR reçue par la plante</h2>
+<p>Le PPFD (Photosynthetic Photon Flux Density) compte les photons PAR qui tombent sur une surface chaque seconde, en <strong>µmol/m²/s</strong>. Il dépend de la lampe, mais aussi de la hauteur de suspension, de la surface éclairée, des parois et de l'endroit où l'on mesure : il est toujours plus élevé au centre qu'aux coins.</p>
+<div class="tableau-defile">
+  <table class="tableau">
+    <thead><tr><th></th><th>PAR</th><th>PPFD</th></tr></thead>
+    <tbody>
+      <tr><td>Nature</td><td>Une plage de longueurs d'onde</td><td>Une mesure</td></tr>
+      <tr><td>Valeur</td><td>400 à 700 nm</td><td>En µmol/m²/s</td></tr>
+      <tr><td>Répond à</td><td>Quelle lumière est utile ?</td><td>Combien de lumière utile reçoit la plante ?</td></tr>
+      <tr><td>Se mesure avec</td><td>—</td><td>Un PAR-mètre (ou, en estimation, un téléphone)</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Le « PAR-mètre » porte mal son nom : il mesure le PPFD à l'endroit où l'on pose son capteur. Un téléphone peut en donner une estimation sous une LED blanche (voir <a href="conseil-mesurer-lumiere-smartphone.html">Mesurer la lumière des plantes au téléphone</a>). Pour la différence avec la lumière émise par la lampe, voir <a href="conseil-difference-ppf-ppfd.html">Quelle différence entre PPF et PPFD ?</a></p>
+
+<h2 id="valeurs">Quel PPFD viser selon les cultures</h2>
+<p>Ces valeurs sont des ordres de grandeur pour une culture en intérieur sans lumière naturelle ; ce sont celles des fiches du site et du calculateur :</p>
+<ul>
+  <li><a href="legume-micro-pousses.html">Micro-pousses</a> : environ 150 µmol/m²/s ;</li>
+  <li><a href="legume-laitue.html">Laitue</a> : environ 250 µmol/m²/s ;</li>
+  <li><a href="legume-basilic.html">Basilic</a> : environ 300 µmol/m²/s ;</li>
+  <li><a href="legume-tomate.html">Tomate</a> : environ 350 µmol/m²/s en croissance et 500 en fructification.</li>
+</ul>
+<p>Le tableau complet est dans <a href="led-bases.html#besoins">Besoins typiques par type de culture</a>.</p>
+
+<h2 id="dli">Du PPFD à la dose du jour (DLI)</h2>
+<p>Le PPFD est un débit. Multiplié par la durée d'éclairage, il donne la dose de lumière reçue dans la journée, le <a href="glossaire.html#dli">DLI</a>, en mol/m²/jour :</p>
+<p class="formule">DLI = PPFD × heures d'éclairage × 3 600 / 1 000 000</p>
+<p>Exemple : une laitue à 250 µmol/m²/s pendant 16 h reçoit environ 14,4 mol/m²/jour. Pour le nombre d'heures selon les cultures, voir <a href="conseil-heures-de-lumiere-par-jour.html">Combien d'heures de lumière par jour ?</a></p>
+
+<div class="encadre"><p><strong>À retenir :</strong> le PAR dit quelle lumière compte (400 à 700 nm), le PPFD dit combien en reçoivent vos plantes (µmol/m²/s). Pour savoir quel PPFD une lampe donnera sur votre surface, utilisez le <a href="index.html#calculateur">calculateur</a>.</p></div>
