@@ -1,6 +1,6 @@
 # MARKETING — plan marketing & rémunération
 
-Mis à jour le 28 octobre 2026. Compagnon de INFRA.md.
+Mis à jour le 29 octobre 2026. Compagnon de INFRA.md.
 
 > Aucun chiffre inventé : les valeurs non mesurées sont marquées comme telles.
 
@@ -19,7 +19,7 @@ Mis à jour le 28 octobre 2026. Compagnon de INFRA.md.
 ## Rémunération par phases
 
 - [fait] **Aujourd'hui** : site gratuit sans compte ; affiliation Amazon (16 lampes, identifiant `kultiledfr-21`, liens `rel="sponsored nofollow noopener"`, ligne « Lien partenaire Amazon » sous chaque bouton, mention dans le pied de page et les mentions légales ; plus d'encadré en haut des pages depuis le 28 octobre 2026 ; depuis le même jour : encadré « Lampe conseillée » sur chaque fiche culture, encadré « Le matériel pour ça » dans 13 conseils, liste d'achat du calculateur et accueil reliés aux Top 10, plus aucun prix de matériel ; depuis le 28 octobre 2026 au soir, bloc « Nos coups de cœur » en haut de l'accueil : 6 produits illustrés des Top 10, liens internes seulement, aucun lien Amazon) et publicité AdSense dans les pages de lecture.
-- [en cours] **Validation AdSense** : examen de kultiled.com demandé le 16 octobre 2026, « En préparation » dans la console AdSense, ni validé ni refusé (vérifié le 28 octobre 2026).
+- [en cours] **Validation AdSense** : examen de kultiled.com demandé le 16 octobre 2026, « En préparation » dans la console AdSense, ni validé ni refusé (vérifié le 29 octobre 2026).
 - **Affiliation élargie** : la liste d'achat du calculateur renvoie depuis le 28 octobre 2026 vers les Top 10 (lampes, minuteries, thermo-hygromètres, tentes, extracteurs) ; reste à créer un code de suivi Amazon par emplacement (table prête dans `src/suivi-amazon.ts`).
 
 ## Points forts
@@ -55,7 +55,7 @@ Mis à jour le 28 octobre 2026. Compagnon de INFRA.md.
 - **Clics vers Amazon** : à vérifier dans la console Partenaires Amazon
 - **Commissions Amazon** : à vérifier dans la console Partenaires Amazon
 - **Revenus publicitaires** : à vérifier dans la console AdSense
-- **Articles de conseil** : 41 en ligne, 33 programmés jusqu'au 7 juin 2027 (au 28 octobre 2026)
+- **Articles de conseil** : 42 en ligne, 33 programmés jusqu'au 7 juin 2027 (au 29 octobre 2026)
 
 ## Calendrier
 
@@ -79,7 +79,7 @@ Mis à jour le 28 octobre 2026. Compagnon de INFRA.md.
 
 ## Les 3 priorités
 
-- Réussir le changement de domaine dans Google : faire indexer les dernières adresses de kultiled.com (98 pages dans l'index au 28 octobre 2026, sitemap à 106 adresses depuis le retrait de la fiche du chanvre le 28 octobre 2026) et signaler le déménagement depuis optiled.fr (outil « Changement d'adresse » de la propriété optiled.fr : pas encore fait au 28 octobre 2026, le bouton « Valider et informer Google » est toujours proposé), avant la fin du contrat IONOS en novembre.
+- Réussir le changement de domaine dans Google : faire indexer les dernières adresses de kultiled.com (98 pages dans l'index au 28 octobre 2026, sitemap à 107 adresses le 29 octobre 2026) et signaler le déménagement depuis optiled.fr (outil « Changement d'adresse » de la propriété optiled.fr : pas encore fait au 28 octobre 2026, le bouton « Valider et informer Google » est toujours proposé), avant la fin du contrat IONOS en novembre.
 - Ouvrir un premier canal d'audience : créer et brancher un compte Pinterest Kultiled, puis importer les 12 épingles déjà prêtes (`docs/pinterest.csv`).
 - Obtenir de premiers liens entrants : proposer le calculateur intégrable (`integrer.html`) à quelques blogs et forums de jardinage en intérieur, aucun n'ayant encore été contacté.
 
