@@ -87,7 +87,7 @@ export function entitesVeille(legumes = chargerLegumes()): EntiteVeille[] {
  * de la tomate » ; page Actus (plus de 4 actus) : sans titre (la page a le sien), avec la date
  * de mise à jour et un message si la veille est vide.
  */
-export function rendreBlocActus(limite: number, tag?: string): string {
+export function rendreBlocActus(limite: number, tag?: string, prerendu = ''): string {
   const id = tag?.startsWith('legume:') ? tag.slice('legume:'.length) : undefined;
   const attributs = `data-actus data-limite="${limite}"${tag ? ` data-tag="${tag}"` : ''}`;
   if (limite > 4 && !tag) {
@@ -100,16 +100,19 @@ export function rendreBlocActus(limite: number, tag?: string): string {
   const titre = id ? `L'actu ${DE_CULTURE[id] ?? `: ${id}`}` : 'Actus de la culture en intérieur';
   const idTitre = `titre-actus${id ? `-${id}` : ''}`;
   const lien = id ? '' : `<a class="actus__toutes" href="${FICHIER_ACTUS}">Toutes les actus →</a>`;
-  return `<section class="actus${id ? ' actus--fiche' : ''}" ${attributs} aria-labelledby="${idTitre}" hidden>
+  // Fiche : les articles déjà publiés sur le site pour cette culture sont écrits dès le build
+  // (liens visibles par Google sans script) ; le script les remplace ensuite par les actus récentes.
+  return `<section class="actus${id ? ' actus--fiche' : ''}" ${attributs} aria-labelledby="${idTitre}"${prerendu ? '' : ' hidden'}>
         <div class="section__tete">
           <div><h2 id="${idTitre}">${titre}</h2>${id ? '' : '<p>Les nouvelles de la culture en intérieur et de l’éclairage des plantes, choisies deux fois par jour.</p>'}</div>
           ${lien}
         </div>
-        <div class="actus__liste" data-actus-liste></div>
+        <div class="actus__liste" data-actus-liste>${prerendu}</div>
       </section>`;
 }
 
 /** Remplace les marqueurs <!--#actus:N--> et <!--#actus:N:legume:id--> d'une page. */
-export function remplacerMarqueursActus(html: string): string {
-  return html.replace(/<!--#actus:(\d+)(?::([a-z]+:[a-z0-9-]+))?-->/g, (_m, n: string, tag?: string) => rendreBlocActus(Number(n), tag));
+export function remplacerMarqueursActus(html: string, prerendre: (tag: string, limite: number) => string = () => ''): string {
+  return html.replace(/<!--#actus:(\d+)(?::([a-z]+:[a-z0-9-]+))?-->/g, (_m, n: string, tag?: string) =>
+    rendreBlocActus(Number(n), tag, tag?.startsWith('legume:') ? prerendre(tag, Number(n)) : ''));
 }

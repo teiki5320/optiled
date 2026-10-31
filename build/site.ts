@@ -60,7 +60,7 @@ import { icone, logo, type NomIcone } from './icones.ts';
 import { CARTES_PREMIERE_RANGEE, creditCarte, legendePhoto, photoGuide, photoLibre } from './photos.ts';
 import { placerAnnonces, scriptAdsense } from './annonces.ts';
 import { entitesVeille, FICHIER_ACTUS, FICHIER_ENTITES, remplacerMarqueursActus } from './veille.ts';
-import { articleDuFichier, chargerVeilleAuBuild, dateArticleSitemap, DOSSIER_ACTUS, FICHIER_RENVOI_ACTUS, pagesActus, prefixeRelatif, reecrireLiensRelatifs, referencementArticle, slugsConstruits } from './articles.ts';
+import { articleDuFichier, articlesConstruits, chargerVeilleAuBuild, dateArticleSitemap, DOSSIER_ACTUS, FICHIER_RENVOI_ACTUS, pagesActus, prefixeRelatif, reecrireLiensRelatifs, referencementArticle, slugsConstruits, vignetteActuHtml } from './articles.ts';
 export { photoGuide };
 
 export const NOM_SITE = 'Kultiled';
@@ -879,6 +879,14 @@ ${articles.length ? `    <lastBuildDate>${jour(articles[0].publieLe)}</lastBuild
 }
 
 /** Applique toutes les transformations à une page. */
+/** Articles d'actus déjà publiés sur le site pour une culture (« legume:tomate »), en vignettes. */
+function articlesDeLaFiche(tag: string, limite: number): string {
+  const construits = new Set(slugsConstruits());
+  const liees = articlesConstruits().filter((a) => a.actu.tags?.includes(tag)).slice(0, limite);
+  if (liees.length === 0) return '';
+  return `<ul class="actus__vignettes">${liees.map((a) => `<li>${vignetteActuHtml(a.actu, construits)}</li>`).join('')}</ul>`;
+}
+
 export function transformerPage(html: string, fichier: string): string {
   let numeroTableau = 0;
   // Nombre de cultures, tiré des données (avant tout : il peut figurer dans la description).
@@ -899,7 +907,7 @@ export function transformerPage(html: string, fichier: string): string {
     .replace(/<!--#budget:([a-z-]+)-->/g, (_m, id: string) => rendreBudget(id))
     .replace('<!--#conseils-->', () => rendreListeConseils())
     .replace('<!--#orientation-->', () => cartesOrientation())
-    .replace(/<!--#actus:[^>]*-->/g, (m) => remplacerMarqueursActus(m))
+    .replace(/<!--#actus:[^>]*-->/g, (m) => remplacerMarqueursActus(m, articlesDeLaFiche))
     .replace('<!--#parcours-->', () => `<div class="cartes-guides cartes-orientation">${cartesParcours()}</div>`)
     .replace(/<!--#conseils-lies:([a-z0-9,\s-]+)-->/g, (_m, liste: string) => rendreConseilsLies(liste.split(',')))
     .replace(/<!--#tops:([a-z0-9,*\s-]+)-->/g, (_m, liste: string) => rendreTopsLies(liste.split(',')))

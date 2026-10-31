@@ -35,6 +35,12 @@ describe('blocs d’actus', () => {
     expect(rendreBlocActus(3, 'legume:tomate')).toContain("L'actu de la tomate");
     expect(rendreBlocActus(3, 'legume:tomate')).toContain('data-tag="legume:tomate"');
   });
+  it('fiche : les articles déjà publiés sont écrits au build et la section est visible', () => {
+    const html = rendreBlocActus(3, 'legume:radis', '<ul class="actus__vignettes"><li>x</li></ul>');
+    expect(html).not.toMatch(/<section[^>]*hidden>/);
+    expect(html).toContain('<div class="actus__liste" data-actus-liste><ul class="actus__vignettes">');
+    expect(rendreBlocActus(3, 'legume:radis')).toMatch(/<section[^>]*hidden>/);
+  });
   it('accueil : 4 actus sous le calculateur et ses résultats', () => {
     const html = page('index.html');
     expect(html).toContain('data-limite="4"');
