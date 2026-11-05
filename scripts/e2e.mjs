@@ -82,8 +82,10 @@ try {
   // Exceptions : la mesure d'audience Cloudflare Web Analytics (sans cookie) et la publicité
   // Google AdSense avec son bandeau de consentement (build/annonces.ts).
   const BEACON = 'https://static.cloudflareinsights.com/beacon.min.js';
+  // Mesure d'audience Umami (sans cookie, build/site.ts, mesureUmami).
+  const UMAMI = 'https://cloud.umami.is/script.js';
   const GOOGLE = /^https:\/\/([a-z0-9-]+\.)*(googlesyndication\.com|google\.com|googletagservices\.com|doubleclick\.net|gstatic\.com|adtrafficquality\.google)\//;
-  verifier(scripts.every((s) => s.startsWith(BASE) || s === BEACON || GOOGLE.test(s)), 'aucun script externe chargé (hors mesure d’audience Cloudflare et publicité Google)');
+  verifier(scripts.every((s) => s.startsWith(BASE) || s === BEACON || s === UMAMI || GOOGLE.test(s)), 'aucun script externe chargé (hors mesure d’audience Cloudflare et Umami, et publicité Google)');
   verifier(erreurs.length === 0, `aucune erreur JavaScript${erreurs.length ? ' : ' + erreurs.join(' | ') : ''}`);
 
   // Actus de la veille, lues en direct : fichier d'essai (contenu maîtrisé), puis fichier injoignable.

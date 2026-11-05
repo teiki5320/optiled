@@ -513,11 +513,24 @@ export function mesureAudience(jeton = JETON_MESURE_AUDIENCE): string {
   return `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${jeton}"}'></script>`;
 }
 
+/** Umami Cloud (offre gratuite, région UE) : identifiant public du site, partagé par les sites de la maison (pas un secret). */
+export const UMAMI_WEBSITE_ID = 'd1715415-5452-48af-a9fa-69e3e2de06f3';
+
+/**
+ * Mesure d'audience Umami, sans cookie, ajoutée au <head> du seul site publié : visites, et clics marqués
+ * data-umami-event (boutons « Voir sur Amazon »). Limitée au domaine du site.
+ */
+export function mesureUmami(): string {
+  return `<script defer src="https://cloud.umami.is/script.js" data-website-id="${UMAMI_WEBSITE_ID}" data-domains="www.kultiled.com,kultiled.com"></script>`;
+}
+
 /** Phrase des mentions légales sur la mesure d'audience (marqueur <!--#mesure-audience-->). */
 export function texteMesureAudience(jeton = JETON_MESURE_AUDIENCE): string {
+  const umami =
+    " Elle utilise aussi Umami (Umami Cloud, données hébergées dans l'Union européenne), également sans cookie : seuls des chiffres globaux sont conservés (pages vues, pays, type d'appareil, clics sur les boutons « Voir sur Amazon »).";
   return mesureAudience(jeton)
-    ? "La <strong>mesure d'audience</strong> utilise Cloudflare Web Analytics : sans cookie ni stockage sur votre appareil, elle compte les pages vues de façon agrégée (page, pays, type d'appareil) et ne conserve pas votre adresse IP."
-    : "Aucune mesure d'audience n'est active.";
+    ? "La <strong>mesure d'audience</strong> utilise Cloudflare Web Analytics : sans cookie ni stockage sur votre appareil, elle compte les pages vues de façon agrégée (page, pays, type d'appareil) et ne conserve pas votre adresse IP." + umami
+    : "La <strong>mesure d'audience</strong> utilise Umami (Umami Cloud, données hébergées dans l'Union européenne), sans cookie : seuls des chiffres globaux sont conservés (pages vues, pays, type d'appareil, clics sur les boutons « Voir sur Amazon »).";
 }
 
 function liensNavigation(fichier: string): string {
@@ -987,7 +1000,8 @@ export function pluginSite(): Plugin {
       const page = transformerPage(html, fichier);
       // Mesure d'audience Cloudflare Web Analytics (sans cookie), seulement sur le site publié.
       // Publicité Google AdSense (et son bandeau de consentement), seulement sur le site publié.
-      return ctx.server ? page : page.replace('</head>', `  ${scriptAdsense()}\n  </head>`).replace('</body>', `${mesureAudience()}\n</body>`);
+      // Mesure d'audience Umami (sans cookie), seulement sur le site publié.
+      return ctx.server ? page : page.replace('</head>', `  ${mesureUmami()}\n  ${scriptAdsense()}\n  </head>`).replace('</body>', `${mesureAudience()}\n</body>`);
     },
     generateBundle() {
       // Les pages marquées noindex (404, redirections) ne vont pas dans le sitemap.

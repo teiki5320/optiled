@@ -13,6 +13,7 @@ import {
   insecables,
   mesureAudience,
   texteMesureAudience,
+  mesureUmami,
   fluxRss,
   head,
   mettreEnPageArticle,
@@ -213,11 +214,18 @@ describe('référencement', () => {
     const jeton = '0123456789abcdef0123456789abcdef';
     expect(mesureAudience(jeton)).toContain(`"token": "${jeton}"`);
     expect(mesureAudience(jeton)).toContain('static.cloudflareinsights.com/beacon.min.js');
-    expect(texteMesureAudience('')).toContain("Aucune mesure d'audience");
     expect(texteMesureAudience(jeton)).toContain('sans cookie');
     // Le jeton du site est configuré : script et mentions légales disent la même chose.
     expect(mesureAudience()).toContain('static.cloudflareinsights.com/beacon.min.js');
     expect(texteMesureAudience()).toContain('Cloudflare Web Analytics');
+    expect(texteMesureAudience()).toContain('Umami');
+    expect(texteMesureAudience('')).toContain('Umami');
+  });
+
+  it('balise Umami limitée au domaine du site', () => {
+    expect(mesureUmami()).toContain('src="https://cloud.umami.is/script.js"');
+    expect(mesureUmami()).toContain('data-website-id="d1715415-5452-48af-a9fa-69e3e2de06f3"');
+    expect(mesureUmami()).toContain('data-domains="www.kultiled.com,kultiled.com"');
   });
 
   it('flux RSS des conseils publiés, échappé', () => {
