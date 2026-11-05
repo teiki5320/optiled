@@ -39,3 +39,24 @@
 ### Socle
 - Vérifié le 22/10/2026 (moins de 28 jours) : pas refait.
 - Vitesse sur téléphone : PageSpeed de nouveau indisponible le 29/10/2026 (quota du jour dépassé) → à refaire au prochain passage (accueil, conseil-hauteur-lampe-led.html, legume-tomate.html).
+
+## 05/11/2026
+
+### Gains rapides (pages en 2e page Google)
+- Période du 06/10 au 03/11/2026 : une seule page entre la 4e et la 20e place.
+- `conseil-concombre-en-interieur.html` — recherches « interieur concombre » (3 vues, 7,3e) et « concombre interieur » (1 vue, 8e) ; 4 vues en tout, 7,5e place moyenne.
+  - Titre : « Cultiver des concombres en intérieur — Kultiled » → « Concombre en intérieur : variétés, pollinisation — Kultiled » (59 caractères).
+  - Méta-description réécrite autour de « concombre en intérieur » (146 caractères). Titre principal (h1) déjà sur la recherche : inchangé ; le contenu répond déjà à la recherche (variétés, lumière, chaleur, palissage) : rien ajouté.
+  - Liens internes ajoutés, texte « concombre en intérieur », depuis deux conseils programmés (en ligne à leur date) : `conseil-araignees-rouges-interieur.html` (23/11, humidité du concombre) et `conseil-polliniser-a-la-main.html` (02/12, concombres non parthénocarpiques). Les conseils déjà en ligne qui parlent du concombre ont été publiés avant lui (le site interdit qu'un article renvoie vers un article plus récent) ; la page reçoit déjà des liens de `legume-concombre.html`, `conseils.html` et de trois conseils voisins.
+- Pages travaillées il y a 28 jours ou plus : aucune (premier travail de page le 29/10/2026 : `conseil-par-et-ppfd.html`, à relire à partir du 26/11/2026).
+
+### Page nouvelle
+- Aucune créée. Recherche repérée : « culture intérieur » et variantes (« culture interieur » 20 vues, « culture en intérieur » 12, « culture en interieur » 11, « culture intérieure » 9, « horticulture interieur » 9), où Google ne montre que `culture-demarrer.html` entre la 66e et la 91e place. La rubrique `culture.html` (« Culture indoor de légumes ») rassemble déjà tous ces guides : une page nouvelle la doublonnerait. Proposé à Jean : reprendre le titre de `culture.html` sur « culture en intérieur ».
+- « par ppfd » (46 vues) : la page `conseil-par-et-ppfd.html` créée le 29/10 n'apparaît pas encore dans les résultats ; `led-bases.html` monte à la 24e place (31e au passage précédent).
+
+### Fiches enrichies
+- Vérifiées le 22/10/2026 (moins de 28 jours) : pas refait.
+
+### Socle
+- Vérifié le 22/10/2026 (moins de 28 jours) : pas refait.
+- Vitesse sur téléphone : PageSpeed encore indisponible le 05/11/2026 (quota du jour dépassé, erreur 429) → à refaire au prochain passage (accueil, conseil-hauteur-lampe-led.html, legume-tomate.html).
