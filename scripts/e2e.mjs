@@ -97,6 +97,10 @@ try {
   const essai = { version: 3, site: 'kultiled', genere_le: '2026-10-27T08:00:00Z', actus: [actu(1), actu(2, { tags: ['legume:tomate'], image: image(2, true) }), actu(3), actu(4), actu(5), actu(6)] };
   const contexte = async (reponse) => {
     const c = await navigateur.newContext({ viewport: { width: 375, height: 812 } });
+    // Publicité Google et mesure Cloudflare coupées ici (non testées dans ce bloc) : elles
+    // gardaient parfois le réseau occupé et faisaient échouer « networkidle » (panne du 04/11).
+    c.setDefaultNavigationTimeout(60000);
+    await c.route((u) => u.href === BEACON || GOOGLE.test(u.href), (r) => r.abort());
     await c.route(VEILLE, (r) => (reponse ? r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(reponse) }) : r.abort()));
     await c.route('https://teiki5320.github.io/veille/{images,cartes}/**', (r) => r.fulfill({ status: 200, contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="9"/>' }));
     const p = await c.newPage();
