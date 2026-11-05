@@ -60,3 +60,6 @@
 ### Socle
 - Vérifié le 22/10/2026 (moins de 28 jours) : pas refait.
 - Vitesse sur téléphone : PageSpeed encore indisponible le 05/11/2026 (quota du jour dépassé, erreur 429) → à refaire au prochain passage (accueil, conseil-hauteur-lampe-led.html, legume-tomate.html).
+
+### Choix de Jean (05/11/2026, file « À faire »)
+- « Culture en intérieur » : titre de la rubrique `culture.html` repris, pas de page à part. Titre « Culture indoor de légumes — Kultiled » → « Culture en intérieur : guides pour vos légumes — Kultiled » (57 caractères) ; titre principal « Culture en intérieur de légumes » ; méta-description réécrite autour de « culture en intérieur » (154 caractères). Adresse inchangée. À relire à partir du 03/12/2026.
