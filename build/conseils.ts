@@ -150,6 +150,7 @@ export const MATERIEL_CONSEILS: Record<string, { top: string; produits?: string[
   'semis-qui-ne-levent-pas': { top: 'lampes-semis' },
   'cultiver-dans-un-placard': { top: 'lampes-petit-espace' },
   'ampoule-led-ordinaire': { top: 'lampes-petit-espace' },
+  'black-friday-materiel-culture': { top: 'lampes-led-de-culture', produits: ['spider-farmer-sf1000', 'mars-hydro-fc-e1500'] },
   'hauteur-lampe-led': { top: 'lampes-led-de-culture' },
   'watts-led-par-m2': { top: 'lampes-led-de-culture' },
   'reglette-panneau-ou-ampoule': { top: 'lampes-led-de-culture' },
