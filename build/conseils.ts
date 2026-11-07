@@ -28,7 +28,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { chargerLegumes, echapper, pageDetaillee, suivantsEnBoucle } from './fiches.ts';
 import { icone, type NomIcone } from './icones.ts';
-import { CARTES_PREMIERE_RANGEE, photoGuide } from './photos.ts';
+import { CARTES_PREMIERE_RANGEE, creditCarte, photoGuide } from './photos.ts';
 import { fichierSujet, sujetsPublies } from './top-10.ts';
 import { boutonAmazon, lienAmazonAsin } from '../src/lampes.ts';
 
@@ -286,7 +286,7 @@ export function rendreListeConseils(date = dateDuJour()): string {
   return `<div class="cartes-guides cartes-conseils">${publies
     .map(
       (c, i) => `<a class="carte-guide carte-conseil--${c.theme}" href="${c.fichier}">
-      <span class="carte-guide__photo">${c.photo ? photoGuide(c.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw', i < CARTES_PREMIERE_RANGEE ? 'eager' : 'lazy', i === 0) : ''}</span>
+      <span class="carte-guide__photo">${c.photo ? photoGuide(c.fichier, '', '(min-width: 1100px) 360px, (min-width: 700px) 45vw, 92vw', i < CARTES_PREMIERE_RANGEE ? 'eager' : 'lazy', i === 0) + creditCarte(c.fichier) : ''}</span>
       <span class="carte-guide__icone">${icone(ICONES_THEMES[c.theme])}</span>
       <time class="carte-guide__date" datetime="${c.publieLe}">${dateCourte(c.publieLe)}</time>
       <strong>${echapper(c.titre)}</strong>

@@ -27,6 +27,7 @@ export interface PhotoLibre {
   page: string | null;
   telechargement?: string;
   alt: string;
+  position?: string;
   mots_cles?: string[];
 }
 

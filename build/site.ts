@@ -656,7 +656,12 @@ function couvertureConseil(fichier: string): string {
   if (!fichier.startsWith(PREFIXE_PAGE_CONSEIL)) return '';
   const c = tousLesConseils().find((x) => x.fichier === fichier);
   const img = c?.photo ? photoGuide(fichier, c.photo, '(min-width: 1100px) 1040px, 94vw', 'eager') : '';
-  return img ? `<div class="conteneur"><figure class="article__couverture">${img}</figure></div>` : '';
+  if (!img) return '';
+  // Photo libre de droits : le crédit va sous l'image, comme pour les guides.
+  const credit = legendePhoto(fichier);
+  return credit
+    ? `<div class="conteneur"><figure class="couverture-creditee"><div class="article__couverture">${img}</div>${credit}</figure></div>`
+    : `<div class="conteneur"><figure class="article__couverture">${img}</figure></div>`;
 }
 
 export function tempsLecture(html: string): number {

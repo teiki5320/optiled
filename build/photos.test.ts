@@ -3,6 +3,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { chargerPhotosLibres, DOSSIER_PHOTOS, legendePhoto, texteCreditPhoto } from './photos.ts';
+import { conseilsPublies, tousLesConseils } from './conseils.ts';
 import { PARCOURS, RUBRIQUES, sourcePage, transformerPage } from './site.ts';
 
 const racine = resolve(import.meta.dirname, '..');
@@ -32,8 +33,8 @@ describe('photos libres de droits', () => {
     expect(JSON.stringify(photos)).not.toMatch(/cannabis|chanvre|hemp|marijuana|\bcbd\b|\bweed\b/i);
   });
 
-  it('seuls les guides et parcours sans image en ont reçu une (les autres gardent la leur)', () => {
-    const pages = [...RUBRIQUES.led.guides, ...RUBRIQUES.culture.guides].map((g) => g.fichier).concat(PARCOURS.map((p) => p.fichier));
+  it('seuls les guides, parcours et conseils sans image en ont reçu une (les autres gardent la leur)', () => {
+    const pages = [...RUBRIQUES.led.guides, ...RUBRIQUES.culture.guides].map((g) => g.fichier).concat(PARCOURS.map((p) => p.fichier), tousLesConseils().map((c) => c.fichier));
     for (const page of Object.keys(photos)) expect(pages, page).toContain(`${page}.html`);
     for (const g of [...RUBRIQUES.led.guides, ...RUBRIQUES.culture.guides]) {
       if (g.photo) expect(Object.keys(photos), g.fichier).not.toContain(g.fichier.replace(/\.html$/, ''));
@@ -53,8 +54,10 @@ describe('photos libres de droits', () => {
 
   it('le crédit est affiché sous la couverture, avec le lien vers la page d’origine', () => {
     for (const [page, p] of Object.entries(photos)) {
-      const html = transformerPage(sourcePage(racine, `${page}.html`), `${page}.html`);
       expect(legendePhoto(page)).toContain(p.credit);
+      // Un conseil programmé n'a pas encore de page : la page est vérifiée dès sa publication.
+      if (page.startsWith('conseil-') && !conseilsPublies().some((c) => c.fichier === `${page}.html`)) continue;
+      const html = transformerPage(sourcePage(racine, `${page}.html`), `${page}.html`);
       // Texte typographié au build (espaces insécables) : on compare sans elles.
       const credit = html.replace(/\u00a0|\u202f/g, ' ').match(/<figcaption class="credit-photo">[\s\S]*?<\/figcaption>/)?.[0] ?? '';
       expect(credit, page).toContain(texteCreditPhoto(p));
