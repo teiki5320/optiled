@@ -16,16 +16,17 @@
 | État | [ok] En ligne, réponse 200 le 9 novembre 2026 |
 | Hébergement | [ok] GitHub Pages, publication automatique par GitHub Actions |
 | Domaine | [ok] www.kultiled.com (Cloudflare) depuis le 16 octobre 2026 |
-| SSL | [ok] certificat GitHub Pages, HTTPS forcé |
+| SSL | [à faire] certificat GitHub Pages valide, mais HTTPS **pas forcé** : http://www.kultiled.com répondait 200 sans redirection le 9 novembre 2026 (réglage « Enforce HTTPS » décoché) |
 | Indexation | [ok] 98 pages dans l'index (9 novembre 2026), IndexNow après chaque publication (depuis le 28 octobre 2026) et chaque lundi |
 | Mesure d'audience | [ok] Cloudflare Web Analytics et Umami (depuis le 5 novembre 2026), sans cookie |
 
 ## Ce qui reste, dans l'ordre
 
-1. ✅ **Site en ligne** : www.kultiled.com publié par GitHub Pages, HTTPS forcé, anciennes adresses redirigées.
-2. ✅ **Revenus branchés** : affiliation Amazon et publicité AdSense en ligne, mentions légales à jour.
-3. **Validation AdSense** : obtenir l'accord de Google pour kultiled.com, examen demandé le 16 octobre, « En préparation » au 9 novembre 2026 (console vérifiée ce jour-là), aucun mail de décision au 9 novembre 2026.
-4. **Indexation complète** : faire entrer dans Google les dernières adresses du nouveau domaine (98 pages dans l'index au 9 novembre 2026, sitemap à 136 adresses le même jour) et signaler le changement d'adresse depuis la propriété optiled.fr (pas encore signalé au 9 novembre 2026 : à faire par Jean, la routine automatique ne peut pas modifier un réglage du compte Google).
+1. ✅ **Site en ligne** : www.kultiled.com publié par GitHub Pages, anciennes adresses redirigées.
+2. **Forcer le HTTPS** (Jean) : GitHub → dépôt optiled → Settings → Pages → cocher « Enforce HTTPS » (décoché au 9 novembre 2026 : la version http:// du site s'affichait sans passer en https://).
+3. ✅ **Revenus branchés** : affiliation Amazon en ligne, code AdSense en place (aucune annonce tant que Google n'a pas validé le site), mentions légales à jour.
+4. **Validation AdSense** : obtenir l'accord de Google pour kultiled.com, examen demandé le 16 octobre, « En préparation » au 9 novembre 2026 (console vérifiée ce jour-là), aucun mail de décision au 9 novembre 2026.
+5. **Indexation complète** : faire entrer dans Google les dernières adresses du nouveau domaine (98 pages dans l'index au 9 novembre 2026, sitemap à 136 adresses le même jour) et signaler le changement d'adresse depuis la propriété optiled.fr (pas encore signalé au 9 novembre 2026 : à faire par Jean, la routine automatique ne peut pas modifier un réglage du compte Google).
 
 ## Web · Production
 
@@ -42,7 +43,7 @@
 - **Domaine** : `kultiled.com`, acheté chez Cloudflare le 16 octobre 2026 ; `www.kultiled.com` est l'adresse principale, `kultiled.com` redirige vers elle (301 constaté le 28 octobre 2026).
 - **DNS** (Cloudflare) : deux CNAME, `@` et `www` → `teiki5320.github.io`, proxy désactivé.
 - **Dans le code** : `public/CNAME` contient `www.kultiled.com` ; `SITE_URL` vaut `https://www.kultiled.com/` (`build/site.ts`).
-- **SSL** : certificat émis et renouvelé automatiquement par GitHub Pages ; HTTPS forcé.
+- **SSL** : certificat émis et renouvelé automatiquement par GitHub Pages (valable jusqu'au 14 janvier 2027) ; HTTPS **pas forcé** au 9 novembre 2026 (`https_enforced` à faux dans les réglages Pages) : à cocher par Jean.
 - **Ancien domaine** : `optiled.fr` (IONOS), abandonné le 16 octobre 2026 et supprimé d'AdSense le 22 octobre 2026 ; il servait encore la page de redirection le 9 novembre 2026, jusqu'à la fin du contrat IONOS en novembre 2026.
 - **Échéance de kultiled.com** : à vérifier dans la console Cloudflare.
 

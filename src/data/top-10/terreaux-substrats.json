@@ -166,7 +166,8 @@
         "limite la formation de moisissures"
       ],
       "pour_qui": "les semis et les jeunes plants, ou alléger un terreau",
-      "verifie_le": "2026-10-28"
+      "verifie_le": "2026-10-28",
+      "disponible": false
     },
     {
       "id": "plagron-growmix-50",
@@ -326,6 +327,38 @@
       ],
       "pour_qui": "des pots posés sur une étagère, quand le poids compte",
       "verifie_le": "2026-10-28"
+    },
+    {
+      "id": "plantawa-coco-70",
+      "nom": "Plantawa, bloc de fibre de coco 5 kg (70 L)",
+      "asin": "B0B4BQTJK1",
+      "illustration": "coco",
+      "chiffres": [
+        [
+          "Type",
+          "fibre de coco"
+        ],
+        [
+          "Volume",
+          "70 L"
+        ],
+        [
+          "Format",
+          "bloc compressé de 5 kg"
+        ],
+        [
+          "Usage",
+          "semis, pots et jardinières"
+        ]
+      ],
+      "description": "Un bloc compact de fibre de coco de 5 kg qui donne 70 litres de substrat une fois réhydraté : il retient l'eau entre les arrosages et aère les racines.",
+      "annonce": [
+        "70 litres de substrat",
+        "bonne rétention de l'humidité",
+        "aération et drainage des racines"
+      ],
+      "pour_qui": "les semis et les jeunes plants, ou alléger un terreau",
+      "verifie_le": "2026-11-09"
     },
     {
       "id": "biobizz-light-mix-50",
