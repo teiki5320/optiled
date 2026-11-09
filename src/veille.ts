@@ -114,12 +114,24 @@ export function actuValide(a: unknown): a is Actu {
   return imageValide(x.image);
 }
 
+/**
+ * Doublons de la veille : id de l'actu en double → id de l'actu gardée (la plus ancienne).
+ * L'actu en double n'est affichée nulle part ; sa page d'article devient un renvoi vers l'autre
+ * (build/articles.ts), hors sitemap.
+ */
+export const DOUBLONS: Readonly<Record<string, string>> = {
+  // Planted Detroit : même mise en vente annoncée le 28 octobre et le 6 novembre 2026 (audit du 9 novembre 2026).
+  '26d665075dee5624c9e449a4c5cae8831e78e400': '5912c83d3258812e9337c643a41dbcf001187f83',
+};
+
+export const estDoublon = (id: string) => Object.hasOwn(DOUBLONS, id);
+
 /** Nettoie un fichier reçu : actus valides, de la plus récente à la plus ancienne. */
 export function nettoyerFichier(brut: unknown): FichierActus | null {
   if (!brut || typeof brut !== 'object') return null;
   const f = brut as Partial<FichierActus>;
   if (!Array.isArray(f.actus)) return null;
-  const actus = f.actus.filter(actuValide).sort((a, b) => Date.parse(b.publie_le) - Date.parse(a.publie_le));
+  const actus = f.actus.filter((a): a is Actu => actuValide(a) && !estDoublon(a.id)).sort((a, b) => Date.parse(b.publie_le) - Date.parse(a.publie_le));
   return { version: Number(f.version) || 3, site: String(f.site ?? 'kultiled'), genere_le: String(f.genere_le ?? ''), actus };
 }
 

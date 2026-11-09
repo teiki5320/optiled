@@ -63,7 +63,7 @@ Node.js 22.12 ou plus récent est requis (Vite 8 et Vitest 5).
 | `src/*.test.ts`, `build/*.test.ts` | Tests Vitest (calculs, alertes, lien de partage, intégrité du JSON, liste d'achat, pages générées, liens internes) |
 | `build/articles.ts`, `src/article.ts`, `src/article-secours.ts` | Articles complets des actus : pages `actus/<slug>/` construites au build depuis l'index des articles de la veille, page de secours `actus/article/?id=<id>` (noindex) remplie dans le navigateur, renvoi `actus/` → `actus.html` |
 | `build/veille.ts`, `src/veille.ts` | Actus : marqueurs `<!--#actus:4-->` / `<!--#actus:3:legume:tomate-->` (sections cachées écrites au build), fichier `veille/entites.json` des cultures, lecture et affichage en direct dans le navigateur |
-| `build/photos.ts`, `src/data/photos-libres.json` | Photos des guides ; crédits des photos libres de droits (auteur, licence, page d'origine, texte alternatif) |
+| `build/photos.ts`, `src/data/photos-libres.json` | Photos des guides ; crédits des photos sous licence libre (auteur, licence, page d'origine, texte alternatif) |
 | `scripts/e2e.mjs` | Test de bout en bout dans Chromium (`npm run test:e2e`) |
 
 ## Ajouter une page

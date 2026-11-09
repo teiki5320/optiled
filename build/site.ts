@@ -60,7 +60,7 @@ import { icone, logo, type NomIcone } from './icones.ts';
 import { CARTES_PREMIERE_RANGEE, creditCarte, legendePhoto, photoGuide, photoLibre } from './photos.ts';
 import { placerAnnonces, scriptAdsense } from './annonces.ts';
 import { entitesVeille, FICHIER_ACTUS, FICHIER_ENTITES, remplacerMarqueursActus } from './veille.ts';
-import { articleDuFichier, articlesConstruits, chargerVeilleAuBuild, dateArticleSitemap, DOSSIER_ACTUS, FICHIER_RENVOI_ACTUS, pagesActus, prefixeRelatif, reecrireLiensRelatifs, referencementArticle, slugsConstruits, vignetteActuHtml } from './articles.ts';
+import { articleDuFichier, articlesConstruits, chargerVeilleAuBuild, dateArticleSitemap, DOSSIER_ACTUS, estPageRenvoi, pagesActus, prefixeRelatif, reecrireLiensRelatifs, referencementArticle, slugsConstruits, vignetteActuHtml } from './articles.ts';
 export { photoGuide };
 
 export const NOM_SITE = 'Kultiled';
@@ -566,7 +566,7 @@ export function footer(): string {
       <a class="logo" href="index.html">${logo('-pied')}<span><strong>${NOM_SITE}</strong><small>LED &amp; culture indoor</small></span></a>
       <p>Guides et outils gratuits pour cultiver des légumes sous LED, en intérieur.</p>
       <p class="site-pied__note">Les valeurs données sont des ordres de grandeur issus de la <a href="glossaire.html#sources">littérature horticole</a> : adaptez-les à vos variétés et vérifiez avec un PAR-mètre.</p>
-      <p class="site-pied__note">La plupart des photos (guides, conseils, cultures) et certains schémas des guides Culture sont générés par intelligence artificielle ; les autres photos sont libres de droits, avec leur auteur et leur licence sous l'image, et les autres schémas sont réalisés pour le site.</p>
+      <p class="site-pied__note">La plupart des photos (guides, conseils, cultures) et certains schémas des guides Culture sont générés par intelligence artificielle ; les autres photos sont sous licence libre, avec leur auteur et leur licence sous l'image, et les autres schémas sont réalisés pour le site.</p>
       <p class="site-pied__note">${MENTION_AFFILIATION}</p>
       <p class="site-pied__note"><a href="a-propos.html">À propos et méthode</a> · <a href="a-propos.html#contact">Contact</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="mentions-legales.html#donnees" data-gerer-cookies>Gérer les cookies</a></p>
     </div>
@@ -1001,7 +1001,7 @@ export function pluginSite(): Plugin {
     transformIndexHtml(html, ctx) {
       const fichier = cheminDepuisRacine(racine, ctx.filename);
       // Simple renvoi de /actus/ vers actus.html : rien à ajouter.
-      if (fichier === FICHIER_RENVOI_ACTUS) return html;
+      if (estPageRenvoi(fichier)) return html;
       const page = transformerPage(html, fichier);
       // Mesure d'audience Cloudflare Web Analytics (sans cookie), seulement sur le site publié.
       // Publicité Google AdSense (et son bandeau de consentement), seulement sur le site publié.

@@ -62,7 +62,7 @@ describe('Top 10 à onglets', () => {
 
   it('tentes : les 10 de tentes.json, dans l’ordre du classement, sans aucune note enregistrée', () => {
     const top = classementTentes();
-    expect(top.map((p) => p.id)).toEqual(tentes.tentes.slice(0, 10).map((t) => t.id));
+    expect(top.map((p) => p.id)).toEqual(tentes.tentes.filter((t) => (t as { disponible?: boolean }).disponible !== false).slice(0, 10).map((t) => t.id));
     expect(new Set(tentes.tentes.map((t) => t.asin)).size).toBe(tentes.tentes.length);
     expect(JSON.stringify(tentes.tentes)).not.toMatch(/"(note|etoiles|avis|prix)"/);
     expect(sujetsPublies().map((s) => s.slug)).toContain('tentes-de-culture');

@@ -67,6 +67,20 @@ const article = (c: string, x: Partial<ArticleVeille> = {}): ArticleVeille => ({
 afterEach(() => definirVeille([], []));
 
 describe('pages des articles d’actus (build)', () => {
+  it('un doublon de la veille n’a pas de page : il renvoie vers l’article gardé, hors sitemap', () => {
+    const garde = '5912c83d3258812e9337c643a41dbcf001187f83';
+    const double = '26d665075dee5624c9e449a4c5cae8831e78e400';
+    const retenus = definirVeille(
+      [actu('a', { id: garde, slug: 'garde' }), actu('b', { id: double, slug: 'double' })],
+      [article('a', { id: garde, slug: 'garde' }), article('b', { id: double, slug: 'double' })],
+    );
+    expect(retenus.map((r) => r.article.slug)).toEqual(['garde']);
+    const page = pagesActus().get('actus/double/index.html') ?? '';
+    expect(page).toContain('http-equiv="refresh" content="0; url=../garde/"');
+    expect(page).toContain('<link rel="canonical" href="../garde/" />');
+    expect(page).toContain('content="noindex"');
+  });
+
   it('construit une page par article valide, jamais deux fois le même slug ni le slug réservé', () => {
     const retenus = definirVeille(
       [actu('a', { slug: 'article-a' }), actu('b'), actu('c'), actu('d')],

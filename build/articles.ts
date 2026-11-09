@@ -17,7 +17,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { articleValide, autresSources, BASE_VEILLE, cheminArticle, dateArticle, fichesLiees, minutesLecture, nomDomaine, SITE_VEILLE, type ArticleVeille, type FicheLiee } from '../src/article.ts';
-import { imageCarree, lienCarte, MOTIF_ID, MOTIF_SLUG, nettoyerFichier, SLUG_RESERVE, texteCredit, type Actu, type ImageActu } from '../src/veille.ts';
+import { DOUBLONS, estDoublon, imageCarree, lienCarte, MOTIF_ID, MOTIF_SLUG, nettoyerFichier, SLUG_RESERVE, texteCredit, type Actu, type ImageActu } from '../src/veille.ts';
 import { chargerLegumes, echapper } from './fiches.ts';
 import { icone } from './icones.ts';
 import { fichierLegume } from './pages-legumes.ts';
@@ -39,9 +39,11 @@ export interface ArticleConstruit {
 interface EtatVeille {
   actus: Actu[];
   articles: ArticleConstruit[];
+  /** Pages des doublons (actus/<slug>/index.html) → slug de l'article gardé. */
+  renvois: Map<string, string>;
 }
 
-let etat: EtatVeille = { actus: [], articles: [] };
+let etat: EtatVeille = { actus: [], articles: [], renvois: new Map() };
 
 export const fichierArticle = (slug: string) => `${DOSSIER_ACTUS}${slug}/index.html`;
 
@@ -50,8 +52,13 @@ export function definirVeille(actus: Actu[], articles: ArticleVeille[]): Article
   const parId = new Map(actus.map((a) => [a.id, a]));
   const slugs = new Set<string>();
   const retenus: ArticleConstruit[] = [];
+  const doublons: ArticleVeille[] = [];
   for (const article of articles) {
     if (!articleValide(article)) continue;
+    if (estDoublon(article.id)) {
+      doublons.push(article);
+      continue;
+    }
     if (article.slug === SLUG_RESERVE || slugs.has(article.slug)) continue;
     slugs.add(article.slug);
     // Toutes les pages de l'index de la veille sont construites, même quand l'actu est sortie du
@@ -63,7 +70,13 @@ export function definirVeille(actus: Actu[], articles: ArticleVeille[]): Article
   // Ordre stable : du plus récent au plus ancien.
   retenus.sort((x, y) => Date.parse(y.article.publie_le) - Date.parse(x.article.publie_le));
   const parSlug = new Map(retenus.map((r) => [r.actu.id, r.actu]));
-  etat = { actus: actus.map((a) => parSlug.get(a.id) ?? a), articles: retenus };
+  // Doublon de la veille : sa page devient un renvoi vers l'article gardé (s'il est construit).
+  const renvois = new Map<string, string>();
+  for (const d of doublons) {
+    const garde = retenus.find((r) => r.article.id === DOUBLONS[d.id]);
+    if (garde && d.slug !== SLUG_RESERVE && !slugs.has(d.slug)) renvois.set(fichierArticle(d.slug), garde.article.slug);
+  }
+  etat = { actus: actus.filter((a) => !estDoublon(a.id)).map((a) => parSlug.get(a.id) ?? a), articles: retenus, renvois };
   return retenus;
 }
 
@@ -326,17 +339,22 @@ export function sourcePageSecours(fiches = fichesDuSite()): string {
 
 /** Renvoi de /actus/ vers la page Actus (actus.html). */
 export function sourcePageRenvoiActus(): string {
+  return sourcePageRenvoi(`../${FICHIER_ACTUS}`, 'Actus — Kultiled', 'Voir les actus de la culture en intérieur', false);
+}
+
+/** Page de renvoi immédiat (GitHub Pages ne sait pas faire de 301) : noindex, hors sitemap. */
+export function sourcePageRenvoi(cible: string, titre: string, texte: string, canonique = true): string {
   return `<!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <meta http-equiv="refresh" content="0; url=../${FICHIER_ACTUS}" />
-    <title>Actus — Kultiled</title>
+    <meta http-equiv="refresh" content="0; url=${cible}" />${canonique ? `\n    <link rel="canonical" href="${cible}" />` : ''}
+    <title>${titre}</title>
   </head>
   <body>
-    <p><a href="../${FICHIER_ACTUS}">Voir les actus de la culture en intérieur</a></p>
+    <p><a href="${cible}">${texte}</a></p>
   </body>
 </html>
 `;
@@ -349,7 +367,13 @@ export function pagesActus(): Map<string, string> {
   for (const c of etat.articles) pages.set(c.fichier, sourcePageArticle(c, etat.actus, construits));
   pages.set(FICHIER_SECOURS, sourcePageSecours());
   pages.set(FICHIER_RENVOI_ACTUS, sourcePageRenvoiActus());
+  for (const [fichier, slug] of etat.renvois) pages.set(fichier, sourcePageRenvoi(`../${slug}/`, 'Actus — Kultiled', 'Lire cette actu sur Kultiled'));
   return pages;
+}
+
+/** Page de simple renvoi (rien à y ajouter : ni mesure d'audience, ni publicité). */
+export function estPageRenvoi(fichier: string): boolean {
+  return fichier === FICHIER_RENVOI_ACTUS || etat.renvois.has(fichier);
 }
 
 export function articleDuFichier(fichier: string): ArticleConstruit | undefined {
