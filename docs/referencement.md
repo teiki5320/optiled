@@ -63,3 +63,20 @@
 
 ### Choix de Jean (05/11/2026, file « À faire »)
 - « Culture en intérieur » : titre de la rubrique `culture.html` repris, pas de page à part. Titre « Culture indoor de légumes — Kultiled » → « Culture en intérieur : guides pour vos légumes — Kultiled » (57 caractères) ; titre principal « Culture en intérieur de légumes » ; méta-description réécrite autour de « culture en intérieur » (154 caractères). Adresse inchangée. À relire à partir du 03/12/2026.
+
+## 12/11/2026
+
+### Gains rapides (pages en 2e page Google)
+- Période du 13/10 au 10/11/2026 : une seule page entre la 4e et la 20e place, `conseil-concombre-en-interieur.html` (« interieur concombre » 3 vues, 7,3e ; « concombre interieur » 1 vue, 8e ; 7,5e en moyenne). Travaillée le 05/11 (moins de 28 jours) : pas retouchée.
+- Pages travaillées il y a 28 jours ou plus : aucune (premières à relire : `conseil-par-et-ppfd.html` à partir du 26/11, `conseil-concombre-en-interieur.html` et `culture.html` à partir du 03/12).
+
+### Page nouvelle
+- Aucune. Seules deux recherches dépassent 15 vues et ont déjà leur vraie page : « par ppfd » (81 vues ; `led-bases.html` 21,2e, glossaire 52e, `conseil-par-et-ppfd.html` créée le 29/10 encore 64e) et « culture interieur » (20 vues, plus « culture en intérieur » 12, « culture en interieur » 11, « culture intérieure » 9 ; Google montre encore `culture-demarrer.html` entre la 79e et la 91e place, la rubrique `culture.html` retitrée le 05/11 n'apparaît pas encore).
+- À suivre : « tente de culture » (12 vues, `conseil-choisir-tente-de-culture.html` 76e), « lampe de croissance pour semis et boutures avec support » (11 vues, `led-semis.html` 52e), « culture hydroponique placard » (7 vues, 26e).
+
+### Fiches enrichies
+- Vérifiées le 22/10/2026 (moins de 28 jours) : pas refait (prochaine vérification à partir du 19/11).
+
+### Socle
+- Vérifié le 22/10/2026 (moins de 28 jours) : pas refait.
+- Vitesse sur téléphone : PageSpeed encore indisponible le 12/11/2026 à 5 h (quota du jour dépassé, erreur 429) → à refaire au prochain passage (accueil, conseil-hauteur-lampe-led.html, legume-tomate.html).
