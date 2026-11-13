@@ -155,6 +155,16 @@ export const MATERIEL_CONSEILS: Record<string, { top: string; produits?: string[
   'watts-led-par-m2': { top: 'lampes-led-de-culture' },
   'reglette-panneau-ou-ampoule': { top: 'lampes-led-de-culture' },
   'variateur-lampe-led': { top: 'lampes-led-de-culture' },
+  'lumiere-blanche-ou-rose': { top: 'lampes-led-de-culture', produits: ['spider-farmer-sf1000', 'mars-hydro-ts600'] },
+  'heures-de-lumiere-par-jour': { top: 'minuteurs-thermometres', produits: ['otio-t10', 'novkit-cycle'] },
+  'lampe-allumee-24h': { top: 'minuteurs-thermometres', produits: ['otio-t10', 'scs-sentinel-hebdo'] },
+  'eteindre-lampe-la-nuit': { top: 'minuteurs-thermometres', produits: ['otio-t10', 'programmateur-16-prog'] },
+  'spectre-complet-full-spectrum': { top: 'lampes-led-de-culture', produits: ['spider-farmer-sf1000', 'mars-hydro-fc-e1500'] },
+  'manque-de-lumiere-signes': { top: 'lampes-led-de-culture', produits: ['spider-farmer-sf300', 'mars-hydro-ts600'] },
+  'fenetre-suffit-elle': { top: 'lampes-petit-espace', produits: ['barrina-t10-pro-42w', 'sansi-10w-tetes-adhesives'] },
+  'lampe-led-brule-plantes': { top: 'lampes-led-de-culture', produits: ['spider-farmer-sf1000', 'spider-farmer-sf300'] },
+  'tomates-en-appartement': { top: 'lampes-led-de-culture', produits: ['mars-hydro-fc-e1500', 'spider-farmer-sf1000'] },
+  'cultiver-piece-froide-hiver': { top: 'minuteurs-thermometres', produits: ['temppro-tp50', 'temppro-serre-max-min'] },
 };
 
 /** Produits montrés au plus dans l'encadré d'un conseil (règle de sobriété : 1 à 3 par page). */
