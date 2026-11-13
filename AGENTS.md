@@ -7,6 +7,6 @@
 ## Génération d'images
 
 - **Utiliser OpenArt** pour générer des images, lorsqu'il est connecté à la session.
-- Si OpenArt n'est pas disponible : le dire et **demander l'accord** avant d'utiliser un autre service (ex. ElevenLabs).
+- Si OpenArt n'est pas disponible : le dire et **demander l'accord** avant d'utiliser un autre service.
 - **Faire attention aux coûts** : annoncer le coût en crédits avant chaque génération, attendre l'accord, générer une seule variante par défaut.
 - Les photos générées vont dans `public/images/` (voir la section « Images » du README) ; le pied de page signale qu'elles sont générées par IA.
