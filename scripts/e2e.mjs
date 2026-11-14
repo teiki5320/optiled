@@ -2,6 +2,7 @@
 // Usage : npm run build && npm run test:e2e
 // Vérifie que les pages s'affichent sans erreur et que le calculateur fonctionne.
 import { spawn } from 'node:child_process';
+import { readdirSync, readFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 import { tagsConnus, verifierDossier } from './verifier-site.mjs';
 
@@ -127,9 +128,15 @@ try {
   await p.goto(`${BASE}legume-tomate.html`, { waitUntil: 'networkidle' });
   await attendreActus(p);
   verifier((await visibles(p)).join() === '1', 'fiche tomate : son actu');
-  await p.goto(`${BASE}legume-basilic.html`, { waitUntil: 'networkidle' });
+  // Fiche sans actu : choisie dans le site construit parmi celles dont le bloc est encore caché
+  // (aucun article déjà publié pour cette culture). Avant, le basilic était écrit en dur : le test
+  // a échoué le 13/11 quand la veille a publié un article sur le basilic (bloc pré-rempli au build).
+  const ficheSansActu = readdirSync('dist').filter((f) => /^legume-[a-z0-9-]+\.html$/.test(f) && f !== 'legume-tomate.html')
+    .find((f) => /data-tag="legume:[a-z0-9-]+" aria-labelledby="[^"]*" hidden>/.test(readFileSync(`dist/${f}`, 'utf8')));
+  verifier(Boolean(ficheSansActu), 'fiche sans actu : au moins une fiche sans article publié');
+  await p.goto(`${BASE}${ficheSansActu}`, { waitUntil: 'networkidle' });
   await p.waitForTimeout(1500);
-  verifier((await visibles(p)).join() === '-1', 'fiche sans actu : bloc absent');
+  verifier((await visibles(p)).join() === '-1', `fiche sans actu (${ficheSansActu}) : bloc absent`);
   await p.context().close();
 
   p = await contexte(null);
@@ -143,7 +150,6 @@ try {
   verifier(erreurs.length === 0, `aucune erreur JavaScript avec les actus${erreurs.length ? ' : ' + erreurs.join(' | ') : ''}`);
 
   // Articles complets : une carte ouvre l'article sur le site (page construite, sinon page de secours).
-  const { readFileSync } = await import('node:fs');
   const construit = readFileSync('dist/sitemap.xml', 'utf8').match(/\/actus\/([a-z0-9-]+)\/<\/loc>/)?.[1];
   const ARTICLES = 'https://teiki5320.github.io/veille/articles/kultiled/';
   const articleEssai = (n) => ({
