@@ -165,6 +165,14 @@ export function reecrireLiensRelatifs(html: string, prefixe: string): string {
 }
 
 const attr = (s: string) => echapper(s);
+
+/** Résumé pour la balise meta description : 160 caractères au plus, coupé à un mot entier (Google tronque au-delà). */
+export function descriptionCourte(texte: string, max = 160): string {
+  const t = texte.replace(/\s+/g, ' ').trim();
+  if (t.length <= max) return t;
+  const coupe = t.slice(0, max - 1);
+  return coupe.slice(0, coupe.lastIndexOf(' ')).replace(/[\s,;:.\u2013\u2014-]+$/, '') + '\u2026';
+}
 const externe = (href: string, texte: string) => `<a href="${attr(href)}" target="_blank" rel="noopener nofollow">${echapper(texte)}\u00a0↗</a>`;
 
 /** Crédit de l'image, même rendu que les cartes d'actus (src/veille.ts, credit) : « Photo : auteur · licence » ou « Illustration : Kultiled ». */
@@ -305,7 +313,7 @@ const filArticle = (titre: string) => `<a href="index.html">Accueil</a> › <a h
 export function sourcePageArticle(c: ArticleConstruit, actus = etat.actus, construits: ReadonlySet<string> = new Set(slugsConstruits())): string {
   const a = c.article;
   return gabarit({
-    tete: `<meta name="description" content="${attr(a.chapo)}" />
+    tete: `<meta name="description" content="${attr(descriptionCourte(a.chapo))}" />
     <title>${echapper(a.titre)}</title>`,
     fil: filArticle(echapper(a.titre)),
     etiquettes: etiquettesArticle(a),

@@ -9,6 +9,7 @@ import {
   blocAutresActus,
   chargerVeilleAuBuild,
   definirVeille,
+  descriptionCourte,
   FICHIER_RENVOI_ACTUS,
   FICHIER_SECOURS,
   pagesActus,
@@ -65,6 +66,17 @@ const article = (c: string, x: Partial<ArticleVeille> = {}): ArticleVeille => ({
 });
 
 afterEach(() => definirVeille([], []));
+
+describe('descriptionCourte', () => {
+  it('garde un texte court tel quel et coupe un texte long à un mot entier (160 au plus)', () => {
+    expect(descriptionCourte('Une phrase courte.')).toBe('Une phrase courte.');
+    const long = 'Un résumé très long, '.repeat(30);
+    const d = descriptionCourte(long);
+    expect(d.length).toBeLessThanOrEqual(160);
+    expect(d.endsWith('\u2026')).toBe(true);
+    expect(d).not.toMatch(/,\u2026$/);
+  });
+});
 
 describe('pages des articles d’actus (build)', () => {
   it('un doublon de la veille n’a pas de page : il renvoie vers l’article gardé, hors sitemap', () => {
