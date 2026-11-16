@@ -51,7 +51,7 @@ Mis à jour le 16 novembre 2026. Compagnon de INFRA.md.
 ## Mesures
 
 - **Visiteurs** : à vérifier dans les consoles Cloudflare Web Analytics (depuis le 12 octobre 2026) et Umami (depuis le 5 novembre 2026)
-- **Pages indexées par Google** : 126 pages de kultiled.com dans l'index, 37 non indexées, dont 7 détectées et 4 explorées pas encore indexées, les autres étant des redirections ou des doublons voulus (Search Console, vérifié le 15 novembre 2026 ; le sitemap compte 155 adresses le 16 novembre 2026). L'ancien optiled.fr en avait 62 sur 86 au 12 octobre 2026.
+- **Pages indexées par Google** : 129 pages de kultiled.com dans l’index, 45 non indexées pour 5 motifs (Search Console, données du 13 novembre, vérifié le 16 novembre 2026 ; 126 dans l’index et 37 non indexées le 15 novembre ; le sitemap compte 155 adresses le 16 novembre 2026). L'ancien optiled.fr en avait 62 sur 86 au 12 octobre 2026.
 - **Clics vers Amazon** : à vérifier dans la console Partenaires Amazon et dans Umami (événement « Clic Amazon », depuis le 5 novembre 2026)
 - **Commissions Amazon** : à vérifier dans la console Partenaires Amazon
 - **Revenus publicitaires** : à vérifier dans la console AdSense
@@ -79,7 +79,7 @@ Mis à jour le 16 novembre 2026. Compagnon de INFRA.md.
 
 ## Les 3 priorités
 
-- **Changement d'adresse : pas encore signalé** (vérifié le 15 novembre 2026 dans la Search Console). Réussir le changement de domaine dans Google : faire indexer les dernières adresses de kultiled.com (126 pages dans l'index au 15 novembre 2026, sitemap à 155 adresses le 16 novembre 2026) et signaler le déménagement depuis optiled.fr (outil « Changement d'adresse » de la propriété optiled.fr : pas encore fait au 15 novembre 2026, le bouton « Valider et informer Google » est toujours proposé ; la routine automatique n'a pas le droit de modifier un réglage du compte Google, c'est donc à Jean de cliquer), avant la fin du contrat IONOS en novembre.
+- **Changement d'adresse : pas encore signalé** (vérifié le 15 novembre 2026 dans la Search Console). Réussir le changement de domaine dans Google : faire indexer les dernières adresses de kultiled.com (129 pages dans l’index au 16 novembre 2026, données du 13 novembre, sitemap à 155 adresses le 16 novembre 2026) et signaler le déménagement depuis optiled.fr (outil « Changement d'adresse » de la propriété optiled.fr : pas encore fait au 15 novembre 2026, le bouton « Valider et informer Google » est toujours proposé ; la routine automatique n'a pas le droit de modifier un réglage du compte Google, c'est donc à Jean de cliquer), avant la fin du contrat IONOS en novembre.
 - Ouvrir un premier canal d'audience : créer et brancher un compte Pinterest Kultiled, puis importer les 12 épingles déjà prêtes (`docs/pinterest.csv`).
 - Obtenir de premiers liens entrants : proposer le calculateur intégrable (`integrer.html`) à quelques blogs et forums de jardinage en intérieur, aucun n'ayant encore été contacté.
 
