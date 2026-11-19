@@ -60,7 +60,7 @@ import { icone, logo, type NomIcone } from './icones.ts';
 import { CARTES_PREMIERE_RANGEE, creditCarte, legendePhoto, photoGuide, photoLibre } from './photos.ts';
 import { placerAnnonces, scriptAdsense } from './annonces.ts';
 import { entitesVeille, FICHIER_ACTUS, FICHIER_ENTITES, remplacerMarqueursActus } from './veille.ts';
-import { articleDuFichier, articlesConstruits, chargerVeilleAuBuild, dateArticleSitemap, DOSSIER_ACTUS, estPageRenvoi, pagesActus, prefixeRelatif, reecrireLiensRelatifs, referencementArticle, slugsConstruits, vignetteActuHtml } from './articles.ts';
+import { ROBOTS_NOINDEX_SUIVI, articleDuFichier, articlesConstruits, chargerVeilleAuBuild, dateArticleSitemap, DOSSIER_ACTUS, estPageRenvoi, pagesActus, prefixeRelatif, reecrireLiensRelatifs, referencementArticle, slugsConstruits, vignetteActuHtml } from './articles.ts';
 export { photoGuide };
 
 export const NOM_SITE = 'Kultiled';
@@ -176,6 +176,10 @@ export function rubriqueDe(fichier: string): Rubrique | null {
 /** Balise robots d'une page non indexée : une seule balise, avec la grande image autorisée (comme keurdeco.com). */
 const ROBOTS_SOURCE_NOINDEX = '<meta name="robots" content="noindex" />';
 export const ROBOTS_NOINDEX = '<meta name="robots" content="noindex, max-image-preview:large" />';
+/** Vrai si la source d'une page porte un noindex (simple ou « noindex, follow ») : hors sitemap. */
+export function estNoindex(source: string): boolean {
+  return /<meta name="robots" content="noindex[",]/.test(source);
+}
 
 /**
  * Début commun du <head>. Icônes publiées dans public/ (générées par scripts/icones-marque.mjs) : adresses réelles,
@@ -941,7 +945,7 @@ export function transformerPage(html: string, fichier: string): string {
     .replace(/<div class="tableau-defile">/g, () => `<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau ${++numeroTableau} (faire défiler horizontalement)">`)
     // La 404 peut être servie sous n'importe quel chemin : liens résolus depuis la racine du site.
     .replace('<!--#head-->', `${base}<!--#head-->\n    ${referencement(html, fichier)}`)
-    .replace('<!--#head-->', head(html.includes(ROBOTS_SOURCE_NOINDEX)))
+    .replace('<!--#head-->', head(html.includes(ROBOTS_SOURCE_NOINDEX) || html.includes(ROBOTS_NOINDEX_SUIVI)))
     .replace(ROBOTS_SOURCE_NOINDEX, ROBOTS_NOINDEX)
     .replace('<!--#header-->', header(fichier))
     .replace('<!--#footer-->', footer())
@@ -1009,10 +1013,10 @@ export function pluginSite(): Plugin {
       return ctx.server ? page : page.replace('</head>', `  ${mesureUmami()}\n  ${scriptAdsense()}\n  </head>`).replace('</body>', `${mesureAudience()}\n</body>`);
     },
     generateBundle() {
-      // Les pages marquées noindex (404, redirections) ne vont pas dans le sitemap.
+      // Les pages marquées noindex (404, redirections, actus) ne vont pas dans le sitemap.
       const pages = Object.keys(toutesLesPages(racine))
         .map((nom) => `${nom}.html`)
-        .filter((f) => !sourcePage(racine, f).includes('content="noindex"') && !(f in canoniquesTop10()));
+        .filter((f) => !estNoindex(sourcePage(racine, f)) && !(f in canoniquesTop10()));
       this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap(pages, SITE_URL, (f) => dateDerniereModification(f, sourcePage(racine, f))) });
       this.emitFile({ type: 'asset', fileName: FICHIER_FLUX, source: fluxRss() });
       // Liste des cultures lue par la tâche de veille.

@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { posix, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { FICHIER_FLUX, sourcePage, toutesLesPages, transformerPage } from './site.ts';
+import { FICHIER_FLUX, estNoindex, sourcePage, toutesLesPages, transformerPage } from './site.ts';
 
 const racine = resolve(import.meta.dirname, '..');
 const pages = Object.keys(toutesLesPages(racine)).map((n) => `${n}.html`);
@@ -71,7 +71,7 @@ const texte = (s: string) => s.replace(/&#39;/g, "'").replace(/&quot;/g, '"').re
 
 describe('référencement des pages publiées', () => {
   // Pages publiées = indexables (la page de secours des actus porte noindex).
-  for (const page of pages.filter((p) => p !== '404.html' && !estRedirection(p) && !sourcePage(racine, p).includes('content="noindex"'))) {
+  for (const page of pages.filter((p) => p !== '404.html' && !estRedirection(p) && !estNoindex(sourcePage(racine, p)))) {
     it(`${page} : titre de 60 caractères au plus, description de 70 à 160, données structurées`, () => {
       const html = contenu(page);
       const titre = texte(html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '');

@@ -41,15 +41,16 @@ describe('blocs d’actus', () => {
     expect(html).toContain('<div class="actus__liste" data-actus-liste><ul class="actus__vignettes">');
     expect(rendreBlocActus(3, 'legume:radis')).toMatch(/<section[^>]*hidden>/);
   });
-  it('accueil : 4 actus sous le calculateur et ses résultats', () => {
+  it('accueil : aucun bloc d’actus (retirés le 19/11/2026, actus hors de Google)', () => {
     const html = page('index.html');
-    expect(html).toContain('data-limite="4"');
-    expect(html.indexOf('data-actus ')).toBeGreaterThan(html.indexOf('id="resultats"'));
-    expect(html.indexOf('data-actus ')).toBeGreaterThan(html.indexOf('</form>'));
+    expect(html).not.toContain('data-actus');
+    expect(html).not.toContain('actus-accueil');
   });
-  it('page Actus : 20 actus, dans la navigation et le pied de page', () => {
+  it('page Actus : 20 actus, noindex follow, dans la navigation et le pied de page', () => {
     expect(Object.keys(toutesLesPages(racine))).toContain('actus');
     const html = page('actus.html');
+    expect(html).toContain('<meta name="robots" content="noindex, follow" />');
+    expect(html.match(/<meta name="robots"/g)).toHaveLength(1);
     expect(html).toContain('data-limite="20"');
     expect(html).toContain('data-actus-maj');
     expect(NAVIGATION.some((n) => n.href === 'actus.html')).toBe(true);
@@ -57,8 +58,8 @@ describe('blocs d’actus', () => {
   });
   // Un test par fiche : chaque page générée prend du temps à construire (un seul test dépasserait le délai sur la CI).
   for (const l of chargerLegumes()) {
-    it(`fiche ${l.id} : son bloc de 3 actus`, () => {
-      expect(page(`legume-${l.id}.html`)).toContain(`data-limite="3" data-tag="legume:${l.id}"`);
+    it(`fiche ${l.id} : aucun bloc d’actus (retirés le 19/11/2026)`, () => {
+      expect(page(`legume-${l.id}.html`)).not.toContain('data-actus');
     });
   }
   it('aucun lien Amazon ni prix dans les blocs d’actus et sur la page Actus', () => {

@@ -440,7 +440,6 @@ export function sourcePageLegume(l: Legume, legumes: Legume[] = chargerLegumes()
         ${sections.map((s) => `<h2 id="${s.id}">${s.titre}</h2>\n        ${s.html}`).join('\n        ')}
         <p class="aide">Valeurs indicatives tirées de la littérature horticole (voir les <a href="glossaire.html#sources">sources</a>). Vérifiez l’intensité réelle avec un PAR-mètre.</p>
       </article>
-      <!--#actus:3:legume:${l.id}-->
       ${
         voisines.length
           ? `<section class="voisines" aria-labelledby="voisines">

@@ -17,7 +17,7 @@ import {
   reecrireLiensRelatifs,
   slugsConstruits,
 } from './articles.ts';
-import { sitemap, sourcePage, toutesLesPages, transformerPage, urlPage } from './site.ts';
+import { estNoindex, sitemap, sourcePage, toutesLesPages, transformerPage, urlPage } from './site.ts';
 
 const racine = resolve(import.meta.dirname, '..');
 
@@ -168,14 +168,17 @@ describe('pages des articles d’actus (build)', () => {
     expect(json.find((j) => j['@type'] === 'BreadcrumbList')?.itemListElement).toHaveLength(3);
   });
 
-  it('sitemap : les pages d’articles y sont (adresse en /), jamais la page de secours ni le renvoi', () => {
+  it('sitemap : aucune page d’actus (noindex, follow depuis le 19/11/2026), ni la page de secours ni le renvoi', () => {
     definirVeille([actu('a', { slug: 'article-a' })], [article('a')]);
     const pages = Object.keys(toutesLesPages(racine)).map((n) => `${n}.html`);
     expect(pages).toContain('actus/article-a/index.html');
-    const indexables = pages.filter((f) => !sourcePage(racine, f).includes('content="noindex"'));
+    expect(sourcePage(racine, 'actus/article-a/index.html')).toContain('<meta name="robots" content="noindex, follow" />');
+    const indexables = pages.filter((f) => !estNoindex(sourcePage(racine, f)));
+    expect(indexables).not.toContain('actus/article-a/index.html');
+    expect(indexables).not.toContain('actus.html');
     expect(indexables).not.toContain(FICHIER_SECOURS);
     expect(indexables).not.toContain(FICHIER_RENVOI_ACTUS);
-    expect(sitemap(indexables)).toContain('<loc>https://www.kultiled.com/actus/article-a/</loc>');
+    expect(sitemap(indexables)).not.toContain('/actus');
     expect(urlPage('actus/article-a/index.html')).toBe('https://www.kultiled.com/actus/article-a/');
   }, 60_000);
 
