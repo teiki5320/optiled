@@ -4,7 +4,8 @@
     "Onglet « Terreaux et substrats » du Top 10 (build/top-10.ts).",
     "Ordre du tableau = classement : note moyenne des acheteurs sur Amazon.fr relevée le jour de `classement_le`, à égalité la plus évaluée d'abord ; seuls les produits disponibles avec au moins 10 évaluations, destinés aux plantes cultivées (ni terrarium, ni terreau spécial plantes vertes ou cactus) sont retenus ; une seule version par produit. Les notes ne sont ni enregistrées ni publiées.",
     "Composition et volumes repris des fiches Amazon.fr le jour de `verifie_le`.",
-    "28/10/2026 : produits devenus indisponibles sur Amazon.fr (« disponible: false », plus affichés) remplacés par plagron-growmix-50, fertiligene-poids-plume-10, vérifiés le jour même (bouton d'achat présent, au moins 10 évaluations) ; tout l'onglet reclassé selon les notes relevées ce jour-là."
+    "28/10/2026 : produits devenus indisponibles sur Amazon.fr (« disponible: false », plus affichés) remplacés par plagron-growmix-50, fertiligene-poids-plume-10, vérifiés le jour même (bouton d'achat présent, au moins 10 évaluations) ; tout l'onglet reclassé selon les notes relevées ce jour-là.",
+    "19/11/2026 : fertiligene-performance-organics-10 devenu indisponible sur Amazon.fr (« disponible: false », plus affiché), remplacé à la même place par fertiligene-naturen-universel-6, vérifié le jour même (bouton d’achat présent, même note moyenne ce jour-là)."
   ],
   "verifie_le": "2026-10-28",
   "classement_le": "2026-10-28",
@@ -265,6 +266,38 @@
       "verifie_le": "2026-10-28"
     },
     {
+      "id": "fertiligene-naturen-universel-6",
+      "nom": "FERTILIGÈNE Naturen, terreau universel 6 L",
+      "asin": "B07N9N5ZWM",
+      "illustration": "terreau",
+      "chiffres": [
+        [
+          "Type",
+          "terreau universel enrichi"
+        ],
+        [
+          "Volume",
+          "6 L"
+        ],
+        [
+          "Engrais",
+          "organique, inclus"
+        ],
+        [
+          "Compost",
+          "compost vert"
+        ]
+      ],
+      "description": "Un terreau universel enrichi en engrais organique et en compost vert, en petit sac de 6 L.",
+      "annonce": [
+        "enrichi en engrais organique",
+        "compost vert",
+        "dolomie (calcium et magnésium)"
+      ],
+      "pour_qui": "rempoter un pot de 20 cm ou quelques godets, sans stocker un grand sac",
+      "verifie_le": "2026-11-19"
+    },
+    {
       "id": "fertiligene-performance-organics-10",
       "nom": "FERTILIGÈNE Naturen Performance Organics, terreau universel 10 L",
       "asin": "B082XSC9K4",
@@ -294,7 +327,8 @@
         "adapté aux fruits et légumes"
       ],
       "pour_qui": "quelques pots de légumes, sans penser à l'engrais les premiers mois",
-      "verifie_le": "2026-10-28"
+      "verifie_le": "2026-10-28",
+      "disponible": false
     },
     {
       "id": "fertiligene-poids-plume-10",
