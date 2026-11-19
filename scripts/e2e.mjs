@@ -2,7 +2,7 @@
 // Usage : npm run build && npm run test:e2e
 // Vérifie que les pages s'affichent sans erreur et que le calculateur fonctionne.
 import { spawn } from 'node:child_process';
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 import { tagsConnus, verifierDossier } from './verifier-site.mjs';
 
@@ -117,32 +117,24 @@ try {
   let p = await contexte(essai);
   await p.goto(BASE, { waitUntil: 'networkidle' });
   await attendreActus(p);
-  verifier((await visibles(p)).join() === '4', 'accueil : 4 actus sous le calculateur');
+  verifier((await visibles(p)).length === 0, 'accueil : aucun bloc d’actus (retirés le 19/11/2026, actus hors de Google)');
   verifier(/PPFD cible/.test(await p.textContent('#contenu-resultats')), 'accueil : le calculateur marche toujours');
-  verifier((await p.getAttribute('.actu__source a', 'rel')) === 'noopener nofollow' && (await p.getAttribute('.actu__source a', 'target')) === '_blank', 'lien Source : nouvel onglet, noopener nofollow');
   verifier(await sansDefilement(p), 'accueil : pas de défilement horizontal en 375 px');
   await p.goto(`${BASE}actus.html`, { waitUntil: 'networkidle' });
   await attendreActus(p);
   verifier((await visibles(p)).join() === '6' && (await p.isVisible('[data-actus-maj]')), 'page Actus : toutes les actus (20 au plus) et la date de mise à jour');
+  verifier((await p.getAttribute('.actu__source a', 'rel')) === 'noopener nofollow' && (await p.getAttribute('.actu__source a', 'target')) === '_blank', 'lien Source : nouvel onglet, noopener nofollow');
+  verifier((await p.locator('meta[name="robots"][content="noindex, follow"]').count()) === 1, 'page Actus : noindex, follow');
   verifier((await p.textContent('.actus')).includes('Illustration : Kultiled') && (await p.textContent('.actus')).includes('Photo : Jane Doe · CC BY-SA 4.0'), 'crédits : photo et illustration');
   await p.goto(`${BASE}legume-tomate.html`, { waitUntil: 'networkidle' });
-  await attendreActus(p);
-  verifier((await visibles(p)).join() === '1', 'fiche tomate : son actu');
-  // Fiche sans actu : choisie dans le site construit parmi celles dont le bloc est encore caché
-  // (aucun article déjà publié pour cette culture). Avant, le basilic était écrit en dur : le test
-  // a échoué le 13/11 quand la veille a publié un article sur le basilic (bloc pré-rempli au build).
-  const ficheSansActu = readdirSync('dist').filter((f) => /^legume-[a-z0-9-]+\.html$/.test(f) && f !== 'legume-tomate.html')
-    .find((f) => /data-tag="legume:[a-z0-9-]+" aria-labelledby="[^"]*" hidden>/.test(readFileSync(`dist/${f}`, 'utf8')));
-  verifier(Boolean(ficheSansActu), 'fiche sans actu : au moins une fiche sans article publié');
-  await p.goto(`${BASE}${ficheSansActu}`, { waitUntil: 'networkidle' });
   await p.waitForTimeout(1500);
-  verifier((await visibles(p)).join() === '-1', `fiche sans actu (${ficheSansActu}) : bloc absent`);
+  verifier((await visibles(p)).length === 0, 'fiche tomate : aucun bloc d’actus (retirés le 19/11/2026)');
   await p.context().close();
 
   p = await contexte(null);
   await p.goto(BASE, { waitUntil: 'networkidle' });
   await p.waitForTimeout(1500);
-  verifier((await visibles(p)).join() === '-1' && (await p.isHidden('[data-actus-cadre]')) && /PPFD cible/.test(await p.textContent('#contenu-resultats')), 'veille injoignable : aucun bloc vide, calculateur intact');
+  verifier((await visibles(p)).length === 0 && /PPFD cible/.test(await p.textContent('#contenu-resultats')), 'veille injoignable : aucun bloc vide, calculateur intact');
   await p.goto(`${BASE}actus.html`, { waitUntil: 'networkidle' });
   await p.waitForTimeout(1500);
   verifier(await p.isVisible('[data-actus-vide]'), 'veille injoignable : la page Actus le dit simplement');
@@ -150,7 +142,8 @@ try {
   verifier(erreurs.length === 0, `aucune erreur JavaScript avec les actus${erreurs.length ? ' : ' + erreurs.join(' | ') : ''}`);
 
   // Articles complets : une carte ouvre l'article sur le site (page construite, sinon page de secours).
-  const construit = readFileSync('dist/sitemap.xml', 'utf8').match(/\/actus\/([a-z0-9-]+)\/<\/loc>/)?.[1];
+  // (les pages d'actus ne sont plus dans le sitemap : on prend la première page d'article du dossier construit, hors renvoi)
+  const construit = readdirSync('dist/actus').find((d) => d !== 'article' && existsSync(`dist/actus/${d}/index.html`) && !readFileSync(`dist/actus/${d}/index.html`, 'utf8').includes('http-equiv="refresh"'));
   const ARTICLES = 'https://teiki5320.github.io/veille/articles/kultiled/';
   const articleEssai = (n) => ({
     version: 1, site: 'kultiled', id: String(n).repeat(40), slug: `article-essai-${n}`, titre: `Article d'essai numéro ${n}`,
