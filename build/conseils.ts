@@ -137,6 +137,8 @@ export const MATERIEL_CONSEILS: Record<string, { top: string; produits?: string[
   'extracteur-tente-de-culture': { top: 'extracteurs-ventilateurs', produits: ['vivosun-aerozesh-g4-kit', 'hon-guan-kit-100'] },
   'humidite-trop-elevee-tente': { top: 'extracteurs-ventilateurs', produits: ['vivosun-aerozesh-g4-kit', 'ac-infinity-cloudray-s6'] },
   'choisir-tente-de-culture': { top: 'tentes-de-culture' },
+  'lampe-horticole-comment-choisir': { top: 'lampes-led-de-culture' },
+  'lampe-horticole-plantes-interieur': { top: 'lampes-petit-espace' },
   'minuteur-lampe-culture': { top: 'minuteurs-thermometres', produits: ['otio-t10', 'novkit-cycle'] },
   'partir-en-vacances': { top: 'minuteurs-thermometres', produits: ['otio-t10', 'scs-sentinel-hebdo'] },
   'temperature-legumes-interieur': { top: 'minuteurs-thermometres', produits: ['temppro-tp50', 'temppro-serre-max-min'] },
