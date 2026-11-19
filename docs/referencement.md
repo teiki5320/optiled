@@ -80,3 +80,23 @@
 ### Socle
 - Vérifié le 22/10/2026 (moins de 28 jours) : pas refait.
 - Vitesse sur téléphone : PageSpeed encore indisponible le 12/11/2026 à 5 h (quota du jour dépassé, erreur 429) → à refaire au prochain passage (accueil, conseil-hauteur-lampe-led.html, legume-tomate.html).
+
+## 19/11/2026
+
+### Gains rapides (pages en 2e page Google)
+- Période du 20/10 au 17/11/2026 : une seule page entre la 4e et la 20e place, `conseil-concombre-en-interieur.html` (« interieur concombre » 3 vues, 7,3e ; « concombre interieur » 1 vue, 8e ; 7,5e en moyenne, 0 clic). Travaillée le 05/11 (moins de 28 jours) : pas retouchée.
+- Pages travaillées il y a 28 jours ou plus : aucune (premières à relire : `conseil-par-et-ppfd.html` à partir du 26/11, `conseil-concombre-en-interieur.html` et `culture.html` à partir du 03/12).
+
+### Page nouvelle
+- Aucune. Seules deux recherches dépassent 15 vues et ont déjà leur vraie page : « par ppfd » (76 vues ; `led-bases.html` 21,2e, glossaire 49,8e, `conseil-par-et-ppfd.html` créée le 29/10 toujours 64e) et « culture interieur » (19 vues, plus « culture en intérieur » 12, « culture en interieur » 11, « culture intérieure » 9 ; Google montre encore `culture-demarrer.html` entre la 79e et la 91e place, la rubrique `culture.html` retitrée le 05/11 n'apparaît toujours pas).
+- À suivre : « tente de culture » (10 vues, `conseil-choisir-tente-de-culture.html` 73e), « lampe de croissance pour semis et boutures avec support » (9 vues, `led-semis.html` 52e), « culture hydroponique placard » (6 vues, 27,5e), « lampe pour semis » (6 vues, `top-10-lampes-semis.html` 42,5e).
+
+### Fiches enrichies vérifiées le 19/11/2026
+- 115 pages construites contrôlées : tout le JSON-LD est un JSON valide, rien à corriger.
+- Conseils, guides, fiches légumes : Article + BreadcrumbList (91 pages). Les conseils ont leur date de publication ; les guides ont la date de mise à jour affichée sur la page ; les fiches légumes n'affichent aucune date, donc aucune date dans leurs données (rien d'inventé).
+- Accueil : WebApplication + WebSite (avec l'éditeur Organization et son logo). Rubriques : CollectionPage. Glossaire : DefinedTermSet. Top 10 : ItemList + BreadcrumbList + FAQPage, et la section « Questions fréquentes » est bien visible sur les 10 pages.
+
+### Socle vérifié le 19/11/2026
+- IndexNow : clé publique `c0e2eea796f0b728ac889de874db3cbe.txt` servie en ligne (réponse 200), script `scripts/indexnow.mjs` présent.
+- Google Discover : `max-image-preview:large` et image de partage 1200 × 630 sur toutes les pages (sauf la page 404 et l'ancienne adresse calculateur.html, simple redirection).
+- Vitesse sur téléphone : PageSpeed encore indisponible le 19/11/2026 à 5 h 25 (quota du jour dépassé, erreur 429, pour la 5e fois) → à refaire au prochain passage (accueil, conseil-hauteur-lampe-led.html, legume-tomate.html). Contrôle fait à la main dans les pages construites : les images ont leurs dimensions, celles du bas de page sont en chargement différé, la police est servie par le site.
