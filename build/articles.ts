@@ -308,10 +308,9 @@ function gabarit(o: { tete: string; fil: string; etiquettes: string; h1: string;
 }
 
 /**
- * Pages d'actus (liste et articles), hors de Google depuis le 19/11/2026 : « noindex, follow » (les liens restent
- * suivis), page toujours ouverte aux visiteurs. Même balise à la source et à la sortie.
+ * Pages d'actus (liste et articles) : de nouveau indexables depuis le 20/11/2026 (Jean a retiré le « noindex, follow »
+ * du 19/11 : Google refusait ces pages). La balise robots est ajoutée par head() comme sur les autres pages.
  */
-export const ROBOTS_NOINDEX_SUIVI = '<meta name="robots" content="noindex, follow" />';
 
 const filArticle = (titre: string) => `<a href="index.html">Accueil</a> › <a href="${FICHIER_ACTUS}">Actus</a> › <span>${titre}</span>`;
 
@@ -319,8 +318,7 @@ const filArticle = (titre: string) => `<a href="index.html">Accueil</a> › <a h
 export function sourcePageArticle(c: ArticleConstruit, actus = etat.actus, construits: ReadonlySet<string> = new Set(slugsConstruits())): string {
   const a = c.article;
   return gabarit({
-    tete: `${ROBOTS_NOINDEX_SUIVI}
-    <meta name="description" content="${attr(descriptionCourte(a.chapo))}" />
+    tete: `<meta name="description" content="${attr(descriptionCourte(a.chapo))}" />
     <title>${echapper(a.titre)}</title>`,
     fil: filArticle(echapper(a.titre)),
     etiquettes: etiquettesArticle(a),

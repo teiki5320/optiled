@@ -60,7 +60,7 @@ import { icone, logo, type NomIcone } from './icones.ts';
 import { CARTES_PREMIERE_RANGEE, creditCarte, legendePhoto, photoGuide, photoLibre } from './photos.ts';
 import { placerAnnonces, scriptAdsense } from './annonces.ts';
 import { entitesVeille, FICHIER_ACTUS, FICHIER_ENTITES, remplacerMarqueursActus } from './veille.ts';
-import { ROBOTS_NOINDEX_SUIVI, articleDuFichier, articlesConstruits, chargerVeilleAuBuild, dateArticleSitemap, DOSSIER_ACTUS, estPageRenvoi, pagesActus, prefixeRelatif, reecrireLiensRelatifs, referencementArticle, slugsConstruits, vignetteActuHtml } from './articles.ts';
+import { articleDuFichier, articlesConstruits, chargerVeilleAuBuild, dateArticleSitemap, DOSSIER_ACTUS, estPageRenvoi, pagesActus, prefixeRelatif, reecrireLiensRelatifs, referencementArticle, slugsConstruits, vignetteActuHtml } from './articles.ts';
 export { photoGuide };
 
 export const NOM_SITE = 'Kultiled';
@@ -945,7 +945,7 @@ export function transformerPage(html: string, fichier: string): string {
     .replace(/<div class="tableau-defile">/g, () => `<div class="tableau-defile" tabindex="0" role="region" aria-label="Tableau ${++numeroTableau} (faire défiler horizontalement)">`)
     // La 404 peut être servie sous n'importe quel chemin : liens résolus depuis la racine du site.
     .replace('<!--#head-->', `${base}<!--#head-->\n    ${referencement(html, fichier)}`)
-    .replace('<!--#head-->', head(html.includes(ROBOTS_SOURCE_NOINDEX) || html.includes(ROBOTS_NOINDEX_SUIVI)))
+    .replace('<!--#head-->', head(html.includes(ROBOTS_SOURCE_NOINDEX)))
     .replace(ROBOTS_SOURCE_NOINDEX, ROBOTS_NOINDEX)
     .replace('<!--#header-->', header(fichier))
     .replace('<!--#footer-->', footer())

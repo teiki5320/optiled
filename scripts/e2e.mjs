@@ -124,7 +124,7 @@ try {
   await attendreActus(p);
   verifier((await visibles(p)).join() === '6' && (await p.isVisible('[data-actus-maj]')), 'page Actus : toutes les actus (20 au plus) et la date de mise à jour');
   verifier((await p.getAttribute('.actu__source a', 'rel')) === 'noopener nofollow' && (await p.getAttribute('.actu__source a', 'target')) === '_blank', 'lien Source : nouvel onglet, noopener nofollow');
-  verifier((await p.locator('meta[name="robots"][content="noindex, follow"]').count()) === 1, 'page Actus : noindex, follow');
+  verifier((await p.locator('meta[name="robots"][content^="noindex"]').count()) === 0, 'page Actus : indexable');
   verifier((await p.textContent('.actus')).includes('Illustration : Kultiled') && (await p.textContent('.actus')).includes('Photo : Jane Doe · CC BY-SA 4.0'), 'crédits : photo et illustration');
   await p.goto(`${BASE}legume-tomate.html`, { waitUntil: 'networkidle' });
   await p.waitForTimeout(1500);

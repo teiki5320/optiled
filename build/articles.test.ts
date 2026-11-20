@@ -168,17 +168,17 @@ describe('pages des articles d’actus (build)', () => {
     expect(json.find((j) => j['@type'] === 'BreadcrumbList')?.itemListElement).toHaveLength(3);
   });
 
-  it('sitemap : aucune page d’actus (noindex, follow depuis le 19/11/2026), ni la page de secours ni le renvoi', () => {
+  it('sitemap : pages d’actus indexables (noindex retiré le 20/11/2026), mais ni la page de secours ni le renvoi', () => {
     definirVeille([actu('a', { slug: 'article-a' })], [article('a')]);
     const pages = Object.keys(toutesLesPages(racine)).map((n) => `${n}.html`);
     expect(pages).toContain('actus/article-a/index.html');
-    expect(sourcePage(racine, 'actus/article-a/index.html')).toContain('<meta name="robots" content="noindex, follow" />');
+    expect(sourcePage(racine, 'actus/article-a/index.html')).not.toContain('noindex');
     const indexables = pages.filter((f) => !estNoindex(sourcePage(racine, f)));
-    expect(indexables).not.toContain('actus/article-a/index.html');
-    expect(indexables).not.toContain('actus.html');
+    expect(indexables).toContain('actus/article-a/index.html');
+    expect(indexables).toContain('actus.html');
     expect(indexables).not.toContain(FICHIER_SECOURS);
     expect(indexables).not.toContain(FICHIER_RENVOI_ACTUS);
-    expect(sitemap(indexables)).not.toContain('/actus');
+    expect(sitemap(indexables)).toContain('/actus/article-a/');
     expect(urlPage('actus/article-a/index.html')).toBe('https://www.kultiled.com/actus/article-a/');
   }, 60_000);
 

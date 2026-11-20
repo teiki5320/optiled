@@ -46,10 +46,10 @@ describe('blocs d’actus', () => {
     expect(html).not.toContain('data-actus');
     expect(html).not.toContain('actus-accueil');
   });
-  it('page Actus : 20 actus, noindex follow, dans la navigation et le pied de page', () => {
+  it('page Actus : 20 actus, indexable, dans la navigation et le pied de page', () => {
     expect(Object.keys(toutesLesPages(racine))).toContain('actus');
     const html = page('actus.html');
-    expect(html).toContain('<meta name="robots" content="noindex, follow" />');
+    expect(html).not.toContain('noindex');
     expect(html.match(/<meta name="robots"/g)).toHaveLength(1);
     expect(html).toContain('data-limite="20"');
     expect(html).toContain('data-actus-maj');
